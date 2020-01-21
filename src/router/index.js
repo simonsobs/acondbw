@@ -22,8 +22,7 @@ const routes = [
   {
     path: "/maps",
     name: "map",
-    component: () =>
-      import(/* webpackChunkName: "maps" */ "../views/Maps.vue")
+    component: () => import(/* webpackChunkName: "maps" */ "../views/Maps.vue")
   }
 ];
 
