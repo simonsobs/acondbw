@@ -27,9 +27,12 @@ export default {
   created: function() {
     const path = "http://localhost:5000/maps";
     axios.get(path).then(response => {
-      this.headers = response.data.schema.fields.map(f => ({text: f.name, value: f.name}))
-      this.items = response.data.data
+      this.headers = response.data.schema.fields.map(f => ({
+        text: f.name,
+        value: f.name
+      }));
+      this.items = response.data.data;
     });
   }
-}
+};
 </script>
