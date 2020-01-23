@@ -1,13 +1,15 @@
 <template>
-  <div>
-    <h1>This is a map page</h1>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      :items-per-page=100
-      hide-default-footer
-      dense
-    ></v-data-table>
+  <div class="maps">
+    <v-container>
+      <h2>Maps</h2>
+      <v-data-table
+        :headers="headers"
+        :items="items"
+        :items-per-page="100"
+        hide-default-footer
+        dense
+      ></v-data-table>
+    </v-container>
   </div>
 </template>
 
