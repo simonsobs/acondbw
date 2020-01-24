@@ -3,7 +3,7 @@
     <v-container class>
       <h2>Maps</h2>
       <div class="d-flex justify-end ma-2">
-        <v-btn icon @click="reverseShowsAny">
+        <v-btn icon @click="showsAny = !showsAny">
           <v-icon>{{ showsAny ? 'mdi-unfold-less-horizontal' : 'mdi-unfold-more-horizontal' }}</v-icon>
         </v-btn>
       </div>
@@ -78,24 +78,20 @@ export default {
     });
   },
   computed: {
-    showsAny() {
-      return Object.keys(this.shows).some(i => this.shows[i]);
+    showsAny: {
+      get: function() {
+        return Object.keys(this.shows).some(i => this.shows[i]);
+      },
+      set: function(v) {
+        for (const k in this.shows) {
+          this.shows[k] = v;
+        }
+      }
     }
   },
   methods: {
     sortItems() {
       this.items.sort((a, b) => (a.date_posted > b.date_posted ? -1 : 1));
-    },
-    reverseShowsAny() {
-      if (this.showsAny) {
-        for (const k in this.shows) {
-          this.shows[k] = false;
-        }
-      } else {
-        for (const k in this.shows) {
-          this.shows[k] = true;
-        }
-      }
     }
   }
 };
