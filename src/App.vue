@@ -3,16 +3,25 @@
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
         <v-list-item link router :to="'/'">
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link router :to="'/about'">
+          <v-list-item-action>
+            <v-icon>mdi-information</v-icon>
+          </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>About</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link router :to="'/maps'">
+          <v-list-item-action>
+            <v-icon>mdi-map</v-icon>
+          </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Maps</v-list-item-title>
           </v-list-item-content>
