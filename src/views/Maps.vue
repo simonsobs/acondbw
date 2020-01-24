@@ -28,10 +28,9 @@
               <v-flex xs12 md8 offset-md-4>
                 <div class="caption grey--text">Note</div>
                 <div>
-                  <template v-for="line in item.note.split('\n')">
-                    {{ line }}
-                    <br :key="line" />
-                  </template>
+                  <ul>
+                    <li v-for="(line, index) in item.note.split('\n')" :key="index">{{ line.replace(/^- */, "") }}</li>
+                  </ul>
                 </div>
               </v-flex>
             </v-layout>
