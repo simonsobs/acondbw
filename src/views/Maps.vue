@@ -2,6 +2,11 @@
   <div class="maps">
     <v-container class>
       <h2>Maps</h2>
+      <div class="d-flex justify-end ma-2">
+        <v-btn icon @click="reverseShowsAny">
+          <v-icon>{{ showsAny ? 'mdi-unfold-less-horizontal' : 'mdi-unfold-more-horizontal' }}</v-icon>
+        </v-btn>
+      </div>
       <v-card outlined hover v-for="item in items" :key="item.id">
         <div @click="shows[item.id] = !shows[item.id]">
           <v-layout row wrap class="ma-0 px-3">
@@ -72,9 +77,25 @@ export default {
       console.log(this.shows);
     });
   },
+  computed: {
+    showsAny() {
+      return Object.keys(this.shows).some(i => this.shows[i]);
+    }
+  },
   methods: {
     sortItems() {
       this.items.sort((a, b) => (a.date_posted > b.date_posted ? -1 : 1));
+    },
+    reverseShowsAny() {
+      if (this.showsAny) {
+        for (const k in this.shows) {
+          this.shows[k] = false;
+        }
+      } else {
+        for (const k in this.shows) {
+          this.shows[k] = true;
+        }
+      }
     }
   }
 };
