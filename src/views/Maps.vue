@@ -23,19 +23,19 @@
               </v-btn>
             </v-flex>
           </v-layout>
-            <v-expand-transition>
-          <v-layout row wrap class="mx-0 my-3 px-3" v-show="shows[item.id]">
-                <v-flex xs12 md8 offset-md-4>
-                  <div class="caption grey--text">Note</div>
-                  <div>
-                    <template v-for="line in item.note.split('\n')">
-                      {{ line }}
-                      <br :key="line" />
-                    </template>
-                  </div>
-                </v-flex>
-          </v-layout>
-            </v-expand-transition>
+          <v-expand-transition>
+            <v-layout row wrap class="mx-0 my-3 px-3" v-show="shows[item.id]">
+              <v-flex xs12 md8 offset-md-4>
+                <div class="caption grey--text">Note</div>
+                <div>
+                  <template v-for="line in item.note.split('\n')">
+                    {{ line }}
+                    <br :key="line" />
+                  </template>
+                </div>
+              </v-flex>
+            </v-layout>
+          </v-expand-transition>
         </div>
       </v-card>
     </v-container>
