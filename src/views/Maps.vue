@@ -79,24 +79,21 @@ export default {
     }
   },
   created: function() {
-    const path = "http://localhost:5000/maps";
-    axios.get(path).then(response => {
-      this.headers = response.data.schema.fields.map(f => ({
-        text: f.name,
-        value: f.name
-      }));
-      this.items = response.data.data;
-      this.sortItems();
-      this.shows = response.data.data.reduce(
-        (obj, x) => ({ ...obj, [x.id]: false }),
-        {}
-      );
-    });
+    this.loadData();
   },
   methods: {
-    sortItems() {
-      this.items.sort((a, b) => (a.date_posted > b.date_posted ? -1 : 1));
-    }
+    loadData() {
+      const path = "http://localhost:5000/maps";
+      axios.get(path).then(response => {
+        this.headers = response.data.schema.fields.map(f => ({
+          text: f.name,
+          value: f.name
+        }));
+        this.items = response.data.data;
+        this.items.sort((a, b) => (a.date_posted > b.date_posted ? -1 : 1));
+        this.shows = this.items.reduce((obj, x) => ({ ...obj, [x.id]: false }), {});
+      });
+    },
   }
 };
 </script>
