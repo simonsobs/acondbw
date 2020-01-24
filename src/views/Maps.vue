@@ -29,7 +29,10 @@
                 <div class="caption grey--text">Note</div>
                 <div>
                   <ul>
-                    <li v-for="(line, index) in item.note.split('\n')" :key="index">{{ line.replace(/^- */, "") }}</li>
+                    <li
+                      v-for="(line, index) in item.note.split('\n')"
+                      :key="index"
+                    >{{ line.replace(/^- */, "") }}</li>
                   </ul>
                 </div>
               </v-flex>
