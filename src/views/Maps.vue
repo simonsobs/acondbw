@@ -7,15 +7,15 @@
           <v-layout row wrap class="ma-0 px-3">
             <v-flex xs12 md4>
               <div class="caption grey--text">Name</div>
-              <div class="font-weight-medium indigo--text">{{ item.name }}</div>
+              <div class="font-weight-medium indigo--text" v-text="item.name"></div>
             </v-flex>
             <v-flex xs6 md4>
               <div class="caption grey--text">Date posted</div>
-              <div>{{ item.date_posted }}</div>
+              <div v-text="item.date_posted"></div>
             </v-flex>
             <v-flex xs5 md3>
               <div class="caption grey--text">Mapper</div>
-              <div>{{ item.mapper }}</div>
+              <div v-text="item.mapper"></div>
             </v-flex>
             <v-flex xs1 md1 align-self-end>
               <v-btn icon>
