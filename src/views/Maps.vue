@@ -91,7 +91,6 @@ export default {
         (obj, x) => ({ ...obj, [x.id]: false }),
         {}
       );
-      console.log(this.shows);
     });
   },
   methods: {
