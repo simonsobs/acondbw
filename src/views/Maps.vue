@@ -3,9 +3,14 @@
     <v-container class>
       <h2>Maps</h2>
       <div class="d-flex justify-end ma-2">
-        <v-btn icon @click="showsAny = !showsAny">
-          <v-icon>{{ showsAny ? 'mdi-unfold-less-horizontal' : 'mdi-unfold-more-horizontal' }}</v-icon>
-        </v-btn>
+        <v-tooltip bottom open-delay="800">
+          <template v-slot:activator="{ on }">
+            <v-btn icon @click="showsAny = !showsAny" v-on="on">
+              <v-icon>{{ showsAny ? 'mdi-unfold-less-horizontal' : 'mdi-unfold-more-horizontal' }}</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ showsAny ? 'Collapse all' : 'Expand all' }}</span>
+        </v-tooltip>
       </div>
       <v-card outlined hover v-for="item in items" :key="item.id">
         <div @click="shows[item.id] = !shows[item.id]">
