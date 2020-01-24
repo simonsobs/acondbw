@@ -17,7 +17,7 @@
           <v-layout row wrap class="ma-0 px-3">
             <v-flex xs12 md4>
               <div class="caption grey--text">Name</div>
-              <div class="font-weight-medium indigo--text" v-text="item.name"></div>
+              <div class="font-weight-medium primary--text" v-text="item.name"></div>
             </v-flex>
             <v-flex xs6 md4>
               <div class="caption grey--text">Date posted</div>
