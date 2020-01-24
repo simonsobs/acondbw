@@ -2,12 +2,12 @@
   <div class="maps">
     <v-container class>
       <h2>Maps</h2>
-      <v-card outlined v-for="item in items" :key="item.id">
+      <v-card outlined hover v-for="item in items" :key="item.id">
         <div @click="shows[item.id] = !shows[item.id]">
           <v-layout row wrap class="ma-0 px-3">
             <v-flex xs12 md4>
               <div class="caption grey--text">Name</div>
-              <div>{{ item.name }}</div>
+              <div class="font-weight-medium indigo--text">{{ item.name }}</div>
             </v-flex>
             <v-flex xs6 md4>
               <div class="caption grey--text">Date posted</div>
@@ -23,9 +23,9 @@
               </v-btn>
             </v-flex>
           </v-layout>
-          <v-layout row wrap class="ma-0 px-3">
             <v-expand-transition>
-                <v-flex xs12 md8 offset-md-4 v-show="shows[item.id]">
+          <v-layout row wrap class="mx-0 my-3 px-3" v-show="shows[item.id]">
+                <v-flex xs12 md8 offset-md-4>
                   <div class="caption grey--text">Note</div>
                   <div>
                     <template v-for="line in item.note.split('\n')">
@@ -34,8 +34,8 @@
                     </template>
                   </div>
                 </v-flex>
-            </v-expand-transition>
           </v-layout>
+            </v-expand-transition>
         </div>
       </v-card>
     </v-container>
