@@ -38,16 +38,6 @@
         </div>
       </v-card>
     </v-container>
-    <v-container>
-      <h2>Maps</h2>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        :items-per-page="100"
-        hide-default-footer
-        dense
-      ></v-data-table>
-    </v-container>
   </div>
 </template>
 
