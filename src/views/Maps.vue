@@ -71,7 +71,6 @@ export default {
   data() {
     return {
       headers: [],
-      items: [],
       edges: [],
       shows: {}
     };
