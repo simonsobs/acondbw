@@ -2,36 +2,12 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
-        <v-list-item link router :to="'/'">
+        <v-list-item link router v-for="page in pages" :key="page.name" :to="page.path">
           <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
+            <v-icon v-text="page.icon"></v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link router :to="'/about'">
-          <v-list-item-action>
-            <v-icon>mdi-information</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>About</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link router :to="'/maps'">
-          <v-list-item-action>
-            <v-icon>mdi-map</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Maps</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link router :to="'/beams'">
-          <v-list-item-action>
-            <v-icon>mdi-spotlight-beam</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Beams</v-list-item-title>
+            <v-list-item-title v-text="page.name"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -63,6 +39,12 @@
 export default {
   name: "App",
   data: () => ({
+    pages: [
+      {name: "Home", path: "/", icon: "mdi-home"},
+      {name: "About", path: "/about", icon: "mdi-information"},
+      {name: "Maps", path: "/maps", icon: "mdi-map"},
+      {name: "Bemas", path: "/beams", icon: "mdi-spotlight-beam"}
+    ],
     drawer: null
   }),
   created() {
