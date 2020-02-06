@@ -42,7 +42,9 @@
       </v-tooltip>
     </v-app-bar>
     <v-content>
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </v-content>
   </v-app>
 </template>
