@@ -1,7 +1,7 @@
 <template>
   <div class="maps">
     <v-container class>
-      <h2>Maps</h2>
+      <h2>Beams</h2>
       <div class="d-flex justify-end ma-2">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
@@ -15,17 +15,13 @@
       <v-card outlined hover v-for="edge in edges" :key="edge.node.id">
         <div @click="shows[edge.node.id] = !shows[edge.node.id]">
           <v-layout row wrap class="ma-0 px-3">
-            <v-flex xs12 md4>
+            <v-flex xs12 md3>
               <div class="caption grey--text">Name</div>
               <div class="font-weight-medium primary--text" v-text="edge.node.name"></div>
             </v-flex>
-            <v-flex xs6 md4>
-              <div class="caption grey--text">Date posted</div>
-              <div v-text="edge.node.datePosted"></div>
-            </v-flex>
-            <v-flex xs5 md3>
-              <div class="caption grey--text">Mapper</div>
-              <div v-text="edge.node.mapper"></div>
+            <v-flex xs11 md8>
+              <div class="caption grey--text">Path</div>
+              <div v-text="edge.node.path"></div>
             </v-flex>
             <v-flex xs1 md1 align-self-end>
               <v-btn icon>
@@ -35,25 +31,13 @@
           </v-layout>
           <v-expand-transition>
             <v-layout row wrap class="mx-0 my-3 px-3" v-show="shows[edge.node.id]">
-              <v-flex xs12 md8 offset-md-4>
-                <div class="caption grey--text">Note</div>
-                <div>
-                  <ul>
-                    <li
-                      v-for="(line, index) in edge.node.note.split('\n')"
-                      :key="index"
-                    >{{ line.replace(/^- */, "") }}</li>
-                  </ul>
-                </div>
+              <v-flex xs12 md4 offset-md-3>
+                <div class="caption grey--text">Map</div>
+                <div v-if="edge.node.map" v-text="edge.node.map.name"></div>
               </v-flex>
-              <v-flex xs12 md8 offset-md-4>
-                <div class="caption grey--text">Paths</div>
-                  <ul>
-                    <li
-                      v-for="(edgep, index) in edge.node.mapFilePaths.edges"
-                      :key="index"
-                      v-text="edgep.node.path"></li>
-                  </ul>
+              <v-flex xs12 md4>
+                <div class="caption grey--text">Parent Beam</div>
+                <div v-if="edge.node.parentBeam" v-text="edge.node.parentBeam.name"></div>
               </v-flex>
             </v-layout>
           </v-expand-transition>
@@ -67,7 +51,7 @@
 import axios from "axios";
 
 export default {
-  name: "maps",
+  name: "beams",
   data() {
     return {
       headers: [],
@@ -95,21 +79,17 @@ export default {
       const url = "http://localhost:5000/graphql";
       // const url = "https://actexperiment.info/products/api/graphql";
       const query = `
-        { allMaps(sort: DATE_POSTED_DESC) {
+        { allBeams(sort: NAME_DESC) {
           edges {
             node {
               id
               name
-              datePosted
-              mapper
-              note
-              mapFilePaths {
-                edges {
-                  node {
-                    path
-                    note
-                  }
-                }
+              path
+              map {
+                name
+              }
+              parentBeam {
+                name
               }
             }
           }
@@ -122,7 +102,7 @@ export default {
           query: query
         }
       }).then(response => {
-        this.edges = response.data.data.allMaps.edges;
+        this.edges = response.data.data.allBeams.edges;
         this.shows = this.edges.reduce(
           (obj, x) => ({ ...obj, [x.node.id]: false }),
           {}
