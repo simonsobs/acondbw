@@ -46,6 +46,15 @@
                   </ul>
                 </div>
               </v-flex>
+              <v-flex xs12 md8 offset-md-4>
+                <div class="caption grey--text">Paths</div>
+                  <ul>
+                    <li
+                      v-for="(edgep, index) in edge.node.mapFilePaths.edges"
+                      :key="index"
+                      v-text="edgep.node.path"></li>
+                  </ul>
+              </v-flex>
             </v-layout>
           </v-expand-transition>
         </div>
