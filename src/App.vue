@@ -50,9 +50,11 @@
       </v-tooltip>
     </v-app-bar>
     <v-content>
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+      <transition name="fade" mode="out-in">
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </transition>
     </v-content>
   </v-app>
 </template>
@@ -68,3 +70,14 @@ export default {
   }
 };
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+</style>
