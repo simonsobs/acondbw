@@ -12,35 +12,35 @@
           <span>{{ showsAny ? 'Collapse all' : 'Expand all' }}</span>
         </v-tooltip>
       </div>
-      <v-card outlined hover v-for="item in items" :key="item.id">
-        <div @click="shows[item.id] = !shows[item.id]">
+      <v-card outlined hover v-for="edge in edges" :key="edge.node.id">
+        <div @click="shows[edge.node.id] = !shows[edge.node.id]">
           <v-layout row wrap class="ma-0 px-3">
             <v-flex xs12 md4>
               <div class="caption grey--text">Name</div>
-              <div class="font-weight-medium primary--text" v-text="item.name"></div>
+              <div class="font-weight-medium primary--text" v-text="edge.node.name"></div>
             </v-flex>
             <v-flex xs6 md4>
               <div class="caption grey--text">Date posted</div>
-              <div v-text="item.date_posted"></div>
+              <div v-text="edge.node.datePosted"></div>
             </v-flex>
             <v-flex xs5 md3>
               <div class="caption grey--text">Mapper</div>
-              <div v-text="item.mapper"></div>
+              <div v-text="edge.node.mapper"></div>
             </v-flex>
             <v-flex xs1 md1 align-self-end>
               <v-btn icon>
-                <v-icon>{{ shows[item.id] ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                <v-icon>{{ shows[edge.node.id] ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
               </v-btn>
             </v-flex>
           </v-layout>
           <v-expand-transition>
-            <v-layout row wrap class="mx-0 my-3 px-3" v-show="shows[item.id]">
+            <v-layout row wrap class="mx-0 my-3 px-3" v-show="shows[edge.node.id]">
               <v-flex xs12 md8 offset-md-4>
                 <div class="caption grey--text">Note</div>
                 <div>
                   <ul>
                     <li
-                      v-for="(line, index) in item.note.split('\n')"
+                      v-for="(line, index) in edge.node.note.split('\n')"
                       :key="index"
                     >{{ line.replace(/^- */, "") }}</li>
                   </ul>
@@ -63,6 +63,7 @@ export default {
     return {
       headers: [],
       items: [],
+      edges: [],
       shows: {}
     };
   },
@@ -83,17 +84,43 @@ export default {
   },
   methods: {
     loadData() {
-      const path = "http://localhost:5000/maps";
-      axios.get(path).then(response => {
-        this.headers = response.data.schema.fields.map(f => ({
-          text: f.name,
-          value: f.name
-        }));
-        this.items = response.data.data;
-        this.items.sort((a, b) => (a.date_posted > b.date_posted ? -1 : 1));
-        this.shows = this.items.reduce((obj, x) => ({ ...obj, [x.id]: false }), {});
+      const url = "http://localhost:5000/graphql";
+      // const url = "https://actexperiment.info/products/api/graphql";
+      const query = `
+        { allMaps(sort: DATE_POSTED_DESC) {
+          edges {
+            node {
+              id
+              name
+              datePosted
+              mapper
+              note
+              mapFilePaths {
+                edges {
+                  node {
+                    path
+                    note
+                  }
+                }
+              }
+            }
+          }
+        }}
+      `;
+      axios({
+        url: url,
+        method: "POST",
+        data: {
+          query: query
+        }
+      }).then(response => {
+        this.edges = response.data.data.allMaps.edges;
+        this.shows = this.edges.reduce(
+          (obj, x) => ({ ...obj, [x.node.id]: false }),
+          {}
+        );
       });
-    },
+    }
   }
 };
 </script>
