@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" app clipped>
-      <v-list>
+      <v-list shaped>
         <v-list-item link router v-for="page in pages" :key="page.name" :to="page.path">
           <v-list-item-action>
             <v-icon v-text="page.icon"></v-icon>
