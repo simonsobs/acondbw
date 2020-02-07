@@ -43,7 +43,7 @@ export default {
       {name: "Home", path: "/", icon: "mdi-home"},
       {name: "About", path: "/about", icon: "mdi-information"},
       {name: "Maps", path: "/maps", icon: "mdi-map"},
-      {name: "Bemas", path: "/beams", icon: "mdi-spotlight-beam"}
+      {name: "Beams", path: "/beams", icon: "mdi-spotlight-beam"}
     ],
     drawer: null
   }),
