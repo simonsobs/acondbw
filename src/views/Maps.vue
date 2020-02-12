@@ -16,7 +16,6 @@
         <div @click="shows[edge.node.id] = !shows[edge.node.id]" style="cursor: default;">
           <v-layout row wrap class="ma-0 px-3">
             <v-flex xs12 md4>
-
               <div class="caption grey--text">Name</div>
               <div class="font-weight-medium primary--text">
                 <span @click.stop>
@@ -53,12 +52,13 @@
               </v-flex>
               <v-flex xs12 md8 offset-md-4>
                 <div class="caption grey--text">Paths</div>
-                  <ul>
-                    <li
-                      v-for="(edgep, index) in edge.node.mapFilePaths.edges"
-                      :key="index"
-                      v-text="edgep.node.path"></li>
-                  </ul>
+                <ul>
+                  <li
+                    v-for="(edgep, index) in edge.node.mapFilePaths.edges"
+                    :key="index"
+                    v-text="edgep.node.path"
+                  ></li>
+                </ul>
               </v-flex>
             </v-layout>
           </v-expand-transition>
