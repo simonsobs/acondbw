@@ -38,7 +38,17 @@
             </v-flex>
           </v-layout>
           <v-expand-transition>
-            <v-layout row wrap class="mx-0 my-3 px-3" v-show="shows[edge.node.id]">
+            <v-layout row wrap class="mx-0 mb-3 px-3" v-show="shows[edge.node.id]">
+              <v-flex xs12 md8 offset-md-4>
+                <div class="caption grey--text">Paths</div>
+                <ul>
+                  <li
+                    v-for="(edgep, index) in edge.node.mapFilePaths.edges"
+                    :key="index"
+                    v-text="edgep.node.path"
+                  ></li>
+                </ul>
+              </v-flex>
               <v-flex xs12 md8 offset-md-4>
                 <div class="caption grey--text">Note</div>
                 <div>
@@ -51,13 +61,14 @@
                 </div>
               </v-flex>
               <v-flex xs12 md8 offset-md-4>
-                <div class="caption grey--text">Paths</div>
+                <div class="caption grey--text">Beams</div>
                 <ul>
                   <li
-                    v-for="(edgep, index) in edge.node.mapFilePaths.edges"
+                    v-for="(edgep, index) in edge.node.beams.edges"
                     :key="index"
-                    v-text="edgep.node.path"
-                  ></li>
+                  >
+                    <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
+                  </li>
                 </ul>
               </v-flex>
             </v-layout>
@@ -111,6 +122,13 @@ export default {
                   node {
                     path
                     note
+                  }
+                }
+              }
+              beams {
+                edges {
+                  node {
+                    name
                   }
                 }
               }
