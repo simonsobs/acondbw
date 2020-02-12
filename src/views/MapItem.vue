@@ -56,18 +56,6 @@ export default {
       item: {}
     };
   },
-  computed: {
-    showsAny: {
-      get: function() {
-        return Object.keys(this.shows).some(i => this.shows[i]);
-      },
-      set: function(v) {
-        for (const k in this.shows) {
-          this.shows[k] = v;
-        }
-      }
-    }
-  },
   created: function() {
     this.loadData();
   },
