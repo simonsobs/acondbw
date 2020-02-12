@@ -12,7 +12,7 @@
           <span>{{ showsAny ? 'Collapse all' : 'Expand all' }}</span>
         </v-tooltip>
       </div>
-      <v-card outlined hover v-for="edge in edges" :key="edge.node.id">
+      <v-card outlined hover v-for="edge in edges" :key="edge.node.id" style="cursor: default;">
         <div @click="shows[edge.node.id] = !shows[edge.node.id]">
           <v-layout row wrap class="ma-0 px-3">
             <v-flex xs12 md3>
