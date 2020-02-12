@@ -19,7 +19,9 @@
 
               <div class="caption grey--text">Name</div>
               <div class="font-weight-medium primary--text">
-              <router-link :to="'/maps/item/' + edge.node.name" v-text="edge.node.name"></router-link>
+                <span @click.stop>
+                  <router-link :to="'/maps/item/' + edge.node.name" v-text="edge.node.name"></router-link>
+                </span>
               </div>
             </v-flex>
             <v-flex xs6 md4>
