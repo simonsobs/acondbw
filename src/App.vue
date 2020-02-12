@@ -14,7 +14,7 @@
     </v-navigation-drawer>
     <v-app-bar app dense clipped-left>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
-      <v-toolbar-title>ACTPol DB</v-toolbar-title>
+      <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip left open-delay="800">
         <template v-slot:activator="{ on }">
@@ -39,6 +39,7 @@
 export default {
   name: "App",
   data: () => ({
+    title: process.env.VUE_APP_TOOLBAR_TITLE,
     pages: [
       {name: "Home", path: "/", icon: "mdi-home"},
       {name: "About", path: "/about", icon: "mdi-information"},
