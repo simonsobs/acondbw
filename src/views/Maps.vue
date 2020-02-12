@@ -70,7 +70,6 @@ export default {
   name: "maps",
   data() {
     return {
-      headers: [],
       edges: [],
       shows: {}
     };
