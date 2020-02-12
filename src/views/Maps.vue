@@ -13,7 +13,7 @@
         </v-tooltip>
       </div>
       <v-card outlined hover v-for="edge in edges" :key="edge.node.id">
-        <div @click="shows[edge.node.id] = !shows[edge.node.id]">
+        <div @click="shows[edge.node.id] = !shows[edge.node.id]" style="cursor: default;">
           <v-layout row wrap class="ma-0 px-3">
             <v-flex xs12 md4>
               <div class="caption grey--text">Name</div>

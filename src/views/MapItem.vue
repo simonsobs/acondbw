@@ -3,7 +3,7 @@
     <v-container>
       <h2>Map</h2>
       <p v-text="$route.params.name"></p>
-      <v-card outlined hover>
+      <v-card outlined hover style="cursor: default;">
         <v-layout row wrap class="ma-0 px-3">
           <v-flex xs12 md4>
             <div class="caption grey--text">Name</div>
