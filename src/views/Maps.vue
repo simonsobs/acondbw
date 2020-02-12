@@ -16,8 +16,11 @@
         <div @click="shows[edge.node.id] = !shows[edge.node.id]" style="cursor: default;">
           <v-layout row wrap class="ma-0 px-3">
             <v-flex xs12 md4>
+
               <div class="caption grey--text">Name</div>
-              <div class="font-weight-medium primary--text" v-text="edge.node.name"></div>
+              <div class="font-weight-medium primary--text">
+              <router-link :to="'/maps/item/' + edge.node.name" v-text="edge.node.name"></router-link>
+              </div>
             </v-flex>
             <v-flex xs6 md4>
               <div class="caption grey--text">Date posted</div>
