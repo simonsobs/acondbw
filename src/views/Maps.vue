@@ -92,8 +92,7 @@ export default {
   },
   methods: {
     loadData() {
-      const url = "http://localhost:5000/graphql";
-      // const url = "https://actexperiment.info/products/api/graphql";
+      const url = process.env.VUE_APP_ACONDBS_URL;
       const query = `
         { allMaps(sort: DATE_POSTED_DESC) {
           edges {
