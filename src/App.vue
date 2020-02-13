@@ -36,6 +36,14 @@
               <v-list-item-title>Toggle dark mode</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item :href="graphiqlUrl" target="_blank">
+            <v-list-item-icon>
+              <v-icon>mdi-graphql</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>GraphiQL</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -54,6 +62,7 @@ export default {
   name: "App",
   data: () => ({
     title: process.env.VUE_APP_TOOLBAR_TITLE,
+    graphiqlUrl: process.env.VUE_APP_ACONDBS_URL,
     pages: [
       { name: "Maps", path: "/maps", icon: "mdi-map" },
       { name: "Beams", path: "/beams", icon: "mdi-spotlight-beam" }
