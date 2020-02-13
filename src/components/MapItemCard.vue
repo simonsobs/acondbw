@@ -19,20 +19,26 @@
           <div v-text="map.mapper"></div>
         </v-flex>
         <v-flex xs1 md1 align-self-end>
-          <v-layout justify-end>
-            <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on }">
-                <v-btn icon @click.stop="expanded ? $emit('collapse') : $emit('expand')" v-on="on">
-                  <v-icon>{{ expanded ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                </v-btn>
-              </template>
-              <span>{{ expanded ? 'Collapse' : 'Expand' }}</span>
-            </v-tooltip>
-          </v-layout>
+          <div v-if="collapsible">
+            <v-layout justify-end>
+              <v-tooltip bottom open-delay="800">
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    icon
+                    @click.stop="expanded ? $emit('collapse') : $emit('expand')"
+                    v-on="on"
+                  >
+                    <v-icon>{{ expanded ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ expanded ? 'Collapse' : 'Expand' }}</span>
+              </v-tooltip>
+            </v-layout>
+          </div>
         </v-flex>
       </v-layout>
       <v-expand-transition>
-        <v-layout row wrap class="mx-0 mb-3 px-3" v-show="expanded">
+        <v-layout row wrap class="mx-0 mb-3 px-3" v-show="!collapsible || expanded">
           <v-flex xs12 md8 offset-md-4>
             <div class="caption grey--text">Paths</div>
             <ul>
@@ -71,6 +77,10 @@
 <script>
 export default {
   name: "mapItemCard",
-  props: ["map", "expanded"]
+  props: {
+    map: { default: {} },
+    expanded: { default: true },
+    collapsible: { default: false }
+  }
 };
 </script>
