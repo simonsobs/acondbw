@@ -41,7 +41,7 @@
         <v-layout row wrap class="mx-0 mb-3 px-3" v-show="!(collapsible && collapsed)">
           <v-flex xs12 md8 offset-md-4>
             <div class="caption grey--text">Paths</div>
-            <ul>
+            <ul v-if="map.mapFilePaths">
               <li
                 v-for="(edgep, index) in map.mapFilePaths.edges"
                 :key="index"
@@ -52,7 +52,7 @@
           <v-flex xs12 md8 offset-md-4>
             <div class="caption grey--text">Note</div>
             <div>
-              <ul>
+              <ul v-if="map.note">
                 <li
                   v-for="(line, index) in map.note.split('\n')"
                   :key="index"
@@ -62,7 +62,7 @@
           </v-flex>
           <v-flex xs12 md8 offset-md-4>
             <div class="caption grey--text">Beams</div>
-            <ul>
+            <ul v-if="map.beams">
               <li v-for="(edgep, index) in map.beams.edges" :key="index">
                 <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
               </li>
