@@ -28,7 +28,7 @@
                     @click.stop="collapsed ? $emit('expand') : $emit('collapse')"
                     v-on="on"
                   >
-                    <v-icon>{{ collapsed ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                    <v-icon>{{ collapsed ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
                   </v-btn>
                 </template>
                 <span>{{ collapsed ? 'Expand' : 'Collapse' }}</span>
