@@ -17,7 +17,7 @@
         :key="edge.node.id"
         :map="edge.node"
         collapsible="true"
-        :expanded="isCardExpanded[edge.node.id]"
+        :collapsed="!isCardExpanded[edge.node.id]"
         v-on:expand="isCardExpanded[edge.node.id] = true"
         v-on:collapse="isCardExpanded[edge.node.id] = false"
       ></MapItemCard>

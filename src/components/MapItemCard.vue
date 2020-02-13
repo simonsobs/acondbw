@@ -25,20 +25,20 @@
                 <template v-slot:activator="{ on }">
                   <v-btn
                     icon
-                    @click.stop="expanded ? $emit('collapse') : $emit('expand')"
+                    @click.stop="collapsed ? $emit('expand') : $emit('collapse')"
                     v-on="on"
                   >
-                    <v-icon>{{ expanded ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                    <v-icon>{{ collapsed ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                   </v-btn>
                 </template>
-                <span>{{ expanded ? 'Collapse' : 'Expand' }}</span>
+                <span>{{ collapsed ? 'Expand' : 'Collapse' }}</span>
               </v-tooltip>
             </v-layout>
           </div>
         </v-flex>
       </v-layout>
       <v-expand-transition>
-        <v-layout row wrap class="mx-0 mb-3 px-3" v-show="!collapsible || expanded">
+        <v-layout row wrap class="mx-0 mb-3 px-3" v-show="!(collapsible && collapsed)">
           <v-flex xs12 md8 offset-md-4>
             <div class="caption grey--text">Paths</div>
             <ul>
@@ -79,7 +79,7 @@ export default {
   name: "mapItemCard",
   props: {
     map: { default: {} },
-    expanded: { default: true },
+    collapsed: { default: false },
     collapsible: { default: false }
   }
 };
