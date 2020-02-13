@@ -17,7 +17,7 @@
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon to="/about" v-on="on">
-            <v-icon>mdi-information</v-icon>
+        <v-icon>mdi-information</v-icon>
       </v-btn>
       <v-tooltip left open-delay="800">
         <template v-slot:activator="{ on }">
@@ -44,8 +44,8 @@ export default {
   data: () => ({
     title: process.env.VUE_APP_TOOLBAR_TITLE,
     pages: [
-      {name: "Maps", path: "/maps", icon: "mdi-map"},
-      {name: "Beams", path: "/beams", icon: "mdi-spotlight-beam"}
+      { name: "Maps", path: "/maps", icon: "mdi-map" },
+      { name: "Beams", path: "/beams", icon: "mdi-spotlight-beam" }
     ],
     drawer: null
   }),
