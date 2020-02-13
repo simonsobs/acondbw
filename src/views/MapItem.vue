@@ -5,7 +5,7 @@
       <p v-text="$route.params.name"></p>
       <MapItemCard
         :map="item"
-        collapsible="false"
+        :collapsible="false"
       ></MapItemCard>
     </v-container>
   </div>
