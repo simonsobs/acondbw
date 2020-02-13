@@ -44,7 +44,6 @@ export default {
   data: () => ({
     title: process.env.VUE_APP_TOOLBAR_TITLE,
     pages: [
-      {name: "Home", path: "/", icon: "mdi-home"},
       {name: "Maps", path: "/maps", icon: "mdi-map"},
       {name: "Beams", path: "/beams", icon: "mdi-spotlight-beam"}
     ],
