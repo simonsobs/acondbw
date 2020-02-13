@@ -5,11 +5,11 @@
       <div class="d-flex justify-end ma-2">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
-            <v-btn icon @click="isAnyCardExpanded = !isAnyCardExpanded" v-on="on">
-              <v-icon>{{ isAnyCardExpanded ? 'mdi-unfold-less-horizontal' : 'mdi-unfold-more-horizontal' }}</v-icon>
+            <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
+              <v-icon>{{ areAllCardsCollapsed ? 'mdi-unfold-more-horizontal' : 'mdi-unfold-less-horizontal' }}</v-icon>
             </v-btn>
           </template>
-          <span>{{ isAnyCardExpanded ? 'Collapse all' : 'Expand all' }}</span>
+          <span>{{ areAllCardsCollapsed ? 'Expand all' : 'Collapse all' }}</span>
         </v-tooltip>
       </div>
       <MapItemCard
@@ -17,9 +17,9 @@
         :key="edge.node.id"
         :map="edge.node"
         collapsible="true"
-        :collapsed="!isCardExpanded[edge.node.id]"
-        v-on:expand="isCardExpanded[edge.node.id] = true"
-        v-on:collapse="isCardExpanded[edge.node.id] = false"
+        :collapsed="isCardCollapsed[edge.node.id]"
+        v-on:expand="isCardCollapsed[edge.node.id] = false"
+        v-on:collapse="isCardCollapsed[edge.node.id] = true"
       ></MapItemCard>
     </v-container>
   </div>
@@ -38,17 +38,17 @@ export default {
   data() {
     return {
       edges: [],
-      isCardExpanded: {}
+      isCardCollapsed: {}
     };
   },
   computed: {
-    isAnyCardExpanded: {
+    areAllCardsCollapsed: {
       get: function() {
-        return Object.keys(this.isCardExpanded).some(i => this.isCardExpanded[i]);
+        return Object.keys(this.isCardCollapsed).every(i => this.isCardCollapsed[i]);
       },
       set: function(v) {
-        for (const k in this.isCardExpanded) {
-          this.isCardExpanded[k] = v;
+        for (const k in this.isCardCollapsed) {
+          this.isCardCollapsed[k] = v;
         }
       }
     }
@@ -95,8 +95,8 @@ export default {
         }
       }).then(response => {
         this.edges = response.data.data.allMaps.edges;
-        this.isCardExpanded = this.edges.reduce(
-          (obj, x) => ({ ...obj, [x.node.id]: false }),
+        this.isCardCollapsed = this.edges.reduce(
+          (obj, x) => ({ ...obj, [x.node.id]: true }),
           {}
         );
       });
