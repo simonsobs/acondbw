@@ -19,14 +19,25 @@
       <v-btn icon to="/about">
         <v-icon>mdi-information</v-icon>
       </v-btn>
-      <v-tooltip left open-delay="800">
+
+      <v-menu left bottom offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn icon @click="$vuetify.theme.dark = !$vuetify.theme.dark" v-on="on">
-            <v-icon>mdi-invert-colors</v-icon>
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-        <span>Toggle dark mode</span>
-      </v-tooltip>
+
+        <v-list>
+          <v-list-item @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+            <v-list-item-icon>
+              <v-icon>mdi-invert-colors</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Toggle dark mode</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-content>
       <transition name="fade" mode="out-in">
