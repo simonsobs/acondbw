@@ -12,44 +12,15 @@
           <span>{{ areAllCardsCollapsed ? 'Expand all' : 'Collapse all' }}</span>
         </v-tooltip>
       </div>
-      <v-card outlined hover v-for="edge in edges" :key="edge.node.id" style="cursor: default;">
-        <div @click="isCardCollapsed[edge.node.id] = !isCardCollapsed[edge.node.id]">
-          <v-layout row wrap class="ma-0 px-3">
-            <v-flex xs12 md3>
-              <div class="caption grey--text">Name</div>
-              <div class="font-weight-medium primary--text" v-text="edge.node.name"></div>
-            </v-flex>
-            <v-flex xs11 md8>
-              <div class="caption grey--text">Path</div>
-              <div v-text="edge.node.path"></div>
-            </v-flex>
-            <v-flex xs1 md1 align-self-end>
-              <v-layout justify-end>
-                <v-tooltip bottom open-delay="800">
-                  <template v-slot:activator="{ on }">
-                    <v-btn icon v-on="on">
-                      <v-icon>{{ isCardCollapsed[edge.node.id] ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>{{ isCardCollapsed[edge.node.id] ? 'Expand' : 'Collapse' }}</span>
-                </v-tooltip>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-          <v-expand-transition>
-            <v-layout row wrap class="mx-0 my-3 px-3" v-show="!isCardCollapsed[edge.node.id]">
-              <v-flex xs12 md4 offset-md-3>
-                <div class="caption grey--text">Map</div>
-                <div v-if="edge.node.map" v-text="edge.node.map.name"></div>
-              </v-flex>
-              <v-flex xs12 md4>
-                <div class="caption grey--text">Parent Beam</div>
-                <div v-if="edge.node.parentBeam" v-text="edge.node.parentBeam.name"></div>
-              </v-flex>
-            </v-layout>
-          </v-expand-transition>
-        </div>
-      </v-card>
+      <BeamItemCard
+        v-for="edge in edges"
+        :key="edge.node.id"
+        :beam="edge.node"
+        collapsible="true"
+        :collapsed="isCardCollapsed[edge.node.id]"
+        v-on:expand="isCardCollapsed[edge.node.id] = false"
+        v-on:collapse="isCardCollapsed[edge.node.id] = true"
+      ></BeamItemCard>
     </v-container>
   </div>
 </template>
@@ -57,8 +28,13 @@
 <script>
 import axios from "axios";
 
+import BeamItemCard from "@/components/BeamItemCard";
+
 export default {
   name: "beams",
+  components: {
+    BeamItemCard
+  },
   data() {
     return {
       edges: [],
