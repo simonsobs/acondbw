@@ -16,7 +16,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon to="/about" v-on="on">
+      <v-btn icon to="/about">
         <v-icon>mdi-information</v-icon>
       </v-btn>
       <v-tooltip left open-delay="800">
