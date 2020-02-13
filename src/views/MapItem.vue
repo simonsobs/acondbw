@@ -89,7 +89,7 @@ export default {
           }
         }
       `;
-      const variables = { name: this.$route.params.name }
+      const variables = { name: this.$route.params.name };
       axios({
         url: url,
         method: "POST",
