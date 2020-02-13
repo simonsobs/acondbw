@@ -32,9 +32,16 @@
               <div v-text="edge.node.mapper"></div>
             </v-flex>
             <v-flex xs1 md1 align-self-end>
-              <v-btn icon @click.stop="shows[edge.node.id] = !shows[edge.node.id]">
-                <v-icon>{{ shows[edge.node.id] ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-              </v-btn>
+              <v-layout justify-end>
+                <v-tooltip bottom open-delay="800">
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon @click.stop="shows[edge.node.id] = !shows[edge.node.id]" v-on="on">
+                      <v-icon>{{ shows[edge.node.id] ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>{{ shows[edge.node.id] ? 'Collapse' : 'Expand' }}</span>
+                </v-tooltip>
+              </v-layout>
             </v-flex>
           </v-layout>
           <v-expand-transition>
@@ -63,10 +70,7 @@
               <v-flex xs12 md8 offset-md-4>
                 <div class="caption grey--text">Beams</div>
                 <ul>
-                  <li
-                    v-for="(edgep, index) in edge.node.beams.edges"
-                    :key="index"
-                  >
+                  <li v-for="(edgep, index) in edge.node.beams.edges" :key="index">
                     <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
                   </li>
                 </ul>
