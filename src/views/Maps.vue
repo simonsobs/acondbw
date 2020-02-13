@@ -12,73 +12,13 @@
           <span>{{ showsAny ? 'Collapse all' : 'Expand all' }}</span>
         </v-tooltip>
       </div>
-      <v-card outlined hover v-for="edge in edges" :key="edge.node.id">
-        <div @click="shows[edge.node.id] = true" style="cursor: default;">
-          <v-layout row wrap class="ma-0 px-3">
-            <v-flex xs12 md4>
-              <div class="caption grey--text">Name</div>
-              <div class="font-weight-medium primary--text">
-                <span @click.stop>
-                  <router-link :to="'/maps/item/' + edge.node.name" v-text="edge.node.name"></router-link>
-                </span>
-              </div>
-            </v-flex>
-            <v-flex xs6 md4>
-              <div class="caption grey--text">Date posted</div>
-              <div v-text="edge.node.datePosted"></div>
-            </v-flex>
-            <v-flex xs5 md3>
-              <div class="caption grey--text">Mapper</div>
-              <div v-text="edge.node.mapper"></div>
-            </v-flex>
-            <v-flex xs1 md1 align-self-end>
-              <v-layout justify-end>
-                <v-tooltip bottom open-delay="800">
-                  <template v-slot:activator="{ on }">
-                    <v-btn icon @click.stop="shows[edge.node.id] = !shows[edge.node.id]" v-on="on">
-                      <v-icon>{{ shows[edge.node.id] ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>{{ shows[edge.node.id] ? 'Collapse' : 'Expand' }}</span>
-                </v-tooltip>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-          <v-expand-transition>
-            <v-layout row wrap class="mx-0 mb-3 px-3" v-show="shows[edge.node.id]">
-              <v-flex xs12 md8 offset-md-4>
-                <div class="caption grey--text">Paths</div>
-                <ul>
-                  <li
-                    v-for="(edgep, index) in edge.node.mapFilePaths.edges"
-                    :key="index"
-                    v-text="edgep.node.path"
-                  ></li>
-                </ul>
-              </v-flex>
-              <v-flex xs12 md8 offset-md-4>
-                <div class="caption grey--text">Note</div>
-                <div>
-                  <ul>
-                    <li
-                      v-for="(line, index) in edge.node.note.split('\n')"
-                      :key="index"
-                    >{{ line.replace(/^- */, "") }}</li>
-                  </ul>
-                </div>
-              </v-flex>
-              <v-flex xs12 md8 offset-md-4>
-                <div class="caption grey--text">Beams</div>
-                <ul>
-                  <li v-for="(edgep, index) in edge.node.beams.edges" :key="index">
-                    <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
-                  </li>
-                </ul>
-              </v-flex>
-            </v-layout>
-          </v-expand-transition>
-        </div>
-      </v-card>
+      <MapItemCard
+        v-for="edge in edges"
+        :key="edge.node.id"
+        :map="edge.node"
+        :show="shows[edge.node.id]"
+        v-on:set-show="v => shows[edge.node.id] = v"
+      ></MapItemCard>
     </v-container>
   </div>
 </template>
@@ -86,8 +26,13 @@
 <script>
 import axios from "axios";
 
+import MapItemCard from "@/components/MapItemCard";
+
 export default {
   name: "maps",
+  components: {
+    MapItemCard
+  },
   data() {
     return {
       edges: [],
