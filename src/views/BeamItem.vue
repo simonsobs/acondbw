@@ -12,10 +12,7 @@
           <span>Back to Beams</span>
         </v-tooltip>
       </div>
-      <BeamItemCard
-        :beam="item"
-        :collapsible="false"
-      ></BeamItemCard>
+      <BeamItemCard :beam="item" :collapsible="false"></BeamItemCard>
     </v-container>
   </div>
 </template>
@@ -62,7 +59,7 @@ export default {
           }
         }
       `;
-      const variables = { name: this.$route.params.name }
+      const variables = { name: this.$route.params.name };
       axios({
         url: url,
         method: "POST",
