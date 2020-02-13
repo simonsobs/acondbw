@@ -50,7 +50,7 @@
 import axios from "axios";
 
 export default {
-  name: "maps",
+  name: "mapItem",
   data() {
     return {
       item: {}
