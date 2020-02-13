@@ -12,10 +12,7 @@
           <span>Back to Maps</span>
         </v-tooltip>
       </div>
-      <MapItemCard
-        :map="item"
-        :collapsible="false"
-      ></MapItemCard>
+      <MapItemCard :map="item" :collapsible="false"></MapItemCard>
     </v-container>
   </div>
 </template>
