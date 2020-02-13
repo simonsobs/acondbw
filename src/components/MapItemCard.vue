@@ -1,6 +1,6 @@
 <template>
   <v-card outlined hover>
-    <div @click="$emit('set-show', true)" style="cursor: default;">
+    <div @click="$emit('expand')" style="cursor: default;">
       <v-layout row wrap class="ma-0 px-3">
         <v-flex xs12 md4>
           <div class="caption grey--text">Name</div>
@@ -22,17 +22,17 @@
           <v-layout justify-end>
             <v-tooltip bottom open-delay="800">
               <template v-slot:activator="{ on }">
-                <v-btn icon @click.stop="$emit('set-show', !show)" v-on="on">
-                  <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                <v-btn icon @click.stop="expanded ? $emit('collapse') : $emit('expand')" v-on="on">
+                  <v-icon>{{ expanded ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                 </v-btn>
               </template>
-              <span>{{ show ? 'Collapse' : 'Expand' }}</span>
+              <span>{{ expanded ? 'Collapse' : 'Expand' }}</span>
             </v-tooltip>
           </v-layout>
         </v-flex>
       </v-layout>
       <v-expand-transition>
-        <v-layout row wrap class="mx-0 mb-3 px-3" v-show="show">
+        <v-layout row wrap class="mx-0 mb-3 px-3" v-show="expanded">
           <v-flex xs12 md8 offset-md-4>
             <div class="caption grey--text">Paths</div>
             <ul>
@@ -71,6 +71,6 @@
 <script>
 export default {
   name: "mapItemCard",
-  props: ["map", "show"]
+  props: ["map", "expanded"]
 };
 </script>

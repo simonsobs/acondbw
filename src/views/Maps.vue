@@ -5,19 +5,20 @@
       <div class="d-flex justify-end ma-2">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
-            <v-btn icon @click="showsAny = !showsAny" v-on="on">
-              <v-icon>{{ showsAny ? 'mdi-unfold-less-horizontal' : 'mdi-unfold-more-horizontal' }}</v-icon>
+            <v-btn icon @click="isAnyCardExpanded = !isAnyCardExpanded" v-on="on">
+              <v-icon>{{ isAnyCardExpanded ? 'mdi-unfold-less-horizontal' : 'mdi-unfold-more-horizontal' }}</v-icon>
             </v-btn>
           </template>
-          <span>{{ showsAny ? 'Collapse all' : 'Expand all' }}</span>
+          <span>{{ isAnyCardExpanded ? 'Collapse all' : 'Expand all' }}</span>
         </v-tooltip>
       </div>
       <MapItemCard
         v-for="edge in edges"
         :key="edge.node.id"
         :map="edge.node"
-        :show="shows[edge.node.id]"
-        v-on:set-show="v => shows[edge.node.id] = v"
+        :expanded="isCardExpanded[edge.node.id]"
+        v-on:expand="isCardExpanded[edge.node.id] = true"
+        v-on:collapse="isCardExpanded[edge.node.id] = false"
       ></MapItemCard>
     </v-container>
   </div>
@@ -36,17 +37,17 @@ export default {
   data() {
     return {
       edges: [],
-      shows: {}
+      isCardExpanded: {}
     };
   },
   computed: {
-    showsAny: {
+    isAnyCardExpanded: {
       get: function() {
-        return Object.keys(this.shows).some(i => this.shows[i]);
+        return Object.keys(this.isCardExpanded).some(i => this.isCardExpanded[i]);
       },
       set: function(v) {
-        for (const k in this.shows) {
-          this.shows[k] = v;
+        for (const k in this.isCardExpanded) {
+          this.isCardExpanded[k] = v;
         }
       }
     }
@@ -93,7 +94,7 @@ export default {
         }
       }).then(response => {
         this.edges = response.data.data.allMaps.edges;
-        this.shows = this.edges.reduce(
+        this.isCardExpanded = this.edges.reduce(
           (obj, x) => ({ ...obj, [x.node.id]: false }),
           {}
         );
