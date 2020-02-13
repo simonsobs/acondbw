@@ -35,6 +35,12 @@ export default {
       item: {}
     };
   },
+  watch: {
+    $route(to, from) {
+      this.item = {};
+      this.loadData();
+    }
+  },
   created: function() {
     this.loadData();
   },
