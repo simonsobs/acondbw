@@ -1,5 +1,5 @@
 <template>
-  <v-row class="ma-2" justify="left">
+  <v-row class="ma-2" justify="start">
     <v-dialog v-model="dialog" persistent max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn color="primary" v-on="on">Add</v-btn>
