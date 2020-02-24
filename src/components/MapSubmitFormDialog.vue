@@ -8,8 +8,8 @@
         <v-card-title class="headline">Add a map</v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field label="Name"></v-text-field>
-            <v-text-field label="Mapper"></v-text-field>
+            <v-text-field label="Name" v-model="name" required></v-text-field>
+            <v-text-field label="Mapper" v-model="mapper"></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -27,7 +27,9 @@ export default {
   name: "mapSubmitFormDialog",
   data() {
     return {
-      dialog: false
+      dialog: false,
+      name: "",
+      mapper: ""
     };
   }
 };
