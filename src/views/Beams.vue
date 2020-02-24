@@ -5,11 +5,21 @@
       <div class="d-flex justify-end ma-2">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
-            <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
-              <v-icon>{{ areAllCardsCollapsed ? 'mdi-unfold-more-horizontal' : 'mdi-unfold-less-horizontal' }}</v-icon>
+            <v-btn
+              icon
+              @click="areAllCardsCollapsed = !areAllCardsCollapsed"
+              v-on="on"
+            >
+              <v-icon>{{
+                areAllCardsCollapsed
+                  ? "mdi-unfold-more-horizontal"
+                  : "mdi-unfold-less-horizontal"
+              }}</v-icon>
             </v-btn>
           </template>
-          <span>{{ areAllCardsCollapsed ? 'Expand all' : 'Collapse all' }}</span>
+          <span>{{
+            areAllCardsCollapsed ? "Expand all" : "Collapse all"
+          }}</span>
         </v-tooltip>
       </div>
       <BeamItemCard

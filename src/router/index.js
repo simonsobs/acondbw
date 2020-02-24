@@ -22,7 +22,8 @@ const routes = [
   {
     path: "/maps/item/:name",
     name: "MapItem",
-    component: () => import(/* webpackChunkName: "mapItem" */ "../views/MapItem.vue")
+    component: () =>
+      import(/* webpackChunkName: "mapItem" */ "../views/MapItem.vue")
   },
   {
     path: "/maps",
@@ -32,12 +33,14 @@ const routes = [
   {
     path: "/beams/item/:name",
     name: "BeamItem",
-    component: () => import(/* webpackChunkName: "beamItem" */ "../views/BeamItem.vue")
+    component: () =>
+      import(/* webpackChunkName: "beamItem" */ "../views/BeamItem.vue")
   },
   {
     path: "/beams",
     name: "beam",
-    component: () => import(/* webpackChunkName: "beams" */ "../views/Beams.vue")
+    component: () =>
+      import(/* webpackChunkName: "beams" */ "../views/Beams.vue")
   }
 ];
 
