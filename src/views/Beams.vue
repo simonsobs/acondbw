@@ -1,6 +1,6 @@
 <template>
   <div class="maps">
-    <v-container class>
+    <v-container fluid>
       <h2>Beams</h2>
       <div class="d-flex justify-end ma-2">
         <v-tooltip bottom open-delay="800">

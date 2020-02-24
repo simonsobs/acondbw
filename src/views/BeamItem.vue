@@ -1,6 +1,6 @@
 <template>
   <div class="beamitem">
-    <v-container>
+    <v-container fluid>
       <h2>Beam</h2>
       <div class="d-flex justify-start my-2">
         <v-tooltip bottom open-delay="800">
