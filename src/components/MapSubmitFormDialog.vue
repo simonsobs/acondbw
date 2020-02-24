@@ -8,8 +8,21 @@
         <v-card-title class="headline">Add a map</v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field label="Name" v-model="name" required></v-text-field>
-            <v-text-field label="Mapper" v-model="mapper"></v-text-field>
+            <v-text-field label="Name of map" v-model="name" required prepend-icon="map"></v-text-field>
+            <v-menu
+              v-model="menu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field v-model="datePosted" label="Date posted" prepend-icon="event" v-on="on"></v-text-field>
+              </template>
+              <v-date-picker v-model="datePosted" no-title scrollable @input="menu = false"></v-date-picker>
+            </v-menu>
+            <v-text-field label="Mapper" v-model="mapper" prepend-icon="person"></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -29,6 +42,8 @@ export default {
     return {
       dialog: false,
       name: "",
+      datePosted: new Date().toISOString().substr(0, 10),
+      menu: false,
       mapper: ""
     };
   }
