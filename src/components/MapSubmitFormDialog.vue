@@ -8,9 +8,9 @@
         <v-card-title class="headline">Add a map</v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field label="Name of map" v-model="name" required prepend-icon="map"></v-text-field>
+            <v-text-field label="Name of map" v-model="form.name" required prepend-icon="map"></v-text-field>
             <v-menu
-              v-model="menu"
+              v-model="menuDatePosteDdatePicker"
               :close-on-content-click="false"
               :nudge-right="40"
               transition="scale-transition"
@@ -19,24 +19,26 @@
             >
               <template v-slot:activator="{ on }">
                 <v-text-field
-                  v-model="datePosted"
+                  v-model="form.datePosted"
                   label="Date posted"
                   prepend-icon="event"
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="datePosted" no-title scrollable @input="menu = false"></v-date-picker>
+              <v-date-picker v-model="form.datePosted" no-title scrollable @input="menuDatePosteDdatePicker = false"></v-date-picker>
             </v-menu>
-            <v-text-field label="Mapper" v-model="mapper" prepend-icon="person"></v-text-field>
+            <v-text-field label="Mapper" v-model="form.mapper" prepend-icon="person"></v-text-field>
+            <!-- 
             <v-textarea
               label="Paths"
-              v-model="paths"
+              v-model="form.paths"
               hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
               prepend-icon="mdi-folder-multiple"
             ></v-textarea>
+            -->
             <v-textarea
               label="Note"
-              v-model="note"
+              v-model="form.note"
               hint="Itemized text. One iterm per line"
               prepend-icon="mdi-file-document-box-outline"
             ></v-textarea>
@@ -45,7 +47,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="secondary" text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="primary" @click="dialog = false">Add</v-btn>
+          <v-btn color="primary" @click="clickAdd()">Add</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -53,18 +55,56 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "mapSubmitFormDialog",
   data() {
     return {
       dialog: false,
-      name: "",
-      datePosted: new Date().toISOString().substr(0, 10),
-      menu: false,
-      mapper: "",
-      path: "",
-      note: ""
+      menuDatePosteDdatePicker: false,
+      form: {
+        name: "",
+        datePosted: new Date().toISOString().substr(0, 10),
+        mapper: "",
+        // paths: "",
+        note: ""
+      }
     };
+  },
+  methods: {
+    clickAdd() {
+      this.dialog = false;
+      this.addMap();
+    },
+    addMap() {
+      const url = process.env.VUE_APP_ACONDBS_URL;
+      const query = `
+        mutation m($input: CreateMapInput!) {
+          createMap(input: $input) {
+            ok
+            map {
+              mapId
+              name
+            }
+          }
+        }
+      `;
+      const variables = { input: this.form };
+      axios({
+        url: url,
+        method: "POST",
+        data: {
+          query: query,
+          variables: variables
+        }
+      }).then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
   }
 };
 </script>
