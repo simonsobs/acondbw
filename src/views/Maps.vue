@@ -2,6 +2,7 @@
   <div class="maps">
     <v-container fluid>
       <h2>Maps</h2>
+      <MapSubmitFormDialog></MapSubmitFormDialog>
       <div class="d-flex justify-end ma-2">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
@@ -39,11 +40,13 @@
 import axios from "axios";
 
 import MapItemCard from "@/components/MapItemCard";
+import MapSubmitFormDialog from "@/components/MapSubmitFormDialog";
 
 export default {
   name: "maps",
   components: {
-    MapItemCard
+    MapItemCard,
+    MapSubmitFormDialog
   },
   data() {
     return {
