@@ -26,7 +26,13 @@
         <v-icon>mdi-information</v-icon>
       </v-btn>
 
-      <v-menu left bottom offset-y open-on-hover :close-on-content-click="false">
+      <v-menu
+        left
+        bottom
+        offset-y
+        open-on-hover
+        :close-on-content-click="false"
+      >
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>

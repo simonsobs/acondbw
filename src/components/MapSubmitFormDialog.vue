@@ -8,7 +8,12 @@
         <v-card-title class="headline">Add a map</v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field label="Name of map" v-model="form.name" required prepend-icon="map"></v-text-field>
+            <v-text-field
+              label="Name of map"
+              v-model="form.name"
+              required
+              prepend-icon="map"
+            ></v-text-field>
             <v-menu
               v-model="menuDatePosteDdatePicker"
               :close-on-content-click="false"
@@ -25,9 +30,18 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="form.datePosted" no-title scrollable @input="menuDatePosteDdatePicker = false"></v-date-picker>
+              <v-date-picker
+                v-model="form.datePosted"
+                no-title
+                scrollable
+                @input="menuDatePosteDdatePicker = false"
+              ></v-date-picker>
             </v-menu>
-            <v-text-field label="Mapper" v-model="form.mapper" prepend-icon="person"></v-text-field>
+            <v-text-field
+              label="Mapper"
+              v-model="form.mapper"
+              prepend-icon="person"
+            ></v-text-field>
             <!-- 
             <v-textarea
               label="Paths"
@@ -98,12 +112,13 @@ export default {
           query: query,
           variables: variables
         }
-      }).then(response => {
-        console.log(response.data);
       })
-      .catch(error => {
-        console.log(error);
-      });
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
