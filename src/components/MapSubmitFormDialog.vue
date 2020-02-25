@@ -18,11 +18,28 @@
               min-width="290px"
             >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="datePosted" label="Date posted" prepend-icon="event" v-on="on"></v-text-field>
+                <v-text-field
+                  v-model="datePosted"
+                  label="Date posted"
+                  prepend-icon="event"
+                  v-on="on"
+                ></v-text-field>
               </template>
               <v-date-picker v-model="datePosted" no-title scrollable @input="menu = false"></v-date-picker>
             </v-menu>
             <v-text-field label="Mapper" v-model="mapper" prepend-icon="person"></v-text-field>
+            <v-textarea
+              label="Paths"
+              v-model="paths"
+              hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
+              prepend-icon="mdi-folder-multiple"
+            ></v-textarea>
+            <v-textarea
+              label="Note"
+              v-model="note"
+              hint="Itemized text. One iterm per line"
+              prepend-icon="mdi-file-document-box-outline"
+            ></v-textarea>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -44,7 +61,9 @@ export default {
       name: "",
       datePosted: new Date().toISOString().substr(0, 10),
       menu: false,
-      mapper: ""
+      mapper: "",
+      path: "",
+      note: ""
     };
   }
 };
