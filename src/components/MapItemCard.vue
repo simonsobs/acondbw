@@ -90,7 +90,7 @@
 
 <script>
 export default {
-  name: "mapItemCard",
+  name: "MapItemCard",
   props: {
     map: { default: {} },
     collapsed: { default: false },
