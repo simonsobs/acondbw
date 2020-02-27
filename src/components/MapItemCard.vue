@@ -92,7 +92,7 @@
 export default {
   name: "MapItemCard",
   props: {
-    map: { default: {} },
+    map: { default: () => {} },
     collapsed: { default: false },
     collapsible: { default: false }
   }
