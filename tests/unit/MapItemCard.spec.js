@@ -1,13 +1,10 @@
-
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify";
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { mount, createLocalVue } from "@vue/test-utils";
 
 import MapItemCard from "@/components/MapItemCard.vue";
-
-// The way to setup tests with Vuetify was described here
-// https://github.com/vuetifyjs/vuetify/issues/4068#issuecomment-586829171
+import router from "@/router";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -15,14 +12,10 @@ Vue.use(VueRouter);
 const localVue = createLocalVue();
 
 describe("MapItemCard.vue", () => {
-  let vuetify;
-  let wrapper;
-  beforeEach(() => {
-    vuetify = new Vuetify();
-
-    wrapper = shallowMount(MapItemCard, {
+  function createWrapper({ propsData } = {}) {
+    return mount(MapItemCard, {
       localVue,
-      vuetify,
+      router,
       propsData: {
         map: {
           name: "map123456",
@@ -31,12 +24,29 @@ describe("MapItemCard.vue", () => {
           mapFilePaths: { edges: [] },
           note: "",
           beams: { edges: [] }
-        }
+        },
+        ...propsData
       }
     });
+  }
+
+  it("match snapshot", () => {
+    const wrapper = createWrapper();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("example test", () => {
-    console.log(wrapper.text());
-  });
+  it.each([
+    [true, true],
+    [true, false],
+    [false, true],
+    [false, false]
+  ])(
+    "match snapshot - {collapsible: %p, collapsed: %p}",
+    (collapsible, collapsed) => {
+      const wrapper = createWrapper({
+        propsData: { collapsed: collapsed, collapsible: collapsible }
+      });
+      expect(wrapper.html()).toMatchSnapshot();
+    }
+  );
 });
