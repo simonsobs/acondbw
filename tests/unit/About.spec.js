@@ -14,13 +14,10 @@ Vue.use(VueRouter);
 const localVue = createLocalVue();
 
 describe("About.vue", () => {
-  let vuetify;
   let wrapper;
   beforeEach(() => {
-    vuetify = new Vuetify();
     wrapper = shallowMount(About, {
       localVue,
-      vuetify
     });
   });
 
