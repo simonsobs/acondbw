@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`About.vue match snapshot 1`] = `
-<v-container-stub tag="div" fluid="true" fill-height="">
-  <v-row-stub tag="div" align="center" justify="center">
+<div class="container container--fluid fill-height">
+  <div class="row align-center justify-center">
     <h1>This is an about page</h1>
-  </v-row-stub>
-</v-container-stub>
+  </div>
+</div>
 `;

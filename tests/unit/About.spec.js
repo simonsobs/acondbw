@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify";
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { mount, createLocalVue } from "@vue/test-utils";
 
 import About from "@/views/About.vue";
 
@@ -16,7 +16,7 @@ const localVue = createLocalVue();
 describe("About.vue", () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = shallowMount(About, {
+    wrapper = mount(About, {
       localVue,
     });
   });
