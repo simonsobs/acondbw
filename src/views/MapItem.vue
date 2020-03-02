@@ -42,7 +42,7 @@ export default {
     this.loadData();
   },
   methods: {
-    loadData() {
+    async loadData() {
       const url = process.env.VUE_APP_ACONDBS_URL;
       const query = `
         query Map($name: String) {
@@ -72,16 +72,16 @@ export default {
         }
       `;
       const variables = { name: this.$route.params.name };
-      axios({
+      const response = await axios({
         url: url,
         method: "POST",
         data: {
           query: query,
           variables: variables
         }
-      }).then(response => {
-        this.item = response.data.data.map;
       });
+
+      this.item = response.data.data.map;
     }
   }
 };
