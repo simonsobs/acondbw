@@ -17,7 +17,7 @@ describe("About.vue", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mount(About, {
-      localVue,
+      localVue
     });
   });
 

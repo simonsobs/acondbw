@@ -38,7 +38,7 @@ describe("MapItem.vue", () => {
   it("match snapshot", done => {
     const wrapper = createWrapper();
 
-    moxios.wait( async () => {
+    moxios.wait(async () => {
       let request = moxios.requests.mostRecent();
       expect(request.config.url).toBe(process.env.VUE_APP_ACONDBS_URL);
       expect(request.config.method).toBe("post");
@@ -79,7 +79,7 @@ describe("MapItem.vue", () => {
           }
         }
       });
-      expect(wrapper.find(MapItemCard).props().map.name).toBe('lat20200201')
+      expect(wrapper.find(MapItemCard).props().map.name).toBe("lat20200201");
       expect(wrapper.html()).toMatchSnapshot();
       done();
     });
