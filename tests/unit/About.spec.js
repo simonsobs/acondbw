@@ -5,28 +5,30 @@ import { mount, createLocalVue } from "@vue/test-utils";
 
 import About from "@/views/About.vue";
 
-// The way to setup tests with Vuetify was described here
-// https://github.com/vuetifyjs/vuetify/issues/4068#issuecomment-586829171
-
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
-const localVue = createLocalVue();
-
 describe("About.vue", () => {
+  let localVue;
   let wrapper;
+
   beforeEach(() => {
+    localVue = createLocalVue();
     wrapper = mount(About, {
       localVue
+    });
+    wrapper.setData({
+      version: "0.0.1.test"
     });
   });
 
   it("test text", () => {
-    expect(wrapper.text()).toBe("This is an about page");
-  });
-
-  it("test html", () => {
-    expect(wrapper.html()).toContain("<h1>This is an about page</h1>");
+    const text = wrapper
+      .text()
+      .trim()
+      .replace(/[\n\r]+/g, " ") // remove line breaks
+      .replace(/ +/g, " "); // remove multiple consecutive spaces
+    expect(text).toBe("This is an about page Server version: 0.0.1.test");
   });
 
   it("match snapshot", () => {
