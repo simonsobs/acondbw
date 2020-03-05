@@ -37,10 +37,10 @@
 </template>
 
 <script>
-import axios from "axios";
-
 import MapItemCard from "@/components/MapItemCard";
 import MapSubmitFormDialog from "@/components/MapSubmitFormDialog";
+
+import ALLMAPS from "@/graphql/AllMaps.gql";
 
 export default {
   name: "maps",
@@ -54,6 +54,18 @@ export default {
       isCardCollapsed: {}
     };
   },
+  apollo: {
+    edges: {
+      query: ALLMAPS,
+      update: data => data.allMaps.edges,
+      result() {
+        this.isCardCollapsed = this.edges.reduce(
+          (obj, x) => ({ ...obj, [x.node.id]: true }),
+          {}
+        );
+      }
+    },
+  },
   computed: {
     areAllCardsCollapsed: {
       get: function() {
@@ -66,55 +78,6 @@ export default {
           this.isCardCollapsed[k] = v;
         }
       }
-    }
-  },
-  created: function() {
-    this.loadData();
-  },
-  methods: {
-    async loadData() {
-      const url = process.env.VUE_APP_ACONDBS_URL;
-      const query = `
-        { allMaps(sort: DATE_POSTED_DESC) {
-          edges {
-            node {
-              id
-              name
-              datePosted
-              mapper
-              note
-              mapFilePaths {
-                edges {
-                  node {
-                    path
-                    note
-                  }
-                }
-              }
-              beams {
-                edges {
-                  node {
-                    name
-                  }
-                }
-              }
-            }
-          }
-        }}
-      `;
-      const response = await axios({
-        url: url,
-        method: "POST",
-        data: {
-          query: query
-        }
-      });
-
-      this.edges = response.data.data.allMaps.edges;
-      this.isCardCollapsed = this.edges.reduce(
-        (obj, x) => ({ ...obj, [x.node.id]: true }),
-        {}
-      );
     }
   }
 };
