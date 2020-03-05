@@ -9,29 +9,39 @@ import router from "@/router";
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
-const localVue = createLocalVue();
-
 describe("MapItemCard.vue", () => {
+  let localVue;
+
   function createWrapper({ propsData } = {}) {
-    return mount(MapItemCard, {
+    let wrapper = mount(MapItemCard, {
       localVue,
       router,
       propsData: {
-        map: {
-          name: "map123456",
-          datePosted: "2020-01-31",
-          mapper: "XYZ",
-          mapFilePaths: { edges: [] },
-          note: "",
-          beams: { edges: [] }
-        },
+        mapName: "map123456",
         ...propsData
       }
     });
+    wrapper.setData({
+      map: {
+        name: "map123456",
+        datePosted: "2020-01-31",
+        mapper: "XYZ",
+        mapFilePaths: { edges: [] },
+        note: "",
+        beams: { edges: [] }
+      },
+    });
+    return wrapper;
   }
 
-  it("match snapshot", () => {
+
+  beforeEach(function() {
+    localVue = createLocalVue();
+  });
+
+  it("match snapshot", async () => {
     const wrapper = createWrapper();
+    await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
@@ -42,10 +52,11 @@ describe("MapItemCard.vue", () => {
     [false, false]
   ])(
     "match snapshot - {collapsible: %p, collapsed: %p}",
-    (collapsible, collapsed) => {
+    async (collapsible, collapsed) => {
       const wrapper = createWrapper({
         propsData: { collapsed: collapsed, collapsible: collapsible }
       });
+      await Vue.nextTick();
       expect(wrapper.html()).toMatchSnapshot();
     }
   );

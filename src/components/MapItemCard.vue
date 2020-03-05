@@ -89,12 +89,30 @@
 </template>
 
 <script>
+import MAP from "@/graphql/Map.gql";
+
 export default {
   name: "MapItemCard",
   props: {
-    map: { default: () => {} },
+    mapName: { default: null },
     collapsed: { default: false },
     collapsible: { default: false }
+  },
+  data() {
+    return {
+      map: {}
+    };
+  },
+  apollo: {
+    map: {
+      query: MAP,
+      variables() {
+        return {
+          name: this.mapName
+        }
+      }
+    }
   }
+  
 };
 </script>
