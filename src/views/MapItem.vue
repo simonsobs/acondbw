@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Map from "@/graphql/Map.gql";
+import MAP from "@/graphql/Map.gql";
 
 import MapItemCard from "@/components/MapItemCard";
 
@@ -34,7 +34,7 @@ export default {
   },
   apollo: {
     item: {
-      query: Map,
+      query: MAP,
       update: data => data.map,
       variables() {
         return {
