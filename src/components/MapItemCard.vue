@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined hover>
+  <v-card outlined hover v-if="map">
     <div @click="$emit('expand')" style="cursor: default;">
       <v-layout row wrap class="ma-0 px-3">
         <v-flex xs12 md4>
@@ -100,7 +100,7 @@ export default {
   },
   data() {
     return {
-      map: {}
+      map: null
     };
   },
   apollo: {
