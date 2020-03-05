@@ -6,27 +6,27 @@
       <div class="d-flex justify-end ma-2">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
-            <v-btn
-              icon
-              @click="areAllCardsCollapsed = !areAllCardsCollapsed"
-              v-on="on"
-            >
-              <v-icon>{{
+            <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
+              <v-icon>
+                {{
                 areAllCardsCollapsed
-                  ? "mdi-unfold-more-horizontal"
-                  : "mdi-unfold-less-horizontal"
-              }}</v-icon>
+                ? "mdi-unfold-more-horizontal"
+                : "mdi-unfold-less-horizontal"
+                }}
+              </v-icon>
             </v-btn>
           </template>
-          <span>{{
+          <span>
+            {{
             areAllCardsCollapsed ? "Expand all" : "Collapse all"
-          }}</span>
+            }}
+          </span>
         </v-tooltip>
       </div>
       <MapItemCard
         v-for="edge in edges"
         :key="edge.node.id"
-        :map="edge.node"
+        :mapName="edge.node.name"
         collapsible="true"
         :collapsed="isCardCollapsed[edge.node.id]"
         v-on:expand="isCardCollapsed[edge.node.id] = false"
@@ -37,10 +37,23 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
+
 import MapItemCard from "@/components/MapItemCard";
 import MapSubmitFormDialog from "@/components/MapSubmitFormDialog";
 
-import ALLMAPS from "@/graphql/AllMaps.gql";
+const GqlAllMaps = gql`
+  query AllMaps {
+    allMaps(sort: DATE_POSTED_DESC) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
 
 export default {
   name: "maps",
@@ -56,7 +69,7 @@ export default {
   },
   apollo: {
     edges: {
-      query: ALLMAPS,
+      query: GqlAllMaps,
       update: data => data.allMaps.edges,
       result() {
         this.isCardCollapsed = this.edges.reduce(
@@ -64,7 +77,7 @@ export default {
           {}
         );
       }
-    },
+    }
   },
   computed: {
     areAllCardsCollapsed: {
