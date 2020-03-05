@@ -33,7 +33,10 @@ describe("MapItem.vue", () => {
     const wrapper = createWrapper();
 
     wrapper.setData({
-      mapName: "lat20200201"
+      map: {
+        mapId: "1013",
+        name: "lat20200201",
+      }
     });
     await Vue.nextTick();
     expect(wrapper.find(MapItemCard).props().mapName).toBe("lat20200201");

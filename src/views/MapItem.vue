@@ -12,7 +12,7 @@
           <span>Back to Maps</span>
         </v-tooltip>
       </div>
-      <MapItemCard :mapName="mapName" :collapsible="false"></MapItemCard>
+      <MapItemCard :mapName="map.name" :collapsible="false" v-if="map"></MapItemCard>
     </v-container>
   </div>
 </template>
@@ -38,17 +38,16 @@ export default {
   },
   data() {
     return {
-      mapName: null
+      map: null
     };
   },
   apollo: {
-    mapName: {
+    map: {
       query: GqlMapName,
-      update: data => data.map.name,
       variables() {
         return {
           name: this.$route.params.name
-        };
+        }
       }
     }
   }
