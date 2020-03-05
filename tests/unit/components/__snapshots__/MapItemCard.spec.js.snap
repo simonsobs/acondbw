@@ -6,15 +6,15 @@ exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: false}
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
         <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/map123456" class="">map123456</a></span></div>
+        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
       </div>
       <div class="flex xs6 md4">
         <div class="caption grey--text">Date posted</div>
-        <div>2020-01-31</div>
+        <div>2020-02-01</div>
       </div>
       <div class="flex xs5 md3">
         <div class="caption grey--text">Mapper</div>
-        <div>XYZ</div>
+        <div>pwg-pmn</div>
       </div>
       <div class="flex xs1 md1 align-self-end">
         <!---->
@@ -23,17 +23,28 @@ exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: false}
     <div class="layout mx-0 mb-3 px-3 row wrap">
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Paths</div>
-        <ul></ul>
+        <ul>
+          <li>nersc:/go/to/my/maps_v3</li>
+        </ul>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Note</div>
         <div>
-          <!---->
+          <ul>
+            <li>
+              This is a dummy test with a lat map
+            </li>
+            <li>
+              A beam depends on this map
+            </li>
+          </ul>
         </div>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Beams</div>
-        <ul></ul>
+        <ul>
+          <li><a href="/beams/item/20200207" class="">20200207</a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -46,15 +57,15 @@ exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: true} 
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
         <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/map123456" class="">map123456</a></span></div>
+        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
       </div>
       <div class="flex xs6 md4">
         <div class="caption grey--text">Date posted</div>
-        <div>2020-01-31</div>
+        <div>2020-02-01</div>
       </div>
       <div class="flex xs5 md3">
         <div class="caption grey--text">Mapper</div>
-        <div>XYZ</div>
+        <div>pwg-pmn</div>
       </div>
       <div class="flex xs1 md1 align-self-end">
         <!---->
@@ -63,17 +74,28 @@ exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: true} 
     <div class="layout mx-0 mb-3 px-3 row wrap">
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Paths</div>
-        <ul></ul>
+        <ul>
+          <li>nersc:/go/to/my/maps_v3</li>
+        </ul>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Note</div>
         <div>
-          <!---->
+          <ul>
+            <li>
+              This is a dummy test with a lat map
+            </li>
+            <li>
+              A beam depends on this map
+            </li>
+          </ul>
         </div>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Beams</div>
-        <ul></ul>
+        <ul>
+          <li><a href="/beams/item/20200207" class="">20200207</a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -86,15 +108,15 @@ exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: false} 
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
         <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/map123456" class="">map123456</a></span></div>
+        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
       </div>
       <div class="flex xs6 md4">
         <div class="caption grey--text">Date posted</div>
-        <div>2020-01-31</div>
+        <div>2020-02-01</div>
       </div>
       <div class="flex xs5 md3">
         <div class="caption grey--text">Mapper</div>
-        <div>XYZ</div>
+        <div>pwg-pmn</div>
       </div>
       <div class="flex xs1 md1 align-self-end">
         <div>
@@ -105,17 +127,28 @@ exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: false} 
     <div class="layout mx-0 mb-3 px-3 row wrap">
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Paths</div>
-        <ul></ul>
+        <ul>
+          <li>nersc:/go/to/my/maps_v3</li>
+        </ul>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Note</div>
         <div>
-          <!---->
+          <ul>
+            <li>
+              This is a dummy test with a lat map
+            </li>
+            <li>
+              A beam depends on this map
+            </li>
+          </ul>
         </div>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Beams</div>
-        <ul></ul>
+        <ul>
+          <li><a href="/beams/item/20200207" class="">20200207</a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -128,15 +161,15 @@ exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: true} 1
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
         <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/map123456" class="">map123456</a></span></div>
+        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
       </div>
       <div class="flex xs6 md4">
         <div class="caption grey--text">Date posted</div>
-        <div>2020-01-31</div>
+        <div>2020-02-01</div>
       </div>
       <div class="flex xs5 md3">
         <div class="caption grey--text">Mapper</div>
-        <div>XYZ</div>
+        <div>pwg-pmn</div>
       </div>
       <div class="flex xs1 md1 align-self-end">
         <div>
@@ -147,17 +180,28 @@ exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: true} 1
     <div class="layout mx-0 mb-3 px-3 row wrap" style="display: none;">
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Paths</div>
-        <ul></ul>
+        <ul>
+          <li>nersc:/go/to/my/maps_v3</li>
+        </ul>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Note</div>
         <div>
-          <!---->
+          <ul>
+            <li>
+              This is a dummy test with a lat map
+            </li>
+            <li>
+              A beam depends on this map
+            </li>
+          </ul>
         </div>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Beams</div>
-        <ul></ul>
+        <ul>
+          <li><a href="/beams/item/20200207" class="">20200207</a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -170,15 +214,15 @@ exports[`MapItemCard.vue match snapshot 1`] = `
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
         <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/map123456" class="">map123456</a></span></div>
+        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
       </div>
       <div class="flex xs6 md4">
         <div class="caption grey--text">Date posted</div>
-        <div>2020-01-31</div>
+        <div>2020-02-01</div>
       </div>
       <div class="flex xs5 md3">
         <div class="caption grey--text">Mapper</div>
-        <div>XYZ</div>
+        <div>pwg-pmn</div>
       </div>
       <div class="flex xs1 md1 align-self-end">
         <!---->
@@ -187,17 +231,28 @@ exports[`MapItemCard.vue match snapshot 1`] = `
     <div class="layout mx-0 mb-3 px-3 row wrap">
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Paths</div>
-        <ul></ul>
+        <ul>
+          <li>nersc:/go/to/my/maps_v3</li>
+        </ul>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Note</div>
         <div>
-          <!---->
+          <ul>
+            <li>
+              This is a dummy test with a lat map
+            </li>
+            <li>
+              A beam depends on this map
+            </li>
+          </ul>
         </div>
       </div>
       <div class="flex xs12 md8 offset-md-4">
         <div class="caption grey--text">Beams</div>
-        <ul></ul>
+        <ul>
+          <li><a href="/beams/item/20200207" class="">20200207</a></li>
+        </ul>
       </div>
     </div>
   </div>
