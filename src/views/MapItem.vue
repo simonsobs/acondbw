@@ -12,15 +12,24 @@
           <span>Back to Maps</span>
         </v-tooltip>
       </div>
-      <MapItemCard :map="item" :collapsible="false"></MapItemCard>
+      <MapItemCard :mapName="mapName" :collapsible="false"></MapItemCard>
     </v-container>
   </div>
 </template>
 
 <script>
-import MAP from "@/graphql/Map.gql";
+import gql from "graphql-tag";
 
 import MapItemCard from "@/components/MapItemCard";
+
+const GqlMapName = gql`
+  query Map($name: String) {
+    map(name: $name) {
+      mapId
+      name
+    }
+  }
+`;
 
 export default {
   name: "mapItem",
@@ -29,17 +38,17 @@ export default {
   },
   data() {
     return {
-      item: {}
+      mapName: null
     };
   },
   apollo: {
-    item: {
-      query: MAP,
-      update: data => data.map,
+    mapName: {
+      query: GqlMapName,
+      update: data => data.map.name,
       variables() {
         return {
           name: this.$route.params.name
-        }
+        };
       }
     }
   }
