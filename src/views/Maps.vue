@@ -23,15 +23,17 @@
           </span>
         </v-tooltip>
       </div>
-      <MapItemCard
-        v-for="edge in edges"
-        :key="edge.node.id"
-        :mapName="edge.node.name"
-        collapsible="true"
-        :collapsed="isCardCollapsed[edge.node.id]"
-        v-on:expand="isCardCollapsed[edge.node.id] = false"
-        v-on:collapse="isCardCollapsed[edge.node.id] = true"
-      ></MapItemCard>
+      <template v-if="allMaps">
+        <MapItemCard
+          v-for="edge in allMaps.edges"
+          :key="edge.node.id"
+          :mapName="edge.node.name"
+          collapsible="true"
+          :collapsed="isCardCollapsed[edge.node.id]"
+          v-on:expand="isCardCollapsed[edge.node.id] = false"
+          v-on:collapse="isCardCollapsed[edge.node.id] = true"
+        ></MapItemCard>
+      </template>
     </v-container>
   </div>
 </template>
@@ -63,16 +65,15 @@ export default {
   },
   data() {
     return {
-      edges: [],
+      allMaps: null,
       isCardCollapsed: {}
     };
   },
   apollo: {
-    edges: {
+    allMaps: {
       query: GqlAllMaps,
-      update: data => data.allMaps.edges,
       result() {
-        this.isCardCollapsed = this.edges.reduce(
+        this.isCardCollapsed = this.allMaps.edges.reduce(
           (obj, x) => ({ ...obj, [x.node.id]: true }),
           {}
         );

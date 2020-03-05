@@ -26,26 +26,28 @@ describe("Maps.vue", () => {
     });
   }
 
-  const edges = [
-    {
-      node: {
-        id: "TWFwOjEwMTM=",
-        name: "lat20200201",
+  const allMaps = {
+    edges: [
+      {
+        node: {
+          id: "TWFwOjEwMTM=",
+          name: "lat20200201"
+        }
+      },
+      {
+        node: {
+          id: "TWFwOjEwMTI=",
+          name: "lat20200120"
+        }
+      },
+      {
+        node: {
+          id: "TWFwOjEwMDE=",
+          name: "lat20190213"
+        }
       }
-    },
-    {
-      node: {
-        id: "TWFwOjEwMTI=",
-        name: "lat20200120",
-      }
-    },
-    {
-      node: {
-        id: "TWFwOjEwMDE=",
-        name: "lat20190213",
-      }
-    }
-  ];
+    ]
+  };
 
   beforeEach(function() {
     localVue = createLocalVue();
@@ -55,7 +57,7 @@ describe("Maps.vue", () => {
     const wrapper = createWrapper();
 
     wrapper.setData({
-      edges: edges,
+      allMaps: allMaps,
       isCardCollapsed: {
         "TWFwOjEwMDE=": true,
         "TWFwOjEwMTI=": true,
