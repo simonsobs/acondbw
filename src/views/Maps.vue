@@ -72,7 +72,7 @@ export default {
     this.loadData();
   },
   methods: {
-    loadData() {
+    async loadData() {
       const url = process.env.VUE_APP_ACONDBS_URL;
       const query = `
         { allMaps(sort: DATE_POSTED_DESC) {
@@ -102,19 +102,19 @@ export default {
           }
         }}
       `;
-      axios({
+      const response = await axios({
         url: url,
         method: "POST",
         data: {
           query: query
         }
-      }).then(response => {
-        this.edges = response.data.data.allMaps.edges;
-        this.isCardCollapsed = this.edges.reduce(
-          (obj, x) => ({ ...obj, [x.node.id]: true }),
-          {}
-        );
       });
+
+      this.edges = response.data.data.allMaps.edges;
+      this.isCardCollapsed = this.edges.reduce(
+        (obj, x) => ({ ...obj, [x.node.id]: true }),
+        {}
+      );
     }
   }
 };
