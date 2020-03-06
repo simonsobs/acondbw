@@ -20,7 +20,9 @@
     </v-navigation-drawer>
     <v-app-bar app dense clipped-left>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-toolbar-title>
+        <router-link to="/" v-text="title" style="text-decoration: none; color: inherit;"></router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon to="/about">
         <v-icon>mdi-information</v-icon>

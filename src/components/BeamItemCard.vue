@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined hover>
+  <v-card outlined hover style="max-width: 980px;">
     <div @click="$emit('expand')" style="cursor: default;">
       <v-layout row wrap class="ma-0 px-3">
         <v-flex xs12 md3>

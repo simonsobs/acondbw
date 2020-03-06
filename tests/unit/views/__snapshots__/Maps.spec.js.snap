@@ -5,10 +5,10 @@ exports[`Maps.vue match snapshot 1`] = `
   <div class="container container--fluid">
     <h2>Maps</h2>
     <mapsubmitformdialog-stub></mapsubmitformdialog-stub>
-    <div class="d-flex justify-end ma-2"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-unfold-more-horizontal theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><div class="v-tooltip__content" style="left: 0px; max-width: auto; opacity: 0; top: 12px; z-index: 0; display: none;"></div></span></div>
-    <mapitemcard-stub map="[object Object]" collapsed="true" collapsible="true"></mapitemcard-stub>
-    <mapitemcard-stub map="[object Object]" collapsed="true" collapsible="true"></mapitemcard-stub>
-    <mapitemcard-stub map="[object Object]" collapsed="true" collapsible="true"></mapitemcard-stub>
+    <div class="d-flex justify-end ma-2" style="max-width: 980px;"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-unfold-more-horizontal theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><div class="v-tooltip__content" style="left: 0px; max-width: auto; opacity: 0; top: 12px; z-index: 0; display: none;"></div></span></div>
+    <mapitemcard-stub mapname="lat20200201" collapsed="true" collapsible="true"></mapitemcard-stub>
+    <mapitemcard-stub mapname="lat20200120" collapsed="true" collapsible="true"></mapitemcard-stub>
+    <mapitemcard-stub mapname="lat20190213" collapsed="true" collapsible="true"></mapitemcard-stub>
   </div>
 </div>
 `;
