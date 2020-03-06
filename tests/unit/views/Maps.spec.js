@@ -57,12 +57,7 @@ describe("Maps.vue", () => {
     const wrapper = createWrapper();
 
     wrapper.setData({
-      allMaps: allMaps,
-      isCardCollapsed: {
-        "TWFwOjEwMDE=": true,
-        "TWFwOjEwMTI=": true,
-        "TWFwOjEwMTM=": true
-      }
+      allMaps: allMaps
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();

@@ -71,12 +71,24 @@ export default {
   },
   apollo: {
     allMaps: {
-      query: GqlAllMaps,
-      result() {
-        this.isCardCollapsed = this.allMaps.edges.reduce(
-          (obj, x) => ({ ...obj, [x.node.id]: true }),
-          {}
-        );
+      query: GqlAllMaps
+    }
+  },
+  watch: {
+    allMaps: function() {
+      for (const edge of this.allMaps.edges) {
+        const id = edge.node.id
+        if(!(id in this.isCardCollapsed)) {
+          this.isCardCollapsed = {
+            ...this.isCardCollapsed,
+            [id]: true
+          };
+        // The above line of the code adds a new element {id: true} to
+        // the object this.isCardCollapsed in the way that the new
+        // element will be a reactive object of Vue. The commented out
+        // code below is simpler but the new element won't be reactive.
+        // this.isCardCollapsed[id] = true;
+        }
       }
     }
   },
