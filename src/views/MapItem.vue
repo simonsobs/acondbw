@@ -2,7 +2,7 @@
   <div class="mapitem">
     <v-container fluid>
       <h2>Map</h2>
-      <div class="d-flex justify-start my-2">
+      <div class="d-flex justify-start my-2" style="max-width: 980px;">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
             <v-btn text icon exact to="/maps" v-on="on">

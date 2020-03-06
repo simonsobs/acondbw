@@ -2,7 +2,7 @@
   <div class="maps">
     <v-container fluid>
       <h2>Beams</h2>
-      <div class="d-flex justify-end ma-2">
+      <div class="d-flex justify-end ma-2" style="max-width: 980px;">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
             <v-btn

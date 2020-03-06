@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: false} 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light">
+<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
   <div style="cursor: default;">
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
@@ -52,7 +52,7 @@ exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: false}
 `;
 
 exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: true} 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light">
+<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
   <div style="cursor: default;">
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
@@ -103,7 +103,7 @@ exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: true} 
 `;
 
 exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: false} 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light">
+<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
   <div style="cursor: default;">
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
@@ -156,7 +156,7 @@ exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: false} 
 `;
 
 exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: true} 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light">
+<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
   <div style="cursor: default;">
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">
@@ -209,7 +209,7 @@ exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: true} 1
 `;
 
 exports[`MapItemCard.vue match snapshot 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light">
+<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
   <div style="cursor: default;">
     <div class="layout ma-0 px-3 row wrap">
       <div class="flex xs12 md4">

@@ -3,7 +3,7 @@
     <v-container fluid>
       <h2>Maps</h2>
       <MapSubmitFormDialog></MapSubmitFormDialog>
-      <div class="d-flex justify-end ma-2">
+      <div class="d-flex justify-end ma-2" style="max-width: 980px;">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
             <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
