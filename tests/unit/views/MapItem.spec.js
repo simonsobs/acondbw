@@ -14,11 +14,19 @@ Vue.use(VueRouter);
 describe("MapItem.vue", () => {
   let localVue;
 
-  function createWrapper() {
+  function createWrapper(loading = false) {
     return mount(MapItem, {
       localVue,
       router,
-      mocks: {},
+      mocks: {
+        $apollo: {
+          queries: {
+            map: {
+              loading: loading
+            }
+          }
+        }
+      },
       stubs: {
         MapItemCard: true
       }
@@ -31,7 +39,6 @@ describe("MapItem.vue", () => {
 
   it("match snapshot", async () => {
     const wrapper = createWrapper();
-
     wrapper.setData({
       map: {
         mapId: "1013",
@@ -42,4 +49,27 @@ describe("MapItem.vue", () => {
     expect(wrapper.find(MapItemCard).props().mapName).toBe("lat20200201");
     expect(wrapper.html()).toMatchSnapshot();
   });
+
+  it("loading", async () => {
+    const loading = true;
+    const wrapper = createWrapper(loading);
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('loading')
+  });
+
+  it("error", async () => {
+    const wrapper = createWrapper();
+    wrapper.setData({
+      error: true
+    });
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('Error: cannot load data')
+  });
+
+  it("none", async () => {
+    const wrapper = createWrapper();
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('Nothing to show here')
+  });
+  
 });

@@ -12,7 +12,12 @@
           <span>Back to Maps</span>
         </v-tooltip>
       </div>
-      <MapItemCard :mapName="map.name" :collapsible="false" v-if="map"></MapItemCard>
+      <div v-if="$apollo.queries.map.loading">loading...</div>
+      <div v-else-if="error">Error: cannot load data</div>
+      <div v-else-if="map">
+        <MapItemCard :mapName="map.name" :collapsible="false"></MapItemCard>
+      </div>
+      <div v-else>Nothing to show here.</div>
     </v-container>
   </div>
 </template>
@@ -38,7 +43,8 @@ export default {
   },
   data() {
     return {
-      map: null
+      map: null,
+      error: null
     };
   },
   apollo: {
@@ -47,6 +53,12 @@ export default {
       variables() {
         return {
           name: this.$route.params.name
+        };
+      },
+      result(result) {
+        this.error = null;
+        if (result.error) {
+          this.error = true;
         }
       }
     }
