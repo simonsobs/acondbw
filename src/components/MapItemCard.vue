@@ -1,5 +1,8 @@
 <template>
-  <v-card outlined hover style="max-width: 980px;" v-if="map">
+  <div class="mapitemcard">
+  <div v-if="$apollo.queries.map.loading">loading...</div>
+  <div v-else-if="error">Error: cannot load data</div>
+  <v-card v-else-if="map" outlined hover style="max-width: 980px;" >
     <div @click="$emit('expand')" style="cursor: default;">
       <v-layout row wrap class="ma-0 px-3">
         <v-flex xs12 md4>
@@ -86,6 +89,8 @@
       </v-expand-transition>
     </div>
   </v-card>
+  <div v-else>Nothing to show here.</div>
+  </div>
 </template>
 
 <script>
@@ -100,7 +105,8 @@ export default {
   },
   data() {
     return {
-      map: null
+      map: null,
+      error: null
     };
   },
   apollo: {
@@ -109,6 +115,12 @@ export default {
       variables() {
         return {
           name: this.mapName
+        }
+      },
+      result(result) {
+        this.error = null;
+        if (result.error) {
+          this.error = true;
         }
       }
     }

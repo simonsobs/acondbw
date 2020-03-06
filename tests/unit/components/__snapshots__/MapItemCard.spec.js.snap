@@ -1,50 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: false} 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
-  <div style="cursor: default;">
-    <div class="layout ma-0 px-3 row wrap">
-      <div class="flex xs12 md4">
-        <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
-      </div>
-      <div class="flex xs6 md4">
-        <div class="caption grey--text">Date posted</div>
-        <div>2020-02-01</div>
-      </div>
-      <div class="flex xs5 md3">
-        <div class="caption grey--text">Mapper</div>
-        <div>pwg-pmn</div>
-      </div>
-      <div class="flex xs1 md1 align-self-end">
-        <!---->
-      </div>
-    </div>
-    <div class="layout mx-0 mb-3 px-3 row wrap">
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Paths</div>
-        <ul>
-          <li>nersc:/go/to/my/maps_v3</li>
-        </ul>
-      </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Note</div>
-        <div>
-          <ul>
-            <li>
-              This is a dummy test with a lat map
-            </li>
-            <li>
-              A beam depends on this map
-            </li>
-          </ul>
+<div class="mapitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md4">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
+        </div>
+        <div class="flex xs6 md4">
+          <div class="caption grey--text">Date posted</div>
+          <div>2020-02-01</div>
+        </div>
+        <div class="flex xs5 md3">
+          <div class="caption grey--text">Mapper</div>
+          <div>pwg-pmn</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <!---->
         </div>
       </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Beams</div>
-        <ul>
-          <li><a href="/beams/item/20200207" class="">20200207</a></li>
-        </ul>
+      <div class="layout mx-0 mb-3 px-3 row wrap">
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Paths</div>
+          <ul>
+            <li>nersc:/go/to/my/maps_v3</li>
+          </ul>
+        </div>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Note</div>
+          <div>
+            <ul>
+              <li>
+                This is a dummy test with a lat map
+              </li>
+              <li>
+                A beam depends on this map
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Beams</div>
+          <ul>
+            <li><a href="/beams/item/20200207" class="">20200207</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -52,50 +54,52 @@ exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: false}
 `;
 
 exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: true} 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
-  <div style="cursor: default;">
-    <div class="layout ma-0 px-3 row wrap">
-      <div class="flex xs12 md4">
-        <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
-      </div>
-      <div class="flex xs6 md4">
-        <div class="caption grey--text">Date posted</div>
-        <div>2020-02-01</div>
-      </div>
-      <div class="flex xs5 md3">
-        <div class="caption grey--text">Mapper</div>
-        <div>pwg-pmn</div>
-      </div>
-      <div class="flex xs1 md1 align-self-end">
-        <!---->
-      </div>
-    </div>
-    <div class="layout mx-0 mb-3 px-3 row wrap">
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Paths</div>
-        <ul>
-          <li>nersc:/go/to/my/maps_v3</li>
-        </ul>
-      </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Note</div>
-        <div>
-          <ul>
-            <li>
-              This is a dummy test with a lat map
-            </li>
-            <li>
-              A beam depends on this map
-            </li>
-          </ul>
+<div class="mapitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md4">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
+        </div>
+        <div class="flex xs6 md4">
+          <div class="caption grey--text">Date posted</div>
+          <div>2020-02-01</div>
+        </div>
+        <div class="flex xs5 md3">
+          <div class="caption grey--text">Mapper</div>
+          <div>pwg-pmn</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <!---->
         </div>
       </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Beams</div>
-        <ul>
-          <li><a href="/beams/item/20200207" class="">20200207</a></li>
-        </ul>
+      <div class="layout mx-0 mb-3 px-3 row wrap">
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Paths</div>
+          <ul>
+            <li>nersc:/go/to/my/maps_v3</li>
+          </ul>
+        </div>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Note</div>
+          <div>
+            <ul>
+              <li>
+                This is a dummy test with a lat map
+              </li>
+              <li>
+                A beam depends on this map
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Beams</div>
+          <ul>
+            <li><a href="/beams/item/20200207" class="">20200207</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -103,52 +107,54 @@ exports[`MapItemCard.vue match snapshot - {collapsible: false, collapsed: true} 
 `;
 
 exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: false} 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
-  <div style="cursor: default;">
-    <div class="layout ma-0 px-3 row wrap">
-      <div class="flex xs12 md4">
-        <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
-      </div>
-      <div class="flex xs6 md4">
-        <div class="caption grey--text">Date posted</div>
-        <div>2020-02-01</div>
-      </div>
-      <div class="flex xs5 md3">
-        <div class="caption grey--text">Mapper</div>
-        <div>pwg-pmn</div>
-      </div>
-      <div class="flex xs1 md1 align-self-end">
-        <div>
-          <div class="layout justify-end"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-chevron-up theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><div class="v-tooltip__content" style="left: 0px; max-width: auto; opacity: 0; top: 12px; z-index: 0; display: none;"></div></span></div>
+<div class="mapitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md4">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
+        </div>
+        <div class="flex xs6 md4">
+          <div class="caption grey--text">Date posted</div>
+          <div>2020-02-01</div>
+        </div>
+        <div class="flex xs5 md3">
+          <div class="caption grey--text">Mapper</div>
+          <div>pwg-pmn</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <div>
+            <div class="layout justify-end"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-chevron-up theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><div class="v-tooltip__content" style="left: 0px; max-width: auto; opacity: 0; top: 12px; z-index: 0; display: none;"></div></span></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="layout mx-0 mb-3 px-3 row wrap">
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Paths</div>
-        <ul>
-          <li>nersc:/go/to/my/maps_v3</li>
-        </ul>
-      </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Note</div>
-        <div>
+      <div class="layout mx-0 mb-3 px-3 row wrap">
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Paths</div>
           <ul>
-            <li>
-              This is a dummy test with a lat map
-            </li>
-            <li>
-              A beam depends on this map
-            </li>
+            <li>nersc:/go/to/my/maps_v3</li>
           </ul>
         </div>
-      </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Beams</div>
-        <ul>
-          <li><a href="/beams/item/20200207" class="">20200207</a></li>
-        </ul>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Note</div>
+          <div>
+            <ul>
+              <li>
+                This is a dummy test with a lat map
+              </li>
+              <li>
+                A beam depends on this map
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Beams</div>
+          <ul>
+            <li><a href="/beams/item/20200207" class="">20200207</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -156,52 +162,54 @@ exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: false} 
 `;
 
 exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: true} 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
-  <div style="cursor: default;">
-    <div class="layout ma-0 px-3 row wrap">
-      <div class="flex xs12 md4">
-        <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
-      </div>
-      <div class="flex xs6 md4">
-        <div class="caption grey--text">Date posted</div>
-        <div>2020-02-01</div>
-      </div>
-      <div class="flex xs5 md3">
-        <div class="caption grey--text">Mapper</div>
-        <div>pwg-pmn</div>
-      </div>
-      <div class="flex xs1 md1 align-self-end">
-        <div>
-          <div class="layout justify-end"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-chevron-down theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><div class="v-tooltip__content" style="left: 0px; max-width: auto; opacity: 0; top: 12px; z-index: 0; display: none;"></div></span></div>
+<div class="mapitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md4">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
+        </div>
+        <div class="flex xs6 md4">
+          <div class="caption grey--text">Date posted</div>
+          <div>2020-02-01</div>
+        </div>
+        <div class="flex xs5 md3">
+          <div class="caption grey--text">Mapper</div>
+          <div>pwg-pmn</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <div>
+            <div class="layout justify-end"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-chevron-down theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><div class="v-tooltip__content" style="left: 0px; max-width: auto; opacity: 0; top: 12px; z-index: 0; display: none;"></div></span></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="layout mx-0 mb-3 px-3 row wrap" style="display: none;">
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Paths</div>
-        <ul>
-          <li>nersc:/go/to/my/maps_v3</li>
-        </ul>
-      </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Note</div>
-        <div>
+      <div class="layout mx-0 mb-3 px-3 row wrap" style="display: none;">
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Paths</div>
           <ul>
-            <li>
-              This is a dummy test with a lat map
-            </li>
-            <li>
-              A beam depends on this map
-            </li>
+            <li>nersc:/go/to/my/maps_v3</li>
           </ul>
         </div>
-      </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Beams</div>
-        <ul>
-          <li><a href="/beams/item/20200207" class="">20200207</a></li>
-        </ul>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Note</div>
+          <div>
+            <ul>
+              <li>
+                This is a dummy test with a lat map
+              </li>
+              <li>
+                A beam depends on this map
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Beams</div>
+          <ul>
+            <li><a href="/beams/item/20200207" class="">20200207</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -209,50 +217,52 @@ exports[`MapItemCard.vue match snapshot - {collapsible: true, collapsed: true} 1
 `;
 
 exports[`MapItemCard.vue match snapshot 1`] = `
-<div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
-  <div style="cursor: default;">
-    <div class="layout ma-0 px-3 row wrap">
-      <div class="flex xs12 md4">
-        <div class="caption grey--text">Name</div>
-        <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
-      </div>
-      <div class="flex xs6 md4">
-        <div class="caption grey--text">Date posted</div>
-        <div>2020-02-01</div>
-      </div>
-      <div class="flex xs5 md3">
-        <div class="caption grey--text">Mapper</div>
-        <div>pwg-pmn</div>
-      </div>
-      <div class="flex xs1 md1 align-self-end">
-        <!---->
-      </div>
-    </div>
-    <div class="layout mx-0 mb-3 px-3 row wrap">
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Paths</div>
-        <ul>
-          <li>nersc:/go/to/my/maps_v3</li>
-        </ul>
-      </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Note</div>
-        <div>
-          <ul>
-            <li>
-              This is a dummy test with a lat map
-            </li>
-            <li>
-              A beam depends on this map
-            </li>
-          </ul>
+<div class="mapitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md4">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/maps/item/lat20200201" class="">lat20200201</a></span></div>
+        </div>
+        <div class="flex xs6 md4">
+          <div class="caption grey--text">Date posted</div>
+          <div>2020-02-01</div>
+        </div>
+        <div class="flex xs5 md3">
+          <div class="caption grey--text">Mapper</div>
+          <div>pwg-pmn</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <!---->
         </div>
       </div>
-      <div class="flex xs12 md8 offset-md-4">
-        <div class="caption grey--text">Beams</div>
-        <ul>
-          <li><a href="/beams/item/20200207" class="">20200207</a></li>
-        </ul>
+      <div class="layout mx-0 mb-3 px-3 row wrap">
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Paths</div>
+          <ul>
+            <li>nersc:/go/to/my/maps_v3</li>
+          </ul>
+        </div>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Note</div>
+          <div>
+            <ul>
+              <li>
+                This is a dummy test with a lat map
+              </li>
+              <li>
+                A beam depends on this map
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex xs12 md8 offset-md-4">
+          <div class="caption grey--text">Beams</div>
+          <ul>
+            <li><a href="/beams/item/20200207" class="">20200207</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

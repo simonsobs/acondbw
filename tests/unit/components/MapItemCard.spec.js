@@ -12,55 +12,88 @@ Vue.use(VueRouter);
 describe("MapItemCard.vue", () => {
   let localVue;
 
-  function createWrapper({ propsData } = {}) {
+  function createWrapper({ loading = false, propsData } = {}) {
     let wrapper = mount(MapItemCard, {
       localVue,
       router,
+      mocks: {
+        $apollo: {
+          queries: {
+            map: {
+              loading: loading
+            }
+          }
+        }
+      },
       propsData: {
-        mapName: "map123456",
+        mapName: "lat20200201",
         ...propsData
       }
     });
-    wrapper.setData({
-      map: {
-        mapId: "1013",
-        name: "lat20200201",
-        datePosted: "2020-02-01",
-        mapper: "pwg-pmn",
-        mapFilePaths: {
-          edges: [
-            {
-              node: {
-                path: "nersc:/go/to/my/maps_v3",
-                note: "lat only"
-              }
-            }
-          ]
-        },
-        note:
-          "- This is a dummy test with a lat map                         \n- A beam depends on this map",
-        beams: {
-          edges: [
-            {
-              node: {
-                beamId: "1150",
-                name: "20200207"
-              }
-            }
-          ]
-        }
-      }
-    });
+
     return wrapper;
   }
 
+  const map = {
+    mapId: "1013",
+    name: "lat20200201",
+    datePosted: "2020-02-01",
+    mapper: "pwg-pmn",
+    mapFilePaths: {
+      edges: [
+        {
+          node: {
+            path: "nersc:/go/to/my/maps_v3",
+            note: "lat only"
+          }
+        }
+      ]
+    },
+    note:
+      "- This is a dummy test with a lat map                         \n- A beam depends on this map",
+    beams: {
+      edges: [
+        {
+          node: {
+            beamId: "1150",
+            name: "20200207"
+          }
+        }
+      ]
+    }
+  };
 
   beforeEach(function() {
     localVue = createLocalVue();
   });
 
+  it("loading", async () => {
+    const loading = true;
+    const wrapper = createWrapper({ loading });
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('loading')
+  });
+
+  it("error", async () => {
+    const wrapper = createWrapper();
+    wrapper.setData({
+      error: true
+    });
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('Error: cannot load data')
+  });
+
+  it("none", async () => {
+    const wrapper = createWrapper();
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('Nothing to show here')
+  });
+
   it("match snapshot", async () => {
     const wrapper = createWrapper();
+    wrapper.setData({
+      map: map
+    });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
@@ -75,6 +108,9 @@ describe("MapItemCard.vue", () => {
     async (collapsible, collapsed) => {
       const wrapper = createWrapper({
         propsData: { collapsed: collapsed, collapsible: collapsible }
+      });
+      wrapper.setData({
+        map: map
       });
       await Vue.nextTick();
       expect(wrapper.html()).toMatchSnapshot();
