@@ -23,17 +23,22 @@
           </span>
         </v-tooltip>
       </div>
-      <template v-if="allMaps">
-        <MapItemCard
-          v-for="edge in allMaps.edges"
-          :key="edge.node.id"
-          :mapName="edge.node.name"
-          collapsible="true"
-          :collapsed="isCardCollapsed[edge.node.id]"
-          v-on:expand="isCardCollapsed[edge.node.id] = false"
-          v-on:collapse="isCardCollapsed[edge.node.id] = true"
-        ></MapItemCard>
-      </template>
+      <transition name="fade" mode="out-in">
+        <div v-if="$apollo.queries.allMaps.loading">loading...</div>
+        <div v-else-if="error">Error: cannot load data</div>
+        <div v-else-if="allMaps">
+          <MapItemCard
+            v-for="edge in allMaps.edges"
+            :key="edge.node.id"
+            :mapName="edge.node.name"
+            collapsible="true"
+            :collapsed="isCardCollapsed[edge.node.id]"
+            v-on:expand="isCardCollapsed[edge.node.id] = false"
+            v-on:collapse="isCardCollapsed[edge.node.id] = true"
+          ></MapItemCard>
+        </div>
+        <div v-else>Nothing to show here.</div>
+      </transition>
     </v-container>
   </div>
 </template>
@@ -66,19 +71,29 @@ export default {
   data() {
     return {
       allMaps: null,
-      isCardCollapsed: {}
+      isCardCollapsed: {},
+      error: null
     };
   },
   apollo: {
     allMaps: {
-      query: GqlAllMaps
+      query: GqlAllMaps,
+      result(result) {
+        this.error = null;
+        if (result.error) {
+          this.error = true;
+        }
+      }
     }
   },
   watch: {
     allMaps: function() {
+      if (this.allMaps == undefined) {
+        return;
+      }
       for (const edge of this.allMaps.edges) {
-        const id = edge.node.id
-        if(!(id in this.isCardCollapsed)) {
+        const id = edge.node.id;
+        if (!(id in this.isCardCollapsed)) {
           this.isCardCollapsed = {
             ...this.isCardCollapsed,
             [id]: true
@@ -108,3 +123,14 @@ export default {
   }
 };
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+</style>

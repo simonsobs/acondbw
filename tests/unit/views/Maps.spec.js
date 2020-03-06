@@ -14,11 +14,19 @@ Vue.use(VueRouter);
 describe("Maps.vue", () => {
   let localVue;
 
-  function createWrapper() {
+  function createWrapper(loading = false) {
     return mount(Maps, {
       localVue,
       router,
-      mocks: {},
+      mocks: {
+        $apollo: {
+          queries: {
+            allMaps: {
+              loading: loading
+            }
+          }
+        }
+      },
       stubs: {
         MapItemCard: true,
         MapSubmitFormDialog: true
@@ -62,4 +70,27 @@ describe("Maps.vue", () => {
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
+
+  it("loading", async () => {
+    const loading = true;
+    const wrapper = createWrapper(loading);
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('loading')
+  });
+
+  it("error", async () => {
+    const wrapper = createWrapper();
+    wrapper.setData({
+      error: true
+    });
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('Error: cannot load data')
+  });
+
+  it("none", async () => {
+    const wrapper = createWrapper();
+    await Vue.nextTick();
+    expect(wrapper.text()).toContain('Nothing to show here')
+  });
+
 });
