@@ -63,7 +63,6 @@ describe("Maps.vue", () => {
 
   it("match snapshot", async () => {
     const wrapper = createWrapper();
-
     wrapper.setData({
       allMaps: allMaps
     });
@@ -75,7 +74,7 @@ describe("Maps.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('loading')
+    expect(wrapper.text()).toContain("loading");
   });
 
   it("error", async () => {
@@ -84,13 +83,15 @@ describe("Maps.vue", () => {
       error: true
     });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('Error: cannot load data')
+    expect(wrapper.text()).toContain("Error: cannot load data");
   });
 
   it("none", async () => {
     const wrapper = createWrapper();
+    wrapper.setData({
+      allMaps: { edges: [] }
+    });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('Nothing to show here')
+    expect(wrapper.text()).toContain("Nothing to show here");
   });
-
 });

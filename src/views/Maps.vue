@@ -27,17 +27,20 @@
         <div v-if="$apollo.queries.allMaps.loading">loading...</div>
         <div v-else-if="error">Error: cannot load data</div>
         <div v-else-if="allMaps">
-          <MapItemCard
-            v-for="edge in allMaps.edges"
-            :key="edge.node.id"
-            :mapName="edge.node.name"
-            collapsible="true"
-            :collapsed="isCardCollapsed[edge.node.id]"
-            v-on:expand="isCardCollapsed[edge.node.id] = false"
-            v-on:collapse="isCardCollapsed[edge.node.id] = true"
-          ></MapItemCard>
+          <div v-if="allMaps.edges && allMaps.edges.length">
+            <MapItemCard
+              v-for="edge in allMaps.edges"
+              :key="edge.node.id"
+              :mapName="edge.node.name"
+              collapsible="true"
+              :collapsed="isCardCollapsed[edge.node.id]"
+              v-on:expand="isCardCollapsed[edge.node.id] = false"
+              v-on:collapse="isCardCollapsed[edge.node.id] = true"
+            ></MapItemCard>
+          </div>
+          <div v-else>Nothing to show here.</div>
         </div>
-        <div v-else>Nothing to show here.</div>
+        <div v-else></div>
       </transition>
     </v-container>
   </div>
@@ -98,11 +101,11 @@ export default {
             ...this.isCardCollapsed,
             [id]: true
           };
-        // The above line of the code adds a new element {id: true} to
-        // the object this.isCardCollapsed in the way that the new
-        // element will be a reactive object of Vue. The commented out
-        // code below is simpler but the new element won't be reactive.
-        // this.isCardCollapsed[id] = true;
+          // The above line of the code adds a new element {id: true} to
+          // the object this.isCardCollapsed in the way that the new
+          // element will be a reactive object of Vue. The commented out
+          // code below is simpler but the new element won't be reactive.
+          // this.isCardCollapsed[id] = true;
         }
       }
     }
