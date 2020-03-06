@@ -23,25 +23,23 @@
           </span>
         </v-tooltip>
       </div>
-      <transition name="fade" mode="out-in">
-        <div v-if="$apollo.queries.allMaps.loading">loading...</div>
-        <div v-else-if="error">Error: cannot load data</div>
-        <div v-else-if="allMaps">
-          <div v-if="allMaps.edges && allMaps.edges.length">
-            <MapItemCard
-              v-for="edge in allMaps.edges"
-              :key="edge.node.id"
-              :mapName="edge.node.name"
-              collapsible="true"
-              :collapsed="isCardCollapsed[edge.node.id]"
-              v-on:expand="isCardCollapsed[edge.node.id] = false"
-              v-on:collapse="isCardCollapsed[edge.node.id] = true"
-            ></MapItemCard>
-          </div>
-          <div v-else>Nothing to show here.</div>
+      <div v-if="$apollo.queries.allMaps.loading">loading...</div>
+      <div v-else-if="error">Error: cannot load data</div>
+      <div v-else-if="allMaps">
+        <div v-if="allMaps.edges && allMaps.edges.length">
+          <MapItemCard
+            v-for="edge in allMaps.edges"
+            :key="edge.node.id"
+            :mapName="edge.node.name"
+            collapsible="true"
+            :collapsed="isCardCollapsed[edge.node.id]"
+            v-on:expand="isCardCollapsed[edge.node.id] = false"
+            v-on:collapse="isCardCollapsed[edge.node.id] = true"
+          ></MapItemCard>
         </div>
-        <div v-else></div>
-      </transition>
+        <div v-else>Nothing to show here.</div>
+      </div>
+      <div v-else></div>
     </v-container>
   </div>
 </template>
@@ -126,14 +124,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
-}
-</style>
