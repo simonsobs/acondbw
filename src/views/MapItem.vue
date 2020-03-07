@@ -28,7 +28,7 @@ import gql from "graphql-tag";
 import MapItemCard from "@/components/MapItemCard";
 
 const GqlMapName = gql`
-  query Map($name: String) {
+  query MapIdName($name: String) {
     map(name: $name) {
       mapId
       name

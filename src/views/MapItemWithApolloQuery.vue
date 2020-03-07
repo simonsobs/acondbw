@@ -36,7 +36,7 @@ as of this writing and a solution is unknown.
       </div>
       <ApolloQuery
         :query="gql => gql`
-          query Map($name: String) {
+          query Mapp($name: String) {
             map(name: $name) {
               mapId
               name
