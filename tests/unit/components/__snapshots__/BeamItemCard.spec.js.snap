@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BeamItemCard.vue match snapshot - {collapsible: false, collapsed: false} 1`] = `
+<div class="beamitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md3">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/beams/item/20200207" class="">20200207</a></span></div>
+        </div>
+        <div class="flex xs11 md8">
+          <div class="caption grey--text">Path</div>
+          <div>BEAM_DEPOT/Beams/20200207</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <!---->
+        </div>
+      </div>
+      <div class="layout mx-0 mb-3 px-3 row wrap">
+        <div class="flex xs12 md8 offset-md-3">
+          <div class="caption grey--text">Map</div>
+          <div><a href="/maps/item/lat20200201" class="">lat20200201</a></div>
+        </div>
+        <div class="flex xs12 md4 offset-md-3">
+          <div class="caption grey--text">Parent Beam</div>
+          <div></div>
+          <div><a href="/beams/item/20200123" class="">20200123</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BeamItemCard.vue match snapshot - {collapsible: false, collapsed: true} 1`] = `
+<div class="beamitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md3">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/beams/item/20200207" class="">20200207</a></span></div>
+        </div>
+        <div class="flex xs11 md8">
+          <div class="caption grey--text">Path</div>
+          <div>BEAM_DEPOT/Beams/20200207</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <!---->
+        </div>
+      </div>
+      <div class="layout mx-0 mb-3 px-3 row wrap">
+        <div class="flex xs12 md8 offset-md-3">
+          <div class="caption grey--text">Map</div>
+          <div><a href="/maps/item/lat20200201" class="">lat20200201</a></div>
+        </div>
+        <div class="flex xs12 md4 offset-md-3">
+          <div class="caption grey--text">Parent Beam</div>
+          <div></div>
+          <div><a href="/beams/item/20200123" class="">20200123</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BeamItemCard.vue match snapshot - {collapsible: true, collapsed: false} 1`] = `
+<div class="beamitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md3">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/beams/item/20200207" class="">20200207</a></span></div>
+        </div>
+        <div class="flex xs11 md8">
+          <div class="caption grey--text">Path</div>
+          <div>BEAM_DEPOT/Beams/20200207</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <div>
+            <div class="layout justify-end"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-chevron-up theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><div class="v-tooltip__content" style="left: 0px; max-width: auto; opacity: 0; top: 12px; z-index: 0; display: none;"></div></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="layout mx-0 mb-3 px-3 row wrap">
+        <div class="flex xs12 md8 offset-md-3">
+          <div class="caption grey--text">Map</div>
+          <div><a href="/maps/item/lat20200201" class="">lat20200201</a></div>
+        </div>
+        <div class="flex xs12 md4 offset-md-3">
+          <div class="caption grey--text">Parent Beam</div>
+          <div></div>
+          <div><a href="/beams/item/20200123" class="">20200123</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BeamItemCard.vue match snapshot - {collapsible: true, collapsed: true} 1`] = `
+<div class="beamitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md3">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/beams/item/20200207" class="">20200207</a></span></div>
+        </div>
+        <div class="flex xs11 md8">
+          <div class="caption grey--text">Path</div>
+          <div>BEAM_DEPOT/Beams/20200207</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <div>
+            <div class="layout justify-end"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-chevron-down theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><div class="v-tooltip__content" style="left: 0px; max-width: auto; opacity: 0; top: 12px; z-index: 0; display: none;"></div></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="layout mx-0 mb-3 px-3 row wrap" style="display: none;">
+        <div class="flex xs12 md8 offset-md-3">
+          <div class="caption grey--text">Map</div>
+          <div><a href="/maps/item/lat20200201" class="">lat20200201</a></div>
+        </div>
+        <div class="flex xs12 md4 offset-md-3">
+          <div class="caption grey--text">Parent Beam</div>
+          <div></div>
+          <div><a href="/beams/item/20200123" class="">20200123</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BeamItemCard.vue match snapshot 1`] = `
+<div class="beamitemcard">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div style="cursor: default;">
+      <div class="layout ma-0 px-3 row wrap">
+        <div class="flex xs12 md3">
+          <div class="caption grey--text">Name</div>
+          <div class="font-weight-medium primary--text"><span><a href="/beams/item/20200207" class="">20200207</a></span></div>
+        </div>
+        <div class="flex xs11 md8">
+          <div class="caption grey--text">Path</div>
+          <div>BEAM_DEPOT/Beams/20200207</div>
+        </div>
+        <div class="flex xs1 md1 align-self-end">
+          <!---->
+        </div>
+      </div>
+      <div class="layout mx-0 mb-3 px-3 row wrap">
+        <div class="flex xs12 md8 offset-md-3">
+          <div class="caption grey--text">Map</div>
+          <div><a href="/maps/item/lat20200201" class="">lat20200201</a></div>
+        </div>
+        <div class="flex xs12 md4 offset-md-3">
+          <div class="caption grey--text">Parent Beam</div>
+          <div></div>
+          <div><a href="/beams/item/20200123" class="">20200123</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

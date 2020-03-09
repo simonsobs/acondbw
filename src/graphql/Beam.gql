@@ -1,0 +1,13 @@
+query Beam($name: String) {
+  beam(name: $name) {
+    beamId
+    name
+    path
+    map {
+      name
+    }
+    parentBeam {
+      name
+    }
+  }
+}
