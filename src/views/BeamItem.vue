@@ -5,71 +5,62 @@
       <div class="d-flex justify-start my-2" style="max-width: 980px;">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
-            <v-btn text icon exact to="/maps" v-on="on">
+            <v-btn text icon exact to="/beams" v-on="on">
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
           </template>
           <span>Back to Beams</span>
         </v-tooltip>
       </div>
-      <BeamItemCard :beam="item" :collapsible="false"></BeamItemCard>
+      <div v-if="$apollo.queries.beam.loading">loading...</div>
+      <div v-else-if="error">Error: cannot load data</div>
+      <div v-else-if="beam">
+        <BeamItemCard :beamName="beam.name" :collapsible="false"></BeamItemCard>
+      </div>
+      <div v-else>Nothing to show here.</div>
     </v-container>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import gql from "graphql-tag";
 
 import BeamItemCard from "@/components/BeamItemCard";
 
+const GqlBeamName = gql`
+  query BeamIdName($name: String) {
+    beam(name: $name) {
+      beamId
+      name
+    }
+  }
+`;
+
 export default {
-  name: "beamItem",
+  name: "BeamItem",
   components: {
     BeamItemCard
   },
   data() {
     return {
-      item: {}
+      beam: null,
+      error: null
     };
   },
-  watch: {
-    $route(to, from) {
-      this.item = {};
-      this.loadData();
-    }
-  },
-  created: function() {
-    this.loadData();
-  },
-  methods: {
-    loadData() {
-      const url = process.env.VUE_APP_ACONDBS_URL;
-      const query = `
-        query Beam($name: String) {
-          beam(name: $name) {
-            beamId
-            name
-            path
-            map {
-              name
-            }
-            parentBeam {
-              name
-            }
-          }
+  apollo: {
+    beam: {
+      query: GqlBeamName,
+      variables() {
+        return {
+          name: this.$route.params.name
+        };
+      },
+      result(result) {
+        this.error = null;
+        if (result.error) {
+          this.error = true;
         }
-      `;
-      const variables = { name: this.$route.params.name };
-      axios({
-        url: url,
-        method: "POST",
-        data: {
-          query: query,
-          variables: variables
-        }
-      }).then(response => {
-        this.item = response.data.data.beam;
-      });
+      }
     }
   }
 };
