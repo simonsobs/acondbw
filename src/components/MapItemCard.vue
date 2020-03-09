@@ -48,7 +48,7 @@
             </v-col>
           </v-row>
           <v-expand-transition>
-            <v-row class="mx-0 mb-3 px-0" v-show="!(collapsible && collapsed)">
+            <v-row class="mx-0 mb-3 px-0 collapsible" v-show="!(collapsible && collapsed)">
               <v-col cols="12" md="8" offset-md="4" class="pa-2">
                 <div class="caption grey--text">Paths</div>
                 <ul v-if="map.mapFilePaths">

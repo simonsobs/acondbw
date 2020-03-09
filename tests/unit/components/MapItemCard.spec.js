@@ -99,13 +99,13 @@ describe("MapItemCard.vue", () => {
   });
 
   it.each([
-    [true, true],
-    [true, false],
-    [false, true],
-    [false, false]
+    [true, true, false],
+    [true, false, true],
+    [false, true, true],
+    [false, false, true]
   ])(
-    "match snapshot - {collapsible: %p, collapsed: %p}",
-    async (collapsible, collapsed) => {
+    "collapsed - {collapsible: %p, collapsed: %p, visible: %p}",
+    async (collapsible, collapsed, visible) => {
       const wrapper = createWrapper({
         propsData: { collapsed: collapsed, collapsible: collapsible }
       });
@@ -113,7 +113,7 @@ describe("MapItemCard.vue", () => {
         map: map
       });
       await Vue.nextTick();
-      expect(wrapper.html()).toMatchSnapshot();
+      expect(wrapper.find('.collapsible').isVisible()).toBe(visible);
     }
   );
 });
