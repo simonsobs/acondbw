@@ -6,7 +6,7 @@
       <div @click="$emit('expand')" style="cursor: default;">
         <v-container fluid class="pa-0">
           <v-row class="ma-0 px-0">
-            <v-col cols="12" md="4" class="pa-2">
+            <v-col cols="12" md="4" class="py-0">
               <div class="caption grey--text">Name</div>
               <div class="font-weight-medium primary--text">
                 <span @click.stop>
@@ -14,17 +14,17 @@
                 </span>
               </div>
             </v-col>
-            <v-col cols="6" md="4" class="pa-2">
+            <v-col cols="6" md="4" class="py-0">
               <div class="caption grey--text">Date posted</div>
               <div v-text="map.datePosted"></div>
             </v-col>
-            <v-col cols="5" md="3" class="pa-2">
+            <v-col cols="5" md="3" class="py-0">
               <div class="caption grey--text">Mapper</div>
               <div v-text="map.mapper"></div>
             </v-col>
-            <v-col cols="1" md="1" align-self="end" class="pa-2">
+            <v-col cols="1" md="1" align-self="end" class="py-0">
               <div v-if="collapsible">
-                <v-row align="start" justify="end" class="px-1">
+                <v-row align="start" justify="end" class="px-1 py-0">
                   <v-tooltip bottom open-delay="800">
                     <template v-slot:activator="{ on }">
                       <v-btn
@@ -49,7 +49,7 @@
           </v-row>
           <v-expand-transition>
             <v-row class="mx-0 mb-3 px-0 collapsible" v-show="!(collapsible && collapsed)">
-              <v-col cols="12" md="8" offset-md="4" class="pa-2">
+              <v-col cols="12" md="8" offset-md="4" class="py-0">
                 <div class="caption grey--text">Paths</div>
                 <ul v-if="map.mapFilePaths">
                   <li
@@ -59,7 +59,7 @@
                   ></li>
                 </ul>
               </v-col>
-              <v-col cols="12" md="8" offset-md="4" class="pa-2">
+              <v-col cols="12" md="8" offset-md="4" class="py-0">
                 <div class="caption grey--text">Note</div>
                 <div>
                   <ul v-if="map.note">
@@ -70,7 +70,7 @@
                   </ul>
                 </div>
               </v-col>
-              <v-col cols="12" md="8" offset-md="4" class="pa-2">
+              <v-col cols="12" md="8" offset-md="4" class="py-0">
                 <div class="caption grey--text">Beams</div>
                 <ul v-if="map.beams">
                   <li v-for="(edgep, index) in map.beams.edges" :key="index">
