@@ -1,71 +1,55 @@
 <template>
-  <v-row class="ma-2" justify="start">
-    <v-dialog v-model="dialog" persistent max-width="600">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" v-on="on">Add</v-btn>
-      </template>
-      <v-card>
-        <v-card-title class="headline">Add a map</v-card-title>
-        <v-card-text>
-          <v-form>
+  <v-card>
+    <v-card-title class="headline">Add a map</v-card-title>
+    <v-card-text>
+      <v-form>
+        <v-text-field label="Name of map" v-model="form.name" required prepend-icon="map"></v-text-field>
+        <v-menu
+          v-model="menuDatePosteDatePicker"
+          :close-on-content-click="false"
+          :nudge-right="40"
+          transition="scale-transition"
+          offset-y
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
             <v-text-field
-              label="Name of map"
-              v-model="form.name"
-              required
-              prepend-icon="map"
+              v-model="form.datePosted"
+              label="Date posted"
+              prepend-icon="event"
+              v-on="on"
             ></v-text-field>
-            <v-menu
-              v-model="menuDatePosteDdatePicker"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="form.datePosted"
-                  label="Date posted"
-                  prepend-icon="event"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="form.datePosted"
-                no-title
-                scrollable
-                @input="menuDatePosteDdatePicker = false"
-              ></v-date-picker>
-            </v-menu>
-            <v-text-field
-              label="Mapper"
-              v-model="form.mapper"
-              prepend-icon="person"
-            ></v-text-field>
-            <!-- 
+          </template>
+          <v-date-picker
+            v-model="form.datePosted"
+            no-title
+            scrollable
+            @input="menuDatePosteDatePicker = false"
+          ></v-date-picker>
+        </v-menu>
+        <v-text-field label="Mapper" v-model="form.mapper" prepend-icon="person"></v-text-field>
+        <!-- 
             <v-textarea
               label="Paths"
               v-model="form.paths"
               hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
               prepend-icon="mdi-folder-multiple"
             ></v-textarea>
-            -->
-            <v-textarea
-              label="Note"
-              v-model="form.note"
-              hint="Itemized text. One iterm per line"
-              prepend-icon="mdi-file-document-box-outline"
-            ></v-textarea>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="primary" @click="clickAdd()">Add</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+        -->
+        <v-textarea
+          label="Note"
+          v-model="form.note"
+          hint="Itemized text. One iterm per line"
+          prepend-icon="mdi-file-document-box-outline"
+        ></v-textarea>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+      <v-btn color="primary" @click="clickAdd()">Add</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -75,8 +59,7 @@ export default {
   name: "mapSubmitFormDialog",
   data() {
     return {
-      dialog: false,
-      menuDatePosteDdatePicker: false,
+      menuDatePosteDatePicker: false,
       form: {
         name: "",
         datePosted: new Date().toISOString().substr(0, 10),
@@ -88,8 +71,8 @@ export default {
   },
   methods: {
     clickAdd() {
-      this.dialog = false;
       this.addMap();
+      this.$emit('finished');
     },
     addMap() {
       const url = process.env.VUE_APP_ACONDBS_URL;

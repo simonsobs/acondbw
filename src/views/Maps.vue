@@ -2,9 +2,17 @@
   <div class="maps">
     <v-container fluid>
       <h2>Maps</h2>
-      <MapSubmitFormDialog></MapSubmitFormDialog>
       <v-container fluid class="pa-0">
-        <v-row align="start" justify="end" class="ma-0 px-0 py-1" style="max-width: 980px;">
+        <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
+          <v-tooltip bottom open-delay="800">
+            <template v-slot:activator="{ on }">
+              <v-btn icon @click="$apollo.queries.allMaps.refetch()" v-on="on">
+                <v-icon>mdi-refresh</v-icon>
+              </v-btn>
+            </template>
+            <span>Refresh</span>
+          </v-tooltip>
+          <v-spacer></v-spacer>
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
               <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
@@ -23,6 +31,19 @@
               }}
             </span>
           </v-tooltip>
+          <v-dialog v-model="dialog" persistent max-width="600">
+            <template v-slot:activator="{ on: dialog }">
+              <v-tooltip bottom open-delay="800">
+                <template v-slot:activator="{ on: toolip }">
+                  <v-btn icon v-on="{ ...toolip, ...dialog }">
+                    <v-icon>mdi-plus-thick</v-icon>
+                  </v-btn>
+                </template>
+                <span>Add a new map</span>
+              </v-tooltip>
+            </template>
+            <MapSubmitFormDialog v-on:finished="dialog = false"></MapSubmitFormDialog>
+          </v-dialog>
         </v-row>
       </v-container>
       <div v-if="$apollo.queries.allMaps.loading">loading...</div>
@@ -60,6 +81,7 @@ export default {
   },
   data() {
     return {
+      dialog: false,
       allMaps: null,
       isCardCollapsed: {},
       error: null
