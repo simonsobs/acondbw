@@ -15,7 +15,11 @@
       <div v-if="$apollo.queries.map.loading">loading...</div>
       <div v-else-if="error">Error: cannot load data</div>
       <div v-else-if="map">
-        <MapItemCard :mapName="map.name" :collapsible="false"></MapItemCard>
+        <MapItemCard
+          :mapName="map.name"
+          :collapsible="false"
+          v-on:deleted="$router.push('/maps')"
+        ></MapItemCard>
       </div>
       <div v-else>Nothing to show here.</div>
     </v-container>
