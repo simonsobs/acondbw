@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import gql from "graphql-tag";
 
 export default {
   name: "mapSubmitFormDialog",
@@ -70,38 +70,29 @@ export default {
     };
   },
   methods: {
-    clickAdd() {
-      this.addMap();
-      this.$emit('finished');
+    async clickAdd() {
+      await this.addMap();
+      this.$emit("finished");
     },
-    addMap() {
-      const url = process.env.VUE_APP_ACONDBS_URL;
-      const query = `
-        mutation m($input: CreateMapInput!) {
-          createMap(input: $input) {
-            ok
-            map {
-              mapId
-              name
+    async addMap() {
+      try {
+        const data = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($input: CreateMapInput!) {
+              createMap(input: $input) {
+                ok
+                map {
+                  mapId
+                  name
+                }
+              }
             }
-          }
-        }
-      `;
-      const variables = { input: this.form };
-      axios({
-        url: url,
-        method: "POST",
-        data: {
-          query: query,
-          variables: variables
-        }
-      })
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error);
+          `,
+          variables: { input: this.form }
         });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };
