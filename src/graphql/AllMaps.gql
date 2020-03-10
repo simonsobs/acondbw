@@ -1,0 +1,11 @@
+query AllMaps {
+  allMaps(sort: DATE_POSTED_DESC) {
+    edges {
+      node {
+        id
+        mapId
+        name
+      }
+    }
+  }
+}

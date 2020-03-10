@@ -46,23 +46,10 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
+import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 import MapItemCard from "@/components/MapItemCard";
 import MapSubmitFormDialog from "@/components/MapSubmitFormDialog";
-
-const GqlAllMaps = gql`
-  query AllMaps {
-    allMaps(sort: DATE_POSTED_DESC) {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
 
 export default {
   name: "maps",
@@ -79,7 +66,7 @@ export default {
   },
   apollo: {
     allMaps: {
-      query: GqlAllMaps,
+      query: ALL_MAPS,
       result(result) {
         this.error = null;
         if (result.error) {
