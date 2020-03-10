@@ -35,7 +35,6 @@
             :collapsed="isCardCollapsed[edge.node.id]"
             v-on:expand="isCardCollapsed[edge.node.id] = false"
             v-on:collapse="isCardCollapsed[edge.node.id] = true"
-            v-on:deleted="$apollo.queries.allMaps.refetch()"
           ></MapItemCard>
         </div>
         <div v-else>Nothing to show here.</div>
