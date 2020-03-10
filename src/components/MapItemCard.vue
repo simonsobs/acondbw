@@ -44,25 +44,25 @@
                     <span>{{ collapsed ? "Expand" : "Collapse" }}</span>
                   </v-tooltip>
                 </div>
-                  <span @click.stop>
-                    <v-menu left bottom offset-y>
-                      <template v-slot:activator="{ on }">
-                        <v-btn icon v-on="on">
-                          <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
-                      </template>
-                      <v-list dense>
-                        <v-list-item @click="deleteMap()">
-                          <v-list-item-icon>
-                            <v-icon>mdi-delete</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Delete</v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                  </span>
+                <span @click.stop>
+                  <v-menu left bottom offset-y>
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon v-on="on">
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list dense>
+                      <v-list-item @click="deleteMap()">
+                        <v-list-item-icon>
+                          <v-icon>mdi-delete</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title>Delete</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </span>
               </v-row>
             </v-col>
           </v-row>
@@ -109,6 +109,7 @@
 <script>
 import gql from "graphql-tag";
 import MAP from "@/graphql/Map.gql";
+import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 export default {
   name: "MapItemCard",
@@ -151,6 +152,19 @@ export default {
         `,
         variables: {
           mapId: this.map.mapId
+        },
+        update: (cache, { data: { deleteMap } }) => {
+          const data = cache.readQuery({
+            query: ALL_MAPS
+          });
+          const index = data.allMaps.edges.findIndex(
+            e => e.node.mapId == this.map.mapId
+          );
+          data.allMaps.edges.splice(index, 1);
+          cache.writeQuery({
+            query: ALL_MAPS,
+            data
+          });
         }
       });
       this.$emit("deleted");
