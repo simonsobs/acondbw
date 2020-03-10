@@ -23,8 +23,8 @@
               <div v-text="map.mapper"></div>
             </v-col>
             <v-col cols="1" md="1" align-self="end" class="py-0">
-              <div v-if="collapsible">
-                <v-row align="start" justify="end" class="px-1 py-0">
+              <v-row align="start" justify="end" class="px-1 py-0">
+                <div v-if="collapsible">
                   <v-tooltip bottom open-delay="800">
                     <template v-slot:activator="{ on }">
                       <v-btn
@@ -43,6 +43,7 @@
                     </template>
                     <span>{{ collapsed ? "Expand" : "Collapse" }}</span>
                   </v-tooltip>
+                </div>
                   <span @click.stop>
                     <v-menu left bottom offset-y>
                       <template v-slot:activator="{ on }">
@@ -62,8 +63,7 @@
                       </v-list>
                     </v-menu>
                   </span>
-                </v-row>
-              </div>
+              </v-row>
             </v-col>
           </v-row>
           <v-expand-transition>
