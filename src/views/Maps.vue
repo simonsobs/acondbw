@@ -3,26 +3,28 @@
     <v-container fluid>
       <h2>Maps</h2>
       <MapSubmitFormDialog></MapSubmitFormDialog>
-      <div class="d-flex justify-end ma-2" style="max-width: 980px;">
-        <v-tooltip bottom open-delay="800">
-          <template v-slot:activator="{ on }">
-            <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
-              <v-icon>
-                {{
-                areAllCardsCollapsed
-                ? "mdi-unfold-more-horizontal"
-                : "mdi-unfold-less-horizontal"
-                }}
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>
-            {{
-            areAllCardsCollapsed ? "Expand all" : "Collapse all"
-            }}
-          </span>
-        </v-tooltip>
-      </div>
+      <v-container fluid class="pa-0">
+        <v-row align="start" justify="end" class="ma-0 px-0 py-1" style="max-width: 980px;">
+          <v-tooltip bottom open-delay="800">
+            <template v-slot:activator="{ on }">
+              <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
+                <v-icon>
+                  {{
+                  areAllCardsCollapsed
+                  ? "mdi-unfold-more-horizontal"
+                  : "mdi-unfold-less-horizontal"
+                  }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>
+              {{
+              areAllCardsCollapsed ? "Expand all" : "Collapse all"
+              }}
+            </span>
+          </v-tooltip>
+        </v-row>
+      </v-container>
       <div v-if="$apollo.queries.allMaps.loading">loading...</div>
       <div v-else-if="error">Error: cannot load data</div>
       <div v-else-if="allMaps">
