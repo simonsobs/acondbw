@@ -19,7 +19,9 @@ exports[`MapItemCard.vue match snapshot 1`] = `
             <div>pwg-pmn</div>
           </div>
           <div class="py-0 col-md-1 col-1 align-self-end">
-            <!---->
+            <div class="row px-1 py-0 align-start justify-end">
+              <!---->
+            </div>
           </div>
         </div>
         <div class="row mx-0 mb-3 px-0 collapsible">
