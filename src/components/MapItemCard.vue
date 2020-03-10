@@ -153,7 +153,7 @@ export default {
           mapId: this.map.mapId
         }
       });
-      this.$emit("mutated");
+      this.$emit("deleted");
     }
   }
 };

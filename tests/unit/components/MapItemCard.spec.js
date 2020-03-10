@@ -129,6 +129,6 @@ describe("MapItemCard.vue", () => {
     });
     await wrapper.vm.deleteMap();
     expect(wrapper.vm.$apollo.mutate).toBeCalled();
-    expect(wrapper.emitted("mutated")).toBeTruthy();
+    expect(wrapper.emitted("deleted")).toBeTruthy();
   });
 });
