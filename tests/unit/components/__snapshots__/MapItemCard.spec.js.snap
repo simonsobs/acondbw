@@ -20,8 +20,11 @@ exports[`MapItemCard.vue match snapshot 1`] = `
           </div>
           <div class="py-0 col-md-1 col-1 align-self-end">
             <div class="row px-1 py-0 align-start justify-end">
-              <!---->
-            </div>
+              <!----> <span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-dots-vertical theme--light"></i></span></button>
+              <div class="v-menu">
+                <!---->
+              </div>
+              </span></div>
           </div>
         </div>
         <div class="row mx-0 mb-3 px-0 collapsible">
