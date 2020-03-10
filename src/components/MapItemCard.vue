@@ -23,8 +23,8 @@
               <div v-text="map.mapper"></div>
             </v-col>
             <v-col cols="1" md="1" align-self="end" class="py-0">
-              <div v-if="collapsible">
-                <v-row align="start" justify="end" class="px-1 py-0">
+              <v-row align="start" justify="end" class="px-1 py-0">
+                <div v-if="collapsible">
                   <v-tooltip bottom open-delay="800">
                     <template v-slot:activator="{ on }">
                       <v-btn
@@ -43,8 +43,27 @@
                     </template>
                     <span>{{ collapsed ? "Expand" : "Collapse" }}</span>
                   </v-tooltip>
-                </v-row>
-              </div>
+                </div>
+                  <span @click.stop>
+                    <v-menu left bottom offset-y>
+                      <template v-slot:activator="{ on }">
+                        <v-btn icon v-on="on">
+                          <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
+                      </template>
+                      <v-list dense>
+                        <v-list-item @click="deleteMap()">
+                          <v-list-item-icon>
+                            <v-icon>mdi-delete</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title>Delete</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list>
+                    </v-menu>
+                  </span>
+              </v-row>
             </v-col>
           </v-row>
           <v-expand-transition>
@@ -88,6 +107,7 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
 import MAP from "@/graphql/Map.gql";
 
 export default {
@@ -117,6 +137,23 @@ export default {
           this.error = true;
         }
       }
+    }
+  },
+  methods: {
+    async deleteMap() {
+      const data = await this.$apollo.mutate({
+        mutation: gql`
+          mutation($mapId: Int!) {
+            deleteMap(mapId: $mapId) {
+              ok
+            }
+          }
+        `,
+        variables: {
+          mapId: this.map.mapId
+        }
+      });
+      this.$emit("mutated");
     }
   }
 };
