@@ -140,8 +140,8 @@ export default {
     }
   },
   methods: {
-    deleteMap() {
-      this.$apollo.mutate({
+    async deleteMap() {
+      const data = await this.$apollo.mutate({
         mutation: gql`
           mutation($mapId: Int!) {
             deleteMap(mapId: $mapId) {
@@ -153,6 +153,7 @@ export default {
           mapId: this.map.mapId
         }
       });
+      this.$emit("mutated");
     }
   }
 };
