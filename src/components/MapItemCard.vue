@@ -43,6 +43,25 @@
                     </template>
                     <span>{{ collapsed ? "Expand" : "Collapse" }}</span>
                   </v-tooltip>
+                  <span @click.stop>
+                    <v-menu left bottom offset-y>
+                      <template v-slot:activator="{ on }">
+                        <v-btn icon v-on="on">
+                          <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
+                      </template>
+                      <v-list dense>
+                        <v-list-item @click="deleteMap()">
+                          <v-list-item-icon>
+                            <v-icon>mdi-delete</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title>Delete</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list>
+                    </v-menu>
+                  </span>
                 </v-row>
               </div>
             </v-col>
@@ -88,6 +107,7 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
 import MAP from "@/graphql/Map.gql";
 
 export default {
@@ -117,6 +137,22 @@ export default {
           this.error = true;
         }
       }
+    }
+  },
+  methods: {
+    deleteMap() {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation($mapId: Int!) {
+            deleteMap(mapId: $mapId) {
+              ok
+            }
+          }
+        `,
+        variables: {
+          mapId: this.map.mapId
+        }
+      });
     }
   }
 };
