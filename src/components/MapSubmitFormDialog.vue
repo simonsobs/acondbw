@@ -47,7 +47,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-      <v-btn color="primary" @click="clickAdd()">Add</v-btn>
+      <v-btn color="primary" @click="addMap()">Add</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -70,9 +70,14 @@ export default {
     };
   },
   methods: {
-    async clickAdd() {
-      await this.addMap();
-      this.$emit("finished");
+    clearForm() {
+      this.form = {
+        name: "",
+        datePosted: new Date().toISOString().substr(0, 10),
+        mapper: "",
+        // paths: "",
+        note: ""
+      };
     },
     async addMap() {
       try {
@@ -90,9 +95,12 @@ export default {
           `,
           variables: { input: this.form }
         });
+        this.$emit("finished");
+        this.clearForm();
       } catch (error) {
         console.log(error);
       }
+      this.$emit("finished");
     }
   }
 };
