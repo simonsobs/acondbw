@@ -6,7 +6,7 @@
         <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
-              <v-btn icon @click="$apollo.queries.allMaps.refetch()" v-on="on">
+              <v-btn icon @click="$apollo.queries.allMaps.refetch(); areAllCardsCollapsed = true" v-on="on">
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
