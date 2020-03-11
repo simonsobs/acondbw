@@ -29,7 +29,7 @@ describe("Maps.vue", () => {
       },
       stubs: {
         MapItemCard: true,
-        MapSubmitFormDialog: true
+        MapSubmitForm: true
       }
     });
   }

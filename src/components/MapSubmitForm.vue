@@ -56,7 +56,7 @@
 import gql from "graphql-tag";
 
 export default {
-  name: "mapSubmitFormDialog",
+  name: "MapSubmitForm",
   data() {
     return {
       menuDatePosteDatePicker: false,
