@@ -52,12 +52,11 @@ describe("MapSubmitForm.vue", () => {
     wrapper.setData({ form: input });
     await Vue.nextTick();
     await wrapper.vm.addMap();
-    expect(wrapper.vm.$apollo.mutate).toBeCalled();
     const calls = wrapper.vm.$apollo.mutate.mock.calls;
     expect(calls.length).toBe(1);
     expect(calls[0][0].mutation).toBeDefined();
-    expect(calls[0][0].variables).toBeDefined();
     expect(calls[0][0].variables).toEqual({ input: input });
     expect(wrapper.vm.form).toEqual(blankForm); // # clearForm() is called
+    expect(wrapper.emitted("finished")).toBeTruthy();
   });
 });

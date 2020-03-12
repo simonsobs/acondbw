@@ -54,6 +54,7 @@
 
 <script>
 import gql from "graphql-tag";
+import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 export default {
   name: "MapSubmitForm",
@@ -87,13 +88,24 @@ export default {
               createMap(input: $input) {
                 ok
                 map {
+                  id
                   mapId
                   name
                 }
               }
             }
           `,
-          variables: { input: this.form }
+          variables: { input: this.form },
+          update: (cache, { data: { createMap } }) => {
+            const data = cache.readQuery({
+              query: ALL_MAPS
+            });
+            data.allMaps.edges.splice(0, 0, { node: createMap.map });
+            cache.writeQuery({
+              query: ALL_MAPS,
+              data
+            });
+          }
         });
         this.$emit("finished");
         this.clearForm();
