@@ -63,12 +63,7 @@
                             </v-list-item-content>
                           </v-list-item>
                         </template>
-                        <v-card>
-                          <span>dialog text</span>
-                          <v-card-actions>
-                            <v-btn color="secondary" text @click="dialog = false; menu = false">Cancel</v-btn>
-                          </v-card-actions>
-                        </v-card>
+                        <MapEditForm v-on:finished="dialog = false; menu = false"></MapEditForm>
                       </v-dialog>
                       <v-list-item @click="deleteMap()">
                         <v-list-item-icon>
@@ -129,8 +124,13 @@ import gql from "graphql-tag";
 import MAP from "@/graphql/Map.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
+import MapEditForm from "@/components/MapEditForm";
+
 export default {
   name: "MapItemCard",
+  components: {
+    MapEditForm
+  },
   props: {
     mapName: { default: null },
     collapsed: { default: false },
