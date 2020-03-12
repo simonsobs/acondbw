@@ -45,13 +45,31 @@
                   </v-tooltip>
                 </div>
                 <span @click.stop>
-                  <v-menu left bottom offset-y>
-                    <template v-slot:activator="{ on }">
-                      <v-btn icon v-on="on">
+                  <v-menu left bottom offset-y v-model="menu" :close-on-content-click="false">
+                    <template v-slot:activator="{ on: menu }">
+                      <v-btn icon v-on="{ ...menu }">
                         <v-icon>mdi-dots-vertical</v-icon>
                       </v-btn>
                     </template>
                     <v-list dense>
+                      <v-dialog v-model="dialog" persistent max-width="600">
+                        <template v-slot:activator="{ on: dialog }">
+                          <v-list-item v-on="{ ...dialog }">
+                            <v-list-item-icon>
+                              <v-icon>mdi-pencil</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                              <v-list-item-title>Edit</v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </template>
+                        <v-card>
+                          <span>dialog text</span>
+                          <v-card-actions>
+                            <v-btn color="secondary" text @click="dialog = false; menu = false">Cancel</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
                       <v-list-item @click="deleteMap()">
                         <v-list-item-icon>
                           <v-icon>mdi-delete</v-icon>
@@ -120,6 +138,8 @@ export default {
   },
   data() {
     return {
+      menu: false,
+      dialog: false,
       map: null,
       error: null
     };
