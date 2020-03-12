@@ -57,7 +57,7 @@ import gql from "graphql-tag";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 export default {
-  name: "MapSubmitForm",
+  name: "MapAddForm",
   data() {
     return {
       menuDatePosteDatePicker: false,

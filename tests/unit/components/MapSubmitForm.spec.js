@@ -3,18 +3,18 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import MapSubmitForm from "@/components/MapSubmitForm.vue";
+import MapAddForm from "@/components/MapAddForm.vue";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
-describe("MapSubmitForm.vue", () => {
+describe("MapAddForm.vue", () => {
   let localVue;
   let vuetify;
 
   function createWrapper() {
     const mutate = jest.fn();
-    let wrapper = mount(MapSubmitForm, {
+    let wrapper = mount(MapAddForm, {
       localVue,
       vuetify,
       mocks: {

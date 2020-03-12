@@ -42,7 +42,7 @@
                 <span>Add a new map</span>
               </v-tooltip>
             </template>
-            <MapSubmitForm v-on:finished="dialog = false"></MapSubmitForm>
+            <MapAddForm v-on:finished="dialog = false"></MapAddForm>
           </v-dialog>
         </v-row>
       </v-container>
@@ -71,13 +71,13 @@
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 import MapItemCard from "@/components/MapItemCard";
-import MapSubmitForm from "@/components/MapSubmitForm";
+import MapAddForm from "@/components/MapAddForm";
 
 export default {
   name: "maps",
   components: {
     MapItemCard,
-    MapSubmitForm
+    MapAddForm
   },
   data() {
     return {
