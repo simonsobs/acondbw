@@ -11,6 +11,18 @@
           </template>
           <span>Back to Maps</span>
         </v-tooltip>
+        <v-tooltip bottom open-delay="800">
+          <template v-slot:activator="{ on }">
+            <v-btn
+              icon
+              @click="$apollo.queries.map.refetch();"
+              v-on="on"
+            >
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+          </template>
+          <span>Refresh</span>
+        </v-tooltip>
       </div>
       <div v-if="$apollo.queries.map.loading">loading...</div>
       <div v-else-if="error">Error: cannot load data</div>
@@ -24,17 +36,17 @@
 
 <script>
 import gql from "graphql-tag";
+import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 
 import MapItemCard from "@/components/MapItemCard";
 
 const GqlMapName = gql`
   query MapIdName($name: String) {
     map(name: $name) {
-      id
-      mapId
-      name
+      ...map
     }
   }
+  ${MAP_FRAGMENT}
 `;
 
 export default {
