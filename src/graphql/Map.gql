@@ -1,28 +1,7 @@
+#import "./MapFragment.gql"
+
 query Map($mapId: Int) {
   map(mapId: $mapId) {
-    id
-    mapId
-    name
-    datePosted
-    mapper
-    mapFilePaths {
-      edges {
-        node {
-          id
-          path
-          note
-        }
-      }
-    }
-    note
-    beams {
-      edges {
-        node {
-          id
-          beamId
-          name
-        }
-      }
-    }
+    ...map
   }
 }
