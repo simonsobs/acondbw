@@ -39,6 +39,7 @@ describe("MapItemCard.vue", () => {
   }
 
   const map = {
+    id: "TWFwOjEwMTM=",
     mapId: "1013",
     name: "lat20200201",
     datePosted: "2020-02-01",
@@ -47,6 +48,7 @@ describe("MapItemCard.vue", () => {
       edges: [
         {
           node: {
+            id: "TWFwRmlsZVBhdGg6NA==",
             path: "nersc:/go/to/my/maps_v3",
             note: "lat only"
           }
@@ -59,6 +61,7 @@ describe("MapItemCard.vue", () => {
       edges: [
         {
           node: {
+            id: "QmVhbToxMTUw",
             beamId: "1150",
             name: "20200207"
           }

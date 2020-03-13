@@ -102,13 +102,23 @@
                   </ul>
                 </div>
               </v-col>
-              <v-col cols="12" md="8" offset-md="4" class="py-0">
-                <div class="caption grey--text">Beams</div>
-                <ul v-if="map.beams">
-                  <li v-for="(edgep, index) in map.beams.edges" :key="index">
-                    <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
-                  </li>
-                </ul>
+              <v-col cols="12" class="py-0">
+                <v-row>
+                  <v-col cols="12" md="4" align-self="end" class="py-0">
+                    <span class="grey--text" style="font-size: 65%;">Data ID: {{ dataId }}</span>
+                  </v-col>
+                  <v-col cols="12" md="8" class="py-0">
+                    <div class="caption grey--text">Beams</div>
+                    <ul v-if="map.beams">
+                      <li v-for="(edgep, index) in map.beams.edges" :key="index">
+                        <router-link
+                          :to="'/beams/item/' + edgep.node.name"
+                          v-text="edgep.node.name"
+                        ></router-link>
+                      </li>
+                    </ul>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </v-expand-transition>
@@ -120,6 +130,8 @@
 </template>
 
 <script>
+import { defaultDataIdFromObject } from "apollo-cache-inmemory";
+
 import gql from "graphql-tag";
 import MAP from "@/graphql/Map.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
@@ -132,7 +144,7 @@ export default {
     MapEditForm
   },
   props: {
-    mapName: { default: null },
+    mapId: { default: null }, // map.mapId not map.id
     collapsed: { default: false },
     collapsible: { default: false }
   },
@@ -144,12 +156,18 @@ export default {
       error: null
     };
   },
+  computed: {
+    dataId: function() {
+      return defaultDataIdFromObject(this.map);
+    }
+  },
+
   apollo: {
     map: {
       query: MAP,
       variables() {
         return {
-          name: this.mapName
+          mapId: this.mapId
         };
       },
       result(result) {
