@@ -13,9 +13,9 @@ exports[`Maps.vue match snapshot 1`] = `
     </div>
     <div>
       <div>
-        <mapitemcard-stub mapname="lat20200201" collapsed="true" collapsible="true"></mapitemcard-stub>
-        <mapitemcard-stub mapname="lat20200120" collapsed="true" collapsible="true"></mapitemcard-stub>
-        <mapitemcard-stub mapname="lat20190213" collapsed="true" collapsible="true"></mapitemcard-stub>
+        <mapitemcard-stub mapid="1013" collapsed="true" collapsible="true"></mapitemcard-stub>
+        <mapitemcard-stub mapid="1012" collapsed="true" collapsible="true"></mapitemcard-stub>
+        <mapitemcard-stub mapid="1001" collapsed="true" collapsible="true"></mapitemcard-stub>
       </div>
     </div>
   </div>
