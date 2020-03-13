@@ -100,7 +100,10 @@ export default {
             const data = cache.readQuery({
               query: ALL_MAPS
             });
-            data.allMaps.edges.splice(0, 0, { node: createMap.map });
+            data.allMaps.edges.splice(0, 0, {
+              node: createMap.map,
+              __typename: "MapEdge"
+            });
             cache.writeQuery({
               query: ALL_MAPS,
               data
