@@ -55,6 +55,7 @@
 <script>
 import gql from "graphql-tag";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
+import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 
 export default {
   name: "MapAddForm",
@@ -88,19 +89,21 @@ export default {
               createMap(input: $input) {
                 ok
                 map {
-                  id
-                  mapId
-                  name
+                  ...map
                 }
               }
             }
+            ${MAP_FRAGMENT}
           `,
           variables: { input: this.form },
           update: (cache, { data: { createMap } }) => {
             const data = cache.readQuery({
               query: ALL_MAPS
             });
-            data.allMaps.edges.splice(0, 0, { node: createMap.map });
+            data.allMaps.edges.splice(0, 0, {
+              node: createMap.map,
+              __typename: "MapEdge"
+            });
             cache.writeQuery({
               query: ALL_MAPS,
               data

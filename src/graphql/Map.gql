@@ -1,25 +1,7 @@
-query Map($name: String) {
-  map(name: $name) {
-    mapId
-    name
-    datePosted
-    mapper
-    mapFilePaths {
-      edges {
-        node {
-          path
-          note
-        }
-      }
-    }
-    note
-    beams {
-      edges {
-        node {
-          beamId
-          name
-        }
-      }
-    }
+#import "./MapFragment.gql"
+
+query Map($mapId: Int) {
+  map(mapId: $mapId) {
+    ...map
   }
 }

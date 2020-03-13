@@ -1,0 +1,26 @@
+fragment map on Map {
+  id
+  mapId
+  name
+  datePosted
+  mapper
+  mapFilePaths {
+    edges {
+      node {
+        id
+        path
+        note
+      }
+    }
+  }
+  note
+  beams {
+    edges {
+      node {
+        id
+        beamId
+        name
+      }
+    }
+  }
+}

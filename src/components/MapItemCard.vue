@@ -45,13 +45,29 @@
                   </v-tooltip>
                 </div>
                 <span @click.stop>
-                  <v-menu left bottom offset-y>
-                    <template v-slot:activator="{ on }">
-                      <v-btn icon v-on="on">
+                  <v-menu left bottom offset-y v-model="menu" :close-on-content-click="false">
+                    <template v-slot:activator="{ on: menu }">
+                      <v-btn icon v-on="{ ...menu }">
                         <v-icon>mdi-dots-vertical</v-icon>
                       </v-btn>
                     </template>
                     <v-list dense>
+                      <v-dialog v-model="dialog" persistent max-width="600">
+                        <template v-slot:activator="{ on: dialog }">
+                          <v-list-item v-on="{ ...dialog }">
+                            <v-list-item-icon>
+                              <v-icon>mdi-pencil</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                              <v-list-item-title>Edit</v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </template>
+                        <MapEditForm
+                          :mapId="map.mapId"
+                          v-on:finished="dialog = false; menu = false"
+                        ></MapEditForm>
+                      </v-dialog>
                       <v-list-item @click="deleteMap()">
                         <v-list-item-icon>
                           <v-icon>mdi-delete</v-icon>
@@ -89,13 +105,23 @@
                   </ul>
                 </div>
               </v-col>
-              <v-col cols="12" md="8" offset-md="4" class="py-0">
-                <div class="caption grey--text">Beams</div>
-                <ul v-if="map.beams">
-                  <li v-for="(edgep, index) in map.beams.edges" :key="index">
-                    <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
-                  </li>
-                </ul>
+              <v-col cols="12" class="py-0">
+                <v-row>
+                  <v-col cols="12" md="4" align-self="end" class="py-0">
+                    <span class="grey--text" style="font-size: 65%;">Data ID: {{ dataId }}</span>
+                  </v-col>
+                  <v-col cols="12" md="8" class="py-0">
+                    <div class="caption grey--text">Beams</div>
+                    <ul v-if="map.beams">
+                      <li v-for="(edgep, index) in map.beams.edges" :key="index">
+                        <router-link
+                          :to="'/beams/item/' + edgep.node.name"
+                          v-text="edgep.node.name"
+                        ></router-link>
+                      </li>
+                    </ul>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </v-expand-transition>
@@ -107,29 +133,44 @@
 </template>
 
 <script>
+import { defaultDataIdFromObject } from "apollo-cache-inmemory";
+
 import gql from "graphql-tag";
 import MAP from "@/graphql/Map.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
+import MapEditForm from "@/components/MapEditForm";
+
 export default {
   name: "MapItemCard",
+  components: {
+    MapEditForm
+  },
   props: {
-    mapName: { default: null },
+    mapId: { default: null }, // map.mapId not map.id
     collapsed: { default: false },
     collapsible: { default: false }
   },
   data() {
     return {
+      menu: false,
+      dialog: false,
       map: null,
       error: null
     };
   },
+  computed: {
+    dataId: function() {
+      return defaultDataIdFromObject(this.map);
+    }
+  },
+
   apollo: {
     map: {
       query: MAP,
       variables() {
         return {
-          name: this.mapName
+          mapId: this.mapId
         };
       },
       result(result) {

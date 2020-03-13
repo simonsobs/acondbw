@@ -39,18 +39,21 @@ describe("Maps.vue", () => {
       {
         node: {
           id: "TWFwOjEwMTM=",
+          mapId: "1013",
           name: "lat20200201"
         }
       },
       {
         node: {
           id: "TWFwOjEwMTI=",
+          mapId: "1012",
           name: "lat20200120"
         }
       },
       {
         node: {
           id: "TWFwOjEwMDE=",
+          mapId: "1001",
           name: "lat20190213"
         }
       }

@@ -41,12 +41,13 @@ describe("MapItem.vue", () => {
     const wrapper = createWrapper();
     wrapper.setData({
       map: {
+        id: "TWFwOjEwMTM=",
         mapId: "1013",
-        name: "lat20200201",
+        name: "lat20200201"
       }
     });
     await Vue.nextTick();
-    expect(wrapper.find(MapItemCard).props().mapName).toBe("lat20200201");
+    expect(wrapper.find(MapItemCard).props().mapId).toBe("1013");
     expect(wrapper.html()).toMatchSnapshot();
   });
 
@@ -54,7 +55,7 @@ describe("MapItem.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('loading')
+    expect(wrapper.text()).toContain("loading");
   });
 
   it("error", async () => {
@@ -63,13 +64,12 @@ describe("MapItem.vue", () => {
       error: true
     });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('Error: cannot load data')
+    expect(wrapper.text()).toContain("Error: cannot load data");
   });
 
   it("none", async () => {
     const wrapper = createWrapper();
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('Nothing to show here')
+    expect(wrapper.text()).toContain("Nothing to show here");
   });
-  
 });

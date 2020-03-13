@@ -53,7 +53,7 @@
           <MapItemCard
             v-for="edge in allMaps.edges"
             :key="edge.node.id"
-            :mapName="edge.node.name"
+            :mapId="edge.node.mapId"
             collapsible="true"
             :collapsed="isCardCollapsed[edge.node.id]"
             v-on:expand="isCardCollapsed[edge.node.id] = false"
