@@ -1,5 +1,6 @@
-query Map($name: String) {
-  map(name: $name) {
+query Map($mapId: Int) {
+  map(mapId: $mapId) {
+    id
     mapId
     name
     datePosted
@@ -7,6 +8,7 @@ query Map($name: String) {
     mapFilePaths {
       edges {
         node {
+          id
           path
           note
         }
@@ -16,6 +18,7 @@ query Map($name: String) {
     beams {
       edges {
         node {
+          id
           beamId
           name
         }
