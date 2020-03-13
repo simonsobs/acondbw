@@ -63,7 +63,10 @@
                             </v-list-item-content>
                           </v-list-item>
                         </template>
-                        <MapEditForm v-on:finished="dialog = false; menu = false"></MapEditForm>
+                        <MapEditForm
+                          :mapId="map.mapId"
+                          v-on:finished="dialog = false; menu = false"
+                        ></MapEditForm>
                       </v-dialog>
                       <v-list-item @click="deleteMap()">
                         <v-list-item-icon>
