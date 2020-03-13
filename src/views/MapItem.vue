@@ -15,11 +15,7 @@
       <div v-if="$apollo.queries.map.loading">loading...</div>
       <div v-else-if="error">Error: cannot load data</div>
       <div v-else-if="map">
-        <MapItemCard
-          :mapName="map.name"
-          :collapsible="false"
-          v-on:deleted="$router.push('/maps')"
-        ></MapItemCard>
+        <MapItemCard :mapId="map.mapId" :collapsible="false" v-on:deleted="$router.push('/maps')"></MapItemCard>
       </div>
       <div v-else>Nothing to show here.</div>
     </v-container>
@@ -34,6 +30,7 @@ import MapItemCard from "@/components/MapItemCard";
 const GqlMapName = gql`
   query MapIdName($name: String) {
     map(name: $name) {
+      id
       mapId
       name
     }

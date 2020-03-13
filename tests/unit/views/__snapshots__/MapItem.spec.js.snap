@@ -4,9 +4,9 @@ exports[`MapItem.vue match snapshot 1`] = `
 <div class="mapitem">
   <div class="container container--fluid">
     <h2>Map</h2>
-    <div class="d-flex justify-start my-2" style="max-width: 980px;"><a href="/maps" class="v-btn v-btn--flat v-btn--icon v-btn--round v-btn--router v-btn--text theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-arrow-left theme--light"></i></span></a><span class="v-tooltip v-tooltip--bottom"><!----></span></div>
+    <div class="d-flex justify-start my-2" style="max-width: 980px;"><a href="/maps" class="v-btn v-btn--flat v-btn--icon v-btn--round v-btn--router v-btn--text theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-arrow-left theme--light"></i></span></a><span class="v-tooltip v-tooltip--bottom"><!----></span> <span class="v-tooltip v-tooltip--bottom"><!----></span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-refresh theme--light"></i></span></button></div>
     <div>
-      <mapitemcard-stub mapname="lat20200201"></mapitemcard-stub>
+      <mapitemcard-stub mapid="1013"></mapitemcard-stub>
     </div>
   </div>
 </div>
