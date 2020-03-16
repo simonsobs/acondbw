@@ -1,19 +1,37 @@
 <template>
   <div class="mapdeleteform">
-    <div v-if="$apollo.queries.map.loading">loading...</div>
-    <div v-else-if="error">Error: cannot load data</div>
+    <v-card v-if="loading">
+      <v-card-text>loading...</v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+      </v-card-actions>
+    </v-card>
+    <v-card v-else-if="error">
+      <v-card-text>Error: cannot load data</v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+      </v-card-actions>
+    </v-card>
     <v-card v-else-if="map">
       <v-card-title class="headline">Delete a map</v-card-title>
-      <v-card-text class="body-1 font-weight-medium error--text">
-        Really, delete the map "{{ map.name }}"?
-      </v-card-text>
+      <v-card-text
+        class="body-1 font-weight-medium error--text"
+      >Really, delete the map "{{ map.name }}"?</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
         <v-btn color="error" @click="deleteMap()">Delete</v-btn>
       </v-card-actions>
     </v-card>
-    <div v-else>Nothing to show here.</div>
+    <v-card v-else>
+      <v-card-text>Nothing to show here.</v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+      </v-card-actions>
+    </v-card>
   </div>
 </template>
 
@@ -42,6 +60,11 @@ export default {
       map: null,
       error: null
     };
+  },
+  computed: {
+    loading() {
+      return this.$apollo.queries.map.loading;
+    }
   },
   apollo: {
     map: {
