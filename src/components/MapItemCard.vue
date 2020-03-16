@@ -52,9 +52,9 @@
                       </v-btn>
                     </template>
                     <v-list dense>
-                      <v-dialog v-model="dialog" persistent max-width="600">
-                        <template v-slot:activator="{ on: dialog }">
-                          <v-list-item v-on="{ ...dialog }">
+                      <v-dialog v-model="editDialog" persistent max-width="600">
+                        <template v-slot:activator="{ on: editDialog }">
+                          <v-list-item v-on="{ ...editDialog }">
                             <v-list-item-icon>
                               <v-icon>mdi-pencil</v-icon>
                             </v-list-item-icon>
@@ -65,7 +65,7 @@
                         </template>
                         <MapEditForm
                           :mapId="map.mapId"
-                          v-on:finished="dialog = false; menu = false"
+                          v-on:finished="editDialog = false; menu = false"
                         ></MapEditForm>
                       </v-dialog>
                       <v-list-item @click="deleteMap()">
@@ -154,7 +154,7 @@ export default {
   data() {
     return {
       menu: false,
-      dialog: false,
+      editDialog: false,
       map: null,
       error: null
     };
