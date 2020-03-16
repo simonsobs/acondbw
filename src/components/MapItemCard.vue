@@ -68,14 +68,23 @@
                           v-on:finished="editDialog = false; menu = false"
                         ></MapEditForm>
                       </v-dialog>
-                      <v-list-item @click="deleteMap()">
-                        <v-list-item-icon>
-                          <v-icon>mdi-delete</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>Delete</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
+                      <v-dialog v-model="deleteDialog" persistent max-width="600">
+                        <template v-slot:activator="{ on: deleteDialog }">
+                          <v-list-item v-on="{ ...deleteDialog }">
+                            <v-list-item-icon>
+                              <v-icon>mdi-delete</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                              <v-list-item-title>Delete</v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </template>
+                        <MapDeleteForm
+                          :mapId="map.mapId"
+                          v-on:finished="deleteDialog = false; menu = false"
+                          v-on:deleted="deleteDialog = false; menu = false; map = null"
+                        ></MapDeleteForm>
+                      </v-dialog>
                     </v-list>
                   </v-menu>
                 </span>
@@ -140,11 +149,13 @@ import MAP from "@/graphql/Map.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 import MapEditForm from "@/components/MapEditForm";
+import MapDeleteForm from "@/components/MapDeleteForm";
 
 export default {
   name: "MapItemCard",
   components: {
-    MapEditForm
+    MapEditForm,
+    MapDeleteForm
   },
   props: {
     mapId: { default: null }, // map.mapId not map.id
@@ -155,6 +166,7 @@ export default {
     return {
       menu: false,
       editDialog: false,
+      deleteDialog: false,
       map: null,
       error: null
     };
