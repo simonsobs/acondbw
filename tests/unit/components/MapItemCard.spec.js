@@ -125,13 +125,4 @@ describe("MapItemCard.vue", () => {
     }
   );
 
-  it("delete", async () => {
-    const wrapper = createWrapper();
-    wrapper.setData({
-      map: map
-    });
-    await wrapper.vm.deleteMap();
-    expect(wrapper.vm.$apollo.mutate).toBeCalled();
-    expect(wrapper.emitted("deleted")).toBeTruthy();
-  });
 });

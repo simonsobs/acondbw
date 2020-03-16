@@ -144,9 +144,7 @@
 <script>
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
-import gql from "graphql-tag";
 import MAP from "@/graphql/Map.gql";
-import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 import MapEditForm from "@/components/MapEditForm";
 import MapDeleteForm from "@/components/MapDeleteForm";
@@ -191,36 +189,6 @@ export default {
           this.error = true;
         }
       }
-    }
-  },
-  methods: {
-    async deleteMap() {
-      const data = await this.$apollo.mutate({
-        mutation: gql`
-          mutation($mapId: Int!) {
-            deleteMap(mapId: $mapId) {
-              ok
-            }
-          }
-        `,
-        variables: {
-          mapId: this.map.mapId
-        },
-        update: (cache, { data: { deleteMap } }) => {
-          const data = cache.readQuery({
-            query: ALL_MAPS
-          });
-          const index = data.allMaps.edges.findIndex(
-            e => e.node.mapId == this.map.mapId
-          );
-          data.allMaps.edges.splice(index, 1);
-          cache.writeQuery({
-            query: ALL_MAPS,
-            data
-          });
-        }
-      });
-      this.$emit("deleted");
     }
   }
 };
