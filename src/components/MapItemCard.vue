@@ -68,7 +68,7 @@
                           v-on:finished="editDialog = false; menu = false"
                         ></MapEditForm>
                       </v-dialog>
-                      <v-dialog v-model="deleteDialog" persistent max-width="600">
+                      <v-dialog v-model="deleteDialog" max-width="600">
                         <template v-slot:activator="{ on: deleteDialog }">
                           <v-list-item v-on="{ ...deleteDialog }">
                             <v-list-item-icon>
