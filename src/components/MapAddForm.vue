@@ -78,7 +78,10 @@ export default {
     return {
       form: { ...formDefault },
       valid: true,
-      nameRules: [v => !!v || "Name is required"],
+      nameRules: [
+        v => !!v || "Name is required",
+        v => (v || "").indexOf(" ") < 0 || "No spaces are allowed"
+      ],
       menuDatePosteDatePicker: false
     };
   },
