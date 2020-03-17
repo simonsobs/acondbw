@@ -56,7 +56,7 @@ describe("MapAddForm.vue", () => {
     expect(calls.length).toBe(1);
     expect(calls[0][0].mutation).toBeDefined();
     expect(calls[0][0].variables).toEqual({ input: input });
-    expect(wrapper.vm.form).toEqual(blankForm); // # clearForm() is called
+    expect(wrapper.vm.form).toEqual(blankForm); // # resetForm() is called
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
 });

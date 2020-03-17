@@ -2,8 +2,14 @@
   <v-card>
     <v-card-title class="headline">Add a map</v-card-title>
     <v-card-text>
-      <v-form>
-        <v-text-field label="Name of map" v-model="form.name" required prepend-icon="map"></v-text-field>
+      <v-form ref="form" v-model="valid">
+        <v-text-field
+          label="Name of map*"
+          v-model="form.name"
+          :rules="nameRules"
+          required
+          prepend-icon="map"
+        ></v-text-field>
         <v-menu
           v-model="menuDatePosteDatePicker"
           :close-on-content-click="false"
@@ -40,14 +46,15 @@
           label="Note"
           v-model="form.note"
           hint="Itemized text. One iterm per line"
-          prepend-icon="mdi-file-document-box-outline"
+          prepend-icon="mdi-note"
         ></v-textarea>
       </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-      <v-btn color="primary" @click="addMap()">Add</v-btn>
+      <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
+      <v-btn color="primary" :disabled="!valid" @click="addMap()">Add</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -57,29 +64,32 @@ import gql from "graphql-tag";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 
+const formDefault = {
+  name: "",
+  datePosted: new Date().toISOString().substr(0, 10),
+  mapper: "",
+  // paths: "",
+  note: ""
+};
+
 export default {
   name: "MapAddForm",
   data() {
     return {
-      menuDatePosteDatePicker: false,
-      form: {
-        name: "",
-        datePosted: new Date().toISOString().substr(0, 10),
-        mapper: "",
-        // paths: "",
-        note: ""
-      }
+      form: { ...formDefault },
+      valid: true,
+      nameRules: [v => !!v || "Name is required"],
+      menuDatePosteDatePicker: false
     };
   },
   methods: {
-    clearForm() {
-      this.form = {
-        name: "",
-        datePosted: new Date().toISOString().substr(0, 10),
-        mapper: "",
-        // paths: "",
-        note: ""
-      };
+    resetForm() {
+      // this.$refs.form.reset();
+      // This line is commented out because it resets "form" to
+      // the empty object {}.
+      // Instead, the following two lines are used.
+      this.form = { ...formDefault };
+      this.$refs.form.resetValidation();
     },
     async addMap() {
       try {
@@ -111,7 +121,7 @@ export default {
           }
         });
         this.$emit("finished");
-        this.clearForm();
+        this.resetForm();
       } catch (error) {
         console.log(error);
       }
