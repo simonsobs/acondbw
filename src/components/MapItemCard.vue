@@ -1,9 +1,9 @@
 <template>
   <div class="mapitemcard">
-    <div v-if="$apollo.queries.map.loading">loading...</div>
-    <div v-else-if="error">Error: cannot load data</div>
-    <v-card v-else-if="map" outlined hover style="max-width: 980px;">
-      <div @click="$emit('expand')" style="cursor: default;">
+    <v-card outlined hover :loading="loading" style="max-width: 980px;">
+      <v-card-text v-if="loading" class="pa-2">loading...</v-card-text>
+      <v-card-text v-else-if="error">Error: cannot load data</v-card-text>
+      <div v-else-if="map" @click="$emit('expand')" style="cursor: default;">
         <v-container fluid class="pa-0">
           <v-row class="ma-0 px-0">
             <v-col cols="12" md="4" class="py-0">
@@ -136,8 +136,8 @@
           </v-expand-transition>
         </v-container>
       </div>
+      <v-card-text v-else>Nothing to show here.</v-card-text>
     </v-card>
-    <div v-else>Nothing to show here.</div>
   </div>
 </template>
 
@@ -170,11 +170,13 @@ export default {
     };
   },
   computed: {
+    loading() {
+      return this.$apollo.queries.map.loading;
+    },
     dataId: function() {
       return defaultDataIdFromObject(this.map);
     }
   },
-
   apollo: {
     map: {
       query: MAP,
