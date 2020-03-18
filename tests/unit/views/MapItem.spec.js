@@ -55,7 +55,7 @@ describe("MapItem.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.text()).toContain("loading");
+    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
   });
 
   it("error", async () => {
