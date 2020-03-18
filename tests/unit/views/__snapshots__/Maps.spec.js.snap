@@ -3,7 +3,16 @@
 exports[`Maps.vue match snapshot 1`] = `
 <div class="maps">
   <div class="container container--fluid">
-    <div class="row display-1 mx-1 mt-3 primary--text"><span class="me-2"><i aria-hidden="true" class="v-icon notranslate material-icons theme--light">map</i></span>Maps
+    <div class="row display-1 mx-1 mt-3 primary--text" style="max-width: 980px;">
+      <div col="8" class="pa-0 ma-0 col"><span class="me-2"><i aria-hidden="true" class="v-icon notranslate material-icons theme--light">map</i></span>Maps
+      </div>
+      <div col="4" class="pa-0 ma-0 col">
+        <div class="row px-1 py-0 align-start justify-end"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-nut theme--light grey--text text--lighten-1" style="font-size: 12px;"></i></span></button>
+          <div class="v-menu">
+            <!---->
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       <div class="container pa-0 container--fluid">

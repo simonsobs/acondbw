@@ -1,12 +1,13 @@
 <template>
   <v-card>
-    <v-card-title class="headline">Add a map</v-card-title>
+    <v-card-title class="headline primary--text">Add a map</v-card-title>
     <v-card-text>
       <v-form ref="form" v-model="valid">
         <v-text-field
           label="Name of map*"
           v-model="form.name"
           :rules="nameRules"
+          filled
           required
           prepend-icon="map"
         ></v-text-field>
@@ -22,6 +23,7 @@
             <v-text-field
               v-model="form.datePosted"
               label="Date posted"
+              filled
               prepend-icon="event"
               v-on="on"
             ></v-text-field>
@@ -33,7 +35,7 @@
             @input="menuDatePosteDatePicker = false"
           ></v-date-picker>
         </v-menu>
-        <v-text-field label="Mapper" v-model="form.mapper" prepend-icon="person"></v-text-field>
+        <v-text-field label="Mapper" v-model="form.mapper" filled prepend-icon="person"></v-text-field>
         <!-- 
             <v-textarea
               label="Paths"
@@ -46,6 +48,7 @@
           label="Note"
           v-model="form.note"
           hint="Itemized text. One iterm per line"
+          filled
           prepend-icon="mdi-note"
         ></v-textarea>
       </v-form>
