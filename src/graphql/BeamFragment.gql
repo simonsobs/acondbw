@@ -1,0 +1,12 @@
+fragment beam on Beam {
+  id
+  beamId
+  name
+  path
+  map {
+    name
+  }
+  parentBeam {
+    name
+  }
+}
