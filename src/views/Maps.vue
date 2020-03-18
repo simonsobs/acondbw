@@ -1,54 +1,66 @@
 <template>
   <div class="maps">
     <v-container fluid>
-      <h2>Maps</h2>
-      <v-container fluid class="pa-0">
-        <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
-          <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn icon @click="$apollo.queries.allMaps.refetch(); areAllCardsCollapsed = true" v-on="on">
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
-            </template>
-            <span>Refresh</span>
-          </v-tooltip>
-          <v-spacer></v-spacer>
-          <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
-                <v-icon>
-                  {{
-                  areAllCardsCollapsed
-                  ? "mdi-unfold-more-horizontal"
-                  : "mdi-unfold-less-horizontal"
-                  }}
-                </v-icon>
-              </v-btn>
-            </template>
-            <span>
-              {{
-              areAllCardsCollapsed ? "Expand all" : "Collapse all"
-              }}
-            </span>
-          </v-tooltip>
-          <v-dialog v-model="dialog" persistent max-width="600">
-            <template v-slot:activator="{ on: dialog }">
-              <v-tooltip bottom open-delay="800">
-                <template v-slot:activator="{ on: toolip }">
-                  <v-btn icon v-on="{ ...toolip, ...dialog }">
-                    <v-icon>mdi-plus-thick</v-icon>
-                  </v-btn>
-                </template>
-                <span>Add a new map</span>
-              </v-tooltip>
-            </template>
-            <MapAddForm v-on:finished="dialog = false"></MapAddForm>
-          </v-dialog>
-        </v-row>
-      </v-container>
-      <div v-if="$apollo.queries.allMaps.loading">loading...</div>
-      <div v-else-if="error">Error: cannot load data</div>
+      <v-row class="display-1 mx-1 mt-3 primary--text">
+        <span class="me-2"><v-icon>map</v-icon></span>Maps
+      </v-row>
+      <div v-if="loading" class="mx-2 pt-5">
+        <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
+      </div>
+      <div v-else-if="error" class="mx-2 pt-5">
+        <v-card outlined style="max-width: 980px;">
+          <v-card-text>Error: cannot load data</v-card-text>
+        </v-card>
+      </div>
       <div v-else-if="allMaps">
+        <v-container fluid class="pa-0">
+          <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
+            <v-tooltip bottom open-delay="800">
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  icon
+                  @click="$apollo.queries.allMaps.refetch(); areAllCardsCollapsed = true"
+                  v-on="on"
+                >
+                  <v-icon>mdi-refresh</v-icon>
+                </v-btn>
+              </template>
+              <span>Refresh</span>
+            </v-tooltip>
+            <v-spacer></v-spacer>
+            <v-tooltip bottom open-delay="800">
+              <template v-slot:activator="{ on }">
+                <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
+                  <v-icon>
+                    {{
+                    areAllCardsCollapsed
+                    ? "mdi-unfold-more-horizontal"
+                    : "mdi-unfold-less-horizontal"
+                    }}
+                  </v-icon>
+                </v-btn>
+              </template>
+              <span>
+                {{
+                areAllCardsCollapsed ? "Expand all" : "Collapse all"
+                }}
+              </span>
+            </v-tooltip>
+            <v-dialog v-model="dialog" persistent max-width="600">
+              <template v-slot:activator="{ on: dialog }">
+                <v-tooltip bottom open-delay="800">
+                  <template v-slot:activator="{ on: toolip }">
+                    <v-btn icon v-on="{ ...toolip, ...dialog }">
+                      <v-icon>mdi-plus-thick</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Add a new map</span>
+                </v-tooltip>
+              </template>
+              <MapAddForm v-on:finished="dialog = false"></MapAddForm>
+            </v-dialog>
+          </v-row>
+        </v-container>
         <div v-if="allMaps.edges && allMaps.edges.length">
           <MapItemCard
             v-for="edge in allMaps.edges"
@@ -58,11 +70,20 @@
             :collapsed="isCardCollapsed[edge.node.id]"
             v-on:expand="isCardCollapsed[edge.node.id] = false"
             v-on:collapse="isCardCollapsed[edge.node.id] = true"
+            class="my-1"
           ></MapItemCard>
         </div>
-        <div v-else>Nothing to show here.</div>
+        <div v-else>
+          <v-card outlined style="max-width: 980px;">
+            <v-card-text>Empty. No maps are found.</v-card-text>
+          </v-card>
+        </div>
       </div>
-      <div v-else></div>
+      <div v-else class="mx-2 pt-5">
+        <v-card outlined style="max-width: 980px;">
+          <v-card-text>Nothing to show here.</v-card-text>
+        </v-card>
+      </div>
     </v-container>
   </div>
 </template>
@@ -120,6 +141,9 @@ export default {
     }
   },
   computed: {
+    loading() {
+      return this.$apollo.queries.allMaps.loading;
+    },
     areAllCardsCollapsed: {
       get: function() {
         return Object.keys(this.isCardCollapsed).every(

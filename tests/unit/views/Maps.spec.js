@@ -77,7 +77,7 @@ describe("Maps.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.text()).toContain("loading");
+    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
   });
 
   it("error", async () => {
@@ -95,6 +95,6 @@ describe("Maps.vue", () => {
       allMaps: { edges: [] }
     });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain("Nothing to show here");
+    expect(wrapper.text()).toContain("Empty. No maps are found.");
   });
 });
