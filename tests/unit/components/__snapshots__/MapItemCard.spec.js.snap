@@ -45,8 +45,8 @@ exports[`MapItemCard.vue match snapshot 1`] = `
           </div>
           <div class="py-0 col col-12">
             <div class="row">
-              <div class="py-0 col-md-4 col-12 align-self-end"><span class="grey--text" style="font-size: 65%;">Data ID: </span></div>
-              <div class="py-0 col-md-8 col-12">
+              <div class="py-0 col-md-4 order-md-0 col-12 order-2 align-self-end"><span class="grey--text" style="font-size: 65%;">Data ID: </span></div>
+              <div class="py-0 col-md-8 col-12 order-1">
                 <div class="caption grey--text">Beams</div>
                 <ul>
                   <li><a href="/beams/item/20200207" class="">20200207</a></li>
