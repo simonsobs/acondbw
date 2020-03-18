@@ -116,10 +116,10 @@
               </v-col>
               <v-col cols="12" class="py-0">
                 <v-row>
-                  <v-col cols="12" md="4" align-self="end" class="py-0">
+                  <v-col order="2" order-md="0" cols="12" md="4" align-self="end" class="py-0">
                     <span class="grey--text" style="font-size: 65%;">Data ID: {{ dataId }}</span>
                   </v-col>
-                  <v-col cols="12" md="8" class="py-0">
+                  <v-col order="1" cols="12" md="8" class="py-0">
                     <div class="caption grey--text">Beams</div>
                     <ul v-if="map.beams">
                       <li v-for="(edgep, index) in map.beams.edges" :key="index">

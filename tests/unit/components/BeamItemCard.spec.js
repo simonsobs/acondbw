@@ -11,18 +11,22 @@ Vue.use(VueRouter);
 
 describe("BeamItemCard.vue", () => {
   let localVue;
+  let vuetify;
 
   function createWrapper({ loading = false, propsData } = {}) {
+    const mutate = jest.fn();
     let wrapper = mount(BeamItemCard, {
       localVue,
       router,
+      vuetify,
       mocks: {
         $apollo: {
           queries: {
             beam: {
               loading: loading
             }
-          }
+          },
+          mutate
         }
       },
       propsData: {
@@ -35,6 +39,7 @@ describe("BeamItemCard.vue", () => {
   }
 
   const beam = {
+    id: "QmVhbToxMTUw",
     beamId: "1150",
     name: "20200207",
     path: "BEAM_DEPOT/Beams/20200207",
@@ -48,6 +53,7 @@ describe("BeamItemCard.vue", () => {
 
   beforeEach(function() {
     localVue = createLocalVue();
+    vuetify = new Vuetify();
   });
 
   it("loading", async () => {
@@ -82,13 +88,13 @@ describe("BeamItemCard.vue", () => {
   });
 
   it.each([
-    [true, true],
-    [true, false],
-    [false, true],
-    [false, false]
+    [true, true, false],
+    [true, false, true],
+    [false, true, true],
+    [false, false, true]
   ])(
     "match snapshot - {collapsible: %p, collapsed: %p}",
-    async (collapsible, collapsed) => {
+    async (collapsible, collapsed, visible) => {
       const wrapper = createWrapper({
         propsData: { collapsed: collapsed, collapsible: collapsible }
       });
@@ -96,7 +102,7 @@ describe("BeamItemCard.vue", () => {
         beam: beam
       });
       await Vue.nextTick();
-      expect(wrapper.html()).toMatchSnapshot();
+      expect(wrapper.find(".collapsible").isVisible()).toBe(visible);
     }
   );
 });

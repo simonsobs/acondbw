@@ -1,13 +1,7 @@
-query Beam($name: String) {
-  beam(name: $name) {
-    beamId
-    name
-    path
-    map {
-      name
-    }
-    parentBeam {
-      name
-    }
+#import "./BeamFragment.gql"
+
+query Beam($beamId: Int) {
+  beam(beamId: $beamId) {
+    ...beam
   }
 }

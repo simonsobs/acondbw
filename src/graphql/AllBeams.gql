@@ -1,0 +1,11 @@
+query AllBeams {
+  allBeams(sort: NAME_DESC) {
+    edges {
+      node {
+        id
+        beamId
+        name
+      }
+    }
+  }
+}
