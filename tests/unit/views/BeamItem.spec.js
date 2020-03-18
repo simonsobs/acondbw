@@ -41,12 +41,13 @@ describe("BeamItem.vue", () => {
     const wrapper = createWrapper();
     wrapper.setData({
       beam: {
+        id: "QmVhbToxMTUw",
         beamId: "1150",
-        name: "20200207",
+        name: "20200207"
       }
     });
     await Vue.nextTick();
-    expect(wrapper.find(BeamItemCard).props().beamName).toBe("20200207");
+    expect(wrapper.find(BeamItemCard).props().beamId).toBe("1150");
     expect(wrapper.html()).toMatchSnapshot();
   });
 
@@ -54,7 +55,7 @@ describe("BeamItem.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('loading')
+    expect(wrapper.find(".v-progress-circular").exists()).toBe(true);
   });
 
   it("error", async () => {
@@ -63,13 +64,12 @@ describe("BeamItem.vue", () => {
       error: true
     });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('Error: cannot load data')
+    expect(wrapper.text()).toContain("Error: cannot load data");
   });
 
   it("none", async () => {
     const wrapper = createWrapper();
     await Vue.nextTick();
-    expect(wrapper.text()).toContain('Nothing to show here')
+    expect(wrapper.text()).toContain("Nothing to show here");
   });
-  
 });
