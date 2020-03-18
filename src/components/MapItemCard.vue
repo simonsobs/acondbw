@@ -1,9 +1,9 @@
 <template>
   <div class="mapitemcard">
-    <v-card outlined hover :loading="loading" style="max-width: 980px;">
-      <v-card-text v-if="loading" class="pa-2">loading...</v-card-text>
-      <v-card-text v-else-if="error">Error: cannot load data</v-card-text>
-      <div v-else-if="map" @click="$emit('expand')" style="cursor: default;">
+    <v-card outlined hover :loading="state == State.LOADING" style="max-width: 980px;">
+      <v-card-text v-if="state == State.LOADING" class="pa-2">loading...</v-card-text>
+      <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
+      <div v-else-if="state == State.LOADED" @click="$emit('expand')" style="cursor: default;">
         <v-container fluid class="pa-0">
           <v-row class="ma-0 px-0">
             <v-col cols="12" md="4" class="py-0">
@@ -149,6 +149,14 @@ import MAP from "@/graphql/Map.gql";
 import MapEditForm from "@/components/MapEditForm";
 import MapDeleteForm from "@/components/MapDeleteForm";
 
+const State = {
+  LOADED: 0,
+  EMPTY: 1,
+  LOADING: 2,
+  ERROR: 3,
+  NONE: 4
+};
+
 export default {
   name: "MapItemCard",
   components: {
@@ -166,10 +174,27 @@ export default {
       editDialog: false,
       deleteDialog: false,
       map: null,
-      error: null
+      error: null,
+      devtoolState: "off",
+      State: State
     };
   },
   computed: {
+    state() {
+      if (this.devtoolState != "off") {
+        return this.devtoolState;
+      }
+
+      if (this.loading) {
+        return State.LOADING;
+      } else if (this.error) {
+        return State.ERROR;
+      } else if (this.map) {
+        return State.LOADED;
+      } else {
+        return State.NONE;
+      }
+    },
     loading() {
       return this.$apollo.queries.map.loading;
     },
