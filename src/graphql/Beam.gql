@@ -1,7 +1,7 @@
 #import "./BeamFragment.gql"
 
-query Beam($name: String) {
-  beam(name: $name) {
+query Beam($beamId: Int) {
+  beam(beamId: $beamId) {
     ...beam
   }
 }
