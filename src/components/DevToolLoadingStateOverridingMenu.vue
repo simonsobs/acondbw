@@ -1,7 +1,7 @@
 <template>
   <v-menu right bottom offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
-      <v-btn absolute top right icon v-on="on">
+      <v-btn absolute style="top: -15px; right: -10px" icon v-on="on">
         <v-icon x-small color="grey lighten-1">mdi-nut</v-icon>
       </v-btn>
     </template>
