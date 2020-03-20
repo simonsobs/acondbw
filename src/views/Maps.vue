@@ -8,7 +8,11 @@
           </span>Maps
         </v-col>
       </v-row>
-      <MapList></MapList>
+      <transition name="fade" mode="out-in">
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </transition>
     </v-container>
   </div>
 </template>
@@ -23,3 +27,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+</style>

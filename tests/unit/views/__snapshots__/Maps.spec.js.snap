@@ -2,12 +2,16 @@
 
 exports[`Maps.vue match snapshot 1`] = `
 <div class="maps">
-  <div class="container container--fluid">
-    <div class="row display-1 mx-1 mt-3 primary--text" style="max-width: 980px;">
-      <div col="8" class="pa-0 ma-0 col"><span class="me-2"><i aria-hidden="true" class="v-icon notranslate material-icons theme--light">map</i></span>Maps
-      </div>
-    </div>
-    <maplist-stub></maplist-stub>
-  </div>
+  <v-container-stub tag="div" fluid="true">
+    <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
+      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>Maps
+      </v-col-stub>
+    </v-row-stub>
+    <transition-stub name="fade" mode="out-in">
+      <keep-alive-stub>
+        <router-view-stub></router-view-stub>
+      </keep-alive-stub>
+    </transition-stub>
+  </v-container-stub>
 </div>
 `;

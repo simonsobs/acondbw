@@ -48,7 +48,7 @@ describe("About.vue", () => {
   it("test /maps", () => {
     router.push("/maps");
     const pending = router.history.pending;
-    expect(pending.name).toBe("map");
+    expect(pending.name).toBe("MapList");
     expect(pending.path).toBe("/maps");
     expect(pending.params).toEqual({});
   });
