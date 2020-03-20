@@ -132,13 +132,7 @@ import ALL_MAPS from "@/graphql/AllMaps.gql";
 import MapItemCard from "@/components/MapItemCard";
 import MapAddForm from "@/components/MapAddForm";
 
-const State = {
-  LOADED: 0,
-  EMPTY: 1,
-  LOADING: 2,
-  ERROR: 3,
-  NONE: 4
-};
+import State from "@/utils/LoadingState.js";
 
 export default {
   name: "maps",
