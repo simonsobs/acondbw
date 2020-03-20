@@ -94,33 +94,7 @@
             <v-card-text>Nothing to show here.</v-card-text>
           </v-card>
         </div>
-        <v-menu right bottom offset-y :close-on-content-click="false">
-          <template v-slot:activator="{ on }">
-            <v-btn absolute top right icon v-on="on">
-              <v-icon x-small color="grey lighten-1">mdi-nut</v-icon>
-            </v-btn>
-          </template>
-          <v-list dense>
-            <v-subheader>Dev tools</v-subheader>
-            <v-list-item-group v-model="devtoolState">
-              <v-list-item :value="State.LOADING">
-                <v-list-item-title>loading</v-list-item-title>
-              </v-list-item>
-              <v-list-item :value="State.ERROR">
-                <v-list-item-title>error</v-list-item-title>
-              </v-list-item>
-              <v-list-item :value="State.EMPTY">
-                <v-list-item-title>empty</v-list-item-title>
-              </v-list-item>
-              <v-list-item :value="State.NONE">
-                <v-list-item-title>none</v-list-item-title>
-              </v-list-item>
-              <v-list-item value="off">
-                <v-list-item-title>off</v-list-item-title>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-menu>
+        <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
       </div>
     </v-container>
   </div>
@@ -133,12 +107,14 @@ import MapItemCard from "@/components/MapItemCard";
 import MapAddForm from "@/components/MapAddForm";
 
 import State from "@/utils/LoadingState.js";
+import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "maps",
   components: {
     MapItemCard,
-    MapAddForm
+    MapAddForm,
+    DevToolLoadingStateOverridingMenu
   },
   data() {
     return {
@@ -146,7 +122,7 @@ export default {
       allMaps: null,
       isCardCollapsed: {},
       error: null,
-      devtoolState: "off",
+      devtoolState: null,
       State: State
     };
   },
@@ -163,7 +139,7 @@ export default {
   },
   computed: {
     state() {
-      if (this.devtoolState != "off") {
+      if (this.devtoolState) {
         return this.devtoolState;
       }
 
