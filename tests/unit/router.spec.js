@@ -68,7 +68,7 @@ describe("About.vue", () => {
   it("test /beams", async () => {
     await router.push("/beams");
     const current = router.history.current;
-    expect(current.name).toBe("beam");
+    expect(current.name).toBe("BeamList");
     expect(current.path).toBe("/beams");
     expect(current.params).toEqual({});
   });

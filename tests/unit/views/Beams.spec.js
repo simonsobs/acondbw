@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify";
-import { mount, createLocalVue } from "@vue/test-utils";
+import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
 import Beams from "@/views/Beams.vue";
 
@@ -12,96 +12,62 @@ Vue.use(VueRouter);
 
 describe("Beams.vue", () => {
   let localVue;
+  let vuetify;
 
   function createWrapper(loading = false) {
-    return mount(Beams, {
+    return shallowMount(Beams, {
       localVue,
+      vuetify,
       router,
-      mocks: {
-        $apollo: {
-          queries: {
-            allBeams: {
-              loading: loading
-            }
-          }
-        }
-      },
-      stubs: {
-        BeamItemCard: true,
-      }
+      stubs: ["router-link", "router-view"]
     });
   }
 
-  const allBeams = {
-    edges: [
-      {
-        node: {
-          id: "QmVhbToxMTUw",
-          name: "20200207"
-        }
-      },
-      {
-        node: {
-          id: "QmVhbToxMTMw",
-          name: "20200123"
-        }
-      },
-      {
-        node: {
-          id: "QmVhbToxMTIw",
-          name: "20190607"
-        }
-      },
-      {
-        node: {
-          id: "QmVhbToxMDcw",
-          name: "20190304"
-        }
-      },
-      {
-        node: {
-          id: "QmVhbToxMDEw",
-          name: "20180101"
-        }
-      }
-    ]
-  };
-
   beforeEach(function() {
     localVue = createLocalVue();
+    vuetify = new Vuetify();
   });
 
-  it("match snapshot", async () => {
+  it("match snapshot list", async () => {
     const wrapper = createWrapper();
-    wrapper.setData({
-      allBeams: allBeams
-    });
+    await router.push({ name: "BeamList"});
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("loading", async () => {
-    const loading = true;
-    const wrapper = createWrapper(loading);
+  it("match snapshot item", async () => {
+    const wrapper = createWrapper();
+    await router.push({ name: "BeamItem", params: { name: "beam001" } });
     await Vue.nextTick();
-    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("error", async () => {
+  it("transition update", async () => {
     const wrapper = createWrapper();
-    wrapper.setData({
-      error: true
-    });
-    await Vue.nextTick();
-    expect(wrapper.text()).toContain("Error: cannot load data");
+    await router.push({ name: "BeamList"});
+    await router.push({ name: "BeamItem", params: { name: "beam001" } });
+
+    // Not clear how to test
+    // Neither beforeRouteUpdate() or beforeRouteLeave() is called
+    // in the test
+
+    // const trans_attrs = wrapper.find('transition-stub').attributes();
+    // expect(trans_attrs.name).toBe('fade-beams-slow');
+    // expect(trans_attrs.mode).toBe('out-in');
   });
 
-  it("none", async () => {
+  it("transition leave", async () => {
     const wrapper = createWrapper();
-    wrapper.setData({
-      allBeams: { edges: [] }
-    });
-    await Vue.nextTick();
-    expect(wrapper.text()).toContain("Empty. No beams are found.");
+    await router.push({ name: "BeamList"});
+    await router.push("/about");
+
+    // Not clear how to test
+    // Neither beforeRouteUpdate() or beforeRouteLeave() is called
+    // in the test
+
+    // const trans_attrs = wrapper.find('transition-stub').attributes();
+    // expect(trans_attrs.name).toBe('fade-beams-slow');
+    // expect(trans_attrs.mode).toBe('out-in');
   });
+
 });

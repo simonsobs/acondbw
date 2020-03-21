@@ -63,27 +63,29 @@
 const ROUTE_KEY_MAP = {
   // This map is used to generate the key for <router-view>
   // e.g., $route.name => key for <router-view>
-
+  
   // $route.name will be used as the key if not in this map
-
+  
   // When routes (defined in src/routes/index.js) are nested
   // the nested routes shuld have the same key.
-
+  
   // This is for <transition> and <keep-alive>, the two tags
   // enclosing <router-view> in the template.
-
+  
   // The transition effect is not applied when the key is the
   // same. The transition effect can be applied in the nested
   // component. (This doesn't seem to be always the case. So
   // now watching $route and dynamically updating the attributes
   // of <transition>)
-
+  
   // With <keep-alive>, the cached parent object will be reused
   // with the old child object, which can be a wrong object.
   // To prevent this, give different keys to different child
   // objects in <router-view> in the parent object.
-  MapList: "Map",
-  MapItem: "Map"
+  MapList: "Maps",
+  MapItem: "Maps",
+  BeamList: "Beams",
+  BeamItem: "Beams"
 };
 
 export default {

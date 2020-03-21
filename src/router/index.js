@@ -34,10 +34,22 @@ const routes = [
     ]
   },
   {
-    path: "/beams/item/:name",
-    name: "BeamItem",
-    component: () =>
-      import(/* webpackChunkName: "beamItem" */ "@/views/BeamItem.vue")
+    path: "/beams",
+    component: () => import(/* webpackChunkName: "beams" */ "@/views/Beams.vue"),
+    children: [
+      {
+        path: "",
+        name: "BeamList",
+        component: () =>
+          import(/* webpackChunkName: "beams" */ "@/views/BeamList.vue")
+      },
+      {
+        path: "item/:name",
+        name: "BeamItem",
+        component: () =>
+          import(/* webpackChunkName: "beams" */ "@/views/BeamItem.vue")
+      }
+    ]
   },
   {
     path: "/beams",

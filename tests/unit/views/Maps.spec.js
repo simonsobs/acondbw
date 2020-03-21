@@ -47,7 +47,7 @@ describe("Maps.vue", () => {
     await router.push({ name: "MapList"});
     await router.push({ name: "MapItem", params: { name: "map001" } });
 
-    // Not clear how to test 
+    // Not clear how to test
     // Neither beforeRouteUpdate() or beforeRouteLeave() is called
     // in the test
 
@@ -61,7 +61,7 @@ describe("Maps.vue", () => {
     await router.push({ name: "MapList"});
     await router.push("/about");
 
-    // Not clear how to test 
+    // Not clear how to test
     // Neither beforeRouteUpdate() or beforeRouteLeave() is called
     // in the test
 

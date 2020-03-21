@@ -1,35 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Beams.vue match snapshot 1`] = `
+exports[`Beams.vue match snapshot item 1`] = `
 <div class="beams">
-  <div class="container container--fluid">
-    <div class="row display-1 mx-1 mt-3 primary--text" style="max-width: 980px;">
-      <div col="8" class="pa-0 ma-0 col"><span class="me-2"><i aria-hidden="true" class="v-icon notranslate mdi mdi-spotlight-beam theme--light"></i></span>Beams
-      </div>
-      <div col="4" class="pa-0 ma-0 col">
-        <div class="row px-1 py-0 align-start justify-end"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-nut theme--light grey--text text--lighten-1" style="font-size: 12px;"></i></span></button>
-          <div class="v-menu">
-            <!---->
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="container pa-0 container--fluid">
-        <div class="row ma-0 px-0 pt-3 pb-1 align-start justify-end" style="max-width: 980px;"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-refresh theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><!----></span>
-          <div class="spacer"></div> <span class="v-tooltip v-tooltip--bottom"><!----></span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-unfold-more-horizontal theme--light"></i></span></button>
-          <div role="dialog" class="v-dialog__container">
-            <!---->
-          </div><span class="v-tooltip v-tooltip--bottom"><!----></span><button type="button" disabled="disabled" class="v-btn v-btn--disabled v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-plus-thick theme--light"></i></span></button></div>
-      </div>
-      <div>
-        <beamitemcard-stub collapsed="true" collapsible="true" class="my-1"></beamitemcard-stub>
-        <beamitemcard-stub collapsed="true" collapsible="true" class="my-1"></beamitemcard-stub>
-        <beamitemcard-stub collapsed="true" collapsible="true" class="my-1"></beamitemcard-stub>
-        <beamitemcard-stub collapsed="true" collapsible="true" class="my-1"></beamitemcard-stub>
-        <beamitemcard-stub collapsed="true" collapsible="true" class="my-1"></beamitemcard-stub>
-      </div>
-    </div>
-  </div>
+  <v-container-stub tag="div" fluid="true">
+    <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
+      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-spotlight-beam</v-icon-stub></span>Beams
+        <span><v-icon-stub large="" color="primary">mdi-chevron-right</v-icon-stub>
+          beam001
+        </span></v-col-stub>
+    </v-row-stub>
+    <transition-stub>
+      <keep-alive-stub>
+        <router-view-stub></router-view-stub>
+      </keep-alive-stub>
+    </transition-stub>
+  </v-container-stub>
+</div>
+`;
+
+exports[`Beams.vue match snapshot list 1`] = `
+<div class="beams">
+  <v-container-stub tag="div" fluid="true">
+    <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
+      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-spotlight-beam</v-icon-stub></span>Beams
+        <!---->
+      </v-col-stub>
+    </v-row-stub>
+    <transition-stub>
+      <keep-alive-stub>
+        <router-view-stub></router-view-stub>
+      </keep-alive-stub>
+    </transition-stub>
+  </v-container-stub>
 </div>
 `;
