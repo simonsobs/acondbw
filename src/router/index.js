@@ -16,19 +16,20 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ "@/views/About.vue")
   },
   {
-    path: "/maps/item/:name",
-    name: "MapItem",
-    component: () =>
-      import(/* webpackChunkName: "mapItem" */ "@/views/MapItem.vue")
-  },
-  {
     path: "/maps",
     component: () => import(/* webpackChunkName: "maps" */ "@/views/Maps.vue"),
     children: [
       {
         path: "",
         name: "MapList",
-        component: () => import(/* webpackChunkName: "maps" */ "@/views/MapList.vue"),
+        component: () =>
+          import(/* webpackChunkName: "maps" */ "@/views/MapList.vue")
+      },
+      {
+        path: "item/:name",
+        name: "MapItem",
+        component: () =>
+          import(/* webpackChunkName: "maps" */ "@/views/MapItem.vue")
       }
     ]
   },
