@@ -15,7 +15,7 @@
     "material-design-icons-iconfont": "^5.0.1",
     "v-calendar": "^1.0.1",
     "vee-validate": "^3.2.5",
-    "vue": "^2.6.10",
+    "vue": "^2.6.11",
     "vue-apollo": "^3.0.0-beta.11",
     "vue-axios": "^2.1.5",
     "vue-date-pick": "^1.2.1",
