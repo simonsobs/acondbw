@@ -5,15 +5,14 @@ import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
 import Maps from "@/views/Maps.vue";
 
-// import router from "@/router";
+import router from "@/router";
 
 Vue.use(Vuetify);
-// Vue.use(VueRouter);
+Vue.use(VueRouter);
 
 describe("Maps.vue", () => {
   let localVue;
   let vuetify;
-  let router;
 
   function createWrapper(loading = false) {
     return shallowMount(Maps, {
@@ -27,13 +26,19 @@ describe("Maps.vue", () => {
   beforeEach(function() {
     localVue = createLocalVue();
     vuetify = new Vuetify();
-    router = new VueRouter();
   });
 
-  it("match snapshot", async () => {
+  it("match snapshot list", async () => {
     const wrapper = createWrapper();
+    await router.push({ name: "MapList"});
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
+  it("match snapshot item", async () => {
+    const wrapper = createWrapper();
+    await router.push({ name: "MapItem", params: { name: "map001" } });
+    await Vue.nextTick();
+    expect(wrapper.html()).toMatchSnapshot();
+  });
 });

@@ -6,11 +6,15 @@
           <span class="me-2">
             <v-icon>map</v-icon>
           </span>Maps
+          <span v-if="$route.name == 'MapItem'">
+            <v-icon large color="primary">mdi-chevron-right</v-icon>
+            {{ $route.params.name }}
+          </span>
         </v-col>
       </v-row>
       <transition name="fade" mode="out-in">
         <keep-alive>
-          <router-view></router-view>
+          <router-view :key="$route.name"></router-view>
         </keep-alive>
       </transition>
     </v-container>
@@ -18,13 +22,8 @@
 </template>
 
 <script>
-import MapList from "@/views/MapList";
-
 export default {
   name: "Maps",
-  components: {
-    MapList
-  }
 };
 </script>
 
