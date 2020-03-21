@@ -12,7 +12,7 @@
           </span>
         </v-col>
       </v-row>
-      <transition name="fade" mode="out-in">
+      <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
           <router-view :key="$route.name"></router-view>
         </keep-alive>
@@ -24,16 +24,49 @@
 <script>
 export default {
   name: "Maps",
+  data: () => ({
+    transitionName: null,
+    transitionMode: null
+  }),
+  beforeRouteUpdate(to, from, next) {
+    console.log("here")
+    this.transitionName = "fade-maps-slow";
+    this.transitionMode = "out-in";
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log("there")
+    this.transitionName = "fade-maps-fast";
+    this.transitionMode = "out-in";
+    next();
+  }
 };
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
+.fade-maps-slow-enter-active {
   transition: opacity 0.2s;
 }
-.fade-enter,
-.fade-leave-active {
+
+.fade-maps-slow-leave-active {
+  transition: opacity 0.1s;
+}
+
+.fade-maps-slow-enter,
+.fade-maps-slow-leave-to {
+  opacity: 0;
+}
+
+.fade-maps-fast-enter-active {
+  transition: opacity 0.02s;
+}
+
+.fade-maps-fast-leave-active {
+  transition: opacity 0.01s;
+}
+
+.fade-maps-fast-enter,
+.fade-maps-fast-leave-to {
   opacity: 0;
 }
 </style>

@@ -41,4 +41,33 @@ describe("Maps.vue", () => {
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
+
+  it("transition update", async () => {
+    const wrapper = createWrapper();
+    await router.push({ name: "MapList"});
+    await router.push({ name: "MapItem", params: { name: "map001" } });
+
+    // Not clear how to test 
+    // Neither beforeRouteUpdate() or beforeRouteLeave() is called
+    // in the test
+
+    // const trans_attrs = wrapper.find('transition-stub').attributes();
+    // expect(trans_attrs.name).toBe('fade-maps-slow');
+    // expect(trans_attrs.mode).toBe('out-in');
+  });
+
+  it("transition leave", async () => {
+    const wrapper = createWrapper();
+    await router.push({ name: "MapList"});
+    await router.push("/about");
+
+    // Not clear how to test 
+    // Neither beforeRouteUpdate() or beforeRouteLeave() is called
+    // in the test
+
+    // const trans_attrs = wrapper.find('transition-stub').attributes();
+    // expect(trans_attrs.name).toBe('fade-maps-slow');
+    // expect(trans_attrs.mode).toBe('out-in');
+  });
+
 });
