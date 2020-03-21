@@ -4,30 +4,23 @@ import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
 import App from "@/App.vue";
+import router from "@/router";
 
 Vue.use(Vuetify);
-// Vue.use(VueRouter);
+Vue.use(VueRouter);
 
 describe("App.vue", () => {
   let localVue;
   let vuetify;
-  let router;
   let wrapper;
 
   beforeEach(() => {
     localVue = createLocalVue();
     vuetify = new Vuetify();
-    router = new VueRouter();
-
     wrapper = shallowMount(App, {
       localVue,
       vuetify,
       router,
-      mocks: {
-        $route: {
-          path: "/A/b/3.md"
-        }
-      },
       stubs: ["router-link", "router-view"]
     });
   });
@@ -36,4 +29,19 @@ describe("App.vue", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
+  it("transition on", async () => {
+    await router.push("/maps");
+    await router.push("/");
+    const trans_attrs = wrapper.find('transition-stub').attributes();
+    expect(trans_attrs.name).toBe('fade-app');
+    expect(trans_attrs.mode).toBe('out-in');
+  });
+
+  it("transition off", async () => {
+    await router.push("/maps");
+    await router.push("/maps/map001");
+    const trans_attrs = wrapper.find('transition-stub').attributes();
+    expect(trans_attrs.name).toBeUndefined();
+    expect(trans_attrs.mode).toBeUndefined();
+  });
 });

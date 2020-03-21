@@ -2,13 +2,7 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list shaped>
-        <v-list-item
-          link
-          router
-          v-for="page in pages"
-          :key="page.name"
-          :to="page.path"
-        >
+        <v-list-item link router v-for="page in pages" :key="page.name" :to="page.path">
           <v-list-item-action>
             <v-icon v-text="page.icon"></v-icon>
           </v-list-item-action>
@@ -28,13 +22,7 @@
         <v-icon>mdi-information</v-icon>
       </v-btn>
 
-      <v-menu
-        left
-        bottom
-        offset-y
-        open-on-hover
-        :close-on-content-click="false"
-      >
+      <v-menu left bottom offset-y open-on-hover :close-on-content-click="false">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -62,9 +50,10 @@
       </v-menu>
     </v-app-bar>
     <v-content>
-      <transition name="fade" mode="out-in">
+      <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
-          <router-view :key="$route.name"></router-view>
+          <router-view :key="$route.path.split('/')[1]"></router-view>
+          <!-- the top dir. e.g., key = "maps" -->
         </keep-alive>
       </transition>
     </v-content>
@@ -81,21 +70,48 @@ export default {
       { name: "Maps", path: "/maps", icon: "mdi-map" },
       { name: "Beams", path: "/beams", icon: "mdi-spotlight-beam" }
     ],
-    drawer: null
+    drawer: null,
+    transitionName: null,
+    transitionMode: null
   }),
   created() {
     this.$vuetify.theme.dark = false;
+  },
+  watch: {
+    $route(to, from) {
+      // update the transition effect dynamically
+      // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
+
+      const toTopDir = to.path.split("/")[1];
+      const fromTopDir = from.path.split("/")[1];
+      // e.g., "maps", "beams"
+
+      // disable the transition effect for routing between paths in
+      // the same component, letting the component handle transition
+      // effects
+      if (toTopDir == fromTopDir) {
+        this.transitionName = null;
+        this.transitionMode = null;
+      } else {
+        this.transitionName = "fade-app";
+        this.transitionMode = "out-in";
+      }
+    }
   }
 };
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
+.fade-app-enter-active {
   transition: opacity 0.2s;
 }
-.fade-enter,
-.fade-leave-active {
+.fade-app-enter {
+  opacity: 0;
+}
+.fade-app-leave-active {
+  transition: opacity 0.1s;
+}
+.fade-app-leave-to {
   opacity: 0;
 }
 </style>
