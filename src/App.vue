@@ -64,7 +64,7 @@
     <v-content>
       <transition name="fade" mode="out-in">
         <keep-alive>
-          <router-view></router-view>
+          <router-view :key="$route.name"></router-view>
         </keep-alive>
       </transition>
     </v-content>
