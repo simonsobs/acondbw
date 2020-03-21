@@ -77,10 +77,21 @@ export default {
   data() {
     return {
       map: null,
+      name: null,
       error: null,
       devtoolState: null,
       State: State
     };
+  },
+  watch: {
+    "$route.params.name": {
+      handler: function(n, o) {
+        if (n) {
+          this.name = n;
+        }
+      },
+      immediate: true
+    }
   },
   computed: {
     state() {
@@ -107,7 +118,7 @@ export default {
       query: GqlMapName,
       variables() {
         return {
-          name: this.$route.params.name
+          name: this.name
         };
       },
       result(result) {

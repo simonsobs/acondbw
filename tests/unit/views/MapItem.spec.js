@@ -51,14 +51,14 @@ describe("MapItem.vue", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("loading", async () => {
+  it("loading state - loading", async () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
     expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
   });
 
-  it("error", async () => {
+  it("loading state - error", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
       error: true
@@ -67,9 +67,24 @@ describe("MapItem.vue", () => {
     expect(wrapper.text()).toContain("Error: cannot load data");
   });
 
-  it("none", async () => {
+  it("loading state - none", async () => {
     const wrapper = createWrapper();
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Nothing to show here");
+  });
+
+  it("keep name when moving away", async () => {
+    const wrapper = createWrapper();
+    await router.push({ name: "MapItem", params: { name: "map001" } });
+    await Vue.nextTick();
+    expect(wrapper.vm.name).toBe('map001');
+
+    await router.push('/about');
+    await Vue.nextTick();
+    expect(wrapper.vm.name).toBe('map001'); // still "map001"
+
+    await router.push({ name: "MapItem", params: { name: "map002" } });
+    await Vue.nextTick();
+    expect(wrapper.vm.name).toBe('map002');
   });
 });
