@@ -52,8 +52,7 @@
     <v-content>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
-          <router-view :key="$route.path.split('/')[1]"></router-view>
-          <!-- the top dir. e.g., key = "maps" -->
+          <router-view :key="routeKey"></router-view>
         </keep-alive>
       </transition>
     </v-content>
@@ -61,6 +60,32 @@
 </template>
 
 <script>
+const ROUTE_KEY_MAP = {
+  // This map is used to generate the key for <router-view>
+  // e.g., $route.name => key for <router-view>
+
+  // $route.name will be used as the key if not in this map
+
+  // When routes (defined in src/routes/index.js) are nested
+  // the nested routes shuld have the same key.
+
+  // This is for <transition> and <keep-alive>, the two tags
+  // enclosing <router-view> in the template.
+
+  // The transition effect is not applied when the key is the
+  // same. The transition effect can be applied in the nested
+  // component. (This doesn't seem to be always the case. So
+  // now watching $route and dynamically updating the attributes
+  // of <transition>)
+
+  // With <keep-alive>, the cached parent object will be reused
+  // with the old child object, which can be a wrong object.
+  // To prevent this, give different keys to different child
+  // objects in <router-view> in the parent object.
+  MapList: "Map",
+  MapItem: "Map"
+};
+
 export default {
   name: "App",
   data: () => ({
@@ -82,19 +107,29 @@ export default {
       // update the transition effect dynamically
       // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
 
-      const toTopDir = to.path.split("/")[1];
-      const fromTopDir = from.path.split("/")[1];
-      // e.g., "maps", "beams"
-
-      // disable the transition effect for routing between paths in
-      // the same component, letting the component handle transition
-      // effects
-      if (toTopDir == fromTopDir) {
+      const toKey = this.createRouteKey(to.name);
+      const fromKey = this.createRouteKey(from.name);
+      if (toKey == fromKey) {
         this.transitionName = null;
         this.transitionMode = null;
       } else {
         this.transitionName = "fade-app";
         this.transitionMode = "out-in";
+      }
+
+    }
+  },
+  computed: {
+    routeKey() {
+      return this.createRouteKey(this.$route.name);
+    }
+  },
+  methods: {
+    createRouteKey(name) {
+      if (name in ROUTE_KEY_MAP) {
+        return ROUTE_KEY_MAP[name];
+      } else {
+        return name;
       }
     }
   }
@@ -103,15 +138,22 @@ export default {
 
 <style scoped>
 .fade-app-enter-active {
-  transition: opacity 0.2s;
+  transition: opacity 0.4s;
 }
 .fade-app-enter {
   opacity: 0;
 }
 .fade-app-leave-active {
-  transition: opacity 0.1s;
+  transition: opacity 0.01s;
 }
 .fade-app-leave-to {
   opacity: 0;
 }
 </style>
+<!-- the leave active is set very short because sometimes
+the animation starts with wrong components of nested routes.
+If the duration is long, the wrong components will slowly 
+fade away. In addition, the leave active needs to be shorter
+than that in the nested route component. Otherwise, the 
+component leave twice. 
+-->

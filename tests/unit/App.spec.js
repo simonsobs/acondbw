@@ -39,7 +39,7 @@ describe("App.vue", () => {
 
   it("transition off", async () => {
     await router.push("/maps");
-    await router.push("/maps/map001");
+    await router.push("/maps/item/map001");
     const trans_attrs = wrapper.find('transition-stub').attributes();
     expect(trans_attrs.name).toBeUndefined();
     expect(trans_attrs.mode).toBeUndefined();
