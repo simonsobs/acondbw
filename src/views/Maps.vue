@@ -29,13 +29,11 @@ export default {
     transitionMode: null
   }),
   beforeRouteUpdate(to, from, next) {
-    console.log("here")
     this.transitionName = "fade-maps-slow";
     this.transitionMode = "out-in";
     next();
   },
   beforeRouteLeave(to, from, next) {
-    console.log("there")
     this.transitionName = "fade-maps-fast";
     this.transitionMode = "out-in";
     next();
@@ -45,11 +43,11 @@ export default {
 
 <style scoped>
 .fade-maps-slow-enter-active {
-  transition: opacity 0.2s;
+  transition: opacity 0.4s;
 }
 
 .fade-maps-slow-leave-active {
-  transition: opacity 0.1s;
+  transition: opacity 0.01s;
 }
 
 .fade-maps-slow-enter,
