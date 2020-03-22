@@ -29,8 +29,6 @@ export default {
     transitionMode: "out-in"
   }),
   beforeRouteUpdate(to, from, next) {
-    console.log(from.path);
-    console.log(from.to);
     this.transitionName = "fade-maps-update";
     this.transitionMode = "out-in";
     next();
