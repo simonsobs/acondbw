@@ -1,7 +1,9 @@
 <template>
   <div class="map-item-card" style="position: relative;">
-    <v-card outlined hover :loading="state == State.LOADING" style="max-width: 980px;">
-      <v-card-text v-if="state == State.LOADING" class="pa-2">loading...</v-card-text>
+    <v-card outlined hover style="max-width: 980px;">
+      <div v-if="state == State.LOADING" class="mx-4 py-2">
+        <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
+      </div>
       <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
       <div v-else-if="state == State.LOADED" @click="$emit('expand')" style="cursor: default;">
         <v-container fluid class="pa-0">
@@ -159,7 +161,7 @@ export default {
     MapEditForm,
     MapDeleteForm,
     DevToolLoadingStateOverridingMenu
-},
+  },
   props: {
     mapId: { default: null }, // map.mapId not map.id
     collapsed: { default: false },
