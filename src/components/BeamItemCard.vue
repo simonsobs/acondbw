@@ -1,5 +1,5 @@
 <template>
-  <div class="beamitemcard">
+  <div class="beam-item-card" style="position: relative;">
     <v-card outlined hover :loading="state == State.LOADING" style="max-width: 980px;">
       <v-card-text v-if="state == State.LOADING" class="pa-2">loading...</v-card-text>
       <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
@@ -108,6 +108,7 @@
       </div>
       <v-card-text v-else>Nothing to show here.</v-card-text>
     </v-card>
+    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
   </div>
 </template>
 
@@ -116,16 +117,14 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
 import BEAM from "@/graphql/Beam.gql";
 
-const State = {
-  LOADED: 0,
-  EMPTY: 1,
-  LOADING: 2,
-  ERROR: 3,
-  NONE: 4
-};
+import State from "@/utils/LoadingState.js";
+import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "BeamItemCard",
+  components: {
+    DevToolLoadingStateOverridingMenu
+},
   props: {
     beamId: { default: null }, // beam.beamId not beam.id
     collapsed: { default: false },
@@ -138,13 +137,13 @@ export default {
       deleteDialog: false,
       beam: null,
       error: null,
-      devtoolState: "off",
+      devtoolState: null,
       State: State
     };
   },
   computed: {
     state() {
-      if (this.devtoolState != "off") {
+      if (this.devtoolState) {
         return this.devtoolState;
       }
 

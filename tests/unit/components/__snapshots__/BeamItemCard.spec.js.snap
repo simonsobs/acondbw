@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BeamItemCard.vue match snapshot 1`] = `
-<div class="beamitemcard" beamname="20200207">
+<div class="beam-item-card" style="position: relative;" beamname="20200207">
   <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
     <div class="" style="cursor: default;">
       <div class="container pa-0 container--fluid">
@@ -41,5 +41,8 @@ exports[`BeamItemCard.vue match snapshot 1`] = `
       </div>
     </div>
   </div>
+  <div class="v-menu">
+    <!---->
+  </div><button type="button" class="v-btn v-btn--absolute v-btn--flat v-btn--icon v-btn--round theme--light v-size--default" style="top: -15px; right: -10px;"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-nut theme--light grey--text text--lighten-1" style="font-size: 12px;"></i></span></button>
 </div>
 `;

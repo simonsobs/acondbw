@@ -1,5 +1,5 @@
 <template>
-  <div class="mapitemcard">
+  <div class="map-item-card" style="position: relative;">
     <v-card outlined hover :loading="state == State.LOADING" style="max-width: 980px;">
       <v-card-text v-if="state == State.LOADING" class="pa-2">loading...</v-card-text>
       <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
@@ -138,6 +138,7 @@
       </div>
       <v-card-text v-else>Nothing to show here.</v-card-text>
     </v-card>
+    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
   </div>
 </template>
 
@@ -149,20 +150,16 @@ import MAP from "@/graphql/Map.gql";
 import MapEditForm from "@/components/MapEditForm";
 import MapDeleteForm from "@/components/MapDeleteForm";
 
-const State = {
-  LOADED: 0,
-  EMPTY: 1,
-  LOADING: 2,
-  ERROR: 3,
-  NONE: 4
-};
+import State from "@/utils/LoadingState.js";
+import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "MapItemCard",
   components: {
     MapEditForm,
-    MapDeleteForm
-  },
+    MapDeleteForm,
+    DevToolLoadingStateOverridingMenu
+},
   props: {
     mapId: { default: null }, // map.mapId not map.id
     collapsed: { default: false },
@@ -175,13 +172,13 @@ export default {
       deleteDialog: false,
       map: null,
       error: null,
-      devtoolState: "off",
+      devtoolState: null,
       State: State
     };
   },
   computed: {
     state() {
-      if (this.devtoolState != "off") {
+      if (this.devtoolState) {
         return this.devtoolState;
       }
 
