@@ -49,15 +49,8 @@ import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 
 import MapItemCard from "@/components/MapItemCard";
 
+import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
-
-const State = {
-  LOADED: 0,
-  EMPTY: 1,
-  LOADING: 2,
-  ERROR: 3,
-  NONE: 4
-};
 
 const GqlMapName = gql`
   query MapIdName($name: String) {

@@ -53,15 +53,8 @@ import BEAM_FRAGMENT from "@/graphql/BeamFragment.gql";
 
 import BeamItemCard from "@/components/BeamItemCard";
 
+import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
-
-const State = {
-  LOADED: 0,
-  EMPTY: 1,
-  LOADING: 2,
-  ERROR: 3,
-  NONE: 4
-};
 
 const GqlBeamName = gql`
   query BeamIdName($name: String) {
