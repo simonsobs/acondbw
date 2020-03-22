@@ -14,7 +14,7 @@
       </v-row>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
-          <router-view :key="$route.name"></router-view>
+          <router-view :key="$route.fullPath"></router-view>
         </keep-alive>
       </transition>
     </v-container>
@@ -29,12 +29,12 @@ export default {
     transitionMode: null
   }),
   beforeRouteUpdate(to, from, next) {
-    this.transitionName = "fade-beams-slow";
+    this.transitionName = "fade-beams-update";
     this.transitionMode = "out-in";
     next();
   },
   beforeRouteLeave(to, from, next) {
-    this.transitionName = "fade-beams-fast";
+    this.transitionName = "fade-beams-leave";
     this.transitionMode = "out-in";
     next();
   }
@@ -42,29 +42,32 @@ export default {
 </script>
   
   <style scoped>
-  .fade-beams-slow-enter-active {
-    transition: opacity 0.4s;
-  }
+.fade-beams-update-enter-active {
+  transition: opacity 0.2s;
+}
 
-  .fade-beams-slow-leave-active {
-    transition: opacity 0.01s;
-  }
+.fade-beams-update-leave-active {
+  transition: opacity 0s;
+}
 
-  .fade-beams-slow-enter,
-  .fade-beams-slow-leave-to {
-    opacity: 0;
-  }
-
-  .fade-beams-fast-enter-active {
-    transition: opacity 0.02s;
-  }
-
-  .fade-beams-fast-leave-active {
-    transition: opacity 0.01s;
-  }
-
-  .fade-beams-fast-enter,
-  .fade-beams-fast-leave-to {
+.fade-beams-update-enter,
+.fade-beams-update-leave-to {
   opacity: 0;
+}
+
+.fade-beams-leave-enter-active {
+  transition: opacity 0s;
+}
+
+.fade-beams-leave-leave-active {
+  transition: opacity 01;
+}
+
+.fade-beams-leave-enter {
+  opacity: 1;
+}
+
+.fade-beams-leave-leave-to {
+  opacity: 1;
 }
 </style>

@@ -52,7 +52,7 @@ describe("Beams.vue", () => {
     // in the test
 
     // const trans_attrs = wrapper.find('transition-stub').attributes();
-    // expect(trans_attrs.name).toBe('fade-beams-slow');
+    // expect(trans_attrs.name).toBe('fade-beams-update');
     // expect(trans_attrs.mode).toBe('out-in');
   });
 
@@ -66,7 +66,7 @@ describe("Beams.vue", () => {
     // in the test
 
     // const trans_attrs = wrapper.find('transition-stub').attributes();
-    // expect(trans_attrs.name).toBe('fade-beams-slow');
+    // expect(trans_attrs.name).toBe('fade-beams-leave');
     // expect(trans_attrs.mode).toBe('out-in');
   });
 

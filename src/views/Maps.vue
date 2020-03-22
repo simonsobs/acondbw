@@ -14,7 +14,7 @@
       </v-row>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
-          <router-view :key="$route.name"></router-view>
+          <router-view :key="$route.fullPath"></router-view>
         </keep-alive>
       </transition>
     </v-container>
@@ -25,16 +25,18 @@
 export default {
   name: "Maps",
   data: () => ({
-    transitionName: null,
-    transitionMode: null
+    transitionName: "fade-maps-leave",
+    transitionMode: "out-in"
   }),
   beforeRouteUpdate(to, from, next) {
-    this.transitionName = "fade-maps-slow";
+    console.log(from.path);
+    console.log(from.to);
+    this.transitionName = "fade-maps-update";
     this.transitionMode = "out-in";
     next();
   },
   beforeRouteLeave(to, from, next) {
-    this.transitionName = "fade-maps-fast";
+    this.transitionName = "fade-maps-leave";
     this.transitionMode = "out-in";
     next();
   }
@@ -42,29 +44,32 @@ export default {
 </script>
 
 <style scoped>
-.fade-maps-slow-enter-active {
-  transition: opacity 0.4s;
+.fade-maps-update-enter-active {
+  transition: opacity 0.2s;
 }
 
-.fade-maps-slow-leave-active {
-  transition: opacity 0.01s;
+.fade-maps-update-leave-active {
+  transition: opacity 0s;
 }
 
-.fade-maps-slow-enter,
-.fade-maps-slow-leave-to {
+.fade-maps-update-enter,
+.fade-maps-update-leave-to {
   opacity: 0;
 }
 
-.fade-maps-fast-enter-active {
-  transition: opacity 0.02s;
+.fade-maps-leave-enter-active {
+  transition: opacity 0s;
 }
 
-.fade-maps-fast-leave-active {
-  transition: opacity 0.01s;
+.fade-maps-leave-leave-active {
+  transition: opacity 0s;
 }
 
-.fade-maps-fast-enter,
-.fade-maps-fast-leave-to {
-  opacity: 0;
+.fade-maps-leave-enter {
+  opacity: 1;
+}
+
+.fade-maps-leave-leave-to {
+  opacity: 1;
 }
 </style>

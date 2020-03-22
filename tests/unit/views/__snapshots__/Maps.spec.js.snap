@@ -9,7 +9,7 @@ exports[`Maps.vue match snapshot item 1`] = `
           map001
         </span></v-col-stub>
     </v-row-stub>
-    <transition-stub>
+    <transition-stub name="fade-maps-leave" mode="out-in">
       <keep-alive-stub>
         <router-view-stub></router-view-stub>
       </keep-alive-stub>
@@ -26,7 +26,7 @@ exports[`Maps.vue match snapshot list 1`] = `
         <!---->
       </v-col-stub>
     </v-row-stub>
-    <transition-stub>
+    <transition-stub name="fade-maps-leave" mode="out-in">
       <keep-alive-stub>
         <router-view-stub></router-view-stub>
       </keep-alive-stub>

@@ -1,3 +1,4 @@
+
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify";
@@ -52,7 +53,7 @@ describe("Maps.vue", () => {
     // in the test
 
     // const trans_attrs = wrapper.find('transition-stub').attributes();
-    // expect(trans_attrs.name).toBe('fade-maps-slow');
+    // expect(trans_attrs.name).toBe('fade-maps-update');
     // expect(trans_attrs.mode).toBe('out-in');
   });
 
@@ -66,7 +67,7 @@ describe("Maps.vue", () => {
     // in the test
 
     // const trans_attrs = wrapper.find('transition-stub').attributes();
-    // expect(trans_attrs.name).toBe('fade-maps-slow');
+    // expect(trans_attrs.name).toBe('fade-maps-leave');
     // expect(trans_attrs.mode).toBe('out-in');
   });
 
