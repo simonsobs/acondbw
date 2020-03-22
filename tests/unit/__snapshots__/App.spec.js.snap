@@ -53,7 +53,7 @@ exports[`App.vue match snapshot 1`] = `
     </v-menu-stub>
   </v-app-bar-stub>
   <v-content-stub tag="main">
-    <transition-stub>
+    <transition-stub name="fade-app-across" mode="out-in">
       <keep-alive-stub>
         <router-view-stub></router-view-stub>
       </keep-alive-stub>

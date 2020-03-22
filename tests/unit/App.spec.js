@@ -29,19 +29,25 @@ describe("App.vue", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("transition on", async () => {
-    await router.push("/maps");
-    await router.push("/");
+  it("transition initial", async () => {
     const trans_attrs = wrapper.find('transition-stub').attributes();
-    expect(trans_attrs.name).toBe('fade-app');
+    expect(trans_attrs.name).toBe('fade-app-across');
     expect(trans_attrs.mode).toBe('out-in');
   });
 
-  it("transition off", async () => {
+  it("transition across", async () => {
+    await router.push("/maps");
+    await router.push("/");
+    const trans_attrs = wrapper.find('transition-stub').attributes();
+    expect(trans_attrs.name).toBe('fade-app-across');
+    expect(trans_attrs.mode).toBe('out-in');
+  });
+
+  it("transition within", async () => {
     await router.push("/maps");
     await router.push("/maps/item/map001");
     const trans_attrs = wrapper.find('transition-stub').attributes();
-    expect(trans_attrs.name).toBeUndefined();
-    expect(trans_attrs.mode).toBeUndefined();
+    expect(trans_attrs.name).toBe('fade-app-within');
+    expect(trans_attrs.mode).toBe('out-in');
   });
 });

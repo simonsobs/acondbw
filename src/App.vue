@@ -52,7 +52,7 @@
     <v-content>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
-          <router-view :key="routeKey"></router-view>
+          <router-view :key="$route.fullPath"></router-view>
         </keep-alive>
       </transition>
     </v-content>
@@ -61,27 +61,20 @@
 
 <script>
 const ROUTE_KEY_MAP = {
-  // This map is used to generate the key for <router-view>
-  // e.g., $route.name => key for <router-view>
-  
-  // $route.name will be used as the key if not in this map
-  
-  // When routes (defined in src/routes/index.js) are nested
-  // the nested routes shuld have the same key.
-  
-  // This is for <transition> and <keep-alive>, the two tags
-  // enclosing <router-view> in the template.
-  
-  // The transition effect is not applied when the key is the
-  // same. The transition effect can be applied in the nested
-  // component. (This doesn't seem to be always the case. So
-  // now watching $route and dynamically updating the attributes
-  // of <transition>)
-  
-  // With <keep-alive>, the cached parent object will be reused
-  // with the old child object, which can be a wrong object.
-  // To prevent this, give different keys to different child
-  // objects in <router-view> in the parent object.
+  // This map was originally introduced to generate the key for
+  // <router-view> (It is no longer used in this way.)
+
+  // This map is currently used for <transition>, enclosing
+  // <router-view>.
+
+  // In this app, nested routes are used
+  // (https://router.vuejs.org/guide/essentials/nested-routes.html).
+  // The nested <router-view> can be also enclosed by <transition>.
+
+  // This map relates $route.name of the nested paths of the same
+  // parent to the same value so that different transition effects can
+  // be applied for routing between the nested paths of the same
+  // parent.
   MapList: "Maps",
   MapItem: "Maps",
   BeamList: "Beams",
@@ -98,8 +91,8 @@ export default {
       { name: "Beams", path: "/beams", icon: "mdi-spotlight-beam" }
     ],
     drawer: null,
-    transitionName: null,
-    transitionMode: null
+    transitionName: "fade-app-across",
+    transitionMode: "out-in"
   }),
   created() {
     this.$vuetify.theme.dark = false;
@@ -112,13 +105,12 @@ export default {
       const toKey = this.createRouteKey(to.name);
       const fromKey = this.createRouteKey(from.name);
       if (toKey == fromKey) {
-        this.transitionName = null;
-        this.transitionMode = null;
+        this.transitionName = "fade-app-within";
+        this.transitionMode = "out-in";
       } else {
-        this.transitionName = "fade-app";
+        this.transitionName = "fade-app-across";
         this.transitionMode = "out-in";
       }
-
     }
   },
   computed: {
@@ -139,23 +131,33 @@ export default {
 </script>
 
 <style scoped>
-.fade-app-enter-active {
-  transition: opacity 0.4s;
+.fade-app-across-enter-active {
+  transition: opacity 0.2s;
 }
-.fade-app-enter {
+
+.fade-app-across-leave-active {
+  transition: opacity 0s;
+}
+
+.fade-app-across-enter,
+.fade-app-across-leave-to {
   opacity: 0;
 }
-.fade-app-leave-active {
-  transition: opacity 0.01s;
+
+.fade-app-within-enter-active,
+.fade-app-within-leave-active {
+  transition: opacity 0s;
 }
-.fade-app-leave-to {
-  opacity: 0;
+
+.fade-app-within-enter,
+.fade-app-within-leave-to {
+  opacity: 1;
 }
 </style>
-<!-- the leave active is set very short because sometimes
-the animation starts with wrong components of nested routes.
-If the duration is long, the wrong components will slowly 
-fade away. In addition, the leave active needs to be shorter
-than that in the nested route component. Otherwise, the 
-component leave twice. 
--->
+<!-- The leave active for ".fade-app-across" is set to zero because
+sometimes the fade away starts from a wrong image.
+
+For .fade-app-within, the oparicty is set to one and the duration is
+set to zero for both enter and leave, which is effectivly diabling the
+transition effects, letting the nested routes handle the transition
+effects. -->
