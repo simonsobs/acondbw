@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MapItem.vue match snapshot 1`] = `
-<div class="map-item" style="position: relative;"><button type="button" class="v-btn v-btn--absolute v-btn--flat v-btn--icon v-btn--round theme--light v-size--default" style="top: -15px; right: -10px;"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-nut theme--light grey--text text--lighten-1" style="font-size: 12px;"></i></span></button>
-  <div class="v-menu">
-    <!---->
+<div class="map-item" style="position: relative;">
+  <div><button type="button" class="v-btn v-btn--absolute v-btn--flat v-btn--icon v-btn--round theme--light v-size--default" style="top: -15px; right: -10px;"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-nut theme--light grey--text text--lighten-1" style="font-size: 12px;"></i></span></button>
+    <div class="v-menu">
+      <!---->
+    </div>
   </div>
   <div>
     <div class="container pa-0 container--fluid">
