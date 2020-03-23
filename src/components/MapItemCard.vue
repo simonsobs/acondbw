@@ -56,9 +56,9 @@
                     <v-list dense>
                       <v-dialog v-model="editDialog" persistent max-width="600">
                         <template v-slot:activator="{ on: editDialog }">
-                          <v-list-item v-on="{ ...editDialog }">
+                          <v-list-item :disabled="disableEdit" v-on="{ ...editDialog }">
                             <v-list-item-icon>
-                              <v-icon>mdi-pencil</v-icon>
+                              <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
                               <v-list-item-title>Edit</v-list-item-title>
@@ -72,9 +72,9 @@
                       </v-dialog>
                       <v-dialog v-model="deleteDialog" max-width="600">
                         <template v-slot:activator="{ on: deleteDialog }">
-                          <v-list-item v-on="{ ...deleteDialog }">
+                          <v-list-item :disabled="disableDelete" v-on="{ ...deleteDialog }">
                             <v-list-item-icon>
-                              <v-icon>mdi-delete</v-icon>
+                              <v-icon :disabled="disableDelete">mdi-delete</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
                               <v-list-item-title>Delete</v-list-item-title>
@@ -169,6 +169,8 @@ export default {
   },
   data() {
     return {
+      disableEdit: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true",
+      disableDelete: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true",
       menu: false,
       editDialog: false,
       deleteDialog: false,

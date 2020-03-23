@@ -47,7 +47,7 @@
             <template v-slot:activator="{ on: dialog }">
               <v-tooltip bottom open-delay="800">
                 <template v-slot:activator="{ on: toolip }">
-                  <v-btn icon v-on="{ ...toolip, ...dialog }">
+                  <v-btn :disabled="disableAdd" icon v-on="{ ...toolip, ...dialog }">
                     <v-icon>mdi-plus-thick</v-icon>
                   </v-btn>
                 </template>
@@ -102,6 +102,7 @@ export default {
   },
   data() {
     return {
+      disableAdd: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true",
       dialog: false,
       allMaps: null,
       isCardCollapsed: {},
