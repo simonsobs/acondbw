@@ -1,4 +1,5 @@
 <template>
+<div v-if="enabled">
   <v-menu right bottom offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on }">
       <v-btn absolute style="top: -15px; right: -10px" icon v-on="on">
@@ -26,6 +27,7 @@
       </v-list-item-group>
     </v-list>
   </v-menu>
+</div>
 </template>
 
 <script>
@@ -35,6 +37,7 @@ export default {
   name: "DevToolLoadingStateOverridingMenu",
   data() {
     return {
+      enabled : process.env.VUE_APP_ACONDBW_DEVTOOL_LOADINGSTATE == "true",
       state: "off",
       State: State
     };
