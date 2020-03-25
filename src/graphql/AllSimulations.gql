@@ -1,0 +1,11 @@
+query AllSimulations {
+  allSimulations(sort: DATE_POSTED_DESC) {
+    edges {
+      node {
+        id
+        simulationId
+        name
+      }
+    }
+  }
+}

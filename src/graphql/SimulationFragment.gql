@@ -1,0 +1,8 @@
+fragment simulation on Simulation {
+  id
+  simulationId
+  name
+  datePosted
+  mapper
+  note
+}

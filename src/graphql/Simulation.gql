@@ -1,0 +1,7 @@
+#import "./SimulationFragment.gql"
+
+query Simulation($simulationId: Int) {
+  simulation(simulationId: $simulationId) {
+    ...simulation
+  }
+}
