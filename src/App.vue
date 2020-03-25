@@ -87,6 +87,7 @@ export default {
     title: process.env.VUE_APP_TOOLBAR_TITLE,
     graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP,
     pages: [
+      { name: "Simulations", path: "/simulations", icon: "mdi-creation" },
       { name: "Maps", path: "/maps", icon: "mdi-map" },
       { name: "Beams", path: "/beams", icon: "mdi-spotlight-beam" }
     ],
