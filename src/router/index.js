@@ -16,6 +16,24 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ "@/views/About.vue")
   },
   {
+    path: "/simulations",
+    component: () => import(/* webpackChunkName: "simulations" */ "@/views/Simulations.vue"),
+    children: [
+      {
+        path: "",
+        name: "SimulationList",
+        component: () =>
+          import(/* webpackChunkName: "simulations" */ "@/views/SimulationList.vue")
+      },
+      {
+        path: "item/:name",
+        name: "SimulationItem",
+        component: () =>
+          import(/* webpackChunkName: "simulations" */ "@/views/SimulationItem.vue")
+      }
+    ]
+  },
+  {
     path: "/maps",
     component: () => import(/* webpackChunkName: "maps" */ "@/views/Maps.vue"),
     children: [

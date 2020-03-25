@@ -35,6 +35,26 @@ describe("About.vue", () => {
     expect(current.params).toEqual({});
   });
 
+  it("test /simulations/item/:name", async () => {
+    await router.push("/simulations/item/simulation001");
+    const current = router.history.current;
+    expect(current.matched.length).toBe(2);
+    expect(current.name).toBe("SimulationItem");
+    expect(current.path).toBe("/simulations/item/simulation001");
+    expect(current.params).toEqual({
+      name: "simulation001"
+    });
+  });
+
+  it("test /simulations", async () => {
+    await router.push("/simulations");
+    const current = router.history.current;
+    expect(current.matched.length).toBe(2);
+    expect(current.name).toBe("SimulationList");
+    expect(current.path).toBe("/simulations");
+    expect(current.params).toEqual({});
+  });
+
   it("test /maps/item/:name", async () => {
     await router.push("/maps/item/map001");
     const current = router.history.current;
