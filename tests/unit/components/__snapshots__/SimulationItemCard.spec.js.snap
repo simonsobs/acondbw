@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SimulationItemCard.vue match snapshot 1`] = `
+<div class="simulation-item-card" style="position: relative;" simulationname="lat20200201">
+  <div class="v-card v-card--hover v-card--outlined v-sheet theme--light" style="max-width: 980px;">
+    <div class="" style="cursor: default;">
+      <div class="container pa-0 container--fluid">
+        <div class="row ma-0 px-0">
+          <div class="py-0 col-md-4 col-10 order-1">
+            <div class="caption grey--text">Name</div>
+            <div class="font-weight-medium primary--text"><span><a href="/simulations/item/xyz-s1234-20200101" class="">xyz-s1234-20200101</a></span></div>
+          </div>
+          <div class="py-0 col-md-4 col-6 order-3">
+            <div class="caption grey--text">Date posted</div>
+            <div>2019-03-15</div>
+          </div>
+          <div class="py-0 col-md-2 col-6 order-4">
+            <div class="caption grey--text">Mapper</div>
+            <div>abc-def</div>
+          </div>
+          <div class="py-0 order-md-5 col col-2 order-2 align-self-end">
+            <div class="row px-1 py-0 align-start justify-end">
+              <!----> <span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-dots-vertical theme--light"></i></span></button>
+              <div class="v-menu">
+                <!---->
+              </div>
+              </span></div>
+          </div>
+        </div>
+        <div class="row mx-0 mb-3 px-0 collapsible">
+          <div class="py-0 col-md-8 offset-md-4 col-12">
+            <div class="caption grey--text">Note</div>
+            <div>
+              <ul>
+                <li>note 1</li>
+                <li>note 2</li>
+              </ul>
+            </div>
+          </div>
+          <div class="py-0 col col-12">
+            <div class="row">
+              <div class="py-0 col-md-4 order-md-0 col-12 order-2 align-self-end"><span class="grey--text" style="font-size: 65%;">Data ID: </span></div>
+              <div class="py-0 col-md-8 col-12 order-1">
+                <div class="caption grey--text">Beams</div>
+                <!---->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div><button type="button" class="v-btn v-btn--absolute v-btn--flat v-btn--icon v-btn--round theme--light v-size--default" style="top: -15px; right: -10px;"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-nut theme--light grey--text text--lighten-1" style="font-size: 12px;"></i></span></button>
+    <div class="v-menu">
+      <!---->
+    </div>
+  </div>
+</div>
+`;

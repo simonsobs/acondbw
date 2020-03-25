@@ -4,6 +4,14 @@ exports[`App.vue match snapshot 1`] = `
 <v-app-stub id="app">
   <v-navigation-drawer-stub app="true" clipped="true" height="100vh" minivariantwidth="56" mobilebreakpoint="1264" src="" tag="nav" width="256">
     <v-list-stub tag="div" tile="true" shaped="true">
+      <v-list-item-stub activeclass="" link="true" to="/simulations" tag="div" router="">
+        <v-list-item-action-stub>
+          <v-icon-stub></v-icon-stub>
+        </v-list-item-action-stub>
+        <v-list-item-content-stub>
+          <v-list-item-title-stub></v-list-item-title-stub>
+        </v-list-item-content-stub>
+      </v-list-item-stub>
       <v-list-item-stub activeclass="" link="true" to="/maps" tag="div" router="">
         <v-list-item-action-stub>
           <v-icon-stub></v-icon-stub>
