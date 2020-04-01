@@ -29,6 +29,10 @@ exports[`SimulationItemCard.vue match snapshot 1`] = `
         </div>
         <div class="row mx-0 mb-3 px-0 collapsible">
           <div class="py-0 col-md-8 offset-md-4 col-12">
+            <div class="caption grey--text">Paths</div>
+            <!---->
+          </div>
+          <div class="py-0 col-md-8 offset-md-4 col-12">
             <div class="caption grey--text">Note</div>
             <div>
               <ul>
