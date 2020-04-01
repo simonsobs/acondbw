@@ -75,6 +75,8 @@ const ROUTE_KEY_MAP = {
   // parent to the same value so that different transition effects can
   // be applied for routing between the nested paths of the same
   // parent.
+  SimulationList: "Simulations",
+  SimulationItem: "Simulations",
   MapList: "Maps",
   MapItem: "Maps",
   BeamList: "Beams",
