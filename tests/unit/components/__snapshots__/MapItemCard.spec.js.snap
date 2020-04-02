@@ -38,8 +38,9 @@ exports[`MapItemCard.vue match snapshot 1`] = `
             <div class="caption grey--text">Note</div>
             <div>
               <ul>
-                <li>This is a dummy test with a lat map </li>
+                <li>This is a dummy test with a lat map</li>
                 <li>A beam depends on this map</li>
+                <li><strong>marked</strong></li>
               </ul>
             </div>
           </div>

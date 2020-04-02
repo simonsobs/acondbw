@@ -107,14 +107,7 @@
               </v-col>
               <v-col cols="12" md="8" offset-md="4" class="py-0">
                 <div class="caption grey--text">Note</div>
-                <div>
-                  <ul v-if="map.note">
-                    <li
-                      v-for="(line, index) in map.note.split('\n')"
-                      :key="index"
-                    >{{ line.replace(/^- */, "") }}</li>
-                  </ul>
-                </div>
+                <div v-html="note"></div>
               </v-col>
               <v-col cols="12" class="py-0">
                 <v-row>
@@ -145,6 +138,8 @@
 </template>
 
 <script>
+import marked from "marked";
+
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
 import MAP from "@/graphql/Map.gql";
@@ -201,6 +196,9 @@ export default {
     },
     dataId: function() {
       return defaultDataIdFromObject(this.map);
+    },
+    note() {
+      return marked(this.map.note);
     }
   },
   apollo: {

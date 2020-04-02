@@ -37,7 +37,7 @@ exports[`SimulationItemCard.vue match snapshot 1`] = `
             <div>
               <ul>
                 <li>note 1</li>
-                <li>note 2</li>
+                <li><strong>marked</strong></li>
               </ul>
             </div>
           </div>

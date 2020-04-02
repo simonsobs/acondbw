@@ -44,7 +44,7 @@ describe("SimulationItemCard.vue", () => {
     name: "xyz-s1234-20200101",
     datePosted: "2019-03-15",
     mapper: "abc-def",
-    note: "- note 1\n- note 2"
+    note: "- note 1\n- **marked**"
   };
 
   beforeEach(function() {

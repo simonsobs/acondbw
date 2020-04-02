@@ -56,7 +56,7 @@ describe("MapItemCard.vue", () => {
       ]
     },
     note:
-      "- This is a dummy test with a lat map                         \n- A beam depends on this map",
+      "- This is a dummy test with a lat map\n- A beam depends on this map\n- **marked**",
     beams: {
       edges: [
         {
