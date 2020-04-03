@@ -20,7 +20,7 @@ describe("SimulationList.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            allSimulations: {
+            edges: {
               loading: loading
             }
           }
@@ -30,8 +30,7 @@ describe("SimulationList.vue", () => {
     });
   }
 
-  const allSimulations = {
-    edges: [
+  const edges = [
       {
         node: {
           id: "U2ltdWxhdGlvbjoxMDAx",
@@ -42,8 +41,7 @@ describe("SimulationList.vue", () => {
           note: "- note 1\n- note 2"
         }
       }
-    ]
-  };
+    ];
 
   beforeEach(function() {
     localVue = createLocalVue();
@@ -52,7 +50,7 @@ describe("SimulationList.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      allSimulations: allSimulations
+      edges: edges
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -77,7 +75,7 @@ describe("SimulationList.vue", () => {
   it("none", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      allSimulations: { edges: [] }
+      edges: []
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Empty. No simulations are found.");

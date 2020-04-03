@@ -20,52 +20,50 @@ describe("BeamList.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            allBeams: {
+            edges: {
               loading: loading
             }
           }
         }
       },
       stubs: {
-        BeamItemCard: true,
+        BeamItemCard: true
       }
     });
   }
 
-  const allBeams = {
-    edges: [
-      {
-        node: {
-          id: "QmVhbToxMTUw",
-          name: "20200207"
-        }
-      },
-      {
-        node: {
-          id: "QmVhbToxMTMw",
-          name: "20200123"
-        }
-      },
-      {
-        node: {
-          id: "QmVhbToxMTIw",
-          name: "20190607"
-        }
-      },
-      {
-        node: {
-          id: "QmVhbToxMDcw",
-          name: "20190304"
-        }
-      },
-      {
-        node: {
-          id: "QmVhbToxMDEw",
-          name: "20180101"
-        }
+  const edges = [
+    {
+      node: {
+        id: "QmVhbToxMTUw",
+        name: "20200207"
       }
-    ]
-  };
+    },
+    {
+      node: {
+        id: "QmVhbToxMTMw",
+        name: "20200123"
+      }
+    },
+    {
+      node: {
+        id: "QmVhbToxMTIw",
+        name: "20190607"
+      }
+    },
+    {
+      node: {
+        id: "QmVhbToxMDcw",
+        name: "20190304"
+      }
+    },
+    {
+      node: {
+        id: "QmVhbToxMDEw",
+        name: "20180101"
+      }
+    }
+  ];
 
   beforeEach(function() {
     localVue = createLocalVue();
@@ -74,7 +72,7 @@ describe("BeamList.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      allBeams: allBeams
+      edges: edges
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -84,7 +82,7 @@ describe("BeamList.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
+    expect(wrapper.find(".v-progress-circular").exists()).toBe(true);
   });
 
   it("error", async () => {
@@ -99,7 +97,7 @@ describe("BeamList.vue", () => {
   it("none", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      allBeams: { edges: [] }
+      edges: []
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Empty. No beams are found.");

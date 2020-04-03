@@ -16,7 +16,7 @@
             <template v-slot:activator="{ on }">
               <v-btn
                 icon
-                @click="$apollo.queries.allSimulations.refetch(); areAllCardsCollapsed = true"
+                @click="$apollo.queries.edges.refetch(); areAllCardsCollapsed = true"
                 v-on="on"
               >
                 <v-icon>mdi-refresh</v-icon>
@@ -59,7 +59,7 @@
       </v-container>
       <div v-if="state == State.LOADED">
         <SimulationItemCard
-          v-for="edge in allSimulations.edges"
+          v-for="edge in edges"
           :key="edge.node.id"
           :simulationId="edge.node.simulationId"
           collapsible="true"
@@ -101,7 +101,7 @@ export default {
     return {
       disableAdd: true,
       dialog: false,
-      allSimulations: null,
+      edges: null,
       isCardCollapsed: {},
       error: null,
       devtoolState: null,
@@ -109,8 +109,9 @@ export default {
     };
   },
   apollo: {
-    allSimulations: {
+    edges: {
       query: ALL_SIMULATIONS,
+      update: data => data.allSimulations.edges,
       result(result) {
         this.error = null;
         if (result.error) {
@@ -129,8 +130,8 @@ export default {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.allSimulations) {
-        if (this.allSimulations.edges && this.allSimulations.edges.length) {
+      } else if (this.edges) {
+        if (this.edges.length) {
           return State.LOADED;
         } else {
           return State.EMPTY;
@@ -140,7 +141,7 @@ export default {
       }
     },
     loading() {
-      return this.$apollo.queries.allSimulations.loading;
+      return this.$apollo.queries.edges.loading;
     },
     areAllCardsCollapsed: {
       get: function() {
@@ -156,11 +157,11 @@ export default {
     }
   },
   watch: {
-    allSimulations: function() {
-      if (this.allSimulations == undefined) {
+    edges: function() {
+      if (this.edges == undefined) {
         return;
       }
-      for (const edge of this.allSimulations.edges) {
+      for (const edge of this.edges) {
         const id = edge.node.id;
         if (!(id in this.isCardCollapsed)) {
           this.isCardCollapsed = {

@@ -20,7 +20,7 @@ describe("MapList.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            allMaps: {
+            edges: {
               loading: loading
             }
           }
@@ -33,31 +33,29 @@ describe("MapList.vue", () => {
     });
   }
 
-  const allMaps = {
-    edges: [
-      {
-        node: {
-          id: "TWFwOjEwMTM=",
-          mapId: "1013",
-          name: "lat20200201"
-        }
-      },
-      {
-        node: {
-          id: "TWFwOjEwMTI=",
-          mapId: "1012",
-          name: "lat20200120"
-        }
-      },
-      {
-        node: {
-          id: "TWFwOjEwMDE=",
-          mapId: "1001",
-          name: "lat20190213"
-        }
+  const edges = [
+    {
+      node: {
+        id: "TWFwOjEwMTM=",
+        mapId: "1013",
+        name: "lat20200201"
       }
-    ]
-  };
+    },
+    {
+      node: {
+        id: "TWFwOjEwMTI=",
+        mapId: "1012",
+        name: "lat20200120"
+      }
+    },
+    {
+      node: {
+        id: "TWFwOjEwMDE=",
+        mapId: "1001",
+        name: "lat20190213"
+      }
+    }
+  ];
 
   beforeEach(function() {
     localVue = createLocalVue();
@@ -66,7 +64,7 @@ describe("MapList.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      allMaps: allMaps
+      edges: edges
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -76,7 +74,7 @@ describe("MapList.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
+    expect(wrapper.find(".v-progress-circular").exists()).toBe(true);
   });
 
   it("error", async () => {
@@ -91,7 +89,7 @@ describe("MapList.vue", () => {
   it("none", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      allMaps: { edges: [] }
+      edges: []
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Empty. No maps are found.");

@@ -16,7 +16,7 @@
             <template v-slot:activator="{ on }">
               <v-btn
                 icon
-                @click="$apollo.queries.allBeams.refetch(); areAllCardsCollapsed = true"
+                @click="$apollo.queries.edges.refetch(); areAllCardsCollapsed = true"
                 v-on="on"
               >
                 <v-icon>mdi-refresh</v-icon>
@@ -59,7 +59,7 @@
       </v-container>
       <div v-if="state == State.LOADED">
         <BeamItemCard
-          v-for="edge in allBeams.edges"
+          v-for="edge in edges"
           :key="edge.node.id"
           :beamId="edge.node.beamId"
           collapsible="true"
@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       dialog: false,
-      allBeams: null,
+      edges: null,
       isCardCollapsed: {},
       error: null,
       devtoolState: null,
@@ -108,8 +108,9 @@ export default {
     };
   },
   apollo: {
-    allBeams: {
+    edges: {
       query: ALL_BEAMS,
+      update: data => data.allBeams.edges,
       result(result) {
         this.error = null;
         if (result.error) {
@@ -128,8 +129,8 @@ export default {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.allBeams) {
-        if (this.allBeams.edges && this.allBeams.edges.length) {
+      } else if (this.edges) {
+        if (this.edges.length) {
           return State.LOADED;
         } else {
           return State.EMPTY;
@@ -139,7 +140,7 @@ export default {
       }
     },
     loading() {
-      return this.$apollo.queries.allBeams.loading;
+      return this.$apollo.queries.edges.loading;
     },
     areAllCardsCollapsed: {
       get: function() {
@@ -155,11 +156,11 @@ export default {
     }
   },
   watch: {
-    allBeams: function() {
-      if (this.allBeams == undefined) {
+    edges: function() {
+      if (this.edges == undefined) {
         return;
       }
-      for (const edge of this.allBeams.edges) {
+      for (const edge of this.edges) {
         const id = edge.node.id;
         if (!(id in this.isCardCollapsed)) {
           this.isCardCollapsed = {
