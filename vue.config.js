@@ -2,6 +2,6 @@ module.exports = {
   transpileDependencies: ["vuetify"],
   devServer: {
     disableHostCheck: true
-  }
-  // publicPath: '/products/ui/'
+  },
+  publicPath: process.env.VUE_APP_ACONDBW_PUBLIC_PATH
 };
