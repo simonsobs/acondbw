@@ -12,17 +12,17 @@
               <div class="caption grey--text">Name</div>
               <div class="font-weight-medium primary--text">
                 <span @click.stop>
-                  <router-link :to="'/simulations/item/' + simulation.name" v-text="simulation.name"></router-link>
+                  <router-link :to="'/simulations/item/' + node.name" v-text="node.name"></router-link>
                 </span>
               </div>
             </v-col>
             <v-col order="3" cols="6" md="4" class="py-0">
               <div class="caption grey--text">Date posted</div>
-              <div v-text="simulation.datePosted"></div>
+              <div v-text="node.datePosted"></div>
             </v-col>
             <v-col order="4" cols="6" md="2" class="py-0">
               <div class="caption grey--text">Mapper</div>
-              <div v-text="simulation.mapper"></div>
+              <div v-text="node.mapper"></div>
             </v-col>
             <v-col order="2" order-md="5" cols="2" align-self="end" class="py-0">
               <v-row align="start" justify="end" class="px-1 py-0">
@@ -88,9 +88,9 @@
             <v-row class="mx-0 mb-3 px-0 collapsible" v-show="!(collapsible && collapsed)">
               <v-col cols="12" md="8" offset-md="4" class="py-0">
                 <div class="caption grey--text">Paths</div>
-                <ul v-if="simulation.simulationFilePaths">
+                <ul v-if="node.simulationFilePaths">
                   <li
-                    v-for="(edgep, index) in simulation.simulationFilePaths.edges"
+                    v-for="(edgep, index) in node.simulationFilePaths.edges"
                     :key="index"
                     v-text="edgep.node.path"
                   ></li>
@@ -107,8 +107,8 @@
                   </v-col>
                   <v-col order="1" cols="12" md="8" class="py-0">
                     <div class="caption grey--text">Beams</div>
-                    <ul v-if="simulation.beams">
-                      <li v-for="(edgep, index) in simulation.beams.edges" :key="index">
+                    <ul v-if="node.beams">
+                      <li v-for="(edgep, index) in node.beams.edges" :key="index">
                         <router-link
                           :to="'/beams/item/' + edgep.node.name"
                           v-text="edgep.node.name"
@@ -144,7 +144,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    simulationId: { default: null }, // simulation.simulationId not simulation.id
+    simulationId: { default: null }, // node.simulationId not simulation.id
     collapsed: { default: false },
     collapsible: { default: false }
   },
@@ -155,7 +155,7 @@ export default {
       menu: false,
       editDialog: false,
       deleteDialog: false,
-      simulation: null,
+      node: null,
       error: null,
       devtoolState: null,
       State: State
@@ -166,35 +166,36 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-
+      
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.simulation) {
+      } else if (this.node) {
         return State.LOADED;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.simulation.loading;
+      return this.$apollo.queries.node.loading;
     },
     dataId: function() {
-      return defaultDataIdFromObject(this.simulation);
+      return defaultDataIdFromObject(this.node);
     },
     note() {
-      return marked(this.simulation.note);
+      return marked(this.node.note);
     }
   },
   apollo: {
-    simulation: {
+    node: {
       query: SIMULATION,
       variables() {
         return {
           simulationId: this.simulationId
         };
       },
+      update: data => data.simulation,
       result(result) {
         this.error = null;
         if (result.error) {

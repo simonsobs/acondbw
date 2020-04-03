@@ -22,7 +22,7 @@ describe("BeamItemCard.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            beam: {
+            node: {
               loading: loading
             }
           },
@@ -38,7 +38,7 @@ describe("BeamItemCard.vue", () => {
     return wrapper;
   }
 
-  const beam = {
+  const node = {
     id: "QmVhbToxMTUw",
     beamId: "1150",
     name: "20200207",
@@ -81,7 +81,7 @@ describe("BeamItemCard.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      beam: beam
+      node: node
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -99,7 +99,7 @@ describe("BeamItemCard.vue", () => {
         propsData: { collapsed: collapsed, collapsible: collapsible }
       });
       wrapper.setData({
-        beam: beam
+        node: node
       });
       await Vue.nextTick();
       expect(wrapper.find(".collapsible").isVisible()).toBe(visible);

@@ -22,7 +22,7 @@ describe("MapItemCard.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            map: {
+            node: {
               loading: loading
             }
           },
@@ -38,7 +38,7 @@ describe("MapItemCard.vue", () => {
     return wrapper;
   }
 
-  const map = {
+  const node = {
     id: "TWFwOjEwMTM=",
     mapId: "1013",
     name: "lat20200201",
@@ -100,7 +100,7 @@ describe("MapItemCard.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      map: map
+      node: node
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -118,7 +118,7 @@ describe("MapItemCard.vue", () => {
         propsData: { collapsed: collapsed, collapsible: collapsible }
       });
       wrapper.setData({
-        map: map
+        node: node
       });
       await Vue.nextTick();
       expect(wrapper.find(".collapsible").isVisible()).toBe(visible);

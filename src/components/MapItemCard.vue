@@ -12,17 +12,17 @@
               <div class="caption grey--text">Name</div>
               <div class="font-weight-medium primary--text">
                 <span @click.stop>
-                  <router-link :to="'/maps/item/' + map.name" v-text="map.name"></router-link>
+                  <router-link :to="'/maps/item/' + node.name" v-text="node.name"></router-link>
                 </span>
               </div>
             </v-col>
             <v-col order="3" cols="6" md="4" class="py-0">
               <div class="caption grey--text">Date posted</div>
-              <div v-text="map.datePosted"></div>
+              <div v-text="node.datePosted"></div>
             </v-col>
             <v-col order="4" cols="6" md="2" class="py-0">
               <div class="caption grey--text">Mapper</div>
-              <div v-text="map.mapper"></div>
+              <div v-text="node.mapper"></div>
             </v-col>
             <v-col order="2" order-md="5" cols="2" align-self="end" class="py-0">
               <v-row align="start" justify="end" class="px-1 py-0">
@@ -66,7 +66,7 @@
                           </v-list-item>
                         </template>
                         <MapEditForm
-                          :mapId="map.mapId"
+                          :mapId="node.mapId"
                           v-on:finished="editDialog = false; menu = false"
                         ></MapEditForm>
                       </v-dialog>
@@ -82,9 +82,9 @@
                           </v-list-item>
                         </template>
                         <MapDeleteForm
-                          :mapId="map.mapId"
+                          :mapId="node.mapId"
                           v-on:finished="deleteDialog = false; menu = false"
-                          v-on:deleted="deleteDialog = false; menu = false; map = null"
+                          v-on:deleted="deleteDialog = false; menu = false; node = null"
                         ></MapDeleteForm>
                       </v-dialog>
                     </v-list>
@@ -97,9 +97,9 @@
             <v-row class="mx-0 mb-3 px-0 collapsible" v-show="!(collapsible && collapsed)">
               <v-col cols="12" md="8" offset-md="4" class="py-0">
                 <div class="caption grey--text">Paths</div>
-                <ul v-if="map.mapFilePaths">
+                <ul v-if="node.mapFilePaths">
                   <li
-                    v-for="(edgep, index) in map.mapFilePaths.edges"
+                    v-for="(edgep, index) in node.mapFilePaths.edges"
                     :key="index"
                     v-text="edgep.node.path"
                   ></li>
@@ -116,8 +116,8 @@
                   </v-col>
                   <v-col order="1" cols="12" md="8" class="py-0">
                     <div class="caption grey--text">Beams</div>
-                    <ul v-if="map.beams">
-                      <li v-for="(edgep, index) in map.beams.edges" :key="index">
+                    <ul v-if="node.beams">
+                      <li v-for="(edgep, index) in node.beams.edges" :key="index">
                         <router-link
                           :to="'/beams/item/' + edgep.node.name"
                           v-text="edgep.node.name"
@@ -158,7 +158,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    mapId: { default: null }, // map.mapId not map.id
+    mapId: { default: null }, // node.mapId not node.id
     collapsed: { default: false },
     collapsible: { default: false }
   },
@@ -169,7 +169,7 @@ export default {
       menu: false,
       editDialog: false,
       deleteDialog: false,
-      map: null,
+      node: null,
       error: null,
       devtoolState: null,
       State: State
@@ -180,35 +180,36 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-
+      
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.map) {
+      } else if (this.node) {
         return State.LOADED;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.map.loading;
+      return this.$apollo.queries.node.loading;
     },
     dataId: function() {
-      return defaultDataIdFromObject(this.map);
+      return defaultDataIdFromObject(this.node);
     },
     note() {
-      return marked(this.map.note);
+      return marked(this.node.note);
     }
   },
   apollo: {
-    map: {
+    node: {
       query: MAP,
       variables() {
         return {
           mapId: this.mapId
         };
       },
+      update: data => data.map,
       result(result) {
         this.error = null;
         if (result.error) {
