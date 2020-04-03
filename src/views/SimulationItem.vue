@@ -22,7 +22,7 @@
           </v-tooltip>
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
-              <v-btn icon @click="$apollo.queries.simulation.refetch();" v-on="on">
+              <v-btn icon @click="$apollo.queries.node.refetch();" v-on="on">
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
@@ -32,7 +32,7 @@
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
-        <SimulationItemCard :simulationId="simulation.simulationId" :collapsible="false" v-on:deleted="$router.push('/simulations')"></SimulationItemCard>
+        <SimulationItemCard :simulationId="node.simulationId" :collapsible="false" v-on:deleted="$router.push('/simulations')"></SimulationItemCard>
       </div>
     </div>
     <div v-else class="mx-2 pt-5">
@@ -69,7 +69,7 @@ export default {
   },
   data() {
     return {
-      simulation: null,
+      node: null,
       name: null,
       error: null,
       devtoolState: null,
@@ -91,29 +91,30 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-
+      
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.simulation) {
+      } else if (this.node) {
         return State.LOADED;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.simulation.loading;
+      return this.$apollo.queries.node.loading;
     }
   },
   apollo: {
-    simulation: {
+    node: {
       query: GqlSimulationName,
       variables() {
         return {
           name: this.name
         };
       },
+      update: data => data.simulation,
       result(result) {
         this.error = null;
         if (result.error) {

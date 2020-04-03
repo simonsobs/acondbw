@@ -22,7 +22,7 @@
           </v-tooltip>
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
-              <v-btn icon @click="$apollo.queries.beam.refetch();" v-on="on">
+              <v-btn icon @click="$apollo.queries.node.refetch();" v-on="on">
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
@@ -33,7 +33,7 @@
       </v-container>
       <div v-if="state == State.LOADED">
         <BeamItemCard
-          :beamId="beam.beamId"
+          :beamId="node.beamId"
           :collapsible="false"
           v-on:deleted="$router.push('/beams')"
         ></BeamItemCard>
@@ -73,7 +73,7 @@ export default {
   },
   data() {
     return {
-      beam: null,
+      node: null,
       name: null,
       error: null,
       devtoolState: null,
@@ -95,29 +95,30 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-
+      
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.beam) {
+      } else if (this.node) {
         return State.LOADED;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.beam.loading;
+      return this.$apollo.queries.node.loading;
     }
   },
   apollo: {
-    beam: {
+    node: {
       query: GqlBeamName,
       variables() {
         return {
           name: this.name
         };
       },
+      update: data => data.beam,
       result(result) {
         this.error = null;
         if (result.error) {

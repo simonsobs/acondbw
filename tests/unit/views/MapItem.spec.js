@@ -21,7 +21,7 @@ describe("MapItem.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            map: {
+            node: {
               loading: loading
             }
           }
@@ -40,7 +40,7 @@ describe("MapItem.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      map: {
+      node: {
         id: "TWFwOjEwMTM=",
         mapId: "1013",
         name: "lat20200201"

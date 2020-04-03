@@ -21,7 +21,7 @@ describe("SimulationItem.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            simulation: {
+            node: {
               loading: loading
             }
           }
@@ -40,7 +40,7 @@ describe("SimulationItem.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      simulation: {
+      node: {
         id: "U2ltdWxhdGlvbjoxMDAx",
         simulationId: "1001",
         name: "xyz-s1234-20200101"

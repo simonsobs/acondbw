@@ -21,7 +21,7 @@ describe("BeamItem.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            beam: {
+            node: {
               loading: loading
             }
           }
@@ -40,7 +40,7 @@ describe("BeamItem.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      beam: {
+      node: {
         id: "QmVhbToxMTUw",
         beamId: "1150",
         name: "20200207"

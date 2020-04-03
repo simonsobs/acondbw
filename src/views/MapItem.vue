@@ -22,7 +22,7 @@
           </v-tooltip>
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
-              <v-btn icon @click="$apollo.queries.map.refetch();" v-on="on">
+              <v-btn icon @click="$apollo.queries.node.refetch();" v-on="on">
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
@@ -32,7 +32,7 @@
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
-        <MapItemCard :mapId="map.mapId" :collapsible="false" v-on:deleted="$router.push('/maps')"></MapItemCard>
+        <MapItemCard :mapId="node.mapId" :collapsible="false" v-on:deleted="$router.push('/maps')"></MapItemCard>
       </div>
     </div>
     <div v-else class="mx-2 pt-5">
@@ -69,7 +69,7 @@ export default {
   },
   data() {
     return {
-      map: null,
+      node: null,
       name: null,
       error: null,
       devtoolState: null,
@@ -91,29 +91,30 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-
+      
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.map) {
+      } else if (this.node) {
         return State.LOADED;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.map.loading;
+      return this.$apollo.queries.node.loading;
     }
   },
   apollo: {
-    map: {
+    node: {
       query: GqlMapName,
       variables() {
         return {
           name: this.name
         };
       },
+      update: data => data.map,
       result(result) {
         this.error = null;
         if (result.error) {
