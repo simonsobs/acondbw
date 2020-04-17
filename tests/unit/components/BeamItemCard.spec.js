@@ -42,7 +42,17 @@ describe("BeamItemCard.vue", () => {
     id: "QmVhbToxMTUw",
     beamId: "1150",
     name: "20200207",
-    path: "BEAM_DEPOT/Beams/20200207",
+    beamFilePaths: {
+      edges: [
+        {
+          node: {
+            id: "QmVhbUZpbGVQYXRoOjQ=",
+            path: "BEAM_DEPOT/Beams/20200207",
+            note: ""
+          }
+        }
+      ]
+    },
     map: {
       name: "lat20200201"
     },

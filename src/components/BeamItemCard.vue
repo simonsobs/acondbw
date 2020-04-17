@@ -17,8 +17,14 @@
               </div>
             </v-col>
             <v-col order="3" cols="12" md="7" class="py-0">
-              <div class="caption grey--text">Path</div>
-              <div v-text="node.path"></div>
+              <div class="caption grey--text">Paths</div>
+                <ul v-if="node.beamFilePaths">
+                  <li
+                    v-for="(edgep, index) in node.beamFilePaths.edges"
+                    :key="index"
+                    v-text="edgep.node.path"
+                  ></li>
+                </ul>
             </v-col>
             <v-col order="2" order-md="4" cols="2" align-self="end" class="py-0">
               <v-row align="start" justify="end" class="px-1 py-0">

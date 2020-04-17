@@ -11,8 +11,10 @@ exports[`BeamItemCard.vue match snapshot 1`] = `
             <div class="font-weight-medium primary--text"><span><a href="/beams/item/20200207" class="">20200207</a></span></div>
           </div>
           <div class="py-0 col-md-7 col-12 order-3">
-            <div class="caption grey--text">Path</div>
-            <div>BEAM_DEPOT/Beams/20200207</div>
+            <div class="caption grey--text">Paths</div>
+            <ul>
+              <li>BEAM_DEPOT/Beams/20200207</li>
+            </ul>
           </div>
           <div class="py-0 order-md-4 col col-2 order-2 align-self-end">
             <div class="row px-1 py-0 align-start justify-end">
