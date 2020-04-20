@@ -1,64 +1,70 @@
 <template>
-  <v-card>
+  <v-card style="max-width: 980px;">
     <v-card-title class="headline primary--text">Add a map</v-card-title>
-    <v-card-text>
-      <v-form ref="form" v-model="valid">
-        <v-text-field
-          label="Name of map*"
-          v-model="form.name"
-          :rules="nameRules"
-          filled
-          required
-          prepend-icon="map"
-        ></v-text-field>
-        <v-menu
-          v-model="menuDatePosteDatePicker"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on }">
+    <v-form ref="form" v-model="valid">
+      <v-container fluid class="pa-0">
+        <v-row class="ma-0 px-0">
+          <v-col order="1" cols="12" md="4" class="py-0">
             <v-text-field
-              v-model="form.datePosted"
-              label="Date posted"
-              filled
-              prepend-icon="event"
-              v-on="on"
+              label="Name*"
+              hint="Name of map*"
+              persistent-hint
+              v-model="form.name"
+              :rules="nameRules"
+              required
             ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="form.datePosted"
-            no-title
-            scrollable
-            @input="menuDatePosteDatePicker = false"
-          ></v-date-picker>
-        </v-menu>
-        <v-text-field label="Mapper" v-model="form.mapper" filled prepend-icon="person"></v-text-field>
-        <!-- 
+          </v-col>
+          <v-col order="3" cols="6" md="4" class="py-0">
+            <v-menu
+              v-model="menuDatePosteDatePicker"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field v-model="form.datePosted" label="Date posted" v-on="on"></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="form.datePosted"
+                no-title
+                scrollable
+                @input="menuDatePosteDatePicker = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col order="4" cols="6" md="4" class="py-0">
+            <v-text-field label="Mapper" v-model="form.mapper"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="mx-0 mb-3 px-0">
+          <!-- <v-col cols="12" md="8" offset-md="4" class="py-0">
             <v-textarea
               label="Paths"
               v-model="form.paths"
+              persistent-hint
               hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
-              prepend-icon="mdi-folder-multiple"
             ></v-textarea>
-        -->
-        <v-textarea
-          label="Note"
-          v-model="form.note"
-          hint="Itemized text. One iterm per line"
-          filled
-          prepend-icon="mdi-note"
-        ></v-textarea>
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-      <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
-      <v-btn color="primary" :disabled="!valid" @click="addMap()">Add</v-btn>
-    </v-card-actions>
+          </v-col> -->
+          <v-col cols="12" md="8" offset-md="4" class="py-0">
+            <v-textarea
+              label="Note"
+              v-model="form.note"
+              hint="will be parsed as Markdown"
+              persistent-hint
+            ></v-textarea>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-card-text></v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+        <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
+        <v-btn color="primary" :disabled="!valid" @click="addMap()">Add</v-btn>
+      </v-card-actions>
+    </v-form>
   </v-card>
 </template>
 
