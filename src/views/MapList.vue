@@ -43,7 +43,7 @@
               }}
             </span>
           </v-tooltip>
-          <v-dialog v-model="dialog" persistent max-width="960">
+          <v-dialog v-model="dialog" persistent max-width="980">
             <template v-slot:activator="{ on: dialog }">
               <v-tooltip bottom open-delay="800">
                 <template v-slot:activator="{ on: toolip }">
