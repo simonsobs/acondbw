@@ -39,14 +39,14 @@
           </v-col>
         </v-row>
         <v-row class="mx-0 mb-3 px-0">
-          <!-- <v-col cols="12" md="8" offset-md="4" class="py-0">
+          <v-col cols="12" md="8" offset-md="4" class="py-0">
             <v-textarea
               label="Paths"
               v-model="form.paths"
               persistent-hint
               hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
             ></v-textarea>
-          </v-col> -->
+          </v-col>
           <v-col cols="12" md="8" offset-md="4" class="py-0">
             <v-textarea
               label="Note"
@@ -71,13 +71,14 @@
 <script>
 import gql from "graphql-tag";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
+import MAP from "@/graphql/Map.gql";
 import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 
 const formDefault = {
   name: "",
   datePosted: new Date().toISOString().substr(0, 10),
   mapper: "",
-  // paths: "",
+  paths: "",
   note: ""
 };
 
@@ -105,6 +106,18 @@ export default {
     },
     async addMap() {
       try {
+        const createMapInput = (({ name, datePosted, mapper, note }) => ({
+          name,
+          datePosted,
+          mapper,
+          note
+        }))(this.form);
+
+        const paths = this.form.paths
+          .split("\n")
+          .map(x => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
+          .filter(Boolean); // remove empty strings
+
         const data = await this.$apollo.mutate({
           mutation: gql`
             mutation($input: CreateMapInput!) {
@@ -117,7 +130,7 @@ export default {
             }
             ${MAP_FRAGMENT}
           `,
-          variables: { input: this.form },
+          variables: { input: createMapInput },
           update: (cache, { data: { createMap } }) => {
             const data = cache.readQuery({
               query: ALL_MAPS
@@ -132,6 +145,47 @@ export default {
             });
           }
         });
+
+        const mapId = data.data.createMap.map.mapId;
+
+        for (const path of paths) {
+          const createMapFilePathInput = {
+            path,
+            mapId
+          };
+          const data = await this.$apollo.mutate({
+            mutation: gql`
+              mutation($input: CreateMapFilePathInput!) {
+                createMapFilePath(input: $input) {
+                  ok
+                  mapFilePath {
+                    id
+                    mapFilePathId
+                    path
+                    note
+                  }
+                }
+              }
+            `,
+            variables: { input: createMapFilePathInput },
+            update: (cache, { data: { createMapFilePath } }) => {
+              const data = cache.readQuery({
+                query: MAP,
+                variables: { mapId }
+              });
+              data.map.mapFilePaths.edges.push({
+                node: createMapFilePath.mapFilePath,
+                __typename: "MapFilePathEdge"
+              });
+              cache.writeQuery({
+                query: MAP,
+                variables: { mapId },
+                data
+              });
+            }
+          });
+        }
+
         this.$emit("finished");
         this.resetForm();
       } catch (error) {

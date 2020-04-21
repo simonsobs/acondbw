@@ -19,9 +19,9 @@ describe("MapAddForm.vue", () => {
       vuetify,
       mocks: {
         $apollo: {
-          mutate
-        }
-      }
+          mutate,
+        },
+      },
     });
 
     return wrapper;
@@ -40,22 +40,44 @@ describe("MapAddForm.vue", () => {
 
   it("add", async () => {
     const wrapper = createWrapper();
-    const input = {
+    const createMapInput = {
       name: "new-map-name",
       datePosted: "2020-01-11",
       mapper: "map-map",
-      note: "note"
+      note: "note",
+    };
+
+    const form = {
+      paths: "/a/b/c\n\n \n/x/y/z \n  ",
+      ...createMapInput,
+    };
+
+    const createMap = {
+      map: {
+        id: "TWFwOjEwMTk=",
+        mapId: "1019",
+        ...createMapInput,
+      },
     };
 
     const blankForm = { ...wrapper.vm.form };
 
-    wrapper.setData({ form: input });
+    wrapper.setData({ form: form });
     await Vue.nextTick();
+    wrapper.vm.$apollo.mutate.mockReturnValue({ data: { createMap } });
     await wrapper.vm.addMap();
     const calls = wrapper.vm.$apollo.mutate.mock.calls;
-    expect(calls.length).toBe(1);
+    expect(calls.length).toBe(3);
     expect(calls[0][0].mutation).toBeDefined();
-    expect(calls[0][0].variables).toEqual({ input: input });
+    expect(calls[0][0].variables).toEqual({ input: createMapInput });
+    expect(calls[1][0].mutation).toBeDefined();
+    expect(calls[1][0].variables).toEqual({
+      input: { mapId: "1019", path: "/a/b/c" },
+    });
+    expect(calls[2][0].mutation).toBeDefined();
+    expect(calls[2][0].variables).toEqual({
+      input: { mapId: "1019", path: "/x/y/z" },
+    });
     expect(wrapper.vm.form).toEqual(blankForm); // # resetForm() is called
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
