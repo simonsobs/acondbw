@@ -39,6 +39,12 @@ describe("MapAddForm.vue", () => {
   });
 
   it("add", async () => {
+
+    // to suppress the warning "[Vuetify] Unable to locate target [data-app]""
+    const app = document.createElement ("div");
+    app.setAttribute ("data-app", true);
+    document.body.append (app);
+
     const wrapper = createWrapper();
     const createMapInput = {
       name: "new-map-name",
@@ -78,7 +84,13 @@ describe("MapAddForm.vue", () => {
     expect(calls[2][0].variables).toEqual({
       input: { mapId: "1019", path: "/x/y/z" },
     });
+    expect(wrapper.vm.dialogSuccess).toBe(true);
+
+    wrapper.vm.closeDialogSuccess();
+
+    expect(wrapper.vm.dialogSuccess).toBe(false);
     expect(wrapper.vm.form).toEqual(blankForm); // # resetForm() is called
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
+
 });

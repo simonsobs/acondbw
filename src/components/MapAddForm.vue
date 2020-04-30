@@ -45,7 +45,7 @@
               <v-textarea
                 label="Paths"
                 hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
-                rows=2
+                rows="2"
                 persistent-hint
                 v-model="form.paths"
               ></v-textarea>
@@ -55,7 +55,7 @@
                 label="Note"
                 hint="will be parsed as Markdown"
                 persistent-hint
-                rows=3
+                rows="3"
                 v-model="form.note"
               ></v-textarea>
             </v-col>
@@ -70,6 +70,15 @@
         <v-btn color="primary" :disabled="!valid" @click="addMap()">Add</v-btn>
       </v-card-actions>
     </v-form>
+    <v-dialog v-model="dialogSuccess" max-width="500px">
+      <v-card>
+        <v-card-title class="success--text">Added</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="closeDialogSuccess()">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -94,6 +103,7 @@ export default {
       form: { ...formDefault },
       valid: true,
       error: null,
+      dialogSuccess: false,
       nameRules: [
         v => !!v || "Name is required",
         v => (v || "").indexOf(" ") < 0 || "No spaces are allowed"
@@ -192,13 +202,15 @@ export default {
             }
           });
         }
-
-        this.$emit("finished");
-        this.resetForm();
+        this.dialogSuccess = true;
       } catch (error) {
         this.error = error;
       }
-      // this.$emit("finished");
+    },
+    closeDialogSuccess() {
+      this.dialogSuccess = false;
+      this.resetForm();
+      this.$emit("finished");
     }
   }
 };
