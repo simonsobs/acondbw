@@ -22,7 +22,8 @@ exports[`BeamItemCard.vue match snapshot 1`] = `
               <div class="v-menu">
                 <!---->
               </div>
-              </span></div>
+              </span>
+            </div>
           </div>
         </div>
         <div class="row mx-0 mb-3 px-0 collapsible">

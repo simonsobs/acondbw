@@ -13,7 +13,8 @@ exports[`SimulationList.vue match snapshot 1`] = `
         <div class="spacer"></div> <span class="v-tooltip v-tooltip--bottom"><!----></span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-unfold-more-horizontal theme--light"></i></span></button>
         <div role="dialog" class="v-dialog__container">
           <!---->
-        </div><span class="v-tooltip v-tooltip--bottom"><!----></span><button type="button" disabled="disabled" class="v-btn v-btn--disabled v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-plus-thick theme--light"></i></span></button></div>
+        </div><span class="v-tooltip v-tooltip--bottom"><!----></span><button type="button" disabled="disabled" class="v-btn v-btn--disabled v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-plus-thick theme--light"></i></span></button>
+      </div>
     </div>
     <div>
       <simulationitemcard-stub simulationid="1001" collapsed="true" collapsible="true" class="my-1"></simulationitemcard-stub>
