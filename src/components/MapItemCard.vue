@@ -8,7 +8,7 @@
       <div v-else-if="state == State.LOADED" @click="$emit('expand')" style="cursor: default;">
         <v-container fluid class="pa-0">
           <v-row class="ma-0 px-0">
-            <v-col order="1" cols="10" md="4" class="py-0">
+            <v-col order="1" cols="9" md="4" class="py-2">
               <div class="caption grey--text">Name</div>
               <div class="font-weight-medium primary--text">
                 <span @click.stop>
@@ -16,15 +16,15 @@
                 </span>
               </div>
             </v-col>
-            <v-col order="3" cols="6" md="4" class="py-0">
-              <div class="caption grey--text">Date posted</div>
-              <div v-text="node.datePosted"></div>
+            <v-col order="3" cols="6" md="3" class="py-2">
+              <div class="caption grey--text">Produced by</div>
+              <div v-text="node.producedBy"></div>
             </v-col>
-            <v-col order="4" cols="6" md="2" class="py-0">
-              <div class="caption grey--text">Mapper</div>
-              <div v-text="node.mapper"></div>
+            <v-col order="4" cols="6" md="2" class="py-2">
+              <div class="caption grey--text">Date produced</div>
+              <div v-text="node.dateProduced"></div>
             </v-col>
-            <v-col order="2" order-md="5" cols="2" align-self="end" class="py-0">
+            <v-col order="2" order-md="5" cols="3" align-self="center" class="py-2">
               <v-row align="start" justify="end" class="px-1 py-0">
                 <div v-if="collapsible">
                   <v-tooltip bottom open-delay="800">
@@ -95,7 +95,27 @@
           </v-row>
           <v-expand-transition>
             <v-row class="mx-0 mb-3 px-0 collapsible" v-show="!(collapsible && collapsed)">
-              <v-col cols="12" md="8" offset-md="4" class="py-0">
+              <v-col cols="12" md="4" class="py-2">
+                <div class="caption grey--text">Contact</div>
+                <div v-text="node.contact"></div>
+              </v-col>
+              <v-col cols="6" md="3" class="py-2">
+                <div class="caption grey--text">Posted by</div>
+                <div v-text="node.postedBy"></div>
+              </v-col>
+              <v-col cols="6" md="2" class="py-2">
+                <div class="caption grey--text">Date posted</div>
+                <div v-text="node.datePosted"></div>
+              </v-col>
+              <v-col cols="6" md="3" offset-md="4" class="py-2">
+                <div class="caption grey--text">Updated by</div>
+                <div v-text="node.updatedBy"></div>
+              </v-col>
+              <v-col cols="6" md="2" class="py-2">
+                <div class="caption grey--text">Date updated</div>
+                <div v-text="node.dateUpdated"></div>
+              </v-col>
+              <v-col cols="12" md="8" offset-md="4" class="py-2">
                 <div class="caption grey--text">Paths</div>
                 <ul v-if="node.mapFilePaths">
                   <li
@@ -105,25 +125,22 @@
                   ></li>
                 </ul>
               </v-col>
-              <v-col cols="12" md="8" offset-md="4" class="py-0">
-                <div class="caption grey--text">Note</div>
-                <div v-html="note"></div>
+              <v-col cols="12" md="8" offset-md="4" class="py-2">
+                <div class="caption grey--text">Beams</div>
+                <ul v-if="node.beams">
+                  <li v-for="(edgep, index) in node.beams.edges" :key="index">
+                    <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
+                  </li>
+                </ul>
               </v-col>
-              <v-col cols="12" class="py-0">
+              <v-col cols="12" class="py-2">
                 <v-row>
                   <v-col order="2" order-md="0" cols="12" md="4" align-self="end" class="py-0">
                     <span class="grey--text" style="font-size: 65%;">Data ID: {{ dataId }}</span>
                   </v-col>
                   <v-col order="1" cols="12" md="8" class="py-0">
-                    <div class="caption grey--text">Beams</div>
-                    <ul v-if="node.beams">
-                      <li v-for="(edgep, index) in node.beams.edges" :key="index">
-                        <router-link
-                          :to="'/beams/item/' + edgep.node.name"
-                          v-text="edgep.node.name"
-                        ></router-link>
-                      </li>
-                    </ul>
+                    <div class="caption grey--text">Note</div>
+                    <div v-html="note"></div>
                   </v-col>
                 </v-row>
               </v-col>
@@ -180,7 +197,7 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-      
+
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
