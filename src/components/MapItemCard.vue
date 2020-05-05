@@ -10,7 +10,7 @@
           <v-row class="ma-0 px-0">
             <v-col order="1" cols="9" md="4" class="py-2">
               <div class="caption grey--text">Name</div>
-              <div class="font-weight-medium primary--text">
+              <div class="font-weight-bold primary--text">
                 <span @click.stop>
                   <router-link :to="'/maps/item/' + node.name" v-text="node.name"></router-link>
                 </span>
@@ -94,7 +94,7 @@
             </v-col>
           </v-row>
           <v-expand-transition>
-            <v-row class="mx-0 mb-3 px-0 collapsible" v-show="!(collapsible && collapsed)">
+            <v-row class="mx-0 px-0 collapsible" v-show="!(collapsible && collapsed)">
               <v-col cols="12" md="4" class="py-2">
                 <div class="caption grey--text">Contact</div>
                 <div v-text="node.contact"></div>
