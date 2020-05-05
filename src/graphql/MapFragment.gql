@@ -2,8 +2,13 @@ fragment map on Map {
   id
   mapId
   name
+  contact
+  dateProduced
+  producedBy
   datePosted
-  mapper
+  postedBy
+  dateUpdated
+  updatedBy
   mapFilePaths {
     edges {
       node {
