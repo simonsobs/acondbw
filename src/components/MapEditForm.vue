@@ -30,7 +30,7 @@
               @input="menuDatePosteDatePicker = false"
             ></v-date-picker>
           </v-menu>
-          <v-text-field label="Mapper" v-model="form.mapper" prepend-icon="person"></v-text-field>
+          <v-text-field label="producedBy" v-model="form.producedBy" prepend-icon="person"></v-text-field>
           <!-- 
             <v-textarea
               label="Paths"
@@ -70,7 +70,7 @@ const MAP_FOR_EDIT = gql`
       mapId
       name
       datePosted
-      mapper
+      producedBy
       note
     }
   }
@@ -107,10 +107,10 @@ export default {
   },
   watch: {
     map() {
-      this.form = (({ name, datePosted, mapper, note }) => ({
+      this.form = (({ name, datePosted, producedBy, note }) => ({
         name,
         datePosted,
-        mapper,
+        producedBy,
         note
       }))(this.map);
     }
