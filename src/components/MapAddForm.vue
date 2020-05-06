@@ -9,16 +9,16 @@
             <v-col order="1" cols="12" md="4">
               <v-text-field
                 label="Name*"
-                hint="Name of map*"
+                required
+                hint="Name of the map. This field cannot be changed later."
                 persistent-hint
                 v-model="form.name"
                 :rules="nameRules"
-                required
               ></v-text-field>
             </v-col>
             <v-col order="3" cols="6" md="4">
               <v-menu
-                v-model="menuDatePosteDatePicker"
+                v-model="menuDateProducedDatePicker"
                 :close-on-content-click="false"
                 :nudge-right="40"
                 transition="scale-transition"
@@ -26,18 +26,53 @@
                 min-width="290px"
               >
                 <template v-slot:activator="{ on }">
-                  <v-text-field v-model="form.datePosted" label="Date posted" v-on="on"></v-text-field>
+                  <v-text-field
+                    label="Date produced (YYYY-MM-DD)*"
+                    required
+                    hint="The date on which the map was produced. This field cannot be changed later, e.g., 2020-05-06"
+                    persistent-hint
+                    v-model="form.dateProduced"
+                    :rules="requiredRules"
+                    v-on="on"
+                  ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="form.datePosted"
+                  v-model="form.dateProduced"
                   no-title
                   scrollable
-                  @input="menuDatePosteDatePicker = false"
+                  @input="menuDateProducedDatePicker = false"
                 ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col order="4" cols="6" md="4">
-              <v-text-field label="Mapper" v-model="form.mapper"></v-text-field>
+              <v-text-field
+                label="Produced by*"
+                required
+                hint="The person or group that produced the map, e.g. pwg-xxx. This field cannot be changed later."
+                persistent-hint
+                v-model="form.producedBy"
+                :rules="requiredRules"
+              ></v-text-field>
+            </v-col>
+            <v-col order="4" cols="6" offset-md="4" md="4">
+              <v-text-field
+                label="Contact*"
+                required
+                hint="A person or group that can be contacted for questions or issues about the map."
+                persistent-hint
+                v-model="form.contact"
+                :rules="requiredRules"
+              ></v-text-field>
+            </v-col>
+            <v-col order="4" cols="6" md="4">
+              <v-text-field
+                label="Posted by*"
+                required
+                hint="The person who is filling out this field. This field cannot be changed later."
+                persistent-hint
+                v-model="form.postedBy"
+                :rules="requiredRules"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row class="mx-0 mb-3 px-0">
@@ -90,8 +125,10 @@ import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 
 const formDefault = {
   name: "",
-  datePosted: new Date().toISOString().substr(0, 10),
-  mapper: "",
+  contact: "",
+  dateProduced: new Date().toISOString().substr(0, 10),
+  producedBy: "",
+  postedBy: "",
   paths: "",
   note: ""
 };
@@ -105,10 +142,11 @@ export default {
       error: null,
       dialogSuccess: false,
       nameRules: [
-        v => !!v || "Name is required",
+        v => !!v || "This field is required",
         v => (v || "").indexOf(" ") < 0 || "No spaces are allowed"
       ],
-      menuDatePosteDatePicker: false
+      requiredRules: [v => !!v || "This field is required"],
+      menuDateProducedDatePicker: false
     };
   },
   methods: {
@@ -123,10 +161,19 @@ export default {
     },
     async addMap() {
       try {
-        const createMapInput = (({ name, datePosted, mapper, note }) => ({
+        const createMapInput = (({
           name,
-          datePosted,
-          mapper,
+          contact,
+          dateProduced,
+          producedBy,
+          postedBy,
+          note
+        }) => ({
+          name,
+          contact,
+          dateProduced,
+          producedBy,
+          postedBy,
           note
         }))(this.form);
 
