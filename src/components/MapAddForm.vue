@@ -29,7 +29,7 @@
                   <v-text-field
                     label="Date produced (YYYY-MM-DD)*"
                     required
-                    hint="The date on which the map was produced. This field cannot be changed later, e.g., 2020-05-06"
+                    hint="The date on which the map was produced, e.g., 2020-05-06. This field cannot be changed later."
                     persistent-hint
                     v-model="form.dateProduced"
                     :rules="requiredRules"
@@ -68,7 +68,7 @@
               <v-text-field
                 label="Posted by*"
                 required
-                hint="The person who is filling out this field. This field cannot be changed later."
+                hint="The person who is filling out this form. This field cannot be changed later."
                 persistent-hint
                 v-model="form.postedBy"
                 :rules="requiredRules"
