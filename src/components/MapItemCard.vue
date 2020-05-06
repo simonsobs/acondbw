@@ -17,12 +17,12 @@
               </div>
             </v-col>
             <v-col order="3" cols="6" md="3" class="py-2">
-              <div class="caption grey--text">Produced by</div>
-              <div v-text="node.producedBy"></div>
-            </v-col>
-            <v-col order="4" cols="6" md="2" class="py-2">
               <div class="caption grey--text">Date produced</div>
               <div v-text="node.dateProduced"></div>
+            </v-col>
+            <v-col order="4" cols="6" md="2" class="py-2">
+              <div class="caption grey--text">Produced by</div>
+              <div v-text="node.producedBy"></div>
             </v-col>
             <v-col order="2" order-md="5" cols="3" align-self="center" class="py-2">
               <v-row align="start" justify="end" class="px-1 py-0">
@@ -100,20 +100,20 @@
                 <div v-text="node.contact"></div>
               </v-col>
               <v-col cols="6" md="3" class="py-2">
-                <div class="caption grey--text">Posted by</div>
-                <div v-text="node.postedBy"></div>
-              </v-col>
-              <v-col cols="6" md="2" class="py-2">
                 <div class="caption grey--text">Date posted</div>
                 <div v-text="node.datePosted"></div>
               </v-col>
-              <v-col cols="6" md="3" offset-md="4" class="py-2">
-                <div class="caption grey--text">Updated by</div>
-                <div v-text="node.updatedBy"></div>
+              <v-col cols="6" md="5" class="py-2">
+                <div class="caption grey--text">Posted by</div>
+                <div v-text="node.postedBy"></div>
               </v-col>
-              <v-col cols="6" md="2" class="py-2">
+              <v-col cols="6" md="3" offset-md="4" class="py-2">
                 <div class="caption grey--text">Date updated</div>
                 <div v-text="node.dateUpdated"></div>
+              </v-col>
+              <v-col cols="6" md="5" class="py-2">
+                <div class="caption grey--text">Updated by</div>
+                <div v-text="node.updatedBy"></div>
               </v-col>
               <v-col cols="12" md="8" offset-md="4" class="py-2">
                 <div class="caption grey--text">Paths</div>
