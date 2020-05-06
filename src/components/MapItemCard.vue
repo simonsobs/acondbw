@@ -109,29 +109,33 @@
               </v-col>
               <v-col cols="6" md="3" offset-md="4" class="py-2">
                 <div class="caption grey--text">Date updated</div>
-                <div v-text="node.dateUpdated"></div>
+                <div v-if="node.dateUpdated" v-text="node.dateUpdated"></div>
+                <div v-else class="body-2 grey--text">N/A</div>
               </v-col>
               <v-col cols="6" md="5" class="py-2">
                 <div class="caption grey--text">Updated by</div>
-                <div v-text="node.updatedBy"></div>
+                <div v-if="node.updatedBy" v-text="node.updatedBy"></div>
+                <div v-else class="body-2 grey--text">N/A</div>
               </v-col>
               <v-col cols="12" md="8" offset-md="4" class="py-2">
                 <div class="caption grey--text">Paths</div>
-                <ul v-if="node.mapFilePaths">
+                <ul v-if="node.mapFilePaths && node.mapFilePaths.edges.length > 0">
                   <li
                     v-for="(edgep, index) in node.mapFilePaths.edges"
                     :key="index"
                     v-text="edgep.node.path"
                   ></li>
                 </ul>
+                <div v-else class="body-2 grey--text">None</div>
               </v-col>
               <v-col cols="12" md="8" offset-md="4" class="py-2">
                 <div class="caption grey--text">Beams</div>
-                <ul v-if="node.beams">
+                <ul v-if="node.beams && node.beams.edges.length > 0">
                   <li v-for="(edgep, index) in node.beams.edges" :key="index">
                     <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
                   </li>
                 </ul>
+                <div v-else class="body-2 grey--text">None</div>
               </v-col>
               <v-col cols="12" class="py-2">
                 <v-row>
@@ -140,7 +144,8 @@
                   </v-col>
                   <v-col order="1" cols="12" md="8" class="py-0">
                     <div class="caption grey--text">Note</div>
-                    <div v-html="note"></div>
+                    <div v-if="note" v-html="note"></div>
+                    <div v-else class="body-2 grey--text">None</div>
                   </v-col>
                 </v-row>
               </v-col>
