@@ -54,7 +54,7 @@
                       </v-btn>
                     </template>
                     <v-list dense>
-                      <v-dialog v-model="editDialog" persistent max-width="600">
+                      <v-dialog v-model="editDialog" persistent max-width="980">
                         <template v-slot:activator="{ on: editDialog }">
                           <v-list-item :disabled="disableEdit" v-on="{ ...editDialog }">
                             <v-list-item-icon>
