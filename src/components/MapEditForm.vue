@@ -1,11 +1,10 @@
 <template>
-  <v-card class="pa-5">
-    <v-card-title class="headline primary--text">Update the information about the map</v-card-title>
-    <v-card-text>This form is for updating the information about the map. If the map itself has been updated, a new entry should be added.</v-card-text>
-    <div class="mapeditform">
-      <div v-if="state == State.LOADING">loading...</div>
-      <div v-else-if="error">Error: cannot load data</div>
-      <v-form v-else-if="form">
+  <div class="map-edit-form" style="position: relative;">
+    <v-card class="pa-5">
+      <v-card-title class="headline primary--text">Update the information about the map</v-card-title>
+      <v-card-text>This form is for updating the information about the map. If the map itself has been updated, a new entry should be added.</v-card-text>
+      <v-alert v-if="error" type="error">{{ error }}</v-alert>
+      <v-form v-if="state == State.LOADED" ref="form" v-model="valid">
         <v-card outlined>
           <v-container fluid class="px-0">
             <v-row class="ma-0 px-0">
@@ -15,61 +14,84 @@
                   readonly
                   hint="Name of the map. This field cannot be changed."
                   persistent-hint
-                  v-model="form.name"
+                  v-model="node.name"
+                ></v-text-field>
+              </v-col>
+              <v-col order="4" cols="6" md="4">
+                <v-text-field
+                  label="Contact*"
+                  required
+                  hint="A person or group that can be contacted for questions or issues about the map."
+                  persistent-hint
+                  v-model="form.contact"
+                  :rules="requiredRules"
+                ></v-text-field>
+              </v-col>
+              <v-col order="4" cols="6" md="4">
+                <v-text-field
+                  label="Updated by*"
+                  required
+                  hint="The person who is filling out this form."
+                  persistent-hint
+                  v-model="form.updatedBy"
+                  :rules="requiredRules"
                 ></v-text-field>
               </v-col>
             </v-row>
+            <v-row class="mx-0 mb-3 px-0">
+              <v-col cols="12" md="8" offset-md="4">
+                <v-textarea
+                  label="Paths"
+                  hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
+                  rows="2"
+                  persistent-hint
+                  v-model="form.paths"
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12" md="8" offset-md="4">
+                <v-textarea
+                  label="Note"
+                  hint="will be parsed as Markdown"
+                  persistent-hint
+                  rows="3"
+                  v-model="form.note"
+                ></v-textarea>
+              </v-col>
+            </v-row>
           </v-container>
-          <v-card-text>
-            <v-menu
-              v-model="menuDatePosteDatePicker"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="form.datePosted"
-                  label="Date posted"
-                  prepend-icon="event"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="form.datePosted"
-                no-title
-                scrollable
-                @input="menuDatePosteDatePicker = false"
-              ></v-date-picker>
-            </v-menu>
-            <v-text-field label="producedBy" v-model="form.producedBy" prepend-icon="person"></v-text-field>
-            <!-- 
-            <v-textarea
-              label="Paths"
-              v-model="form.paths"
-              hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
-              prepend-icon="mdi-folder-multiple"
-            ></v-textarea>
-            -->
-            <v-textarea
-              label="Note"
-              v-model="form.note"
-              hint="Itemized text. One iterm per line"
-              prepend-icon="mdi-file-document-box-outline"
-            ></v-textarea>
-          </v-card-text>
         </v-card>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-          <v-btn color="primary" @click="editMap()">Save</v-btn>
+          <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
+          <v-btn color="primary" :disabled="!(valid && changed)" @click="editMap()">Update</v-btn>
         </v-card-actions>
       </v-form>
-      <div v-else>Nothing to show here.</div>
-    </div>
-  </v-card>
+      <div v-else>
+        <v-card outlined>
+          <div v-if="state == State.LOADING" class="mx-4 py-2">
+            <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
+          </div>
+          <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
+          <v-card-text v-else>Nothing to show here.</v-card-text>
+        </v-card>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="secondary" text @click="$emit('finished')">Close</v-btn>
+        </v-card-actions>
+      </div>
+      <v-dialog v-model="dialogSuccess" max-width="500px">
+        <v-card>
+          <v-card-title class="success--text">Updated</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="closeDialogSuccess()">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-card>
+    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+  </div>
 </template>
 
 <script>
@@ -81,35 +103,30 @@ import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
-const MAP_FOR_EDIT = gql`
-  query MapForEdit($mapId: Int!) {
-    map(mapId: $mapId) {
-      id
-      mapId
-      name
-      datePosted
-      producedBy
-      note
-    }
-  }
-`;
-
 export default {
   name: "MapEditForm",
+  components: {
+    DevToolLoadingStateOverridingMenu
+  },
   props: {
     mapId: { default: null } // map.mapId not map.id
   },
   data() {
     return {
-      map: null,
-      error: null,
-      menuDatePosteDatePicker: false,
+      node: null,
       form: null,
+      valid: true,
+      error: null,
+      dialogSuccess: false,
+      requiredRules: [v => !!v || "This field is required"],
       devtoolState: null,
       State: State
     };
   },
   computed: {
+    changed() {
+      return !(JSON.stringify(this.form) === JSON.stringify(this.formDefault))
+    },
     state() {
       if (this.devtoolState) {
         return this.devtoolState;
@@ -119,24 +136,48 @@ export default {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.node) {
+      } else if (this.form) {
         return State.LOADED;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.map.loading;
+      return this.$apollo.queries.node.loading;
+    },
+    formDefault() {
+      if (this.node) {
+        const ret = (({ name, contact, updatedBy, note }) => ({
+          name,
+          contact,
+          updatedBy,
+          note
+        }))(this.node);
+        ret.paths = this.node.mapFilePaths.edges
+          .map(e => e.node.path)
+          .join("\n");
+        return ret;
+      } else {
+        return null;
+      }
+    }
+  },
+  watch: {
+    formDefault: function() {
+      console.log("there!!!");
+      this.form = { ...this.formDefault };
+      console.log(this.form);
     }
   },
   apollo: {
-    map: {
-      query: MAP_FOR_EDIT,
+    node: {
+      query: MAP,
       variables() {
         return {
           mapId: this.mapId
         };
       },
+      update: data => data.map,
       result(result) {
         this.error = null;
         if (result.error) {
@@ -145,23 +186,23 @@ export default {
       }
     }
   },
-  watch: {
-    map() {
-      this.form = (({ name, datePosted, producedBy, note }) => ({
-        name,
-        datePosted,
-        producedBy,
-        note
-      }))(this.map);
-    }
-  },
   methods: {
-    clearForm() {
-      this.form = null;
+    resetForm() {
+      // this.$refs.form.reset();
+      // This line is commented out because it resets "form" to
+      // the empty object {}.
+      // Instead, the following two lines are used.
+      this.form = { ...this.formDefault };
+      this.$refs.form.resetValidation();
+      this.error = null;
     },
     async editMap() {
-      // this.$emit("finished");
       try {
+        const updateMapInput = (({ contact, updatedBy, note }) => ({
+          contact,
+          updatedBy,
+          note
+        }))(this.form);
         const data = await this.$apollo.mutate({
           mutation: gql`
             mutation($mapId: Int!, $input: UpdateMapInput!) {
@@ -174,13 +215,16 @@ export default {
             }
             ${MAP_FRAGMENT}
           `,
-          variables: { mapId: this.map.mapId, input: this.form }
+          variables: { mapId: this.node.mapId, input: updateMapInput }
         });
-        // this.$emit("finished");
-        this.clearForm();
+        this.dialogSuccess = true;
       } catch (error) {
-        console.log(error);
+        this.error = error;
       }
+    },
+    closeDialogSuccess() {
+      this.dialogSuccess = false;
+      this.resetForm();
       this.$emit("finished");
     }
   }
