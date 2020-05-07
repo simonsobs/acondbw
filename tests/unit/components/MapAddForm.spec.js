@@ -48,8 +48,10 @@ describe("MapAddForm.vue", () => {
     const wrapper = createWrapper();
     const createMapInput = {
       name: "new-map-name",
-      datePosted: "2020-01-11",
-      mapper: "map-map",
+      contact: "contact-contact",
+      dateProduced: "2020-01-11",
+      producedBy: "map-map",
+      postedBy: "post-post",
       note: "note",
     };
 
