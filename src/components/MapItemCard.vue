@@ -61,7 +61,7 @@
                               <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                              <v-list-item-title>Edit</v-list-item-title>
+                              <v-list-item-title>Update</v-list-item-title>
                             </v-list-item-content>
                           </v-list-item>
                         </template>
