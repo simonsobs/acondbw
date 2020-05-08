@@ -22,7 +22,7 @@ describe("MapDeleteForm.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            map: {
+            node: {
               loading: loading
             }
           },
@@ -38,7 +38,7 @@ describe("MapDeleteForm.vue", () => {
     return wrapper;
   }
 
-  const map = {
+  const node = {
     id: "TWFwOjEwMTM=",
     mapId: "1013",
     name: "lat20200201",
@@ -53,7 +53,7 @@ describe("MapDeleteForm.vue", () => {
     const loading = true;
     const wrapper = createWrapper({ loading });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain("loading");
+    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
   });
 
   it("error", async () => {
@@ -72,12 +72,18 @@ describe("MapDeleteForm.vue", () => {
   });
 
   it("delete", async () => {
+
+    // to suppress the warning "[Vuetify] Unable to locate target [data-app]""
+    const app = document.createElement ("div");
+    app.setAttribute ("data-app", true);
+    document.body.append (app);
+
     const wrapper = createWrapper();
     wrapper.setData({
-      map: map
+      node: node
     });
     await wrapper.vm.deleteMap();
     expect(wrapper.vm.$apollo.mutate).toBeCalled();
-    expect(wrapper.emitted("deleted")).toBeTruthy();
+    expect(wrapper.vm.dialogSuccess).toBe(true);
   });
 });
