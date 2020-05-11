@@ -1,5 +1,5 @@
 <template>
-  <div class="maps">
+  <div class="product-top">
     <v-container fluid>
       <v-row class="display-1 mx-1 mt-3 primary--text" style="max-width: 980px;">
         <v-col col="8" class="pa-0 ma-0">
@@ -31,7 +31,7 @@ export default {
     itemPageName: { default: "ProductItemPageName" }
   },
   data: () => ({
-    transitionName: "fade-maps-leave",
+    transitionName: "fade-product-top-leave",
     transitionMode: "out-in"
   }),
   computed: {
@@ -43,12 +43,12 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
-    this.transitionName = "fade-maps-update";
+    this.transitionName = "fade-product-top-update";
     this.transitionMode = "out-in";
     next();
   },
   beforeRouteLeave(to, from, next) {
-    this.transitionName = "fade-maps-leave";
+    this.transitionName = "fade-product-top-leave";
     this.transitionMode = "out-in";
     next();
   }
@@ -56,32 +56,32 @@ export default {
 </script>
 
 <style scoped>
-.fade-maps-update-enter-active {
+.fade-product-top-update-enter-active {
   transition: opacity 0.2s;
 }
 
-.fade-maps-update-leave-active {
+.fade-product-top-update-leave-active {
   transition: opacity 0s;
 }
 
-.fade-maps-update-enter,
-.fade-maps-update-leave-to {
+.fade-product-top-update-enter,
+.fade-product-top-update-leave-to {
   opacity: 0;
 }
 
-.fade-maps-leave-enter-active {
+.fade-product-top-leave-enter-active {
   transition: opacity 0s;
 }
 
-.fade-maps-leave-leave-active {
+.fade-product-top-leave-leave-active {
   transition: opacity 0s;
 }
 
-.fade-maps-leave-enter {
+.fade-product-top-leave-enter {
   opacity: 1;
 }
 
-.fade-maps-leave-leave-to {
+.fade-product-top-leave-leave-to {
   opacity: 1;
 }
 </style>

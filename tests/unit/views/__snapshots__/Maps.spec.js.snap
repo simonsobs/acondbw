@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Maps.vue match snapshot item 1`] = `
-<div class="maps">
+<div class="product-top">
   <v-container-stub tag="div" fluid="true">
     <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
       <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>
@@ -10,7 +10,7 @@ exports[`Maps.vue match snapshot item 1`] = `
           map001
         </span></v-col-stub>
     </v-row-stub>
-    <transition-stub name="fade-maps-leave" mode="out-in">
+    <transition-stub name="fade-product-top-leave" mode="out-in">
       <keep-alive-stub>
         <router-view-stub></router-view-stub>
       </keep-alive-stub>
@@ -20,7 +20,7 @@ exports[`Maps.vue match snapshot item 1`] = `
 `;
 
 exports[`Maps.vue match snapshot list 1`] = `
-<div class="maps">
+<div class="product-top">
   <v-container-stub tag="div" fluid="true">
     <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
       <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>
@@ -28,7 +28,7 @@ exports[`Maps.vue match snapshot list 1`] = `
         <!---->
       </v-col-stub>
     </v-row-stub>
-    <transition-stub name="fade-maps-leave" mode="out-in">
+    <transition-stub name="fade-product-top-leave" mode="out-in">
       <keep-alive-stub>
         <router-view-stub></router-view-stub>
       </keep-alive-stub>
