@@ -107,6 +107,11 @@ export default {
         return { singular: "map", plural: "maps" };
       }
     },
+    query: {
+      default: function() {
+        return ALL_MAPS;
+      }
+    },
     queryName: { default: "allMaps" },
     productIdFieldName: { default: "mapId" },
     productItemCard: { default: "MapItemCard" },
@@ -127,7 +132,9 @@ export default {
   },
   apollo: {
     edges: {
-      query: ALL_MAPS,
+      query: function() {
+        return this.query;
+      },
       update: function(data) {
         return data[this.queryName].edges;
       },
