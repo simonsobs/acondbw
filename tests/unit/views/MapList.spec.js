@@ -21,15 +21,22 @@ describe("MapList.vue", () => {
         $apollo: {
           queries: {
             edges: {
-              loading: loading
-            }
-          }
-        }
+              loading: loading,
+            },
+          },
+        },
+      },
+      propsData: {
+        productTypeName: { singular: "map", plural: "maps" },
+        productIdFieldName: "mapId",
+        productItemCard: "MapItemCard",
+        productAddForm: "MapAddForm",
+        disableAdd: false,
       },
       stubs: {
         MapItemCard: true,
-        MapAddForm: true
-      }
+        MapAddForm: true,
+      },
     });
   }
 
@@ -38,23 +45,23 @@ describe("MapList.vue", () => {
       node: {
         id: "TWFwOjEwMTM=",
         mapId: "1013",
-        name: "lat20200201"
-      }
+        name: "lat20200201",
+      },
     },
     {
       node: {
         id: "TWFwOjEwMTI=",
         mapId: "1012",
-        name: "lat20200120"
-      }
+        name: "lat20200120",
+      },
     },
     {
       node: {
         id: "TWFwOjEwMDE=",
         mapId: "1001",
-        name: "lat20190213"
-      }
-    }
+        name: "lat20190213",
+      },
+    },
   ];
 
   beforeEach(function() {
@@ -64,7 +71,7 @@ describe("MapList.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      edges: edges
+      edges: edges,
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -80,7 +87,7 @@ describe("MapList.vue", () => {
   it("error", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      error: true
+      error: true,
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Error: cannot load data");
@@ -89,7 +96,7 @@ describe("MapList.vue", () => {
   it("none", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      edges: []
+      edges: [],
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Empty. No maps are found.");
