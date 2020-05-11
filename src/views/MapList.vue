@@ -110,11 +110,13 @@ export default {
     queryName: { default: "allMaps" },
     productIdFieldName: { default: "mapId" },
     productItemCard: { default: "MapItemCard" },
-    productAddForm: { default: "MapAddForm" }
+    productAddForm: { default: "MapAddForm" },
+    disableAdd: {
+      default: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true"
+    }
   },
   data() {
     return {
-      disableAdd: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true",
       dialog: false,
       edges: null,
       isCardCollapsed: {},
