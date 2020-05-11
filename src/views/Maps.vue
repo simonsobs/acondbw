@@ -24,10 +24,12 @@
 <script>
 export default {
   name: "Maps",
+  props: {
+    title: { default: "Product Type Name" },
+    icon: { default: "mdi-nut" },
+    itemPageName: { default: "ProductItemPageName" },
+  },
   data: () => ({
-    title: "Maps",
-    icon: "map",
-    itemPageName: "MapItem",
     transitionName: "fade-maps-leave",
     transitionMode: "out-in"
   }),

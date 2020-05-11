@@ -20,6 +20,7 @@ describe("Maps.vue", () => {
       localVue,
       vuetify,
       router,
+      propsData: { title: "Maps", icon: "map", itemPageName: "MapItem" },
       stubs: ["router-link", "router-view"]
     });
   }

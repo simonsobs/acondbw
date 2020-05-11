@@ -73,6 +73,7 @@ describe("About.vue", () => {
     expect(current.name).toBe("MapList");
     expect(current.path).toBe("/maps");
     expect(current.params).toEqual({});
+    expect(current.matched[0].props).toEqual({ default: { title: 'Maps', icon: 'map', itemPageName: 'MapItem' } })
   });
 
   it("test /beams/item/:name", async () => {
