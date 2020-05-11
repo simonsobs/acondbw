@@ -54,12 +54,12 @@
                 <span>Add a new {{ productTypeName.singular }}</span>
               </v-tooltip>
             </template>
-            <MapAddForm v-on:finished="dialog = false"></MapAddForm>
+            <component :is="productAddForm" v-on:finished="dialog = false"></component>
           </v-dialog>
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
-        <MapItemCard
+        <component :is="productItemCard"
           v-for="edge in edges"
           :key="edge.node.id"
           :mapId="edge.node[productIdFieldName]"
@@ -68,7 +68,7 @@
           v-on:expand="isCardCollapsed[edge.node.id] = false"
           v-on:collapse="isCardCollapsed[edge.node.id] = true"
           class="my-1"
-        ></MapItemCard>
+        ></component>
       </div>
       <div v-else>
         <v-card outlined style="max-width: 980px;">
@@ -106,7 +106,9 @@ export default {
         return { singular: "map", plural: "maps" };
       }
     },
-    productIdFieldName: { default: "mapId" }
+    productIdFieldName: { default: "mapId" },
+    productItemCard: { default: "MapItemCard" },
+    productAddForm: { default: "MapAddForm" }
   },
   data() {
     return {
