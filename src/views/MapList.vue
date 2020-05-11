@@ -51,7 +51,7 @@
                     <v-icon>mdi-plus-thick</v-icon>
                   </v-btn>
                 </template>
-                <span>Add a new map</span>
+                <span>Add a new {{ productTypeName.singular }}</span>
               </v-tooltip>
             </template>
             <MapAddForm v-on:finished="dialog = false"></MapAddForm>
@@ -72,7 +72,7 @@
       </div>
       <div v-else>
         <v-card outlined style="max-width: 980px;">
-          <v-card-text>Empty. No maps are found.</v-card-text>
+          <v-card-text>Empty. No {{ productTypeName.plural }} are found.</v-card-text>
         </v-card>
       </div>
     </div>
@@ -101,6 +101,11 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
+    productTypeName: {
+      default: function() {
+        return { singular: "map", plural: "maps" };
+      }
+    },
     productIdFieldName: { default: "mapId" }
   },
   data() {
