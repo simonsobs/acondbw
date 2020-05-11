@@ -18,7 +18,8 @@ const routes = [
   },
   {
     path: "/simulations",
-    component: () => import(/* webpackChunkName: "simulations" */ "@/views/Simulations.vue"),
+    component: ProductTop,
+    props: { title: "Simulations", icon: "mdi-creation", itemPageName: "SimulationItem" },
     children: [
       {
         path: "",
@@ -55,7 +56,8 @@ const routes = [
   },
   {
     path: "/beams",
-    component: () => import(/* webpackChunkName: "beams" */ "@/views/Beams.vue"),
+    component: ProductTop,
+    props: { title: "Beams", icon: "mdi-spotlight-beam", itemPageName: "BeamItem" },
     children: [
       {
         path: "",
@@ -70,11 +72,6 @@ const routes = [
           import(/* webpackChunkName: "beams" */ "@/views/BeamItem.vue")
       }
     ]
-  },
-  {
-    path: "/beams",
-    name: "beam",
-    component: () => import(/* webpackChunkName: "beams" */ "@/views/Beams.vue")
   }
 ];
 

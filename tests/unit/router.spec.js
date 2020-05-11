@@ -44,6 +44,9 @@ describe("About.vue", () => {
     expect(current.params).toEqual({
       name: "simulation001",
     });
+    expect(current.matched[0].props).toEqual({
+      default: { title: "Simulations", icon: "mdi-creation", itemPageName: "SimulationItem" },
+    });
   });
 
   it("test /simulations", async () => {
@@ -53,6 +56,9 @@ describe("About.vue", () => {
     expect(current.name).toBe("SimulationList");
     expect(current.path).toBe("/simulations");
     expect(current.params).toEqual({});
+    expect(current.matched[0].props).toEqual({
+      default: { title: "Simulations", icon: "mdi-creation", itemPageName: "SimulationItem" },
+    });
   });
 
   it("test /maps/item/:name", async () => {
@@ -63,6 +69,9 @@ describe("About.vue", () => {
     expect(current.path).toBe("/maps/item/map001");
     expect(current.params).toEqual({
       name: "map001",
+    });
+    expect(current.matched[0].props).toEqual({
+      default: { title: "Maps", icon: "map", itemPageName: "MapItem" },
     });
   });
 
@@ -86,6 +95,9 @@ describe("About.vue", () => {
     expect(current.params).toEqual({
       name: "beam001",
     });
+    expect(current.matched[0].props).toEqual({
+      default: { title: "Beams", icon: "mdi-spotlight-beam", itemPageName: "BeamItem" },
+    });
   });
 
   it("test /beams", async () => {
@@ -94,5 +106,8 @@ describe("About.vue", () => {
     expect(current.name).toBe("BeamList");
     expect(current.path).toBe("/beams");
     expect(current.params).toEqual({});
+    expect(current.matched[0].props).toEqual({
+      default: { title: "Beams", icon: "mdi-spotlight-beam", itemPageName: "BeamItem" },
+    });
   });
 });
