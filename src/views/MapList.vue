@@ -59,7 +59,8 @@
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
-        <component :is="productItemCard"
+        <component
+          :is="productItemCard"
           v-for="edge in edges"
           :key="edge.node.id"
           :productId="edge.node[productIdFieldName]"
