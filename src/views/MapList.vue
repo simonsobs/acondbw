@@ -62,7 +62,7 @@
         <MapItemCard
           v-for="edge in edges"
           :key="edge.node.id"
-          :mapId="edge.node[productIdFiledName]"
+          :mapId="edge.node[productIdFieldName]"
           collapsible="true"
           :collapsed="isCardCollapsed[edge.node.id]"
           v-on:expand="isCardCollapsed[edge.node.id] = false"
@@ -101,7 +101,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productIdFiledName: { default: "mapId" }
+    productIdFieldName: { default: "mapId" }
   },
   data() {
     return {
