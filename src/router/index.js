@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
+import ProductTop from "@/views/ProductTop.vue";
 
 Vue.use(VueRouter);
 
@@ -35,7 +36,7 @@ const routes = [
   },
   {
     path: "/maps",
-    component: () => import(/* webpackChunkName: "maps" */ "@/views/ProductTop.vue"),
+    component: ProductTop,
     props: { title: "Maps", icon: "map", itemPageName: "MapItem" },
     children: [
       {
