@@ -4,11 +4,11 @@
       <v-row class="display-1 mx-1 mt-3 primary--text" style="max-width: 980px;">
         <v-col col="8" class="pa-0 ma-0">
           <span class="me-2">
-            <v-icon>map</v-icon>
-          </span>Maps
-          <span v-if="$route.name == 'MapItem'">
+            <v-icon>{{ icon }}</v-icon>
+          </span>{{ title }}
+          <span v-if="itemPage">
             <v-icon large color="primary">mdi-chevron-right</v-icon>
-            {{ $route.params.name }}
+            {{ itemName }}
           </span>
         </v-col>
       </v-row>
@@ -25,9 +25,20 @@
 export default {
   name: "Maps",
   data: () => ({
+    title: "Maps",
+    icon: "map",
+    itemPageName: "MapItem",
     transitionName: "fade-maps-leave",
     transitionMode: "out-in"
   }),
+  computed: {
+    itemPage() {
+      return this.$route.name == this.itemPageName;
+    },
+    itemName() {
+      return this.$route.params.name;
+    }
+  },
   beforeRouteUpdate(to, from, next) {
     this.transitionName = "fade-maps-update";
     this.transitionMode = "out-in";
