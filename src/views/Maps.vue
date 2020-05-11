@@ -5,7 +5,8 @@
         <v-col col="8" class="pa-0 ma-0">
           <span class="me-2">
             <v-icon>{{ icon }}</v-icon>
-          </span>{{ title }}
+          </span>
+          {{ title }}
           <span v-if="itemPage">
             <v-icon large color="primary">mdi-chevron-right</v-icon>
             {{ itemName }}
@@ -27,7 +28,7 @@ export default {
   props: {
     title: { default: "Product Type Name" },
     icon: { default: "mdi-nut" },
-    itemPageName: { default: "ProductItemPageName" },
+    itemPageName: { default: "ProductItemPageName" }
   },
   data: () => ({
     transitionName: "fade-maps-leave",

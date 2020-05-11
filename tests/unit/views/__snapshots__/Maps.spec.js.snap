@@ -4,7 +4,8 @@ exports[`Maps.vue match snapshot item 1`] = `
 <div class="maps">
   <v-container-stub tag="div" fluid="true">
     <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
-      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>Maps
+      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>
+        Maps
         <span><v-icon-stub large="" color="primary">mdi-chevron-right</v-icon-stub>
           map001
         </span></v-col-stub>
@@ -22,7 +23,8 @@ exports[`Maps.vue match snapshot list 1`] = `
 <div class="maps">
   <v-container-stub tag="div" fluid="true">
     <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
-      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>Maps
+      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>
+        Maps
         <!---->
       </v-col-stub>
     </v-row-stub>

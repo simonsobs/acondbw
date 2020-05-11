@@ -42,7 +42,7 @@ describe("About.vue", () => {
     expect(current.name).toBe("SimulationItem");
     expect(current.path).toBe("/simulations/item/simulation001");
     expect(current.params).toEqual({
-      name: "simulation001"
+      name: "simulation001",
     });
   });
 
@@ -62,7 +62,7 @@ describe("About.vue", () => {
     expect(current.name).toBe("MapItem");
     expect(current.path).toBe("/maps/item/map001");
     expect(current.params).toEqual({
-      name: "map001"
+      name: "map001",
     });
   });
 
@@ -73,7 +73,9 @@ describe("About.vue", () => {
     expect(current.name).toBe("MapList");
     expect(current.path).toBe("/maps");
     expect(current.params).toEqual({});
-    expect(current.matched[0].props).toEqual({ default: { title: 'Maps', icon: 'map', itemPageName: 'MapItem' } })
+    expect(current.matched[0].props).toEqual({
+      default: { title: "Maps", icon: "map", itemPageName: "MapItem" },
+    });
   });
 
   it("test /beams/item/:name", async () => {
@@ -82,7 +84,7 @@ describe("About.vue", () => {
     expect(current.name).toBe("BeamItem");
     expect(current.path).toBe("/beams/item/beam001");
     expect(current.params).toEqual({
-      name: "beam001"
+      name: "beam001",
     });
   });
 
