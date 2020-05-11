@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "Maps",
+  name: "ProductTop",
   props: {
     title: { default: "Product Type Name" },
     icon: { default: "mdi-nut" },

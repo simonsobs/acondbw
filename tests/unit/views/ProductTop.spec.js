@@ -4,19 +4,19 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
-import Maps from "@/views/Maps.vue";
+import ProductTop from "@/views/ProductTop.vue";
 
 import router from "@/router";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
-describe("Maps.vue", () => {
+describe("ProductTop.vue", () => {
   let localVue;
   let vuetify;
 
   function createWrapper(loading = false) {
-    return shallowMount(Maps, {
+    return shallowMount(ProductTop, {
       localVue,
       vuetify,
       router,

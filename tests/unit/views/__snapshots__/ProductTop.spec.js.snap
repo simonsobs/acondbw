@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Maps.vue match snapshot item 1`] = `
+exports[`ProductTop.vue match snapshot item 1`] = `
 <div class="product-top">
   <v-container-stub tag="div" fluid="true">
     <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
@@ -19,7 +19,7 @@ exports[`Maps.vue match snapshot item 1`] = `
 </div>
 `;
 
-exports[`Maps.vue match snapshot list 1`] = `
+exports[`ProductTop.vue match snapshot list 1`] = `
 <div class="product-top">
   <v-container-stub tag="div" fluid="true">
     <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
