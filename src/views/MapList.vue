@@ -62,7 +62,7 @@
         <component :is="productItemCard"
           v-for="edge in edges"
           :key="edge.node.id"
-          :mapId="edge.node[productIdFieldName]"
+          :productId="edge.node[productIdFieldName]"
           collapsible="true"
           :collapsed="isCardCollapsed[edge.node.id]"
           v-on:expand="isCardCollapsed[edge.node.id] = false"

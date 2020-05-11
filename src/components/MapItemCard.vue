@@ -180,7 +180,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    mapId: { default: null }, // node.mapId not node.id
+    productId: { default: null }, // node.mapId not node.id
     collapsed: { default: false },
     collapsible: { default: false }
   },
@@ -202,7 +202,7 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-
+      
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
@@ -228,7 +228,7 @@ export default {
       query: MAP,
       variables() {
         return {
-          mapId: this.mapId
+          mapId: this.productId
         };
       },
       update: data => data.map,

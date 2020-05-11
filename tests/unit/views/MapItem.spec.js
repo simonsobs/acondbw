@@ -47,7 +47,7 @@ describe("MapItem.vue", () => {
       }
     });
     await Vue.nextTick();
-    expect(wrapper.find(MapItemCard).props().mapId).toBe("1013");
+    expect(wrapper.find(MapItemCard).props().productId).toBe("1013");
     expect(wrapper.html()).toMatchSnapshot();
   });
 

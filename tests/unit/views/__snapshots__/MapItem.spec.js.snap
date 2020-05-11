@@ -14,7 +14,7 @@ exports[`MapItem.vue match snapshot 1`] = `
       </div>
     </div>
     <div>
-      <mapitemcard-stub mapid="1013"></mapitemcard-stub>
+      <mapitemcard-stub productid="1013"></mapitemcard-stub>
     </div>
   </div>
 </div>
