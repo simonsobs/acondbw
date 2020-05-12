@@ -42,7 +42,7 @@ describe("BeamItemCard.vue", () => {
     id: "QmVhbToxMTUw",
     productId: "1150",
     name: "20200207",
-    beamFilePaths: {
+    paths: {
       edges: [
         {
           node: {

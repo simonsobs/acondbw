@@ -18,9 +18,9 @@
             </v-col>
             <v-col order="3" cols="12" md="7" class="py-0">
               <div class="caption grey--text">Paths</div>
-                <ul v-if="node.beamFilePaths">
+                <ul v-if="node.paths">
                   <li
-                    v-for="(edgep, index) in node.beamFilePaths.edges"
+                    v-for="(edgep, index) in node.paths.edges"
                     :key="index"
                     v-text="edgep.node.path"
                   ></li>
