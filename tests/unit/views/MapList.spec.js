@@ -27,7 +27,8 @@ describe("MapList.vue", () => {
         },
       },
       propsData: {
-        productTypeName: { singular: "map", plural: "maps" },
+        productTypeNameSingular: "map",
+        productTypeNamePlural: "maps",
         productIdFieldName: "mapId",
         productItemCard: "MapItemCard",
         productAddForm: "MapAddForm",

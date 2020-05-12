@@ -57,7 +57,8 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "maps" */ "@/views/MapList.vue"),
         props: {
-          productTypeName: { singular: "map", plural: "maps" },
+          productTypeNameSingular: "map",
+          productTypeNamePlural: "maps",
           query: ALL_MAPS,
           queryName: "allMaps",
           productIdFieldName: "mapId",

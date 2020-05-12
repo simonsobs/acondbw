@@ -51,7 +51,7 @@
                     <v-icon>mdi-plus-thick</v-icon>
                   </v-btn>
                 </template>
-                <span>Add a new {{ productTypeName.singular }}</span>
+                <span>Add a new {{ productTypeNameSingular }}</span>
               </v-tooltip>
             </template>
             <component :is="productAddForm" v-on:finished="dialog = false"></component>
@@ -73,7 +73,7 @@
       </div>
       <div v-else>
         <v-card outlined style="max-width: 980px;">
-          <v-card-text>Empty. No {{ productTypeName.plural }} are found.</v-card-text>
+          <v-card-text>Empty. No {{ productTypeNamePlural }} are found.</v-card-text>
         </v-card>
       </div>
     </div>
@@ -102,11 +102,8 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productTypeName: {
-      default: function() {
-        return { singular: "map", plural: "maps" };
-      }
-    },
+    productTypeNameSingular: { default: "map" },
+    productTypeNamePlural: { default: "maps" },
     query: {
       default: function() {
         return ALL_MAPS;
