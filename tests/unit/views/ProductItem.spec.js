@@ -31,7 +31,6 @@ describe("ProductItem.vue", () => {
         query: MAP_BY_NAME,
         queryName: "map",
         routeToProductList: { name: "MapList" },
-        productIdFieldName: "productId",
         productItemCard: "MapItemCard",
       },
       stubs: {

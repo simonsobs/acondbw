@@ -61,7 +61,7 @@
           :is="productItemCard"
           v-for="edge in edges"
           :key="edge.node.id"
-          :productId="edge.node[productIdFieldName]"
+          :productId="edge.node.productId"
           collapsible="true"
           :collapsed="isCardCollapsed[edge.node.id]"
           v-on:expand="isCardCollapsed[edge.node.id] = false"
@@ -97,7 +97,6 @@ export default {
     productTypeNamePlural: { default: "products" },
     query: { required: true },
     queryName: { required: true },
-    productIdFieldName: { default: "productId" },
     productItemCard: { required: true },
     productAddForm: { required: true },
     disableAdd: { default: false }

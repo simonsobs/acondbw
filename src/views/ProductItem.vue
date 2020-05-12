@@ -32,7 +32,7 @@
       <div v-if="state == State.LOADED">
         <component
           :is="productItemCard"
-          :productId="node[productIdFieldName]"
+          :productId="node.productId"
           :collapsible="false"
           v-on:deleted="$router.push(routeToProductList)"
         ></component>
@@ -59,7 +59,6 @@ export default {
     query: { required: true },
     queryName: { required: true },
     routeToProductList: { required: true },
-    productIdFieldName: { default: "productId" },
     productItemCard: { required: true }
   },
   data() {

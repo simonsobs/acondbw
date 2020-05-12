@@ -32,7 +32,6 @@ describe("ProductList.vue", () => {
         productTypeNamePlural: "maps",
         query: ALL_MAPS,
         queryName: "allMaps",
-        productIdFieldName: "productId",
         productItemCard: "MapItemCard",
         productAddForm: "MapAddForm",
         disableAdd: false,
