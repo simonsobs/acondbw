@@ -9,31 +9,40 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: Home
+    component: Home,
   },
   {
     path: "/about",
     name: "about",
-    component: () => import(/* webpackChunkName: "about" */ "@/views/About.vue")
+    component: () =>
+      import(/* webpackChunkName: "about" */ "@/views/About.vue"),
   },
   {
     path: "/simulations",
     component: ProductTop,
-    props: { title: "Simulations", icon: "mdi-creation", itemPageName: "SimulationItem" },
+    props: {
+      title: "Simulations",
+      icon: "mdi-creation",
+      itemPageName: "SimulationItem",
+    },
     children: [
       {
         path: "",
         name: "SimulationList",
         component: () =>
-          import(/* webpackChunkName: "simulations" */ "@/views/SimulationList.vue")
+          import(
+            /* webpackChunkName: "simulations" */ "@/views/SimulationList.vue"
+          ),
       },
       {
         path: "item/:name",
         name: "SimulationItem",
         component: () =>
-          import(/* webpackChunkName: "simulations" */ "@/views/SimulationItem.vue")
-      }
-    ]
+          import(
+            /* webpackChunkName: "simulations" */ "@/views/SimulationItem.vue"
+          ),
+      },
+    ],
   },
   {
     path: "/maps",
@@ -44,41 +53,45 @@ const routes = [
         path: "",
         name: "MapList",
         component: () =>
-          import(/* webpackChunkName: "maps" */ "@/views/MapList.vue")
+          import(/* webpackChunkName: "maps" */ "@/views/MapList.vue"),
       },
       {
         path: "item/:name",
         name: "MapItem",
         component: () =>
-          import(/* webpackChunkName: "maps" */ "@/views/MapItem.vue")
-      }
-    ]
+          import(/* webpackChunkName: "maps" */ "@/views/MapItem.vue"),
+      },
+    ],
   },
   {
     path: "/beams",
     component: ProductTop,
-    props: { title: "Beams", icon: "mdi-spotlight-beam", itemPageName: "BeamItem" },
+    props: {
+      title: "Beams",
+      icon: "mdi-spotlight-beam",
+      itemPageName: "BeamItem",
+    },
     children: [
       {
         path: "",
         name: "BeamList",
         component: () =>
-          import(/* webpackChunkName: "beams" */ "@/views/BeamList.vue")
+          import(/* webpackChunkName: "beams" */ "@/views/BeamList.vue"),
       },
       {
         path: "item/:name",
         name: "BeamItem",
         component: () =>
-          import(/* webpackChunkName: "beams" */ "@/views/BeamItem.vue")
-      }
-    ]
-  }
+          import(/* webpackChunkName: "beams" */ "@/views/BeamItem.vue"),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;
