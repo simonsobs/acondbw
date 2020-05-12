@@ -40,7 +40,7 @@ describe("MapItemCard.vue", () => {
 
   const node = {
     id: "TWFwOjEwMTM=",
-    mapId: "1013",
+    productId: "1013",
     name: "lat20200201",
     datePosted: "2020-02-01",
     mapper: "pwg-pmn",

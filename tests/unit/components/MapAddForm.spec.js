@@ -63,7 +63,7 @@ describe("MapAddForm.vue", () => {
     const createMap = {
       map: {
         id: "TWFwOjEwMTk=",
-        mapId: "1019",
+        productId: "1019",
         ...createMapInput,
       },
     };
@@ -80,11 +80,11 @@ describe("MapAddForm.vue", () => {
     expect(calls[0][0].variables).toEqual({ input: createMapInput });
     expect(calls[1][0].mutation).toBeDefined();
     expect(calls[1][0].variables).toEqual({
-      input: { mapId: "1019", path: "/a/b/c" },
+      input: { productId: "1019", path: "/a/b/c" },
     });
     expect(calls[2][0].mutation).toBeDefined();
     expect(calls[2][0].variables).toEqual({
-      input: { mapId: "1019", path: "/x/y/z" },
+      input: { productId: "1019", path: "/x/y/z" },
     });
     expect(wrapper.vm.dialogSuccess).toBe(true);
 

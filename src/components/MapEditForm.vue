@@ -109,7 +109,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    mapId: { default: null } // map.mapId not map.id
+    productId: { default: null } // map.productId not map.id
   },
   data() {
     return {
@@ -173,7 +173,7 @@ export default {
       query: MAP,
       variables() {
         return {
-          mapId: this.mapId
+          productId: this.productId
         };
       },
       update: data => data.map,
@@ -204,8 +204,8 @@ export default {
         }))(this.form);
         const data = await this.$apollo.mutate({
           mutation: gql`
-            mutation($mapId: Int!, $input: UpdateMapInput!) {
-              updateMap(mapId: $mapId, input: $input) {
+            mutation($productId: Int!, $input: UpdateMapInput!) {
+              updateMap(productId: $productId, input: $input) {
                 ok
                 map {
                   ...map
@@ -214,7 +214,7 @@ export default {
             }
             ${MAP_FRAGMENT}
           `,
-          variables: { mapId: this.node.mapId, input: updateMapInput }
+          variables: { productId: this.node.productId, input: updateMapInput }
         });
         this.dialogSuccess = true;
       } catch (error) {

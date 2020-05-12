@@ -210,12 +210,12 @@ export default {
           }
         });
 
-        const mapId = data.data.createMap.map.mapId;
+        const productId = data.data.createMap.map.productId;
 
         for (const path of paths) {
           const createMapFilePathInput = {
             path,
-            mapId
+            productId
           };
           const data = await this.$apollo.mutate({
             mutation: gql`
@@ -235,7 +235,7 @@ export default {
             update: (cache, { data: { createMapFilePath } }) => {
               const data = cache.readQuery({
                 query: MAP,
-                variables: { mapId }
+                variables: { productId }
               });
               data.map.mapFilePaths.edges.push({
                 node: createMapFilePath.mapFilePath,
@@ -243,7 +243,7 @@ export default {
               });
               cache.writeQuery({
                 query: MAP,
-                variables: { mapId },
+                variables: { productId },
                 data
               });
             }

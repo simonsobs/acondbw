@@ -47,10 +47,10 @@ import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 const MAP_FOR_DELETE = gql`
-  query MapForDelete($mapId: Int!) {
-    map(mapId: $mapId) {
+  query MapForDelete($productId: Int!) {
+    map(productId: $productId) {
       id
-      mapId
+      productId
       name
     }
   }
@@ -62,7 +62,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    mapId: { default: null } // map.mapId not map.id
+    productId: { default: null } // map.productId not map.id
   },
   data() {
     return {
@@ -98,7 +98,7 @@ export default {
       query: MAP_FOR_DELETE,
       variables() {
         return {
-          mapId: this.mapId
+          productId: this.productId
         };
       },
       update: data => data.map,
@@ -115,21 +115,21 @@ export default {
       try {
         const data = await this.$apollo.mutate({
           mutation: gql`
-            mutation($mapId: Int!) {
-              deleteMap(mapId: $mapId) {
+            mutation($productId: Int!) {
+              deleteMap(productId: $productId) {
                 ok
               }
             }
           `,
           variables: {
-            mapId: this.node.mapId
+            productId: this.node.productId
           },
           update: (cache, { data: { deleteMap } }) => {
             const data = cache.readQuery({
               query: ALL_MAPS
             });
             const index = data.allMaps.edges.findIndex(
-              e => e.node.mapId == this.node.mapId
+              e => e.node.productId == this.node.productId
             );
             data.allMaps.edges.splice(index, 1);
             cache.writeQuery({

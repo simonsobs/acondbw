@@ -40,7 +40,7 @@ describe("MapDeleteForm.vue", () => {
 
   const node = {
     id: "TWFwOjEwMTM=",
-    mapId: "1013",
+    productId: "1013",
     name: "lat20200201",
   };
 

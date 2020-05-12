@@ -31,7 +31,7 @@ describe("ProductItem.vue", () => {
         query: MAP_BY_NAME,
         queryName: "map",
         routeToProductList: { name: "MapList" },
-        productIdFieldName: "mapId",
+        productIdFieldName: "productId",
         productItemCard: "MapItemCard",
       },
       stubs: {
@@ -49,7 +49,7 @@ describe("ProductItem.vue", () => {
     wrapper.setData({
       node: {
         id: "TWFwOjEwMTM=",
-        mapId: "1013",
+        productId: "1013",
         name: "lat20200201",
       },
     });

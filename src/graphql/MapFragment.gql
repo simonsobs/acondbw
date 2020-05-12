@@ -1,6 +1,6 @@
 fragment map on Map {
   id
-  mapId
+  productId
   name
   contact
   dateProduced

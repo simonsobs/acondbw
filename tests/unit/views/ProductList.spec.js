@@ -32,7 +32,7 @@ describe("ProductList.vue", () => {
         productTypeNamePlural: "maps",
         query: ALL_MAPS,
         queryName: "allMaps",
-        productIdFieldName: "mapId",
+        productIdFieldName: "productId",
         productItemCard: "MapItemCard",
         productAddForm: "MapAddForm",
         disableAdd: false,
@@ -48,21 +48,21 @@ describe("ProductList.vue", () => {
     {
       node: {
         id: "TWFwOjEwMTM=",
-        mapId: "1013",
+        productId: "1013",
         name: "lat20200201",
       },
     },
     {
       node: {
         id: "TWFwOjEwMTI=",
-        mapId: "1012",
+        productId: "1012",
         name: "lat20200120",
       },
     },
     {
       node: {
         id: "TWFwOjEwMDE=",
-        mapId: "1001",
+        productId: "1001",
         name: "lat20190213",
       },
     },

@@ -66,7 +66,7 @@
                           </v-list-item>
                         </template>
                         <MapEditForm
-                          :mapId="node.mapId"
+                          :productId="node.productId"
                           v-on:finished="editDialog = false; menu = false"
                         ></MapEditForm>
                       </v-dialog>
@@ -82,7 +82,7 @@
                           </v-list-item>
                         </template>
                         <MapDeleteForm
-                          :mapId="node.mapId"
+                          :productId="node.productId"
                           v-on:finished="deleteDialog = false; menu = false"
                           v-on:deleted="deleteDialog = false; menu = false; node = null"
                         ></MapDeleteForm>
@@ -180,7 +180,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productId: { default: null }, // node.mapId not node.id
+    productId: { default: null }, // node.productId not node.id
     collapsed: { default: false },
     collapsible: { default: false }
   },
@@ -228,7 +228,7 @@ export default {
       query: MAP,
       variables() {
         return {
-          mapId: this.productId
+          productId: this.productId
         };
       },
       update: data => data.map,
