@@ -4,7 +4,7 @@
       <div v-if="state == State.LOADING" class="mx-4 py-2">
         <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
       </div>
-      <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
+      <v-alert v-else-if="state == State.ERROR" outlined dense type="error" class="ma-2">{{ error }}</v-alert>
       <div v-else-if="state == State.LOADED" @click="$emit('expand')" style="cursor: default;">
         <v-container fluid class="pa-0">
           <v-row class="ma-0 px-0">
@@ -182,10 +182,7 @@ export default {
       },
       update: data => data.beam,
       result(result) {
-        this.error = null;
-        if (result.error) {
-          this.error = true;
-        }
+        this.error = result.error ? result.error : null;
       }
     }
   }
