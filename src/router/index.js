@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
 import ProductTop from "@/views/ProductTop.vue";
+import ProductList from "@/views/ProductList.vue";
 
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
@@ -60,8 +61,7 @@ const routes = [
       {
         path: "",
         name: "MapList",
-        component: () =>
-          import(/* webpackChunkName: "maps" */ "@/views/MapList.vue"),
+        component: ProductList,
         props: {
           productTypeNameSingular: "map",
           productTypeNamePlural: "maps",

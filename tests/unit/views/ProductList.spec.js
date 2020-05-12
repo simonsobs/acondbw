@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import MapList from "@/views/MapList.vue";
+import ProductList from "@/views/ProductList.vue";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 import router from "@/router";
@@ -11,11 +11,11 @@ import router from "@/router";
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
-describe("MapList.vue", () => {
+describe("ProductList.vue", () => {
   let localVue;
 
   function createWrapper(loading = false) {
-    return mount(MapList, {
+    return mount(ProductList, {
       localVue,
       router,
       mocks: {
