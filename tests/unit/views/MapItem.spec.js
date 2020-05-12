@@ -4,6 +4,7 @@ import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
 import MapItem from "@/views/MapItem.vue";
+import MAP_BY_NAME from "@/graphql/MapByName.gql";
 
 import router from "@/router";
 
@@ -21,14 +22,21 @@ describe("MapItem.vue", () => {
         $apollo: {
           queries: {
             node: {
-              loading: loading
-            }
-          }
-        }
+              loading: loading,
+            },
+          },
+        },
+      },
+      propsData: {
+        query: MAP_BY_NAME,
+        queryName: "map",
+        routeToProductList: { name: "MapList" },
+        productIdFieldName: "mapId",
+        productItemCard: "MapItemCard",
       },
       stubs: {
-        MapItemCard: true
-      }
+        MapItemCard: true,
+      },
     });
   }
 
@@ -42,8 +50,8 @@ describe("MapItem.vue", () => {
       node: {
         id: "TWFwOjEwMTM=",
         mapId: "1013",
-        name: "lat20200201"
-      }
+        name: "lat20200201",
+      },
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -53,13 +61,13 @@ describe("MapItem.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
+    expect(wrapper.find(".v-progress-circular").exists()).toBe(true);
   });
 
   it("loading state - error", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      error: true
+      error: true,
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Error: cannot load data");
@@ -75,14 +83,14 @@ describe("MapItem.vue", () => {
     const wrapper = createWrapper();
     await router.push({ name: "MapItem", params: { name: "map001" } });
     await Vue.nextTick();
-    expect(wrapper.vm.name).toBe('map001');
+    expect(wrapper.vm.name).toBe("map001");
 
-    await router.push('/about');
+    await router.push("/about");
     await Vue.nextTick();
-    expect(wrapper.vm.name).toBe('map001'); // still "map001"
+    expect(wrapper.vm.name).toBe("map001"); // still "map001"
 
     await router.push({ name: "MapItem", params: { name: "map002" } });
     await Vue.nextTick();
-    expect(wrapper.vm.name).toBe('map002');
+    expect(wrapper.vm.name).toBe("map002");
   });
 });
