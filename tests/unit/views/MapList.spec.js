@@ -4,6 +4,7 @@ import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
 import MapList from "@/views/MapList.vue";
+import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 import router from "@/router";
 
@@ -29,6 +30,8 @@ describe("MapList.vue", () => {
       propsData: {
         productTypeNameSingular: "map",
         productTypeNamePlural: "maps",
+        query: ALL_MAPS,
+        queryName: "allMaps",
         productIdFieldName: "mapId",
         productItemCard: "MapItemCard",
         productAddForm: "MapAddForm",

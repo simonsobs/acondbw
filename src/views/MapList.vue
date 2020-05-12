@@ -86,8 +86,6 @@
 </template>
 
 <script>
-import ALL_MAPS from "@/graphql/AllMaps.gql";
-
 import MapItemCard from "@/components/MapItemCard";
 import MapAddForm from "@/components/MapAddForm";
 
@@ -102,17 +100,13 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productTypeNameSingular: { default: "map" },
-    productTypeNamePlural: { default: "maps" },
-    query: {
-      default: function() {
-        return ALL_MAPS;
-      }
-    },
-    queryName: { default: "allMaps" },
-    productIdFieldName: { default: "mapId" },
-    productItemCard: { default: "MapItemCard" },
-    productAddForm: { default: "MapAddForm" },
+    productTypeNameSingular: { default: "product" },
+    productTypeNamePlural: { default: "products" },
+    query: { required: true },
+    queryName: { required: true },
+    productIdFieldName: { default: "productId" },
+    productItemCard: { required: true },
+    productAddForm: { required: true },
     disableAdd: { default: false }
   },
   data() {
