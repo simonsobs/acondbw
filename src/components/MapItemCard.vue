@@ -119,9 +119,9 @@
               </v-col>
               <v-col cols="12" md="8" offset-md="4" class="py-2">
                 <div class="caption grey--text">Paths</div>
-                <ul v-if="node.mapFilePaths && node.mapFilePaths.edges.length > 0">
+                <ul v-if="node.paths && node.paths.edges.length > 0">
                   <li
-                    v-for="(edgep, index) in node.mapFilePaths.edges"
+                    v-for="(edgep, index) in node.paths.edges"
                     :key="index"
                     v-text="edgep.node.path"
                   ></li>

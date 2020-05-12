@@ -153,7 +153,7 @@ export default {
           updatedBy,
           note
         }))(this.node);
-        ret.paths = this.node.mapFilePaths.edges
+        ret.paths = this.node.paths.edges
           .map(e => e.node.path)
           .join("\n");
         return ret;

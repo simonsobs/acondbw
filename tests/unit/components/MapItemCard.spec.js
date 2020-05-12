@@ -44,7 +44,7 @@ describe("MapItemCard.vue", () => {
     name: "lat20200201",
     datePosted: "2020-02-01",
     mapper: "pwg-pmn",
-    mapFilePaths: {
+    paths: {
       edges: [
         {
           node: {

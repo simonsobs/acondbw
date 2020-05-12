@@ -237,7 +237,7 @@ export default {
                 query: MAP,
                 variables: { productId }
               });
-              data.map.mapFilePaths.edges.push({
+              data.map.paths.edges.push({
                 node: createMapFilePath.mapFilePath,
                 __typename: "MapFilePathEdge"
               });
