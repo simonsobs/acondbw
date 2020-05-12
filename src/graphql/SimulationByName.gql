@@ -1,0 +1,7 @@
+#import "./SimulationFragment.gql"
+
+query SimulationByName($name: String) {
+  simulation(name: $name) {
+    ...simulation
+  }
+}

@@ -1,0 +1,7 @@
+#import "./BeamFragment.gql"
+
+query BeamByName($name: String) {
+  beam(name: $name) {
+    ...beam
+  }
+}
