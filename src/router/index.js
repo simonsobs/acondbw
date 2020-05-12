@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
 import ProductTop from "@/views/ProductTop.vue";
 
+import ALL_MAPS from "@/graphql/AllMaps.gql";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -54,6 +56,15 @@ const routes = [
         name: "MapList",
         component: () =>
           import(/* webpackChunkName: "maps" */ "@/views/MapList.vue"),
+        props: {
+          productTypeName: { singular: "map", plural: "maps" },
+          query: ALL_MAPS,
+          queryName: "allMaps",
+          productIdFieldName: "mapId",
+          productItemCard: "MapItemCard",
+          productAddForm: "MapAddForm",
+          disableAdd: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true",
+        },
       },
       {
         path: "item/:name",

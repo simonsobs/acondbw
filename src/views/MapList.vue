@@ -116,9 +116,7 @@ export default {
     productIdFieldName: { default: "mapId" },
     productItemCard: { default: "MapItemCard" },
     productAddForm: { default: "MapAddForm" },
-    disableAdd: {
-      default: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true"
-    }
+    disableAdd: { default: false }
   },
   data() {
     return {
