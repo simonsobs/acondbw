@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import MapByName from "@/graphql/MapByName.gql";
-
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
@@ -60,19 +58,11 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    query: {
-      default: function() {
-        return MapByName;
-      }
-    },
-    queryName: { default: "map" },
-    routeToProductList: {
-      default: function() {
-        return { name: "MapList" };
-      }
-    },
-    productIdFieldName: { default: "mapId" },
-    productItemCard: { default: "MapItemCard" }
+    query: { required: true },
+    queryName: { required: true },
+    routeToProductList: { required: true },
+    productIdFieldName: { default: "productId" },
+    productItemCard: { required: true }
   },
   data() {
     return {

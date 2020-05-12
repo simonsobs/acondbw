@@ -3,10 +3,13 @@ import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
 import ProductTop from "@/views/ProductTop.vue";
 import ProductList from "@/views/ProductList.vue";
+import ProductItem from "@/views/ProductItem.vue";
 
 import ALL_SIMULATIONS from "@/graphql/AllSimulations.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 import ALL_BEAMS from "@/graphql/AllBeams.gql";
+
+import MAP_BY_NAME from "@/graphql/MapByName.gql";
 
 import SimulationItemCard from "@/components/SimulationItemCard";
 import MapItemCard from "@/components/MapItemCard";
@@ -89,8 +92,14 @@ const routes = [
       {
         path: "item/:name",
         name: "MapItem",
-        component: () =>
-          import(/* webpackChunkName: "maps" */ "@/views/ProductItem.vue"),
+        component: ProductItem,
+        props: {
+          query: MAP_BY_NAME,
+          queryName: "map",
+          routeToProductList: { name: "MapList" },
+          productIdFieldName: "mapId",
+          productItemCard: "MapItemCard",
+        },
       },
     ],
   },
