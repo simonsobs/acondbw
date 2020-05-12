@@ -44,22 +44,12 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
-import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
+import MapByName from "@/graphql/MapByName.gql";
 
 import MapItemCard from "@/components/MapItemCard";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
-
-const GqlMapName = gql`
-  query MapIdName($name: String) {
-    map(name: $name) {
-      ...map
-    }
-  }
-  ${MAP_FRAGMENT}
-`;
 
 export default {
   name: "MapItem",
@@ -108,7 +98,7 @@ export default {
   },
   apollo: {
     node: {
-      query: GqlMapName,
+      query: MapByName,
       variables() {
         return {
           name: this.name
