@@ -91,7 +91,7 @@ describe("ProductList.vue", () => {
   it("error", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      error: true,
+      error: "Error: cannot load data",
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Error: cannot load data");

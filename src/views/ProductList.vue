@@ -5,9 +5,7 @@
       <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
     </div>
     <div v-else-if="state == State.ERROR" class="mx-2 pt-5">
-      <v-card outlined style="max-width: 980px;">
-        <v-card-text>Error: cannot load data</v-card-text>
-      </v-card>
+      <v-alert type="error" style="max-width: 980px;">{{ error }}</v-alert>
     </div>
     <div v-else-if="state == State.LOADED || state == State.EMPTY">
       <v-container fluid class="pa-0">
@@ -120,13 +118,10 @@ export default {
         return this.query;
       },
       update: function(data) {
-        return data[this.queryName].edges;
+        return data[this.queryName] ? data[this.queryName].edges : null;
       },
       result(result) {
-        this.error = null;
-        if (result.error) {
-          this.error = true;
-        }
+        this.error = result.error ? result.error : null;
       }
     }
   },
