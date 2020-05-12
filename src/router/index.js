@@ -43,6 +43,7 @@ const routes = [
     props: {
       title: "Simulations",
       icon: "mdi-creation",
+      routeToProductList: { name: "SimulationList" },
       itemPageName: "SimulationItem",
     },
     children: [
@@ -78,7 +79,12 @@ const routes = [
   {
     path: "/maps",
     component: ProductTop,
-    props: { title: "Maps", icon: "map", itemPageName: "MapItem" },
+    props: {
+      title: "Maps",
+      icon: "map",
+      routeToProductList: { name: "MapList" },
+      itemPageName: "MapItem",
+    },
     children: [
       {
         path: "",
@@ -115,6 +121,7 @@ const routes = [
     props: {
       title: "Beams",
       icon: "mdi-spotlight-beam",
+      routeToProductList: { name: "BeamList" },
       itemPageName: "BeamItem",
     },
     children: [

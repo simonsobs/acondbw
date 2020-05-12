@@ -5,10 +5,10 @@ exports[`ProductTop.vue match snapshot item 1`] = `
   <v-container-stub tag="div" fluid="true">
     <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
       <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>
-        Maps
-        <span><v-icon-stub large="" color="primary">mdi-chevron-right</v-icon-stub>
+        <router-link-stub to="[object Object]" style="text-decoration: none;">Maps</router-link-stub> <span><v-icon-stub large="" color="primary">mdi-chevron-right</v-icon-stub>
           map001
-        </span></v-col-stub>
+        </span>
+      </v-col-stub>
     </v-row-stub>
     <transition-stub name="fade-product-top-leave" mode="out-in">
       <keep-alive-stub>
@@ -24,7 +24,7 @@ exports[`ProductTop.vue match snapshot list 1`] = `
   <v-container-stub tag="div" fluid="true">
     <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
       <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>
-        Maps
+        <router-link-stub to="[object Object]" style="text-decoration: none;">Maps</router-link-stub>
         <!---->
       </v-col-stub>
     </v-row-stub>

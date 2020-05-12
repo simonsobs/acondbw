@@ -1,4 +1,3 @@
-
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify";
@@ -20,8 +19,13 @@ describe("ProductTop.vue", () => {
       localVue,
       vuetify,
       router,
-      propsData: { title: "Maps", icon: "map", itemPageName: "MapItem" },
-      stubs: ["router-link", "router-view"]
+      propsData: {
+        title: "Maps",
+        icon: "map",
+        routeToProductList: { name: "MapList" },
+        itemPageName: "MapItem",
+      },
+      stubs: ["router-link", "router-view"],
     });
   }
 
@@ -32,7 +36,7 @@ describe("ProductTop.vue", () => {
 
   it("match snapshot list", async () => {
     const wrapper = createWrapper();
-    await router.push({ name: "MapList"});
+    await router.push({ name: "MapList" });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
@@ -46,7 +50,7 @@ describe("ProductTop.vue", () => {
 
   it("transition update", async () => {
     const wrapper = createWrapper();
-    await router.push({ name: "MapList"});
+    await router.push({ name: "MapList" });
     await router.push({ name: "MapItem", params: { name: "map001" } });
 
     // Not clear how to test
@@ -60,7 +64,7 @@ describe("ProductTop.vue", () => {
 
   it("transition leave", async () => {
     const wrapper = createWrapper();
-    await router.push({ name: "MapList"});
+    await router.push({ name: "MapList" });
     await router.push("/about");
 
     // Not clear how to test
@@ -71,5 +75,4 @@ describe("ProductTop.vue", () => {
     // expect(trans_attrs.name).toBe('fade-maps-leave');
     // expect(trans_attrs.mode).toBe('out-in');
   });
-
 });

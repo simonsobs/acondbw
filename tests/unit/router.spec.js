@@ -45,7 +45,12 @@ describe("About.vue", () => {
       name: "simulation001",
     });
     expect(current.matched[0].props).toEqual({
-      default: { title: "Simulations", icon: "mdi-creation", itemPageName: "SimulationItem" },
+      default: {
+        title: "Simulations",
+        icon: "mdi-creation",
+        routeToProductList: { name: "SimulationList" },
+        itemPageName: "SimulationItem",
+      },
     });
   });
 
@@ -57,7 +62,12 @@ describe("About.vue", () => {
     expect(current.path).toBe("/simulations");
     expect(current.params).toEqual({});
     expect(current.matched[0].props).toEqual({
-      default: { title: "Simulations", icon: "mdi-creation", itemPageName: "SimulationItem" },
+      default: {
+        title: "Simulations",
+        icon: "mdi-creation",
+        routeToProductList: { name: "SimulationList" },
+        itemPageName: "SimulationItem",
+      },
     });
   });
 
@@ -71,7 +81,12 @@ describe("About.vue", () => {
       name: "map001",
     });
     expect(current.matched[0].props).toEqual({
-      default: { title: "Maps", icon: "map", itemPageName: "MapItem" },
+      default: {
+        title: "Maps",
+        icon: "map",
+        routeToProductList: { name: "MapList" },
+        itemPageName: "MapItem",
+      },
     });
   });
 
@@ -83,7 +98,12 @@ describe("About.vue", () => {
     expect(current.path).toBe("/maps");
     expect(current.params).toEqual({});
     expect(current.matched[0].props).toEqual({
-      default: { title: "Maps", icon: "map", itemPageName: "MapItem" },
+      default: {
+        title: "Maps",
+        icon: "map",
+        routeToProductList: { name: "MapList" },
+        itemPageName: "MapItem",
+      },
     });
   });
 
@@ -96,7 +116,12 @@ describe("About.vue", () => {
       name: "beam001",
     });
     expect(current.matched[0].props).toEqual({
-      default: { title: "Beams", icon: "mdi-spotlight-beam", itemPageName: "BeamItem" },
+      default: {
+        title: "Beams",
+        icon: "mdi-spotlight-beam",
+        routeToProductList: { name: "BeamList" },
+        itemPageName: "BeamItem",
+      },
     });
   });
 
@@ -107,7 +132,12 @@ describe("About.vue", () => {
     expect(current.path).toBe("/beams");
     expect(current.params).toEqual({});
     expect(current.matched[0].props).toEqual({
-      default: { title: "Beams", icon: "mdi-spotlight-beam", itemPageName: "BeamItem" },
+      default: {
+        title: "Beams",
+        icon: "mdi-spotlight-beam",
+        routeToProductList: { name: "BeamList" },
+        itemPageName: "BeamItem",
+      },
     });
   });
 });

@@ -6,7 +6,11 @@
           <span class="me-2">
             <v-icon>{{ icon }}</v-icon>
           </span>
-          {{ title }}
+          <router-link
+            :to="routeToProductList"
+            v-text="title"
+            style="text-decoration: none; color: inherit;"
+          ></router-link>
           <span v-if="itemPage">
             <v-icon large color="primary">mdi-chevron-right</v-icon>
             {{ itemName }}
@@ -28,6 +32,7 @@ export default {
   props: {
     title: { default: "Product Type Name" },
     icon: { default: "mdi-nut" },
+    routeToProductList: { required: true },
     itemPageName: { default: "ProductItemPageName" }
   },
   data: () => ({
