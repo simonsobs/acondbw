@@ -88,9 +88,9 @@
             <v-row class="mx-0 mb-3 px-0 collapsible" v-show="!(collapsible && collapsed)">
               <v-col cols="12" md="8" offset-md="4" class="py-0">
                 <div class="caption grey--text">Paths</div>
-                <ul v-if="node.simulationFilePaths">
+                <ul v-if="node.paths">
                   <li
-                    v-for="(edgep, index) in node.simulationFilePaths.edges"
+                    v-for="(edgep, index) in node.paths.edges"
                     :key="index"
                     v-text="edgep.node.path"
                   ></li>

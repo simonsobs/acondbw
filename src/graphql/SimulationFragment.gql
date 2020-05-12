@@ -4,7 +4,7 @@ fragment simulation on Simulation {
   name
   datePosted
   mapper
-  simulationFilePaths {
+  paths {
     edges {
       node {
         id
