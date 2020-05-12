@@ -3,7 +3,7 @@ query AllSimulations {
     edges {
       node {
         id
-        simulationId
+        productId
         name
       }
     }

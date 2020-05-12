@@ -144,7 +144,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productId: { default: null }, // node.simulationId not simulation.id
+    productId: { default: null }, // node.productId not simulation.id
     collapsed: { default: false },
     collapsible: { default: false }
   },
@@ -192,7 +192,7 @@ export default {
       query: SIMULATION,
       variables() {
         return {
-          simulationId: this.productId
+          productId: this.productId
         };
       },
       update: data => data.simulation,

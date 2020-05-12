@@ -1,6 +1,6 @@
 fragment simulation on Simulation {
   id
-  simulationId
+  productId
   name
   datePosted
   mapper

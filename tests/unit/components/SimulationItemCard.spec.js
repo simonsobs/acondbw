@@ -40,7 +40,7 @@ describe("SimulationItemCard.vue", () => {
 
   const node = {
     id: "U2ltdWxhdGlvbjoxMDAx",
-    simulationId: "1001",
+    productId: "1001",
     name: "xyz-s1234-20200101",
     datePosted: "2019-03-15",
     mapper: "abc-def",
