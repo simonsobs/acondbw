@@ -4,7 +4,6 @@ import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
 import MapItem from "@/views/MapItem.vue";
-import MapItemCard from "@/components/MapItemCard.vue";
 
 import router from "@/router";
 
@@ -47,7 +46,6 @@ describe("MapItem.vue", () => {
       }
     });
     await Vue.nextTick();
-    expect(wrapper.find(MapItemCard).props().productId).toBe("1013");
     expect(wrapper.html()).toMatchSnapshot();
   });
 

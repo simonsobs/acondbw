@@ -46,15 +46,12 @@
 <script>
 import MapByName from "@/graphql/MapByName.gql";
 
-import MapItemCard from "@/components/MapItemCard";
-
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "MapItem",
   components: {
-    MapItemCard,
     DevToolLoadingStateOverridingMenu
   },
   data() {
