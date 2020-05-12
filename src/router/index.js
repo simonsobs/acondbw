@@ -90,7 +90,7 @@ const routes = [
         path: "item/:name",
         name: "MapItem",
         component: () =>
-          import(/* webpackChunkName: "maps" */ "@/views/MapItem.vue"),
+          import(/* webpackChunkName: "maps" */ "@/views/ProductItem.vue"),
       },
     ],
   },

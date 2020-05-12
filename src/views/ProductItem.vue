@@ -1,5 +1,5 @@
 <template>
-  <div class="map-item" style="position: relative;">
+  <div class="product-item" style="position: relative;">
     <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
     <div v-if="state == State.LOADING" class="mx-2 pt-5">
       <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
@@ -55,7 +55,7 @@ import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
-  name: "MapItem",
+  name: "ProductItem",
   components: {
     DevToolLoadingStateOverridingMenu
   },
