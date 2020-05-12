@@ -2,7 +2,7 @@ fragment beam on Beam {
   id
   productId
   name
-  beamFilePaths {
+  paths {
     edges {
       node {
         id
