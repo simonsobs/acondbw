@@ -3,7 +3,7 @@ query AllBeams {
     edges {
       node {
         id
-        beamId
+        productId
         name
       }
     }

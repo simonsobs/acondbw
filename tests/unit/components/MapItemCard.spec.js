@@ -62,7 +62,7 @@ describe("MapItemCard.vue", () => {
         {
           node: {
             id: "QmVhbToxMTUw",
-            beamId: "1150",
+            productId: "1150",
             name: "20200207"
           }
         }

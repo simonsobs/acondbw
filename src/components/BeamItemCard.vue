@@ -134,7 +134,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productId: { default: null }, // node.beamId not beam.id
+    productId: { default: null }, // node.productId not beam.id
     collapsed: { default: false },
     collapsible: { default: false }
   },
@@ -177,7 +177,7 @@ export default {
       query: BEAM,
       variables() {
         return {
-          beamId: this.productId
+          productId: this.productId
         };
       },
       update: data => data.beam,

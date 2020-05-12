@@ -1,6 +1,6 @@
 fragment beam on Beam {
   id
-  beamId
+  productId
   name
   beamFilePaths {
     edges {
