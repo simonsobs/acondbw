@@ -86,17 +86,12 @@
 </template>
 
 <script>
-import MapItemCard from "@/components/MapItemCard";
-import MapAddForm from "@/components/MapAddForm";
-
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "MapList",
   components: {
-    MapItemCard,
-    MapAddForm,
     DevToolLoadingStateOverridingMenu
   },
   props: {

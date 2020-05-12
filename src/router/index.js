@@ -5,6 +5,12 @@ import ProductTop from "@/views/ProductTop.vue";
 
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
+import MapItemCard from "@/components/MapItemCard";
+import MapAddForm from "@/components/MapAddForm";
+
+Vue.component('MapItemCard', MapItemCard)
+Vue.component('MapAddForm', MapAddForm)
+
 Vue.use(VueRouter);
 
 const routes = [
