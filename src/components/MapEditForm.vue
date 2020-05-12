@@ -164,7 +164,6 @@ export default {
   },
   watch: {
     formDefault: function() {
-      console.log("there!!!");
       this.form = { ...this.formDefault };
       console.log(this.form);
     }
