@@ -9,7 +9,9 @@ import ALL_SIMULATIONS from "@/graphql/AllSimulations.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 import ALL_BEAMS from "@/graphql/AllBeams.gql";
 
+import SIMULATION_BY_NAME from "@/graphql/SimulationByName.gql";
 import MAP_BY_NAME from "@/graphql/MapByName.gql";
+import BEAM_BY_NAME from "@/graphql/BeamByName.gql";
 
 import SimulationItemCard from "@/components/SimulationItemCard";
 import MapItemCard from "@/components/MapItemCard";
@@ -62,10 +64,14 @@ const routes = [
       {
         path: "item/:name",
         name: "SimulationItem",
-        component: () =>
-          import(
-            /* webpackChunkName: "simulations" */ "@/views/SimulationItem.vue"
-          ),
+        component: ProductItem,
+        props: {
+          query: SIMULATION_BY_NAME,
+          queryName: "simulation",
+          routeToProductList: { name: "SimulationList" },
+          productIdFieldName: "simulationId",
+          productItemCard: "SimulationItemCard",
+        },
       },
     ],
   },
@@ -130,8 +136,14 @@ const routes = [
       {
         path: "item/:name",
         name: "BeamItem",
-        component: () =>
-          import(/* webpackChunkName: "beams" */ "@/views/BeamItem.vue"),
+        component: ProductItem,
+        props: {
+          query: BEAM_BY_NAME,
+          queryName: "beam",
+          routeToProductList: { name: "BeamList" },
+          productIdFieldName: "beamId",
+          productItemCard: "BeamItemCard",
+        },
       },
     ],
   },
