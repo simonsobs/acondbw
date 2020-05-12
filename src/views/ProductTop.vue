@@ -57,7 +57,7 @@ export default {
 
 <style scoped>
 .fade-product-top-update-enter-active {
-  transition: opacity 0.2s;
+  transition: opacity 0.8s;
 }
 
 .fade-product-top-update-leave-active {
