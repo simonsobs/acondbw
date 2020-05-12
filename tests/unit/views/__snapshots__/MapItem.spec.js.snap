@@ -9,7 +9,7 @@ exports[`MapItem.vue match snapshot 1`] = `
   </div>
   <div>
     <div class="container pa-0 container--fluid">
-      <div class="row ma-0 px-0 pt-3 pb-1 align-start justify-end" style="max-width: 980px;"><a href="/maps" class="v-btn v-btn--flat v-btn--icon v-btn--round v-btn--router v-btn--text theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-arrow-left theme--light"></i></span></a><span class="v-tooltip v-tooltip--bottom"><!----></span> <span class="v-tooltip v-tooltip--bottom"><!----></span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-refresh theme--light"></i></span></button>
+      <div class="row ma-0 px-0 pt-3 pb-1 align-start justify-end" style="max-width: 980px;"><a href="/maps/" class="v-btn v-btn--flat v-btn--icon v-btn--round v-btn--router v-btn--text theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-arrow-left theme--light"></i></span></a><span class="v-tooltip v-tooltip--bottom"><!----></span> <span class="v-tooltip v-tooltip--bottom"><!----></span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-refresh theme--light"></i></span></button>
         <div class="spacer"></div>
       </div>
     </div>

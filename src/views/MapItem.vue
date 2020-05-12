@@ -14,11 +14,11 @@
         <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
-              <v-btn text icon exact to="/maps" v-on="on">
+              <v-btn text icon exact :to="routeToProductList" v-on="on">
                 <v-icon>mdi-arrow-left</v-icon>
               </v-btn>
             </template>
-            <span>Back to Maps</span>
+            <span>Back to the list</span>
           </v-tooltip>
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
@@ -32,7 +32,12 @@
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
-        <MapItemCard :productId="node.mapId" :collapsible="false" v-on:deleted="$router.push('/maps')"></MapItemCard>
+        <component
+          :is="productItemCard"
+          :productId="node[productIdFieldName]"
+          :collapsible="false"
+          v-on:deleted="$router.push(routeToProductList)"
+        ></component>
       </div>
     </div>
     <div v-else class="mx-2 pt-5">
@@ -53,6 +58,21 @@ export default {
   name: "MapItem",
   components: {
     DevToolLoadingStateOverridingMenu
+  },
+  props: {
+    query: {
+      default: function() {
+        return MapByName;
+      }
+    },
+    queryName: { default: "map" },
+    routeToProductList: {
+      default: function() {
+        return { name: "MapList" };
+      }
+    },
+    productIdFieldName: { default: "mapId" },
+    productItemCard: { default: "MapItemCard" }
   },
   data() {
     return {
@@ -78,7 +98,7 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-      
+
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
@@ -95,13 +115,17 @@ export default {
   },
   apollo: {
     node: {
-      query: MapByName,
+      query: function() {
+        return this.query;
+      },
       variables() {
         return {
           name: this.name
         };
       },
-      update: data => data.map,
+      update: function(data) {
+        return data[this.queryName];
+      },
       result(result) {
         this.error = null;
         if (result.error) {
