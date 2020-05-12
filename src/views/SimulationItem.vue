@@ -32,7 +32,7 @@
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
-        <SimulationItemCard :simulationId="node.simulationId" :collapsible="false" v-on:deleted="$router.push('/simulations')"></SimulationItemCard>
+        <SimulationItemCard :productId="node.simulationId" :collapsible="false" v-on:deleted="$router.push('/simulations')"></SimulationItemCard>
       </div>
     </div>
     <div v-else class="mx-2 pt-5">

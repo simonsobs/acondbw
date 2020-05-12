@@ -4,13 +4,19 @@ import Home from "@/views/Home.vue";
 import ProductTop from "@/views/ProductTop.vue";
 import ProductList from "@/views/ProductList.vue";
 
+import ALL_SIMULATIONS from "@/graphql/AllSimulations.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
+import ALL_BEAMS from "@/graphql/AllBeams.gql";
 
+import SimulationItemCard from "@/components/SimulationItemCard";
 import MapItemCard from "@/components/MapItemCard";
 import MapAddForm from "@/components/MapAddForm";
+import BeamItemCard from "@/components/BeamItemCard";
 
+Vue.component("SimulationItemCard", SimulationItemCard);
 Vue.component("MapItemCard", MapItemCard);
 Vue.component("MapAddForm", MapAddForm);
+Vue.component("BeamItemCard", BeamItemCard);
 
 Vue.use(VueRouter);
 
@@ -38,10 +44,17 @@ const routes = [
       {
         path: "",
         name: "SimulationList",
-        component: () =>
-          import(
-            /* webpackChunkName: "simulations" */ "@/views/SimulationList.vue"
-          ),
+        component: ProductList,
+        props: {
+          productTypeNameSingular: "simulation",
+          productTypeNamePlural: "simulations",
+          query: ALL_SIMULATIONS,
+          queryName: "allSimulations",
+          productIdFieldName: "simulationId",
+          productItemCard: "SimulationItemCard",
+          productAddForm: "SimulationAddForm",
+          disableAdd: true,
+        },
       },
       {
         path: "item/:name",
@@ -93,8 +106,17 @@ const routes = [
       {
         path: "",
         name: "BeamList",
-        component: () =>
-          import(/* webpackChunkName: "beams" */ "@/views/BeamList.vue"),
+        component: ProductList,
+        props: {
+          productTypeNameSingular: "beam",
+          productTypeNamePlural: "beams",
+          query: ALL_BEAMS,
+          queryName: "allBeams",
+          productIdFieldName: "beamId",
+          productItemCard: "BeamItemCard",
+          productAddForm: "BeamAddForm",
+          disableAdd: true,
+        },
       },
       {
         path: "item/:name",

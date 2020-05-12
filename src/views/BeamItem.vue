@@ -33,7 +33,7 @@
       </v-container>
       <div v-if="state == State.LOADED">
         <BeamItemCard
-          :beamId="node.beamId"
+          :productId="node.beamId"
           :collapsible="false"
           v-on:deleted="$router.push('/beams')"
         ></BeamItemCard>
