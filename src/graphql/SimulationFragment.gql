@@ -2,8 +2,13 @@ fragment simulation on Simulation {
   id
   productId
   name
+  contact
+  dateProduced
+  producedBy
   datePosted
-  mapper
+  postedBy
+  dateUpdated
+  updatedBy
   paths {
     edges {
       node {
