@@ -9,7 +9,7 @@ fragment map on Map {
   postedBy
   dateUpdated
   updatedBy
-  mapFilePaths {
+  paths {
     edges {
       node {
         id
@@ -23,7 +23,7 @@ fragment map on Map {
     edges {
       node {
         id
-        beamId
+        productId
         name
       }
     }
