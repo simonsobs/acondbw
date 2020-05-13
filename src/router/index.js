@@ -58,7 +58,7 @@ const routes = [
           queryName: "allSimulations",
           productItemCard: "SimulationItemCard",
           productAddForm: "SimulationAddForm",
-          disableAdd: true,
+          disableAdd: process.env.VUE_APP_ACONDBW_SIMULATION_CREATION_DIALOG != "true",
         },
       },
       {
@@ -132,7 +132,7 @@ const routes = [
           queryName: "allBeams",
           productItemCard: "BeamItemCard",
           productAddForm: "BeamAddForm",
-          disableAdd: true,
+          disableAdd: process.env.VUE_APP_ACONDBW_BEAM_CREATION_DIALOG != "true",
         },
       },
       {

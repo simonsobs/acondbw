@@ -163,8 +163,8 @@ export default {
   },
   data() {
     return {
-      disableEdit: true,
-      disableDelete: true,
+      disableEdit: process.env.VUE_APP_ACONDBW_SIMULATION_UPDATE_DIALOG != "true",
+      disableDelete: process.env.VUE_APP_ACONDBW_SIMULATION_DELETION_DIALOG != "true",
       menu: false,
       editDialog: false,
       deleteDialog: false,
