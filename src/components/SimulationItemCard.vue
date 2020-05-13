@@ -197,7 +197,7 @@ export default {
       return defaultDataIdFromObject(this.node);
     },
     note() {
-      return marked(this.node.note);
+      return this.node.note ? marked(this.node.note) : null;
     }
   },
   apollo: {
