@@ -186,8 +186,8 @@ export default {
   },
   data() {
     return {
-      disableEdit: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true",
-      disableDelete: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true",
+      disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
+      disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
       menu: false,
       editDialog: false,
       deleteDialog: false,

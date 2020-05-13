@@ -95,7 +95,7 @@ const routes = [
           queryName: "allMaps",
           productItemCard: "MapItemCard",
           productAddForm: "MapAddForm",
-          disableAdd: process.env.VUE_APP_ACONDBW_MAP_MUTATION_DIALOG != "true",
+          disableAdd: process.env.VUE_APP_ACONDBW_MAP_CREATION_DIALOG != "true",
         },
       },
       {
