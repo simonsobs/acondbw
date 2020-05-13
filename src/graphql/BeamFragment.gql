@@ -2,6 +2,13 @@ fragment beam on Beam {
   id
   productId
   name
+  contact
+  dateProduced
+  producedBy
+  datePosted
+  postedBy
+  dateUpdated
+  updatedBy
   paths {
     edges {
       node {
@@ -11,10 +18,18 @@ fragment beam on Beam {
       }
     }
   }
+  note
   map {
     name
   }
   parentBeam {
     name
+  }
+  childBeams {
+    edges {
+      node {
+        name
+      }
+    }
   }
 }
