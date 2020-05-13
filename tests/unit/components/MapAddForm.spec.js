@@ -56,7 +56,7 @@ describe("MapAddForm.vue", () => {
     };
 
     const form = {
-      paths: "/a/b/c\n\n \n/x/y/z \n  ",
+      paths: "/a/b/c\n\n \n/x/y/z \n/a/b/c",
       ...createMapInput,
     };
 
