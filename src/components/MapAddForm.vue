@@ -224,7 +224,7 @@ export default {
                   ok
                   mapFilePath {
                     id
-                    mapFilePathId
+                    pathId
                     path
                     note
                   }
