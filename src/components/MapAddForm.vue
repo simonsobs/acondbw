@@ -175,10 +175,10 @@ export default {
         ]);
 
         const paths = this.form.paths
-              .split("\n")
-              .map(x => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
-              .filter(Boolean) // remove empty strings
-              .filter((v, i, a) => a.indexOf(v) === i); // unique
+          .split("\n")
+          .map(x => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
+          .filter(Boolean) // remove empty strings
+          .filter((v, i, a) => a.indexOf(v) === i); // unique
 
         const data = await this.$apollo.mutate({
           mutation: CREATE_MAP,
