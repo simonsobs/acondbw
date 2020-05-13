@@ -1,0 +1,11 @@
+mutation CreateMapFilePath($input: CreateMapFilePathInput!) {
+  createMapFilePath(input: $input) {
+    ok
+    mapFilePath {
+      id
+      pathId
+      path
+      note
+    }
+  }
+}

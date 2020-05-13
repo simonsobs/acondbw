@@ -126,6 +126,7 @@ import MAP from "@/graphql/Map.gql";
 import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 
 import CREATE_MAP from "@/graphql/CreateMap.gql";
+import CREATE_MAP_FILE_PATH from "@/graphql/CreateMapFilePath.gql";
 
 const formDefault = {
   name: "",
@@ -206,19 +207,7 @@ export default {
             productId
           };
           const data = await this.$apollo.mutate({
-            mutation: gql`
-              mutation($input: CreateMapFilePathInput!) {
-                createMapFilePath(input: $input) {
-                  ok
-                  mapFilePath {
-                    id
-                    pathId
-                    path
-                    note
-                  }
-                }
-              }
-            `,
+            mutation: CREATE_MAP_FILE_PATH,
             variables: { input: createMapFilePathInput },
             update: (cache, { data: { createMapFilePath } }) => {
               const data = cache.readQuery({
