@@ -13,6 +13,7 @@ fragment map on Map {
     edges {
       node {
         id
+        pathId
         path
         note
       }
