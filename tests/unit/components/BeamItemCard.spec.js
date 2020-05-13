@@ -23,16 +23,16 @@ describe("BeamItemCard.vue", () => {
         $apollo: {
           queries: {
             node: {
-              loading: loading
-            }
+              loading: loading,
+            },
           },
-          mutate
-        }
+          mutate,
+        },
       },
       propsData: {
         beamName: "20200207",
-        ...propsData
-      }
+        ...propsData,
+      },
     });
 
     return wrapper;
@@ -42,23 +42,34 @@ describe("BeamItemCard.vue", () => {
     id: "QmVhbToxMTUw",
     productId: "1150",
     name: "20200207",
+    contact: null,
+    dateProduced: null,
+    producedBy: null,
+    datePosted: null,
+    postedBy: null,
+    dateUpdated: null,
+    updatedBy: null,
     paths: {
       edges: [
         {
           node: {
             id: "QmVhbUZpbGVQYXRoOjQ=",
             path: "BEAM_DEPOT/Beams/20200207",
-            note: ""
-          }
-        }
-      ]
+            note: "",
+          },
+        },
+      ],
     },
+    note: null,
     map: {
-      name: "lat20200201"
+      name: "lat20200201",
     },
     parentBeam: {
-      name: "20200123"
-    }
+      name: "20200123",
+    },
+    childBeams: {
+      edges: [],
+    },
   };
 
   beforeEach(function() {
@@ -70,13 +81,13 @@ describe("BeamItemCard.vue", () => {
     const loading = true;
     const wrapper = createWrapper({ loading });
     await Vue.nextTick();
-    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
+    expect(wrapper.find(".v-progress-circular").exists()).toBe(true);
   });
 
   it("error", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      error: "Error: cannot load data"
+      error: "Error: cannot load data",
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Error: cannot load data");
@@ -91,7 +102,7 @@ describe("BeamItemCard.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      node: node
+      node: node,
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -101,15 +112,15 @@ describe("BeamItemCard.vue", () => {
     [true, true, false],
     [true, false, true],
     [false, true, true],
-    [false, false, true]
+    [false, false, true],
   ])(
     "match snapshot - {collapsible: %p, collapsed: %p}",
     async (collapsible, collapsed, visible) => {
       const wrapper = createWrapper({
-        propsData: { collapsed: collapsed, collapsible: collapsible }
+        propsData: { collapsed: collapsed, collapsible: collapsible },
       });
       wrapper.setData({
-        node: node
+        node: node,
       });
       await Vue.nextTick();
       expect(wrapper.find(".collapsible").isVisible()).toBe(visible);
