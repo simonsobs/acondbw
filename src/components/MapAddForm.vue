@@ -118,6 +118,8 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 import gql from "graphql-tag";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 import MAP from "@/graphql/Map.gql";
@@ -161,22 +163,14 @@ export default {
     },
     async addMap() {
       try {
-        const createMapInput = (({
-          name,
-          contact,
-          dateProduced,
-          producedBy,
-          postedBy,
-          note
-        }) => ({
-          name,
-          contact,
-          dateProduced,
-          producedBy,
-          postedBy,
-          note
-        }))(this.form);
-
+        const createMapInput = _.pick(this.form, [
+          "name",
+          "contact",
+          "dateProduced",
+          "producedBy",
+          "postedBy",
+          "note"
+        ]);
         const paths = this.form.paths
           .split("\n")
           .map(x => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
