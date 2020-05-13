@@ -125,6 +125,8 @@ import ALL_MAPS from "@/graphql/AllMaps.gql";
 import MAP from "@/graphql/Map.gql";
 import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
 
+import CREATE_MAP from "@/graphql/CreateMap.gql";
+
 const formDefault = {
   name: "",
   contact: "",
@@ -179,17 +181,7 @@ export default {
               .filter((v, i, a) => a.indexOf(v) === i); // unique
 
         const data = await this.$apollo.mutate({
-          mutation: gql`
-            mutation($input: CreateMapInput!) {
-              createMap(input: $input) {
-                ok
-                map {
-                  ...map
-                }
-              }
-            }
-            ${MAP_FRAGMENT}
-          `,
+          mutation: CREATE_MAP,
           variables: { input: createMapInput },
           update: (cache, { data: { createMap } }) => {
             const data = cache.readQuery({
