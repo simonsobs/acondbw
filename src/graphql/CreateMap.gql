@@ -4,7 +4,7 @@ mutation CreateMap($input: CreateMapInput!) {
   createMap(input: $input) {
     ok
     map {
-      ...map
+      ...mapFragment
     }
   }
 }

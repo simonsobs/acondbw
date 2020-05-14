@@ -1,4 +1,4 @@
-fragment map on Map {
+fragment mapFragment on Map {
   id
   productId
   name

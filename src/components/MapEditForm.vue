@@ -208,7 +208,7 @@ export default {
               updateMap(productId: $productId, input: $input) {
                 ok
                 map {
-                  ...map
+                  ...mapFragment
                 }
               }
             }

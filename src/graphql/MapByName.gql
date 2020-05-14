@@ -2,6 +2,6 @@
 
 query MapByName($name: String) {
   map(name: $name) {
-    ...map
+    ...mapFragment
   }
 }
