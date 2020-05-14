@@ -1,4 +1,4 @@
-fragment beam on Beam {
+fragment beamFragment on Beam {
   id
   productId
   name
