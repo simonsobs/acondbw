@@ -15,13 +15,19 @@ import BEAM_BY_NAME from "@/graphql/BeamByName.gql";
 
 import SimulationItemCard from "@/components/SimulationItemCard";
 import MapItemCard from "@/components/MapItemCard";
-import MapAddForm from "@/components/MapAddForm";
 import BeamItemCard from "@/components/BeamItemCard";
+
+import MapAddForm from "@/components/MapAddForm";
+import BeamAddForm from "@/components/BeamAddForm";
+import SimulationAddForm from "@/components/SimulationAddForm";
 
 Vue.component("SimulationItemCard", SimulationItemCard);
 Vue.component("MapItemCard", MapItemCard);
-Vue.component("MapAddForm", MapAddForm);
 Vue.component("BeamItemCard", BeamItemCard);
+
+Vue.component("MapAddForm", MapAddForm);
+Vue.component("BeamAddForm", BeamAddForm);
+Vue.component("SimulationAddForm", SimulationAddForm);
 
 Vue.use(VueRouter);
 

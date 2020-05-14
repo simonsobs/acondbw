@@ -1,0 +1,10 @@
+#import "./SimulationFragment.gql"
+
+mutation CreateSimulation($input: CreateSimulationInput!) {
+  createSimulation(input: $input) {
+    ok
+    simulation {
+      ...simulationFragment
+    }
+  }
+}
