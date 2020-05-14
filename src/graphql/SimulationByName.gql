@@ -2,6 +2,6 @@
 
 query SimulationByName($name: String) {
   simulation(name: $name) {
-    ...simulation
+    ...simulationFragment
   }
 }

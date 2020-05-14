@@ -1,4 +1,4 @@
-fragment simulation on Simulation {
+fragment simulationFragment on Simulation {
   id
   productId
   name
