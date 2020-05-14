@@ -121,9 +121,7 @@
 import _ from "lodash";
 
 import CREATE_MAP from "@/graphql/CreateMap.gql";
-import CREATE_MAP_FILE_PATH from "@/graphql/CreateMapFilePath.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
-import MAP from "@/graphql/Map.gql";
 
 const formDefault = {
   name: "",
