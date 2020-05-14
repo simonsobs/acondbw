@@ -60,7 +60,7 @@ describe("MapAddForm.vue", () => {
 
     wrapper.setData({ form: form });
     await Vue.nextTick();
-    await wrapper.vm.addMap();
+    await wrapper.vm.addProduct();
     const calls = wrapper.vm.$apollo.mutate.mock.calls;
     expect(calls.length).toBe(1);
     expect(calls[0][0].mutation).toBeDefined();

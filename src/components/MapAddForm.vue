@@ -102,7 +102,7 @@
         <v-spacer></v-spacer>
         <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
         <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
-        <v-btn color="primary" :disabled="!valid" @click="addMap()">Add</v-btn>
+        <v-btn color="primary" :disabled="!valid" @click="addProduct()">Add</v-btn>
       </v-card-actions>
     </v-form>
     <v-dialog v-model="dialogSuccess" max-width="500px">
@@ -159,7 +159,7 @@ export default {
       this.$refs.form.resetValidation();
       this.error = null;
     },
-    async addMap() {
+    async addProduct() {
       try {
         const createMapInput = _.pick(this.form, [
           "name",
