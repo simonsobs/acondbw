@@ -161,7 +161,7 @@ export default {
     },
     async addProduct() {
       try {
-        const createMapInput = _.pick(this.form, [
+        const createProductInput = _.pick(this.form, [
           "name",
           "contact",
           "dateProduced",
@@ -176,11 +176,11 @@ export default {
           .filter(Boolean) // remove empty strings
           .filter((v, i, a) => a.indexOf(v) === i); // unique
 
-        createMapInput.paths = paths;
+        createProductInput.paths = paths;
 
         const data = await this.$apollo.mutate({
           mutation: CREATE_MAP,
-          variables: { input: createMapInput },
+          variables: { input: createProductInput },
           update: (cache, { data: { createMap } }) => {
             const data = cache.readQuery({
               query: ALL_MAPS
