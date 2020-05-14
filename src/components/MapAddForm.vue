@@ -178,6 +178,8 @@ export default {
           .filter(Boolean) // remove empty strings
           .filter((v, i, a) => a.indexOf(v) === i); // unique
 
+        createMapInput.paths = paths;
+
         const data = await this.$apollo.mutate({
           mutation: CREATE_MAP,
           variables: { input: createMapInput },
@@ -195,34 +197,6 @@ export default {
             });
           }
         });
-
-        const productId = data.data.createMap.map.productId;
-
-        for (const path of paths) {
-          const createMapFilePathInput = {
-            path,
-            productId
-          };
-          const data = await this.$apollo.mutate({
-            mutation: CREATE_MAP_FILE_PATH,
-            variables: { input: createMapFilePathInput },
-            update: (cache, { data: { createMapFilePath } }) => {
-              const data = cache.readQuery({
-                query: MAP,
-                variables: { productId }
-              });
-              data.map.paths.edges.push({
-                node: createMapFilePath.mapFilePath,
-                __typename: "MapFilePathEdge"
-              });
-              cache.writeQuery({
-                query: MAP,
-                variables: { productId },
-                data
-              });
-            }
-          });
-        }
         this.dialogSuccess = true;
       } catch (error) {
         this.error = error;

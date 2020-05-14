@@ -39,53 +39,44 @@ describe("MapAddForm.vue", () => {
   });
 
   it("add", async () => {
-
     // to suppress the warning "[Vuetify] Unable to locate target [data-app]""
-    const app = document.createElement ("div");
-    app.setAttribute ("data-app", true);
-    document.body.append (app);
+    const app = document.createElement("div");
+    app.setAttribute("data-app", true);
+    document.body.append(app);
 
     const wrapper = createWrapper();
-    const createMapInput = {
+
+    const form = {
       name: "new-map-name",
       contact: "contact-contact",
       dateProduced: "2020-01-11",
       producedBy: "map-map",
       postedBy: "post-post",
       note: "note",
-    };
-
-    const form = {
       paths: "/a/b/c\n\n \n/x/y/z \n/a/b/c",
-      ...createMapInput,
-    };
-
-    const createMap = {
-      map: {
-        id: "TWFwOjEwMTk=",
-        productId: "1019",
-        ...createMapInput,
-      },
     };
 
     const blankForm = { ...wrapper.vm.form };
 
     wrapper.setData({ form: form });
     await Vue.nextTick();
-    wrapper.vm.$apollo.mutate.mockReturnValue({ data: { createMap } });
     await wrapper.vm.addMap();
     const calls = wrapper.vm.$apollo.mutate.mock.calls;
-    expect(calls.length).toBe(3);
+    expect(calls.length).toBe(1);
     expect(calls[0][0].mutation).toBeDefined();
-    expect(calls[0][0].variables).toEqual({ input: createMapInput });
-    expect(calls[1][0].mutation).toBeDefined();
-    expect(calls[1][0].variables).toEqual({
-      input: { productId: "1019", path: "/a/b/c" },
-    });
-    expect(calls[2][0].mutation).toBeDefined();
-    expect(calls[2][0].variables).toEqual({
-      input: { productId: "1019", path: "/x/y/z" },
-    });
+
+    const expectedCreateMapInput = {
+      name: "new-map-name",
+      contact: "contact-contact",
+      dateProduced: "2020-01-11",
+      producedBy: "map-map",
+      postedBy: "post-post",
+      note: "note",
+      paths: ["/a/b/c", "/x/y/z"],
+    };
+
+    expect(calls[0][0].variables).toEqual({ input: expectedCreateMapInput });
+
     expect(wrapper.vm.dialogSuccess).toBe(true);
 
     wrapper.vm.closeDialogSuccess();
@@ -94,5 +85,4 @@ describe("MapAddForm.vue", () => {
     expect(wrapper.vm.form).toEqual(blankForm); // # resetForm() is called
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
-
 });
