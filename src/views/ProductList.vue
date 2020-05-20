@@ -128,7 +128,7 @@ export default {
           typeId: this.productTypeId
         };
       },
-      update: data => data.allProducts ? data.allProducts.edges : null,
+      update: data => (data.allProducts ? data.allProducts.edges : null),
       result(result) {
         this.error = result.error ? result.error : null;
       }
