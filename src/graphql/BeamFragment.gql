@@ -1,4 +1,4 @@
-fragment beamFragment on Beam {
+fragment beamFragment on Product {
   id
   productId
   name
@@ -13,23 +13,11 @@ fragment beamFragment on Beam {
     edges {
       node {
         id
+        pathId
         path
         note
       }
     }
   }
   note
-  map {
-    name
-  }
-  parentBeam {
-    name
-  }
-  childBeams {
-    edges {
-      node {
-        name
-      }
-    }
-  }
 }

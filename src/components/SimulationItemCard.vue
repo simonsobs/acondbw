@@ -208,7 +208,7 @@ export default {
           productId: this.productId
         };
       },
-      update: data => data.simulation,
+      update: data => data.product,
       result(result) {
         this.error = result.error ? result.error : null;
       }

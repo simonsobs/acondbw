@@ -1,4 +1,4 @@
-fragment simulationFragment on Simulation {
+fragment simulationFragment on Product {
   id
   productId
   name
@@ -13,6 +13,7 @@ fragment simulationFragment on Simulation {
     edges {
       node {
         id
+        pathId
         path
         note
       }

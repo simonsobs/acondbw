@@ -1,5 +1,5 @@
 query AllBeams {
-  allBeams(sort: NAME_DESC) {
+  allProducts(filters: {typeId: 2}, sort: DATE_POSTED_DESC) {
     edges {
       node {
         id

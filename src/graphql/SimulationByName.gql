@@ -1,7 +1,7 @@
 #import "./SimulationFragment.gql"
 
 query SimulationByName($name: String) {
-  simulation(name: $name) {
+  product(name: $name) {
     ...simulationFragment
   }
 }

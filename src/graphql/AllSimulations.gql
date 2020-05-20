@@ -1,5 +1,5 @@
 query AllSimulations {
-  allSimulations(sort: DATE_POSTED_DESC) {
+  allProducts(filters: {typeId: 3}, sort: DATE_POSTED_DESC) {
     edges {
       node {
         id

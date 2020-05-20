@@ -1,7 +1,7 @@
 #import "./MapFragment.gql"
 
 query Map($productId: Int) {
-  map(productId: $productId) {
+  product(productId: $productId) {
     ...mapFragment
   }
 }

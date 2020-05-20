@@ -231,7 +231,7 @@ export default {
           productId: this.productId
         };
       },
-      update: data => data.map,
+      update: data => data.product,
       result(result) {
         this.error = result.error ? result.error : null;
       }

@@ -234,7 +234,7 @@ export default {
           productId: this.productId
         };
       },
-      update: data => data.beam,
+      update: data => data.product,
       result(result) {
         this.error = result.error ? result.error : null;
       }

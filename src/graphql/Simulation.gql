@@ -1,7 +1,7 @@
 #import "./SimulationFragment.gql"
 
 query Simulation($productId: Int) {
-  simulation(productId: $productId) {
+  product(productId: $productId) {
     ...simulationFragment
   }
 }

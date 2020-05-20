@@ -1,4 +1,4 @@
-fragment mapFragment on Map {
+fragment mapFragment on Product {
   id
   productId
   name
@@ -20,13 +20,4 @@ fragment mapFragment on Map {
     }
   }
   note
-  beams {
-    edges {
-      node {
-        id
-        productId
-        name
-      }
-    }
-  }
 }
