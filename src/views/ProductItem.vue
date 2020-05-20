@@ -32,6 +32,7 @@
       <div v-if="state == State.LOADED">
         <component
           :is="productItemCard"
+          :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="node.productId"
           :collapsible="false"
           v-on:deleted="$router.push(routeToProductList)"
@@ -59,7 +60,8 @@ export default {
   },
   props: {
     routeToProductList: { required: true },
-    productItemCard: { required: true }
+    productItemCard: { required: true },
+    nameOfRouteToProductItem: { default: "MapItem" }
   },
   data() {
     return {

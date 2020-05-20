@@ -61,6 +61,7 @@
           :is="productItemCard"
           v-for="edge in edges"
           :key="edge.node.id"
+          :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="edge.node.productId"
           collapsible="true"
           :collapsed="isCardCollapsed[edge.node.id]"
@@ -98,6 +99,7 @@ export default {
     query: { required: true },
     queryName: { required: true },
     productItemCard: { required: true },
+    nameOfRouteToProductItem: { required: true },
     productAddForm: { required: true },
     disableAdd: { default: false }
   },

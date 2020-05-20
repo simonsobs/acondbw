@@ -4,7 +4,6 @@ import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
 import ProductItem from "@/views/ProductItem.vue";
-import MAP_BY_NAME from "@/graphql/MapByName.gql";
 
 import router from "@/router";
 
@@ -28,13 +27,12 @@ describe("ProductItem.vue", () => {
         },
       },
       propsData: {
-        query: MAP_BY_NAME,
-        queryName: "map",
         routeToProductList: { name: "MapList" },
-        productItemCard: "MapItemCard",
+        productItemCard: "ProductItemCard",
+        nameOfRouteToProductItem: "MapItem",
       },
       stubs: {
-        MapItemCard: true,
+        ProductItemCard: true,
       },
     });
   }

@@ -82,7 +82,7 @@ describe("MapDeleteForm.vue", () => {
     wrapper.setData({
       node: node
     });
-    await wrapper.vm.deleteMap();
+    await wrapper.vm.deleteProduct();
     expect(wrapper.vm.$apollo.mutate).toBeCalled();
     expect(wrapper.vm.dialogSuccess).toBe(true);
   });
