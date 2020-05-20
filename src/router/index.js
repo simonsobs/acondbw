@@ -5,10 +5,6 @@ import ProductTop from "@/views/ProductTop.vue";
 import ProductList from "@/views/ProductList.vue";
 import ProductItem from "@/views/ProductItem.vue";
 
-import ALL_SIMULATIONS from "@/graphql/AllSimulations.gql";
-import ALL_MAPS from "@/graphql/AllMaps.gql";
-import ALL_BEAMS from "@/graphql/AllBeams.gql";
-
 import SimulationItemCard from "@/components/SimulationItemCard";
 import BeamItemCard from "@/components/BeamItemCard";
 
@@ -54,8 +50,7 @@ const routes = [
         props: {
           productTypeNameSingular: "simulation",
           productTypeNamePlural: "simulations",
-          query: ALL_SIMULATIONS,
-          queryName: "allProducts",
+          productTypeId: 3,
           nameOfRouteToProductItem: "SimulationItem",
           productAddForm: "SimulationAddForm",
           disableAdd:
@@ -90,8 +85,7 @@ const routes = [
         props: {
           productTypeNameSingular: "map",
           productTypeNamePlural: "maps",
-          query: ALL_MAPS,
-          queryName: "allProducts",
+          productTypeId: 1,
           nameOfRouteToProductItem: "MapItem",
           productAddForm: "MapAddForm",
           disableAdd: process.env.VUE_APP_ACONDBW_MAP_CREATION_DIALOG != "true",
@@ -129,8 +123,7 @@ const routes = [
         props: {
           productTypeNameSingular: "beam",
           productTypeNamePlural: "beams",
-          query: ALL_BEAMS,
-          queryName: "allProducts",
+          productTypeId: 2,
           nameOfRouteToProductItem: "BeamItem",
           productAddForm: "BeamAddForm",
           disableAdd:

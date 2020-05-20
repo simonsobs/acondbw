@@ -91,6 +91,8 @@ import ProductItemCard from "@/components/ProductItemCard";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
+import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
+
 export default {
   name: "ProductList",
   components: {
@@ -100,8 +102,7 @@ export default {
   props: {
     productTypeNameSingular: { default: "product" },
     productTypeNamePlural: { default: "products" },
-    query: { required: true },
-    queryName: { required: true },
+    productTypeId: { required: true },
     productItemCard: { default: "ProductItemCard" },
     nameOfRouteToProductItem: { required: true },
     productAddForm: { required: true },
@@ -121,12 +122,13 @@ export default {
   },
   apollo: {
     edges: {
-      query: function() {
-        return this.query;
+      query: ALL_PRODUCTS_BY_TYPE_ID,
+      variables() {
+        return {
+          typeId: this.productTypeId
+        };
       },
-      update: function(data) {
-        return data[this.queryName] ? data[this.queryName].edges : null;
-      },
+      update: data => data.allProducts ? data.allProducts.edges : null,
       result(result) {
         this.error = result.error ? result.error : null;
       }
