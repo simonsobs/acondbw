@@ -1,7 +1,0 @@
-#import "./MapFragment.gql"
-
-query MapByName($name: String) {
-  product(name: $name) {
-    ...mapFragment
-  }
-}

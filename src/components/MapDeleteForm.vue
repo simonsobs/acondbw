@@ -10,7 +10,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-          <v-btn color="error" @click="deleteMap()">Delete</v-btn>
+          <v-btn color="error" @click="deleteProduct()">Delete</v-btn>
         </v-card-actions>
       </div>
       <div v-else>
@@ -40,15 +40,15 @@
 
 <script>
 import gql from "graphql-tag";
-import MAP from "@/graphql/Map.gql";
+import PRODUCT from "@/graphql/Product.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
-const MAP_FOR_DELETE = gql`
-  query MapForDelete($productId: Int!) {
-    map(productId: $productId) {
+const PRODUCT_FOR_DELETE = gql`
+  query ProductForDelete($productId: Int!) {
+    product(productId: $productId) {
       id
       productId
       name
@@ -62,7 +62,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productId: { default: null } // map.productId not map.id
+    productId: { default: null } // product.productId not product.id
   },
   data() {
     return {
@@ -95,13 +95,13 @@ export default {
   },
   apollo: {
     node: {
-      query: MAP_FOR_DELETE,
+      query: PRODUCT_FOR_DELETE,
       variables() {
         return {
           productId: this.productId
         };
       },
-      update: data => data.map,
+      update: data => data.product,
       result(result) {
         this.error = null;
         if (result.error) {
@@ -111,12 +111,12 @@ export default {
     }
   },
   methods: {
-    async deleteMap() {
+    async deleteProduct() {
       try {
         const data = await this.$apollo.mutate({
           mutation: gql`
             mutation($productId: Int!) {
-              deleteMap(productId: $productId) {
+              deleteProduct(productId: $productId) {
                 ok
               }
             }
@@ -124,14 +124,14 @@ export default {
           variables: {
             productId: this.node.productId
           },
-          update: (cache, { data: { deleteMap } }) => {
+          update: (cache, { data: { deleteProduct } }) => {
             const data = cache.readQuery({
               query: ALL_MAPS
             });
-            const index = data.allMaps.edges.findIndex(
+            const index = data.allProducts.edges.findIndex(
               e => e.node.productId == this.node.productId
             );
-            data.allMaps.edges.splice(index, 1);
+            data.allProducts.edges.splice(index, 1);
             cache.writeQuery({
               query: ALL_MAPS,
               data

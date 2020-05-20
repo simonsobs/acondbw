@@ -164,7 +164,7 @@ import marked from "marked";
 
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
-import MAP from "@/graphql/Map.gql";
+import PRODUCT from "@/graphql/Product.gql";
 
 import MapEditForm from "@/components/MapEditForm";
 import MapDeleteForm from "@/components/MapDeleteForm";
@@ -225,7 +225,7 @@ export default {
   },
   apollo: {
     node: {
-      query: MAP,
+      query: PRODUCT,
       variables() {
         return {
           productId: this.productId

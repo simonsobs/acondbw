@@ -172,7 +172,7 @@ import marked from "marked";
 
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
-import BEAM from "@/graphql/Beam.gql";
+import PRODUCT from "@/graphql/Product.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
@@ -228,7 +228,7 @@ export default {
   },
   apollo: {
     node: {
-      query: BEAM,
+      query: PRODUCT,
       variables() {
         return {
           productId: this.productId

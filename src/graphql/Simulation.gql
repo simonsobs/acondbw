@@ -1,7 +1,0 @@
-#import "./SimulationFragment.gql"
-
-query Simulation($productId: Int) {
-  product(productId: $productId) {
-    ...simulationFragment
-  }
-}

@@ -1,0 +1,7 @@
+#import "./ProductFragment.gql"
+
+query Product($productId: Int) {
+  product(productId: $productId) {
+    ...productFragment
+  }
+}

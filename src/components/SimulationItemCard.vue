@@ -146,7 +146,7 @@ import marked from "marked";
 
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
-import SIMULATION from "@/graphql/Simulation.gql";
+import PRODUCT from "@/graphql/Product.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
@@ -202,7 +202,7 @@ export default {
   },
   apollo: {
     node: {
-      query: SIMULATION,
+      query: PRODUCT,
       variables() {
         return {
           productId: this.productId

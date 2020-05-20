@@ -1,10 +1,10 @@
-#import "./MapFragment.gql"
+#import "./ProductFragment.gql"
 
 mutation CreateMap($input: CreateMapInput!) {
   createMap(input: $input) {
     ok
     map {
-      ...mapFragment
+      ...productFragment
     }
   }
 }

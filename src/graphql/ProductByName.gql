@@ -1,0 +1,7 @@
+#import "./ProductFragment.gql"
+
+query ProductByName($name: String) {
+  product(name: $name) {
+    ...productFragment
+  }
+}

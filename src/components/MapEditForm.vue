@@ -96,9 +96,9 @@
 
 <script>
 import gql from "graphql-tag";
-import MAP from "@/graphql/Map.gql";
+import PRODUCT from "@/graphql/Product.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
-import MAP_FRAGMENT from "@/graphql/MapFragment.gql";
+import PRODUCT_FRAGMENT from "@/graphql/ProductFragment.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
@@ -109,7 +109,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productId: { default: null } // map.productId not map.id
+    productId: { default: null } // product.productId not product.id
   },
   data() {
     return {
@@ -154,7 +154,7 @@ export default {
           note
         }))(this.node);
         ret.paths = this.node.paths.edges
-          .map(e => e.node.path)
+          .product(e => e.node.path)
           .join("\n");
         return ret;
       } else {
@@ -170,13 +170,13 @@ export default {
   },
   apollo: {
     node: {
-      query: MAP,
+      query: PRODUCT,
       variables() {
         return {
           productId: this.productId
         };
       },
-      update: data => data.map,
+      update: data => data.product,
       result(result) {
         this.error = null;
         if (result.error) {
@@ -197,24 +197,24 @@ export default {
     },
     async editMap() {
       try {
-        const updateMapInput = (({ contact, updatedBy, note }) => ({
+        const updateProductInput = (({ contact, updatedBy, note }) => ({
           contact,
           updatedBy,
           note
         }))(this.form);
         const data = await this.$apollo.mutate({
           mutation: gql`
-            mutation($productId: Int!, $input: UpdateMapInput!) {
-              updateMap(productId: $productId, input: $input) {
+            mutation($productId: Int!, $input: UpdateProductInput!) {
+              updateProduct(productId: $productId, input: $input) {
                 ok
-                map {
-                  ...mapFragment
+                product {
+                  ...productFragment
                 }
               }
             }
-            ${MAP_FRAGMENT}
+            ${PRODUCT_FRAGMENT}
           `,
-          variables: { productId: this.node.productId, input: updateMapInput }
+          variables: { productId: this.node.productId, input: updateProductInput }
         });
         this.dialogSuccess = true;
       } catch (error) {

@@ -1,10 +1,10 @@
-#import "./BeamFragment.gql"
+#import "./ProductFragment.gql"
 
 mutation CreateBeam($input: CreateBeamInput!) {
   createBeam(input: $input) {
     ok
     beam {
-      ...beamFragment
+      ...productFragment
     }
   }
 }

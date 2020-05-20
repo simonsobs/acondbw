@@ -9,9 +9,7 @@ import ALL_SIMULATIONS from "@/graphql/AllSimulations.gql";
 import ALL_MAPS from "@/graphql/AllMaps.gql";
 import ALL_BEAMS from "@/graphql/AllBeams.gql";
 
-import SIMULATION_BY_NAME from "@/graphql/SimulationByName.gql";
-import MAP_BY_NAME from "@/graphql/MapByName.gql";
-import BEAM_BY_NAME from "@/graphql/BeamByName.gql";
+import PRODUCT_BY_NAME from "@/graphql/ProductByName.gql";
 
 import SimulationItemCard from "@/components/SimulationItemCard";
 import MapItemCard from "@/components/MapItemCard";
@@ -72,7 +70,7 @@ const routes = [
         name: "SimulationItem",
         component: ProductItem,
         props: {
-          query: SIMULATION_BY_NAME,
+          query: PRODUCT_BY_NAME,
           queryName: "product",
           routeToProductList: { name: "SimulationList" },
           productItemCard: "SimulationItemCard",
@@ -109,7 +107,7 @@ const routes = [
         name: "MapItem",
         component: ProductItem,
         props: {
-          query: MAP_BY_NAME,
+          query: PRODUCT_BY_NAME,
           queryName: "product",
           routeToProductList: { name: "MapList" },
           productItemCard: "MapItemCard",
@@ -146,7 +144,7 @@ const routes = [
         name: "BeamItem",
         component: ProductItem,
         props: {
-          query: BEAM_BY_NAME,
+          query: PRODUCT_BY_NAME,
           queryName: "product",
           routeToProductList: { name: "BeamList" },
           productItemCard: "BeamItemCard",

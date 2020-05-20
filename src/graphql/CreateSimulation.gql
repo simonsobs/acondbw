@@ -1,10 +1,10 @@
-#import "./SimulationFragment.gql"
+#import "./ProductFragment.gql"
 
 mutation CreateSimulation($input: CreateSimulationInput!) {
   createSimulation(input: $input) {
     ok
     simulation {
-      ...simulationFragment
+      ...productFragment
     }
   }
 }
