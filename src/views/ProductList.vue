@@ -87,12 +87,14 @@
 </template>
 
 <script>
+import ProductItemCard from "@/components/ProductItemCard";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "ProductList",
   components: {
+    ProductItemCard,
     DevToolLoadingStateOverridingMenu
   },
   props: {
@@ -100,7 +102,7 @@ export default {
     productTypeNamePlural: { default: "products" },
     query: { required: true },
     queryName: { required: true },
-    productItemCard: { required: true },
+    productItemCard: { default: "ProductItemCard" },
     nameOfRouteToProductItem: { required: true },
     productAddForm: { required: true },
     disableAdd: { default: false },

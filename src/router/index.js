@@ -12,16 +12,12 @@ import ALL_BEAMS from "@/graphql/AllBeams.gql";
 import SimulationItemCard from "@/components/SimulationItemCard";
 import BeamItemCard from "@/components/BeamItemCard";
 
-import ProductItemCard from "@/components/ProductItemCard";
-
 import MapAddForm from "@/components/MapAddForm";
 import BeamAddForm from "@/components/BeamAddForm";
 import SimulationAddForm from "@/components/SimulationAddForm";
 
 Vue.component("SimulationItemCard", SimulationItemCard);
 Vue.component("BeamItemCard", BeamItemCard);
-
-Vue.component("ProductItemCard", ProductItemCard);
 
 Vue.component("MapAddForm", MapAddForm);
 Vue.component("BeamAddForm", BeamAddForm);
@@ -60,7 +56,6 @@ const routes = [
           productTypeNamePlural: "simulations",
           query: ALL_SIMULATIONS,
           queryName: "allProducts",
-          productItemCard: "ProductItemCard",
           nameOfRouteToProductItem: "SimulationItem",
           productAddForm: "SimulationAddForm",
           disableAdd:
@@ -73,7 +68,6 @@ const routes = [
         component: ProductItem,
         props: {
           routeToProductList: { name: "SimulationList" },
-          productItemCard: "ProductItemCard",
           nameOfRouteToProductItem: "SimulationItem",
         },
       },
@@ -98,7 +92,6 @@ const routes = [
           productTypeNamePlural: "maps",
           query: ALL_MAPS,
           queryName: "allProducts",
-          productItemCard: "ProductItemCard",
           nameOfRouteToProductItem: "MapItem",
           productAddForm: "MapAddForm",
           disableAdd: process.env.VUE_APP_ACONDBW_MAP_CREATION_DIALOG != "true",
@@ -112,7 +105,6 @@ const routes = [
         component: ProductItem,
         props: {
           routeToProductList: { name: "MapList" },
-          productItemCard: "ProductItemCard",
           nameOfRouteToProductItem: "MapItem",
           disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
           disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
@@ -139,7 +131,6 @@ const routes = [
           productTypeNamePlural: "beams",
           query: ALL_BEAMS,
           queryName: "allProducts",
-          productItemCard: "ProductItemCard",
           nameOfRouteToProductItem: "BeamItem",
           productAddForm: "BeamAddForm",
           disableAdd:
@@ -152,7 +143,6 @@ const routes = [
         component: ProductItem,
         props: {
           routeToProductList: { name: "BeamList" },
-          productItemCard: "ProductItemCard",
           nameOfRouteToProductItem: "BeamItem",
         },
       },

@@ -52,17 +52,20 @@
 <script>
 import PRODUCT_BY_NAME from "@/graphql/ProductByName.gql";
 
+import ProductItemCard from "@/components/ProductItemCard";
+
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "ProductItem",
   components: {
+    ProductItemCard,
     DevToolLoadingStateOverridingMenu
   },
   props: {
     routeToProductList: { required: true },
-    productItemCard: { required: true },
+    productItemCard: { default: "ProductItemCard" },
     nameOfRouteToProductItem: { default: "MapItem" },
     disableEdit: { default: false },
     disableDelete: { default: false }
