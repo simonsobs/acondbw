@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import PRODUCT_BY_NAME from "@/graphql/ProductByName.gql";
+
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
@@ -56,8 +58,6 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    query: { required: true },
-    queryName: { required: true },
     routeToProductList: { required: true },
     productItemCard: { required: true }
   },
@@ -102,16 +102,14 @@ export default {
   },
   apollo: {
     node: {
-      query: function() {
-        return this.query;
-      },
+      query: PRODUCT_BY_NAME,
       variables() {
         return {
           name: this.name
         };
       },
       update: function(data) {
-        return data[this.queryName];
+        return data.product;
       },
       result(result) {
         this.error = result.error ? result.error : null;
