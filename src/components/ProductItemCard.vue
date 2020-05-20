@@ -186,12 +186,12 @@ export default {
     nameOfRouteToProductItem: { required: true },
     productId: { default: null }, // node.productId not node.id
     collapsed: { default: false },
-    collapsible: { default: false }
+    collapsible: { default: false },
+    disableEdit: { default: false },
+    disableDelete: { default: false }
   },
   data() {
     return {
-      disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
-      disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
       menu: false,
       editDialog: false,
       deleteDialog: false,

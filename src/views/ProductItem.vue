@@ -36,6 +36,8 @@
           :productId="node.productId"
           :collapsible="false"
           v-on:deleted="$router.push(routeToProductList)"
+          :disableEdit="disableEdit"
+          :disableDelete="disableDelete"
         ></component>
       </div>
     </div>
@@ -61,7 +63,9 @@ export default {
   props: {
     routeToProductList: { required: true },
     productItemCard: { required: true },
-    nameOfRouteToProductItem: { default: "MapItem" }
+    nameOfRouteToProductItem: { default: "MapItem" },
+    disableEdit: { default: false },
+    disableDelete: { default: false }
   },
   data() {
     return {

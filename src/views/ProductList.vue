@@ -67,6 +67,8 @@
           :collapsed="isCardCollapsed[edge.node.id]"
           v-on:expand="isCardCollapsed[edge.node.id] = false"
           v-on:collapse="isCardCollapsed[edge.node.id] = true"
+          :disableEdit="disableEdit"
+          :disableDelete="disableDelete"
           class="my-1"
         ></component>
       </div>
@@ -101,7 +103,9 @@ export default {
     productItemCard: { required: true },
     nameOfRouteToProductItem: { required: true },
     productAddForm: { required: true },
-    disableAdd: { default: false }
+    disableAdd: { default: false },
+    disableEdit: { default: false },
+    disableDelete: { default: false }
   },
   data() {
     return {

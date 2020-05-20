@@ -102,6 +102,8 @@ const routes = [
           nameOfRouteToProductItem: "MapItem",
           productAddForm: "MapAddForm",
           disableAdd: process.env.VUE_APP_ACONDBW_MAP_CREATION_DIALOG != "true",
+          disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
+          disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
         },
       },
       {
@@ -112,6 +114,8 @@ const routes = [
           routeToProductList: { name: "MapList" },
           productItemCard: "ProductItemCard",
           nameOfRouteToProductItem: "MapItem",
+          disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
+          disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
         },
       },
     ],
