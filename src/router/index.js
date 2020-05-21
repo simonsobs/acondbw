@@ -40,9 +40,9 @@ const routes = [
         name: "SimulationList",
         component: ProductList,
         props: {
+          productTypeId: 3,
           productTypeNameSingular: "simulation",
           productTypeNamePlural: "simulations",
-          productTypeId: 3,
           nameOfRouteToProductItem: "SimulationItem",
           disableAdd:
             process.env.VUE_APP_ACONDBW_SIMULATION_CREATION_DIALOG != "true",
@@ -54,6 +54,8 @@ const routes = [
         component: ProductItem,
         props: {
           productTypeId: 3,
+          productTypeNameSingular: "simulation",
+          productTypeNamePlural: "simulations",
           routeToProductList: { name: "SimulationList" },
           nameOfRouteToProductItem: "SimulationItem",
         },
@@ -75,9 +77,9 @@ const routes = [
         name: "MapList",
         component: ProductList,
         props: {
+          productTypeId: 1,
           productTypeNameSingular: "map",
           productTypeNamePlural: "maps",
-          productTypeId: 1,
           nameOfRouteToProductItem: "MapItem",
           disableAdd: process.env.VUE_APP_ACONDBW_MAP_CREATION_DIALOG != "true",
           disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
@@ -90,6 +92,8 @@ const routes = [
         component: ProductItem,
         props: {
           productTypeId: 1,
+          productTypeNameSingular: "map",
+          productTypeNamePlural: "maps",
           routeToProductList: { name: "MapList" },
           nameOfRouteToProductItem: "MapItem",
           disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
@@ -113,9 +117,9 @@ const routes = [
         name: "BeamList",
         component: ProductList,
         props: {
+          productTypeId: 2,
           productTypeNameSingular: "beam",
           productTypeNamePlural: "beams",
-          productTypeId: 2,
           nameOfRouteToProductItem: "BeamItem",
           disableAdd:
             process.env.VUE_APP_ACONDBW_BEAM_CREATION_DIALOG != "true",
@@ -127,6 +131,8 @@ const routes = [
         component: ProductItem,
         props: {
           productTypeId: 2,
+          productTypeNameSingular: "beam",
+          productTypeNamePlural: "beams",
           routeToProductList: { name: "BeamList" },
           nameOfRouteToProductItem: "BeamItem",
         },
