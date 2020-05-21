@@ -23,16 +23,19 @@ describe("ProductDeleteForm.vue", () => {
         $apollo: {
           queries: {
             node: {
-              loading: loading
-            }
+              loading: loading,
+            },
           },
-          mutate
-        }
+          mutate,
+        },
       },
       propsData: {
+        productTypeNameSingular: "map",
+        productTypeNamePlural: "maps",
+        productId: 1013,
         productName: "lat20200201",
-        ...propsData
-      }
+        ...propsData,
+      },
     });
 
     return wrapper;
@@ -40,7 +43,7 @@ describe("ProductDeleteForm.vue", () => {
 
   const node = {
     id: "TWFwOjEwMTM=",
-    productId: "1013",
+    productId: 1013,
     name: "lat20200201",
   };
 
@@ -53,13 +56,13 @@ describe("ProductDeleteForm.vue", () => {
     const loading = true;
     const wrapper = createWrapper({ loading });
     await Vue.nextTick();
-    expect(wrapper.find('.v-progress-circular').exists()).toBe(true);
+    expect(wrapper.find(".v-progress-circular").exists()).toBe(true);
   });
 
   it("error", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      error: true
+      error: true,
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Error: cannot load data");
@@ -72,15 +75,14 @@ describe("ProductDeleteForm.vue", () => {
   });
 
   it("delete", async () => {
-
     // to suppress the warning "[Vuetify] Unable to locate target [data-app]""
-    const app = document.createElement ("div");
-    app.setAttribute ("data-app", true);
-    document.body.append (app);
+    const app = document.createElement("div");
+    app.setAttribute("data-app", true);
+    document.body.append(app);
 
     const wrapper = createWrapper();
     wrapper.setData({
-      node: node
+      node: node,
     });
     await wrapper.vm.deleteProduct();
     expect(wrapper.vm.$apollo.mutate).toBeCalled();
