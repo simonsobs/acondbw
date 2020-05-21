@@ -84,11 +84,13 @@
                             </v-list-item-content>
                           </v-list-item>
                         </template>
-                        <MapDeleteForm
+                        <ProductDeleteForm
                           :productId="node.productId"
+                          :productTypeNameSingular="productTypeNameSingular"
+                          :productTypeNamePlural="productTypeNamePlural"
                           v-on:finished="deleteDialog = false; menu = false"
                           v-on:deleted="deleteDialog = false; menu = false; node = null"
-                        ></MapDeleteForm>
+                        ></ProductDeleteForm>
                       </v-dialog>
                     </v-list>
                   </v-menu>
@@ -170,7 +172,7 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 import PRODUCT from "@/graphql/Product.gql";
 
 import MapEditForm from "@/components/MapEditForm";
-import MapDeleteForm from "@/components/MapDeleteForm";
+import ProductDeleteForm from "@/components/ProductDeleteForm";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
@@ -179,7 +181,7 @@ export default {
   name: "ProductItemCard",
   components: {
     MapEditForm,
-    MapDeleteForm,
+    ProductDeleteForm,
     DevToolLoadingStateOverridingMenu
   },
   props: {
