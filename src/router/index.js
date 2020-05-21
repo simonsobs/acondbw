@@ -8,16 +8,8 @@ import ProductItem from "@/views/ProductItem.vue";
 import SimulationItemCard from "@/components/SimulationItemCard";
 import BeamItemCard from "@/components/BeamItemCard";
 
-import MapAddForm from "@/components/MapAddForm";
-import BeamAddForm from "@/components/BeamAddForm";
-import SimulationAddForm from "@/components/SimulationAddForm";
-
 Vue.component("SimulationItemCard", SimulationItemCard);
 Vue.component("BeamItemCard", BeamItemCard);
-
-Vue.component("MapAddForm", MapAddForm);
-Vue.component("BeamAddForm", BeamAddForm);
-Vue.component("SimulationAddForm", SimulationAddForm);
 
 Vue.use(VueRouter);
 
@@ -52,7 +44,6 @@ const routes = [
           productTypeNamePlural: "simulations",
           productTypeId: 3,
           nameOfRouteToProductItem: "SimulationItem",
-          productAddForm: "SimulationAddForm",
           disableAdd:
             process.env.VUE_APP_ACONDBW_SIMULATION_CREATION_DIALOG != "true",
         },
@@ -88,7 +79,6 @@ const routes = [
           productTypeNamePlural: "maps",
           productTypeId: 1,
           nameOfRouteToProductItem: "MapItem",
-          productAddForm: "MapAddForm",
           disableAdd: process.env.VUE_APP_ACONDBW_MAP_CREATION_DIALOG != "true",
           disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
           disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
@@ -127,7 +117,6 @@ const routes = [
           productTypeNamePlural: "beams",
           productTypeId: 2,
           nameOfRouteToProductItem: "BeamItem",
-          productAddForm: "BeamAddForm",
           disableAdd:
             process.env.VUE_APP_ACONDBW_BEAM_CREATION_DIALOG != "true",
         },
