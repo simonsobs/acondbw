@@ -1,6 +1,6 @@
 #import "./ProductFragment.gql"
 
-query ProductByTypeIdAndName($typeId: Int, $name: String) {
+query ProductByTypeIdAndName($typeId: Int!, $name: String!) {
   product(typeId: $typeId, name: $name) {
     ...productFragment
   }
