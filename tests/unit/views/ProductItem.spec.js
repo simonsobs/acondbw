@@ -27,6 +27,7 @@ describe("ProductItem.vue", () => {
         },
       },
       propsData: {
+        productTypeId: 1,
         routeToProductList: { name: "MapList" },
         productItemCard: "ProductItemCard",
         nameOfRouteToProductItem: "MapItem",

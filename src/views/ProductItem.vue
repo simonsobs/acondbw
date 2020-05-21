@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import PRODUCT_BY_NAME from "@/graphql/ProductByName.gql";
+import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/ProductByTypeIdAndName.gql";
 
 import ProductItemCard from "@/components/ProductItemCard";
 
@@ -64,6 +64,7 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
+    productTypeId: { required: true },
     routeToProductList: { required: true },
     productItemCard: { default: "ProductItemCard" },
     nameOfRouteToProductItem: { default: "MapItem" },
@@ -111,9 +112,10 @@ export default {
   },
   apollo: {
     node: {
-      query: PRODUCT_BY_NAME,
+      query: PRODUCT_BY_TYPE_ID_AND_NAME,
       variables() {
         return {
+          typeId: this.productTypeId,
           name: this.name
         };
       },

@@ -62,6 +62,7 @@ const routes = [
         name: "SimulationItem",
         component: ProductItem,
         props: {
+          productTypeId: 3,
           routeToProductList: { name: "SimulationList" },
           nameOfRouteToProductItem: "SimulationItem",
         },
@@ -98,6 +99,7 @@ const routes = [
         name: "MapItem",
         component: ProductItem,
         props: {
+          productTypeId: 1,
           routeToProductList: { name: "MapList" },
           nameOfRouteToProductItem: "MapItem",
           disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
@@ -135,6 +137,7 @@ const routes = [
         name: "BeamItem",
         component: ProductItem,
         props: {
+          productTypeId: 2,
           routeToProductList: { name: "BeamList" },
           nameOfRouteToProductItem: "BeamItem",
         },

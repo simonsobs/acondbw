@@ -30,6 +30,7 @@ describe("ProductList.vue", () => {
       propsData: {
         productTypeNameSingular: "map",
         productTypeNamePlural: "maps",
+        productTypeId: 1,
         query: ALL_MAPS,
         queryName: "allMaps",
         productItemCard: "ProductItemCard",
