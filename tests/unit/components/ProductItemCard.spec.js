@@ -42,36 +42,74 @@ describe("ProductItemCard.vue", () => {
   }
 
   const node = {
-    id: "TWFwOjEwMTM=",
-    productId: 1013,
+    id: "UHJvZHVjdDoxMDEz",
+    productId: "1013",
     typeId: 1,
+    type_: {
+      id: "UHJvZHVjdFR5cGU6MQ==",
+      typeId: "1",
+      name: "map",
+    },
     name: "lat20200201",
+    contact: "pwg-pmn",
+    dateProduced: "2020-02-01",
+    producedBy: "pwg-pmn",
     datePosted: "2020-02-01",
-    productper: "pwg-pmn",
+    postedBy: "pwg-pmn",
+    dateUpdated: "2020-02-01",
+    updatedBy: "pwg-pmn",
     paths: {
       edges: [
         {
           node: {
-            id: "TWFwRmlsZVBhdGg6NA==",
+            id: "UHJvZHVjdEZpbGVQYXRoOjQ=",
+            pathId: "4",
             path: "nersc:/go/to/my/maps_v3",
             note: "lat only",
           },
         },
       ],
     },
-    note:
-      "- This is a dummy test with a lat map\n- A beam depends on this map\n- **marked**",
-    beams: {
+    relations: {
       edges: [
         {
           node: {
-            id: "QmVhbToxMTUw",
-            productId: "1150",
-            name: "20200207",
+            id: "UHJvZHVjdFJlbGF0aW9uOjQ=",
+            relationId: "4",
+            typeId: 2,
+            type_: {
+              id: "UHJvZHVjdFJlbGF0aW9uVHlwZToy",
+              typeId: "2",
+              name: "child",
+            },
+            otherProductId: 1150,
+            other: {
+              id: "UHJvZHVjdDoxMTUw",
+              productId: "1150",
+              typeId: 2,
+              type_: {
+                id: "UHJvZHVjdFR5cGU6Mg==",
+                typeId: "2",
+                name: "beam",
+              },
+              name: "20200207",
+            },
+            reverseRelationId: 3,
+            reverse: {
+              id: "UHJvZHVjdFJlbGF0aW9uOjM=",
+              relationId: "3",
+              typeId: 1,
+              type_: {
+                id: "UHJvZHVjdFJlbGF0aW9uVHlwZTox",
+                typeId: "1",
+                name: "parent",
+              },
+            },
           },
         },
       ],
     },
+    note: "- This is a dummy test with a lat map\n- A beam depends on this map",
   };
 
   beforeEach(function() {

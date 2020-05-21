@@ -134,12 +134,19 @@
                 <div v-else class="body-2 grey--text">None</div>
               </v-col>
               <v-col cols="12" md="8" offset-md="4" class="py-2">
-                <div class="caption grey--text">Beams</div>
-                <ul v-if="node.beams && node.beams.edges.length > 0">
-                  <li v-for="(edgep, index) in node.beams.edges" :key="index">
-                    <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
-                  </li>
-                </ul>
+                <div class="caption grey--text">Relations</div>
+                <div v-if="node.relations && node.relations.edges.length > 0">
+                  <div v-for="(edgep, index) in node.relations.edges" :key="index">
+                    <span class="subtitle-2 grey--text">{{ edgep.node.type_.name }}: </span>
+                    <span class="font-weight-bold primary--text">
+                      <router-link
+                        :to="'/' + edgep.node.other.type_.name + 's/item/' + edgep.node.other.name"
+                        v-text="edgep.node.other.name"
+                      ></router-link>
+                    </span>
+                    ({{ edgep.node.other.type_.name }})
+                  </div>
+                </div>
                 <div v-else class="body-2 grey--text">None</div>
               </v-col>
               <v-col cols="12" class="py-2">
