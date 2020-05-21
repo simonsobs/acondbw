@@ -52,7 +52,13 @@
                 <span>Add a new {{ productTypeNameSingular }}</span>
               </v-tooltip>
             </template>
-            <component :is="productAddForm" v-on:finished="dialog = false"></component>
+            <component
+              :is="productAddForm"
+              :productTypeNameSingular="productTypeNameSingular"
+              :productTypeNamePlural="productTypeNamePlural"
+              :productTypeId="productTypeId"
+              v-on:finished="dialog = false"
+            ></component>
           </v-dialog>
         </v-row>
       </v-container>
