@@ -183,6 +183,8 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
+    productTypeNameSingular: { default: "product" },
+    productTypeNamePlural: { default: "products" },
     nameOfRouteToProductItem: { required: true },
     productId: { default: null }, // node.productId not node.id
     collapsed: { default: false },
