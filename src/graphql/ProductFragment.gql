@@ -1,0 +1,66 @@
+fragment productFragment on Product {
+  id
+  productId
+  typeId
+  type_ {
+    id
+    typeId
+    name
+  }
+  name
+  contact
+  dateProduced
+  producedBy
+  datePosted
+  postedBy
+  dateUpdated
+  updatedBy
+  paths {
+    edges {
+      node {
+        id
+        pathId
+        path
+        note
+      }
+    }
+  }
+  relations {
+    edges {
+      node {
+        id
+        relationId
+        typeId
+        type_ {
+          id
+          typeId
+          name
+        }
+        otherProductId
+        other {
+          id
+          productId
+          typeId
+          type_ {
+            id
+            typeId
+            name
+          }
+          name
+        }
+        reverseRelationId
+        reverse {
+          id
+          relationId
+          typeId
+          type_ {
+            id
+            typeId
+            name
+          }
+        }
+      }
+    }
+  }
+  note
+}

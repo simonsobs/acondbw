@@ -1,5 +1,5 @@
 <template>
-  <div class="map-item-card" style="position: relative;">
+  <div class="product-item-card" style="position: relative;">
     <v-card outlined hover style="max-width: 980px;">
       <div v-if="state == State.LOADING" class="mx-4 py-2">
         <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
@@ -12,7 +12,10 @@
               <div class="caption grey--text">Name</div>
               <div class="font-weight-bold primary--text">
                 <span @click.stop>
-                  <router-link :to="'/maps/item/' + node.name" v-text="node.name"></router-link>
+                  <router-link
+                    :to="{ name: nameOfRouteToProductItem, params: { name: node.name } }"
+                    v-text="node.name"
+                  ></router-link>
                 </span>
               </div>
             </v-col>
@@ -81,11 +84,13 @@
                             </v-list-item-content>
                           </v-list-item>
                         </template>
-                        <MapDeleteForm
+                        <ProductDeleteForm
                           :productId="node.productId"
+                          :productTypeNameSingular="productTypeNameSingular"
+                          :productTypeNamePlural="productTypeNamePlural"
                           v-on:finished="deleteDialog = false; menu = false"
                           v-on:deleted="deleteDialog = false; menu = false; node = null"
-                        ></MapDeleteForm>
+                        ></ProductDeleteForm>
                       </v-dialog>
                     </v-list>
                   </v-menu>
@@ -129,12 +134,19 @@
                 <div v-else class="body-2 grey--text">None</div>
               </v-col>
               <v-col cols="12" md="8" offset-md="4" class="py-2">
-                <div class="caption grey--text">Beams</div>
-                <ul v-if="node.beams && node.beams.edges.length > 0">
-                  <li v-for="(edgep, index) in node.beams.edges" :key="index">
-                    <router-link :to="'/beams/item/' + edgep.node.name" v-text="edgep.node.name"></router-link>
-                  </li>
-                </ul>
+                <div class="caption grey--text">Relations</div>
+                <div v-if="node.relations && node.relations.edges.length > 0">
+                  <div v-for="(edgep, index) in node.relations.edges" :key="index">
+                    <span class="subtitle-2 grey--text">{{ edgep.node.type_.name }}: </span>
+                    <span class="font-weight-bold primary--text">
+                      <router-link
+                        :to="'/' + edgep.node.other.type_.name + 's/item/' + edgep.node.other.name"
+                        v-text="edgep.node.other.name"
+                      ></router-link>
+                    </span>
+                    ({{ edgep.node.other.type_.name }})
+                  </div>
+                </div>
                 <div v-else class="body-2 grey--text">None</div>
               </v-col>
               <v-col cols="12" class="py-2">
@@ -164,30 +176,33 @@ import marked from "marked";
 
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
-import MAP from "@/graphql/Map.gql";
+import PRODUCT from "@/graphql/Product.gql";
 
 import MapEditForm from "@/components/MapEditForm";
-import MapDeleteForm from "@/components/MapDeleteForm";
+import ProductDeleteForm from "@/components/ProductDeleteForm";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
-  name: "MapItemCard",
+  name: "ProductItemCard",
   components: {
     MapEditForm,
-    MapDeleteForm,
+    ProductDeleteForm,
     DevToolLoadingStateOverridingMenu
   },
   props: {
+    productTypeNameSingular: { default: "product" },
+    productTypeNamePlural: { default: "products" },
+    nameOfRouteToProductItem: { required: true },
     productId: { default: null }, // node.productId not node.id
     collapsed: { default: false },
-    collapsible: { default: false }
+    collapsible: { default: false },
+    disableEdit: { default: false },
+    disableDelete: { default: false }
   },
   data() {
     return {
-      disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
-      disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
       menu: false,
       editDialog: false,
       deleteDialog: false,
@@ -202,7 +217,7 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-      
+
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
@@ -225,13 +240,13 @@ export default {
   },
   apollo: {
     node: {
-      query: MAP,
+      query: PRODUCT,
       variables() {
         return {
           productId: this.productId
         };
       },
-      update: data => data.map,
+      update: data => data.product,
       result(result) {
         this.error = result.error ? result.error : null;
       }

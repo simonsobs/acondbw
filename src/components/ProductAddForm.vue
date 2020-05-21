@@ -1,6 +1,6 @@
 <template>
   <v-card class="pa-5">
-    <v-card-title class="headline primary--text">Add a simulation</v-card-title>
+    <v-card-title class="headline primary--text">Add a {{ productTypeNameSingular }}</v-card-title>
     <v-alert v-if="error" type="error">{{ error }}</v-alert>
     <v-form ref="form" v-model="valid">
       <v-card outlined>
@@ -10,7 +10,7 @@
               <v-text-field
                 label="Name*"
                 required
-                hint="Name of the simulation. This field cannot be changed later."
+                :hint="'Name of the ' + productTypeNameSingular + '. This field cannot be changed later.'"
                 persistent-hint
                 v-model="form.name"
                 :rules="nameRules"
@@ -29,7 +29,7 @@
                   <v-text-field
                     label="Date produced (YYYY-MM-DD)*"
                     required
-                    hint="The date on which the simulation was produced, e.g., 2020-05-06. This field cannot be changed later."
+                    :hint="'The date on which the ' + productTypeNameSingular + ' was produced, e.g., 2020-05-06. This field cannot be changed later.'"
                     persistent-hint
                     v-model="form.dateProduced"
                     :rules="requiredRules"
@@ -48,7 +48,7 @@
               <v-text-field
                 label="Produced by*"
                 required
-                hint="The person or group that produced the simulation, e.g. pwg-xxx. This field cannot be changed later."
+                :hint="'The person or group that produced the ' + productTypeNameSingular + ', e.g. pwg-xxx. This field cannot be changed later.'"
                 persistent-hint
                 v-model="form.producedBy"
                 :rules="requiredRules"
@@ -58,7 +58,7 @@
               <v-text-field
                 label="Contact*"
                 required
-                hint="A person or group that can be contacted for questions or issues about the simulation."
+                :hint="'A person or group that can be contacted for questions or issues about the ' + productTypeNameSingular + '.'"
                 persistent-hint
                 v-model="form.contact"
                 :rules="requiredRules"
@@ -79,7 +79,7 @@
             <v-col cols="12" md="8" offset-md="4">
               <v-textarea
                 label="Paths"
-                hint="A path per line. e.g., nersc:/go/to/my/simulations_v3"
+                hint="A path per line. e.g., nersc:/go/to/my/product_v3"
                 rows="2"
                 persistent-hint
                 v-model="form.paths"
@@ -120,8 +120,8 @@
 <script>
 import _ from "lodash";
 
-import CREATE_SIMULATION from "@/graphql/CreateSimulation.gql";
-import ALL_SIMULATIONS from "@/graphql/AllSimulations.gql";
+import CREATE_PRODUCT from "@/graphql/CreateProduct.gql";
+import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 const formDefault = {
   name: "",
@@ -134,7 +134,12 @@ const formDefault = {
 };
 
 export default {
-  name: "SimulationAddForm",
+  name: "ProductAddForm",
+  props: {
+    productTypeNameSingular: { default: "product" },
+    productTypeNamePlural: { default: "products" },
+    productTypeId: { required: true }
+  },
   data() {
     return {
       form: { ...formDefault },
@@ -170,6 +175,8 @@ export default {
           "note"
         ]);
 
+        createProductInput.typeId = this.productTypeId;
+
         const paths = this.form.paths
           .split("\n")
           .map(x => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
@@ -179,18 +186,20 @@ export default {
         createProductInput.paths = paths;
 
         const data = await this.$apollo.mutate({
-          mutation: CREATE_SIMULATION,
+          mutation: CREATE_PRODUCT,
           variables: { input: createProductInput },
-          update: (cache, { data: { createSimulation } }) => {
+          update: (cache, { data: { createProduct } }) => {
             const data = cache.readQuery({
-              query: ALL_SIMULATIONS
+              query: ALL_PRODUCTS_BY_TYPE_ID,
+              variables: { typeId: this.productTypeId }
             });
-            data.allSimulations.edges.splice(0, 0, {
-              node: createSimulation.simulation,
-              __typename: "SimulationEdge"
+            data.allProducts.edges.splice(0, 0, {
+              node: createProduct.product,
+              __typename: "ProductEdge"
             });
             cache.writeQuery({
-              query: ALL_SIMULATIONS,
+              query: ALL_PRODUCTS_BY_TYPE_ID,
+              variables: { typeId: this.productTypeId },
               data
             });
           }

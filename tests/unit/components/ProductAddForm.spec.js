@@ -3,20 +3,25 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import MapAddForm from "@/components/MapAddForm.vue";
+import ProductAddForm from "@/components/ProductAddForm.vue";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
-describe("MapAddForm.vue", () => {
+describe("ProductAddForm.vue", () => {
   let localVue;
   let vuetify;
 
   function createWrapper() {
     const mutate = jest.fn();
-    let wrapper = mount(MapAddForm, {
+    let wrapper = mount(ProductAddForm, {
       localVue,
       vuetify,
+      propsData: {
+        productTypeNameSingular: "maps",
+        productTypeNamePlural: "map",
+        productTypeId: 1,
+      },
       mocks: {
         $apollo: {
           mutate,
@@ -65,8 +70,9 @@ describe("MapAddForm.vue", () => {
     expect(calls.length).toBe(1);
     expect(calls[0][0].mutation).toBeDefined();
 
-    const expectedCreateMapInput = {
+    const expectedCreateProductInput = {
       name: "new-map-name",
+      typeId: 1,
       contact: "contact-contact",
       dateProduced: "2020-01-11",
       producedBy: "map-map",
@@ -75,7 +81,9 @@ describe("MapAddForm.vue", () => {
       paths: ["/a/b/c", "/x/y/z"],
     };
 
-    expect(calls[0][0].variables).toEqual({ input: expectedCreateMapInput });
+    expect(calls[0][0].variables).toEqual({
+      input: expectedCreateProductInput,
+    });
 
     expect(wrapper.vm.dialogSuccess).toBe(true);
 

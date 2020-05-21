@@ -32,9 +32,14 @@
       <div v-if="state == State.LOADED">
         <component
           :is="productItemCard"
+          :productTypeNameSingular="productTypeNameSingular"
+          :productTypeNamePlural="productTypeNamePlural"
+          :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="node.productId"
           :collapsible="false"
           v-on:deleted="$router.push(routeToProductList)"
+          :disableEdit="disableEdit"
+          :disableDelete="disableDelete"
         ></component>
       </div>
     </div>
@@ -47,19 +52,28 @@
 </template>
 
 <script>
+import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/ProductByTypeIdAndName.gql";
+
+import ProductItemCard from "@/components/ProductItemCard";
+
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "ProductItem",
   components: {
+    ProductItemCard,
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    query: { required: true },
-    queryName: { required: true },
+    productTypeId: { required: true },
+    productTypeNameSingular: { default: "product" },
+    productTypeNamePlural: { default: "products" },
     routeToProductList: { required: true },
-    productItemCard: { required: true }
+    productItemCard: { default: "ProductItemCard" },
+    nameOfRouteToProductItem: { default: "MapItem" },
+    disableEdit: { default: false },
+    disableDelete: { default: false }
   },
   data() {
     return {
@@ -102,16 +116,22 @@ export default {
   },
   apollo: {
     node: {
-      query: function() {
-        return this.query;
-      },
+      query: PRODUCT_BY_TYPE_ID_AND_NAME,
       variables() {
         return {
+          typeId: this.productTypeId,
           name: this.name
         };
       },
+      skip: function() {
+        // This function prevents the query from being executed when
+        // this.name is undefined. This happens momentarily, when, for
+        // example, the path changes from
+        // "/products/item/product-name/" to "/products/".
+        return ! this.name;
+      },
       update: function(data) {
-        return data[this.queryName];
+        return data.product;
       },
       result(result) {
         this.error = result.error ? result.error : null;

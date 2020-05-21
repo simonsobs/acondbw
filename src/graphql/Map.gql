@@ -1,7 +1,0 @@
-#import "./MapFragment.gql"
-
-query Map($productId: Int) {
-  map(productId: $productId) {
-    ...mapFragment
-  }
-}

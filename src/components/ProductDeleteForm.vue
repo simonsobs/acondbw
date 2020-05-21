@@ -1,16 +1,16 @@
 <template>
-  <div class="map-delete-form" style="position: relative;">
+  <div class="product-delete-form" style="position: relative;">
     <v-card class="pa-3">
-      <v-card-title class="headline">Delete the map</v-card-title>
+      <v-card-title class="headline">Delete the {{ productTypeNameSingular }}</v-card-title>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <div v-if="state == State.LOADED">
         <v-card-text
           class="body-1 font-weight-medium error--text"
-        >Really, delete the map "{{ node.name }}"?</v-card-text>
+        >Really, delete the {{ productTypeNameSingular}} "{{ node.name }}"?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-          <v-btn color="error" @click="deleteMap()">Delete</v-btn>
+          <v-btn color="error" @click="deleteProduct()">Delete</v-btn>
         </v-card-actions>
       </div>
       <div v-else>
@@ -40,29 +40,32 @@
 
 <script>
 import gql from "graphql-tag";
-import MAP from "@/graphql/Map.gql";
-import ALL_MAPS from "@/graphql/AllMaps.gql";
+import PRODUCT from "@/graphql/Product.gql";
+import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
-const MAP_FOR_DELETE = gql`
-  query MapForDelete($productId: Int!) {
-    map(productId: $productId) {
+const PRODUCT_FOR_DELETE = gql`
+  query ProductForDelete($productId: Int!) {
+    product(productId: $productId) {
       id
       productId
+      typeId
       name
     }
   }
 `;
 
 export default {
-  name: "MapDeleteForm",
+  name: "ProductDeleteForm",
   components: {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productId: { default: null } // map.productId not map.id
+    productTypeNameSingular: { default: "product" },
+    productTypeNamePlural: { default: "products" },
+    productId: { default: null } // product.productId not product.id
   },
   data() {
     return {
@@ -78,7 +81,7 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-
+      
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
@@ -95,13 +98,13 @@ export default {
   },
   apollo: {
     node: {
-      query: MAP_FOR_DELETE,
+      query: PRODUCT_FOR_DELETE,
       variables() {
         return {
           productId: this.productId
         };
       },
-      update: data => data.map,
+      update: data => data.product,
       result(result) {
         this.error = null;
         if (result.error) {
@@ -111,12 +114,12 @@ export default {
     }
   },
   methods: {
-    async deleteMap() {
+    async deleteProduct() {
       try {
         const data = await this.$apollo.mutate({
           mutation: gql`
             mutation($productId: Int!) {
-              deleteMap(productId: $productId) {
+              deleteProduct(productId: $productId) {
                 ok
               }
             }
@@ -124,16 +127,18 @@ export default {
           variables: {
             productId: this.node.productId
           },
-          update: (cache, { data: { deleteMap } }) => {
+          update: (cache, { data: { deleteProduct } }) => {
             const data = cache.readQuery({
-              query: ALL_MAPS
+              query: ALL_PRODUCTS_BY_TYPE_ID,
+              variables: { typeId: this.node.typeId }
             });
-            const index = data.allMaps.edges.findIndex(
+            const index = data.allProducts.edges.findIndex(
               e => e.node.productId == this.node.productId
             );
-            data.allMaps.edges.splice(index, 1);
+            data.allProducts.edges.splice(index, 1);
             cache.writeQuery({
-              query: ALL_MAPS,
+              query: ALL_PRODUCTS_BY_TYPE_ID,
+              variables: { typeId: this.node.typeId },
               data
             });
           }

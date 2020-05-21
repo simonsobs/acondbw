@@ -5,30 +5,6 @@ import ProductTop from "@/views/ProductTop.vue";
 import ProductList from "@/views/ProductList.vue";
 import ProductItem from "@/views/ProductItem.vue";
 
-import ALL_SIMULATIONS from "@/graphql/AllSimulations.gql";
-import ALL_MAPS from "@/graphql/AllMaps.gql";
-import ALL_BEAMS from "@/graphql/AllBeams.gql";
-
-import SIMULATION_BY_NAME from "@/graphql/SimulationByName.gql";
-import MAP_BY_NAME from "@/graphql/MapByName.gql";
-import BEAM_BY_NAME from "@/graphql/BeamByName.gql";
-
-import SimulationItemCard from "@/components/SimulationItemCard";
-import MapItemCard from "@/components/MapItemCard";
-import BeamItemCard from "@/components/BeamItemCard";
-
-import MapAddForm from "@/components/MapAddForm";
-import BeamAddForm from "@/components/BeamAddForm";
-import SimulationAddForm from "@/components/SimulationAddForm";
-
-Vue.component("SimulationItemCard", SimulationItemCard);
-Vue.component("MapItemCard", MapItemCard);
-Vue.component("BeamItemCard", BeamItemCard);
-
-Vue.component("MapAddForm", MapAddForm);
-Vue.component("BeamAddForm", BeamAddForm);
-Vue.component("SimulationAddForm", SimulationAddForm);
-
 Vue.use(VueRouter);
 
 const routes = [
@@ -58,13 +34,12 @@ const routes = [
         name: "SimulationList",
         component: ProductList,
         props: {
+          productTypeId: 3,
           productTypeNameSingular: "simulation",
           productTypeNamePlural: "simulations",
-          query: ALL_SIMULATIONS,
-          queryName: "allSimulations",
-          productItemCard: "SimulationItemCard",
-          productAddForm: "SimulationAddForm",
-          disableAdd: process.env.VUE_APP_ACONDBW_SIMULATION_CREATION_DIALOG != "true",
+          nameOfRouteToProductItem: "SimulationItem",
+          disableAdd:
+            process.env.VUE_APP_ACONDBW_SIMULATION_CREATION_DIALOG != "true",
         },
       },
       {
@@ -72,10 +47,11 @@ const routes = [
         name: "SimulationItem",
         component: ProductItem,
         props: {
-          query: SIMULATION_BY_NAME,
-          queryName: "simulation",
+          productTypeId: 3,
+          productTypeNameSingular: "simulation",
+          productTypeNamePlural: "simulations",
           routeToProductList: { name: "SimulationList" },
-          productItemCard: "SimulationItemCard",
+          nameOfRouteToProductItem: "SimulationItem",
         },
       },
     ],
@@ -95,13 +71,13 @@ const routes = [
         name: "MapList",
         component: ProductList,
         props: {
+          productTypeId: 1,
           productTypeNameSingular: "map",
           productTypeNamePlural: "maps",
-          query: ALL_MAPS,
-          queryName: "allMaps",
-          productItemCard: "MapItemCard",
-          productAddForm: "MapAddForm",
+          nameOfRouteToProductItem: "MapItem",
           disableAdd: process.env.VUE_APP_ACONDBW_MAP_CREATION_DIALOG != "true",
+          disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
+          disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
         },
       },
       {
@@ -109,10 +85,13 @@ const routes = [
         name: "MapItem",
         component: ProductItem,
         props: {
-          query: MAP_BY_NAME,
-          queryName: "map",
+          productTypeId: 1,
+          productTypeNameSingular: "map",
+          productTypeNamePlural: "maps",
           routeToProductList: { name: "MapList" },
-          productItemCard: "MapItemCard",
+          nameOfRouteToProductItem: "MapItem",
+          disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
+          disableDelete: process.env.VUE_APP_ACONDBW_MAP_DELETION_DIALOG != "true",
         },
       },
     ],
@@ -132,13 +111,12 @@ const routes = [
         name: "BeamList",
         component: ProductList,
         props: {
+          productTypeId: 2,
           productTypeNameSingular: "beam",
           productTypeNamePlural: "beams",
-          query: ALL_BEAMS,
-          queryName: "allBeams",
-          productItemCard: "BeamItemCard",
-          productAddForm: "BeamAddForm",
-          disableAdd: process.env.VUE_APP_ACONDBW_BEAM_CREATION_DIALOG != "true",
+          nameOfRouteToProductItem: "BeamItem",
+          disableAdd:
+            process.env.VUE_APP_ACONDBW_BEAM_CREATION_DIALOG != "true",
         },
       },
       {
@@ -146,10 +124,11 @@ const routes = [
         name: "BeamItem",
         component: ProductItem,
         props: {
-          query: BEAM_BY_NAME,
-          queryName: "beam",
+          productTypeId: 2,
+          productTypeNameSingular: "beam",
+          productTypeNamePlural: "beams",
           routeToProductList: { name: "BeamList" },
-          productItemCard: "BeamItemCard",
+          nameOfRouteToProductItem: "BeamItem",
         },
       },
     ],

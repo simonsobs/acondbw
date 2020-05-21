@@ -52,7 +52,13 @@
                 <span>Add a new {{ productTypeNameSingular }}</span>
               </v-tooltip>
             </template>
-            <component :is="productAddForm" v-on:finished="dialog = false"></component>
+            <component
+              :is="productAddForm"
+              :productTypeNameSingular="productTypeNameSingular"
+              :productTypeNamePlural="productTypeNamePlural"
+              :productTypeId="productTypeId"
+              v-on:finished="dialog = false"
+            ></component>
           </v-dialog>
         </v-row>
       </v-container>
@@ -61,11 +67,16 @@
           :is="productItemCard"
           v-for="edge in edges"
           :key="edge.node.id"
+          :productTypeNameSingular="productTypeNameSingular"
+          :productTypeNamePlural="productTypeNamePlural"
+          :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="edge.node.productId"
           collapsible="true"
           :collapsed="isCardCollapsed[edge.node.id]"
           v-on:expand="isCardCollapsed[edge.node.id] = false"
           v-on:collapse="isCardCollapsed[edge.node.id] = true"
+          :disableEdit="disableEdit"
+          :disableDelete="disableDelete"
           class="my-1"
         ></component>
       </div>
@@ -84,22 +95,31 @@
 </template>
 
 <script>
+import ProductItemCard from "@/components/ProductItemCard";
+import ProductAddForm from "@/components/ProductAddForm";
+
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+
+import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 export default {
   name: "ProductList",
   components: {
+    ProductItemCard,
+    ProductAddForm,
     DevToolLoadingStateOverridingMenu
   },
   props: {
     productTypeNameSingular: { default: "product" },
     productTypeNamePlural: { default: "products" },
-    query: { required: true },
-    queryName: { required: true },
-    productItemCard: { required: true },
-    productAddForm: { required: true },
-    disableAdd: { default: false }
+    productTypeId: { required: true },
+    productItemCard: { default: "ProductItemCard" },
+    nameOfRouteToProductItem: { required: true },
+    productAddForm: { default: "ProductAddForm" },
+    disableAdd: { default: false },
+    disableEdit: { default: false },
+    disableDelete: { default: false }
   },
   data() {
     return {
@@ -113,12 +133,13 @@ export default {
   },
   apollo: {
     edges: {
-      query: function() {
-        return this.query;
+      query: ALL_PRODUCTS_BY_TYPE_ID,
+      variables() {
+        return {
+          typeId: this.productTypeId
+        };
       },
-      update: function(data) {
-        return data[this.queryName] ? data[this.queryName].edges : null;
-      },
+      update: data => (data.allProducts ? data.allProducts.edges : null),
       result(result) {
         this.error = result.error ? result.error : null;
       }
