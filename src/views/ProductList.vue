@@ -88,6 +88,8 @@
 
 <script>
 import ProductItemCard from "@/components/ProductItemCard";
+import ProductAddForm from "@/components/ProductAddForm";
+
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
@@ -97,6 +99,7 @@ export default {
   name: "ProductList",
   components: {
     ProductItemCard,
+    ProductAddForm,
     DevToolLoadingStateOverridingMenu
   },
   props: {
@@ -105,7 +108,7 @@ export default {
     productTypeId: { required: true },
     productItemCard: { default: "ProductItemCard" },
     nameOfRouteToProductItem: { required: true },
-    productAddForm: { required: true },
+    productAddForm: { default: "ProductAddForm" },
     disableAdd: { default: false },
     disableEdit: { default: false },
     disableDelete: { default: false }
