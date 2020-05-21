@@ -119,6 +119,13 @@ export default {
           name: this.name
         };
       },
+      skip: function() {
+        // This function prevents the query from being executed when
+        // this.name is undefined. This happens momentarily, when, for
+        // example, the path changes from
+        // "/products/item/product-name/" to "/products/".
+        return ! this.name;
+      },
       update: function(data) {
         return data.product;
       },
