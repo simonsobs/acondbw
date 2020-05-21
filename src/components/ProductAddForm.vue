@@ -120,8 +120,8 @@
 <script>
 import _ from "lodash";
 
-import CREATE_MAP from "@/graphql/CreateMap.gql";
-import ALL_MAPS from "@/graphql/AllMaps.gql";
+import CREATE_PRODUCT from "@/graphql/CreateProduct.gql";
+import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 const formDefault = {
   name: "",
@@ -175,6 +175,8 @@ export default {
           "note"
         ]);
 
+        createProductInput.typeId = this.productTypeId;
+
         const paths = this.form.paths
           .split("\n")
           .map(x => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
@@ -184,18 +186,20 @@ export default {
         createProductInput.paths = paths;
 
         const data = await this.$apollo.mutate({
-          mutation: CREATE_MAP,
+          mutation: CREATE_PRODUCT,
           variables: { input: createProductInput },
-          update: (cache, { data: { createMap } }) => {
+          update: (cache, { data: { createProduct } }) => {
             const data = cache.readQuery({
-              query: ALL_MAPS
+              query: ALL_PRODUCTS_BY_TYPE_ID,
+              variables: { typeId: this.productTypeId }
             });
-            data.allMaps.edges.splice(0, 0, {
-              node: createMap.map,
-              __typename: "MapEdge"
+            data.allProducts.edges.splice(0, 0, {
+              node: createProduct.product,
+              __typename: "ProductEdge"
             });
             cache.writeQuery({
-              query: ALL_MAPS,
+              query: ALL_PRODUCTS_BY_TYPE_ID,
+              variables: { typeId: this.productTypeId },
               data
             });
           }
