@@ -14,7 +14,7 @@ exports[`ProductItem.vue match snapshot 1`] = `
       </div>
     </div>
     <div>
-      <productitemcard-stub nameofroutetoproductitem="MapItem" productid="1013"></productitemcard-stub>
+      <productitemcard-stub producttypenamesingular="map" producttypenameplural="maps" nameofroutetoproductitem="MapItem" productid="1013"></productitemcard-stub>
     </div>
   </div>
 </div>

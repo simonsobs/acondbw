@@ -32,6 +32,8 @@
       <div v-if="state == State.LOADED">
         <component
           :is="productItemCard"
+          :productTypeNameSingular="productTypeNameSingular"
+          :productTypeNamePlural="productTypeNamePlural"
           :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="node.productId"
           :collapsible="false"
@@ -65,6 +67,8 @@ export default {
   },
   props: {
     productTypeId: { required: true },
+    productTypeNameSingular: { default: "product" },
+    productTypeNamePlural: { default: "products" },
     routeToProductList: { required: true },
     productItemCard: { default: "ProductItemCard" },
     nameOfRouteToProductItem: { default: "MapItem" },
