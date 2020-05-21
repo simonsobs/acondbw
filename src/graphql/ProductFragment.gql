@@ -2,6 +2,11 @@ fragment productFragment on Product {
   id
   productId
   typeId
+  type_ {
+    id
+    typeId
+    name
+  }
   name
   contact
   dateProduced
@@ -17,6 +22,43 @@ fragment productFragment on Product {
         pathId
         path
         note
+      }
+    }
+  }
+  relations {
+    edges {
+      node {
+        id
+        relationId
+        typeId
+        type_ {
+          id
+          typeId
+          name
+        }
+        otherProductId
+        other {
+          id
+          productId
+          typeId
+          type_ {
+            id
+            typeId
+            name
+          }
+          name
+        }
+        reverseRelationId
+        reverse {
+          id
+          relationId
+          typeId
+          type_ {
+            id
+            typeId
+            name
+          }
+        }
       }
     }
   }
