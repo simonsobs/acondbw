@@ -1,6 +1,7 @@
 fragment productFragment on Product {
   id
   productId
+  typeId
   name
   contact
   dateProduced
