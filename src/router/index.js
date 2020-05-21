@@ -5,12 +5,6 @@ import ProductTop from "@/views/ProductTop.vue";
 import ProductList from "@/views/ProductList.vue";
 import ProductItem from "@/views/ProductItem.vue";
 
-import SimulationItemCard from "@/components/SimulationItemCard";
-import BeamItemCard from "@/components/BeamItemCard";
-
-Vue.component("SimulationItemCard", SimulationItemCard);
-Vue.component("BeamItemCard", BeamItemCard);
-
 Vue.use(VueRouter);
 
 const routes = [
