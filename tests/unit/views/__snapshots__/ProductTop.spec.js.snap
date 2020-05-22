@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProductTop.vue match snapshot item 1`] = `
-<div class="product-top">
+<div class="product-top" style="position: relative;">
   <v-container-stub tag="div" fluid="true">
-    <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
-      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>
-        <router-link-stub to="[object Object]" style="text-decoration: none;">Maps</router-link-stub> <span><v-icon-stub large="" color="primary">mdi-chevron-right</v-icon-stub>
+    <!---->
+    <v-row-stub tag="div" class="mx-1 mt-3">
+      <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
+        <router-link-stub to="/map" class="capitalize" style="text-decoration: none;">maps</router-link-stub> <span><v-icon-stub large="" color="primary">mdi-chevron-right</v-icon-stub>
           map001
         </span>
       </v-col-stub>
@@ -16,15 +17,17 @@ exports[`ProductTop.vue match snapshot item 1`] = `
       </keep-alive-stub>
     </transition-stub>
   </v-container-stub>
+  <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
 </div>
 `;
 
 exports[`ProductTop.vue match snapshot list 1`] = `
-<div class="product-top">
+<div class="product-top" style="position: relative;">
   <v-container-stub tag="div" fluid="true">
-    <v-row-stub tag="div" class="display-1 mx-1 mt-3 primary--text">
-      <v-col-stub tag="div" col="8" class="pa-0 ma-0"><span class="me-2"><v-icon-stub>map</v-icon-stub></span>
-        <router-link-stub to="[object Object]" style="text-decoration: none;">Maps</router-link-stub>
+    <!---->
+    <v-row-stub tag="div" class="mx-1 mt-3">
+      <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
+        <router-link-stub to="/map" class="capitalize" style="text-decoration: none;">maps</router-link-stub>
         <!---->
       </v-col-stub>
     </v-row-stub>
@@ -34,5 +37,6 @@ exports[`ProductTop.vue match snapshot list 1`] = `
       </keep-alive-stub>
     </transition-stub>
   </v-container-stub>
+  <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
 </div>
 `;

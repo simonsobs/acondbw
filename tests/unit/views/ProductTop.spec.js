@@ -19,6 +19,15 @@ describe("ProductTop.vue", () => {
       localVue,
       vuetify,
       router,
+      mocks: {
+        $apollo: {
+          queries: {
+            node: {
+              loading: loading,
+            },
+          },
+        },
+      },
       propsData: {
         productTypeName: "map",
         title: "Maps",
@@ -39,12 +48,39 @@ describe("ProductTop.vue", () => {
     const wrapper = createWrapper();
     await router.push({ name: "MapList" });
     await Vue.nextTick();
+    wrapper.setData({
+      node: {
+        id: "UHJvZHVjdFR5cGU6MQ==",
+        typeId: "1",
+        name: "map",
+        order: 2,
+        indefArticle: "a",
+        singular: "map",
+        plural: "maps",
+        icon: "mdi-map",
+      },
+    });
+    await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("match snapshot item", async () => {
     const wrapper = createWrapper();
     await router.push({ name: "MapItem", params: { name: "map001" } });
+    await Vue.nextTick();
+    await Vue.nextTick();
+    wrapper.setData({
+      node: {
+        id: "UHJvZHVjdFR5cGU6MQ==",
+        typeId: "1",
+        name: "map",
+        order: 2,
+        indefArticle: "a",
+        singular: "map",
+        plural: "maps",
+        icon: "mdi-map",
+      },
+    });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });

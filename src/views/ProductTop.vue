@@ -1,20 +1,29 @@
 <template>
-  <div class="product-top">
+  <div class="product-top" style="position: relative;">
     <v-container fluid>
-      <v-row class="display-1 mx-1 mt-3 primary--text" style="max-width: 980px;">
-        <v-col col="8" class="pa-0 ma-0">
+      <v-alert v-if="error" type="error">{{ error }}</v-alert>
+      <v-row class="mx-1 mt-3" style="max-width: 980px;">
+        <v-col v-if="state == State.LOADED" col="8" class="display-1 primary--text pa-0 ma-0">
           <span class="me-2">
-            <v-icon>{{ icon }}</v-icon>
+            <v-icon>{{ node.icon }}</v-icon>
           </span>
           <router-link
-            :to="routeToProductList"
-            v-text="title"
+            :to="'/' + node.name"
+            v-text="node.plural"
+            class="capitalize"
             style="text-decoration: none; color: inherit;"
           ></router-link>
           <span v-if="itemPage">
             <v-icon large color="primary">mdi-chevron-right</v-icon>
             {{ itemName }}
           </span>
+        </v-col>
+        <v-col v-else col="8" class="pa-0 ma-0">
+          <div v-if="state == State.LOADING" class="mx-4 py-2">
+            <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
+          </div>
+          <span v-else-if="state == State.ERROR">Error: cannot load data</span>
+          <span v-else></span>
         </v-col>
       </v-row>
       <transition :name="transitionName" :mode="transitionMode">
@@ -23,12 +32,21 @@
         </keep-alive>
       </transition>
     </v-container>
+    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
   </div>
 </template>
 
 <script>
+import PRODUCT_TYPE_BY_NAME from "@/graphql/ProductTypeByName.gql";
+
+import State from "@/utils/LoadingState.js";
+import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+
 export default {
   name: "ProductTop",
+  components: {
+    DevToolLoadingStateOverridingMenu
+  },
   props: {
     productTypeName: { required: true },
     title: { default: "Product Type Name" },
@@ -37,15 +55,51 @@ export default {
     itemPageName: { default: "ProductItemPageName" }
   },
   data: () => ({
+    node: null,
+    error: null,
+    devtoolState: null,
+    State: State,
     transitionName: "fade-product-top-leave",
     transitionMode: "out-in"
   }),
   computed: {
+    state() {
+      if (this.devtoolState) {
+        return this.devtoolState;
+      }
+
+      if (this.loading) {
+        return State.LOADING;
+      } else if (this.error) {
+        return State.ERROR;
+      } else if (this.node) {
+        return State.LOADED;
+      } else {
+        return State.NONE;
+      }
+    },
+    loading() {
+      return this.$apollo.queries.node.loading;
+    },
     itemPage() {
       return this.$route.name == this.itemPageName;
     },
     itemName() {
       return this.$route.params.name;
+    }
+  },
+  apollo: {
+    node: {
+      query: PRODUCT_TYPE_BY_NAME,
+      variables() {
+        return {
+          name: this.productTypeName
+        };
+      },
+      update: data => data.productType,
+      result(result) {
+        this.error = result.error ? result.error : null;
+      }
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -62,6 +116,10 @@ export default {
 </script>
 
 <style scoped>
+.capitalize {
+  text-transform: capitalize;
+}
+
 .fade-product-top-update-enter-active {
   transition: opacity 0.8s;
 }
