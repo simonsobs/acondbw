@@ -12,7 +12,7 @@ describe("ProductAddForm.vue", () => {
   let localVue;
   let vuetify;
 
-  function createWrapper() {
+  function createWrapper({ loading = false } = {}) {
     const mutate = jest.fn();
     let wrapper = mount(ProductAddForm, {
       localVue,
@@ -24,6 +24,11 @@ describe("ProductAddForm.vue", () => {
       },
       mocks: {
         $apollo: {
+          queries: {
+            productType: {
+              loading: loading,
+            },
+          },
           mutate,
         },
       },
@@ -50,6 +55,8 @@ describe("ProductAddForm.vue", () => {
     document.body.append(app);
 
     const wrapper = createWrapper();
+    wrapper.vm.$refs.form = {};
+    wrapper.vm.$refs.form.resetValidation = jest.fn();
 
     const form = {
       name: "new-map-name",
