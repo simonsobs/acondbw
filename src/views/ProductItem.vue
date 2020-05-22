@@ -65,8 +65,6 @@ export default {
   },
   props: {
     productTypeId: { required: true },
-    productTypeNameSingular: { default: "product" },
-    productTypeNamePlural: { default: "products" },
     routeToProductList: { required: true },
     productItemCard: { default: "ProductItemCard" },
     nameOfRouteToProductItem: { default: "MapItem" },
