@@ -5,7 +5,12 @@
       <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
     </div>
     <div v-else-if="state == State.ERROR" class="mx-2 pt-5">
-      <v-alert type="error" style="max-width: 980px;">{{ error }}</v-alert>
+      <v-alert
+        v-if="queryProductTypeError"
+        type="error"
+        style="max-width: 980px;"
+      >{{ queryProductTypeError }}</v-alert>
+      <v-alert v-if="error" type="error" style="max-width: 980px;">{{ error }}</v-alert>
     </div>
     <div v-else-if="state == State.LOADED || state == State.EMPTY">
       <v-container fluid class="pa-0">
@@ -49,7 +54,7 @@
                     <v-icon>mdi-plus-thick</v-icon>
                   </v-btn>
                 </template>
-                <span>Add a new {{ productTypeNameSingular }}</span>
+                <span>Add {{ productType.indefArticle }} {{ productType.singular }}</span>
               </v-tooltip>
             </template>
             <component
@@ -78,7 +83,7 @@
       </div>
       <div v-else>
         <v-card outlined style="max-width: 980px;">
-          <v-card-text>Empty. No {{ productTypeNamePlural }} are found.</v-card-text>
+          <v-card-text>Empty. No {{ productType.plural }} are found.</v-card-text>
         </v-card>
       </div>
     </div>
@@ -97,6 +102,7 @@ import ProductAddForm from "@/components/ProductAddForm";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
+import PRODUCT_TYPE from "@/graphql/ProductType.gql";
 import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 export default {
@@ -119,15 +125,28 @@ export default {
   },
   data() {
     return {
+      productType: null,
+      queryProductTypeError: null,
       dialog: false,
       edges: null,
-      isCardCollapsed: {},
       error: null,
+      isCardCollapsed: {},
       devtoolState: null,
       State: State
     };
   },
   apollo: {
+    productType: {
+      query: PRODUCT_TYPE,
+      variables() {
+        return {
+          typeId: this.productTypeId
+        };
+      },
+      result(result) {
+        this.queryProductTypeError = result.error ? result.error : null;
+      }
+    },
     edges: {
       query: ALL_PRODUCTS_BY_TYPE_ID,
       variables() {
@@ -149,7 +168,7 @@ export default {
 
       if (this.loading) {
         return State.LOADING;
-      } else if (this.error) {
+      } else if (this.error || this.queryProductTypeError) {
         return State.ERROR;
       } else if (this.edges) {
         if (this.edges.length) {
@@ -162,7 +181,10 @@ export default {
       }
     },
     loading() {
-      return this.$apollo.queries.edges.loading;
+      return (
+        this.$apollo.queries.edges.loading ||
+        this.$apollo.queries.productType.loading
+      );
     },
     areAllCardsCollapsed: {
       get: function() {
@@ -178,6 +200,10 @@ export default {
     }
   },
   watch: {
+    devtoolState: function() {
+      this.error =
+        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
     edges: function() {
       if (this.edges == undefined) {
         return;

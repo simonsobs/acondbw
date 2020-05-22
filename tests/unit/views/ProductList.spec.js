@@ -20,6 +20,9 @@ describe("ProductList.vue", () => {
       mocks: {
         $apollo: {
           queries: {
+            productType: {
+              loading: loading,
+            },
             edges: {
               loading: loading,
             },
@@ -40,6 +43,15 @@ describe("ProductList.vue", () => {
       },
     });
   }
+
+  const productType = {
+    id: "UHJvZHVjdFR5cGU6MQ==",
+    typeId: "1",
+    name: "map",
+    singular: "map",
+    plural: "maps",
+    indefArticle: "a",
+  };
 
   const edges = [
     {
@@ -72,6 +84,7 @@ describe("ProductList.vue", () => {
   it("match snapshot", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
+      productType: productType,
       edges: edges,
     });
     await Vue.nextTick();
@@ -97,6 +110,7 @@ describe("ProductList.vue", () => {
   it("none", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
+      productType: productType,
       edges: [],
     });
     await Vue.nextTick();
