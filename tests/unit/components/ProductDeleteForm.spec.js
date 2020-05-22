@@ -30,10 +30,7 @@ describe("ProductDeleteForm.vue", () => {
         },
       },
       propsData: {
-        productTypeNameSingular: "map",
-        productTypeNamePlural: "maps",
         productId: 1013,
-        productName: "lat20200201",
         ...propsData,
       },
     });
@@ -42,9 +39,13 @@ describe("ProductDeleteForm.vue", () => {
   }
 
   const node = {
-    id: "TWFwOjEwMTM=",
-    productId: 1013,
+    id: "UHJvZHVjdDoxMDEz",
+    productId: "1013",
     name: "lat20200201",
+    typeId: 1,
+    type_: {
+      singular: "map",
+    },
   };
 
   beforeEach(function() {

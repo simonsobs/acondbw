@@ -1,12 +1,15 @@
 <template>
   <div class="product-delete-form" style="position: relative;">
     <v-card class="pa-3">
-      <v-card-title class="headline">Delete the {{ productTypeNameSingular }}</v-card-title>
+      <v-card-title
+        v-if="state == State.LOADED"
+        class="headline"
+      >Delete the {{ node.type_.singular }}</v-card-title>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <div v-if="state == State.LOADED">
         <v-card-text
           class="body-1 font-weight-medium error--text"
-        >Really, delete the {{ productTypeNameSingular}} "{{ node.name }}"?</v-card-text>
+        >Really, delete the {{ node.type_.singular}} "{{ node.name }}"?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
@@ -46,25 +49,12 @@ import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
-const PRODUCT_FOR_DELETE = gql`
-  query ProductForDelete($productId: Int!) {
-    product(productId: $productId) {
-      id
-      productId
-      typeId
-      name
-    }
-  }
-`;
-
 export default {
   name: "ProductDeleteForm",
   components: {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productTypeNameSingular: { default: "product" },
-    productTypeNamePlural: { default: "products" },
     productId: { default: null } // product.productId not product.id
   },
   data() {
@@ -81,7 +71,7 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-      
+
       if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
@@ -98,7 +88,7 @@ export default {
   },
   apollo: {
     node: {
-      query: PRODUCT_FOR_DELETE,
+      query: PRODUCT,
       variables() {
         return {
           productId: this.productId
