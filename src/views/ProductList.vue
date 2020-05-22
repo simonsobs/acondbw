@@ -54,8 +54,6 @@
             </template>
             <component
               :is="productAddForm"
-              :productTypeNameSingular="productTypeNameSingular"
-              :productTypeNamePlural="productTypeNamePlural"
               :productTypeId="productTypeId"
               v-on:finished="dialog = false"
             ></component>
