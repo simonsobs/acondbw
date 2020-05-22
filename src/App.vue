@@ -60,29 +60,6 @@
 </template>
 
 <script>
-const ROUTE_KEY_MAP = {
-  // This map was originally introduced to generate the key for
-  // <router-view> (It is no longer used in this way.)
-
-  // This map is currently used for <transition>, enclosing
-  // <router-view>.
-
-  // In this app, nested routes are used
-  // (https://router.vuejs.org/guide/essentials/nested-routes.html).
-  // The nested <router-view> can be also enclosed by <transition>.
-
-  // This map relates $route.name of the nested paths of the same
-  // parent to the same value so that different transition effects can
-  // be applied for routing between the nested paths of the same
-  // parent.
-  SimulationList: "Simulations",
-  SimulationItem: "Simulations",
-  MapList: "Maps",
-  MapItem: "Maps",
-  BeamList: "Beams",
-  BeamItem: "Beams"
-};
-
 export default {
   name: "App",
   data: () => ({
@@ -105,28 +82,15 @@ export default {
       // update the transition effect dynamically
       // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
 
-      const toKey = this.createRouteKey(to.name);
-      const fromKey = this.createRouteKey(from.name);
-      if (toKey == fromKey) {
+      const toTopDir = to.path.split("/")[1]; // e.g., "/abc/def/ghi/" -> "abc"
+      const fromTopDir = from.path.split("/")[1];
+
+      if (toTopDir == fromTopDir) {
         this.transitionName = "fade-app-within";
         this.transitionMode = "out-in";
       } else {
         this.transitionName = "fade-app-across";
         this.transitionMode = "out-in";
-      }
-    }
-  },
-  computed: {
-    routeKey() {
-      return this.createRouteKey(this.$route.name);
-    }
-  },
-  methods: {
-    createRouteKey(name) {
-      if (name in ROUTE_KEY_MAP) {
-        return ROUTE_KEY_MAP[name];
-      } else {
-        return name;
       }
     }
   }
