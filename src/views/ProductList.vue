@@ -65,8 +65,6 @@
           :is="productItemCard"
           v-for="edge in edges"
           :key="edge.node.id"
-          :productTypeNameSingular="productTypeNameSingular"
-          :productTypeNamePlural="productTypeNamePlural"
           :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="edge.node.productId"
           collapsible="true"

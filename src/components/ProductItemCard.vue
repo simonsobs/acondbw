@@ -86,8 +86,6 @@
                         </template>
                         <ProductDeleteForm
                           :productId="node.productId"
-                          :productTypeNameSingular="productTypeNameSingular"
-                          :productTypeNamePlural="productTypeNamePlural"
                           v-on:finished="deleteDialog = false; menu = false"
                           v-on:deleted="deleteDialog = false; menu = false; node = null"
                         ></ProductDeleteForm>
@@ -192,8 +190,6 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productTypeNameSingular: { default: "product" },
-    productTypeNamePlural: { default: "products" },
     nameOfRouteToProductItem: { required: true },
     productId: { default: null }, // node.productId not node.id
     collapsed: { default: false },

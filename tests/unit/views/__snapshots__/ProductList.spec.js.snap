@@ -17,9 +17,9 @@ exports[`ProductList.vue match snapshot 1`] = `
       </div>
     </div>
     <div>
-      <productitemcard-stub producttypenamesingular="map" producttypenameplural="maps" nameofroutetoproductitem="MapItem" productid="1013" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
-      <productitemcard-stub producttypenamesingular="map" producttypenameplural="maps" nameofroutetoproductitem="MapItem" productid="1012" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
-      <productitemcard-stub producttypenamesingular="map" producttypenameplural="maps" nameofroutetoproductitem="MapItem" productid="1001" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
+      <productitemcard-stub nameofroutetoproductitem="MapItem" productid="1013" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
+      <productitemcard-stub nameofroutetoproductitem="MapItem" productid="1012" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
+      <productitemcard-stub nameofroutetoproductitem="MapItem" productid="1001" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
     </div>
   </div>
 </div>

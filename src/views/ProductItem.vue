@@ -32,8 +32,6 @@
       <div v-if="state == State.LOADED">
         <component
           :is="productItemCard"
-          :productTypeNameSingular="productTypeNameSingular"
-          :productTypeNamePlural="productTypeNamePlural"
           :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="node.productId"
           :collapsible="false"

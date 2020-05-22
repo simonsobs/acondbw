@@ -30,8 +30,6 @@ describe("ProductItemCard.vue", () => {
         },
       },
       propsData: {
-        productTypeNameSingular: "map",
-        productTypeNamePlural: "maps",
         nameOfRouteToProductItem: "MapItem",
         productId: 1013,
         ...propsData,
