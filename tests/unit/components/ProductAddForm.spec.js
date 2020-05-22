@@ -18,8 +18,6 @@ describe("ProductAddForm.vue", () => {
       localVue,
       vuetify,
       propsData: {
-        productTypeNameSingular: "maps",
-        productTypeNamePlural: "map",
         productTypeId: 1,
       },
       mocks: {
