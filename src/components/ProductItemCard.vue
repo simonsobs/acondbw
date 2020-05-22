@@ -140,7 +140,7 @@
                     <span class="subtitle-2 grey--text">{{ edgep.node.type_.name }}: </span>
                     <span class="font-weight-bold primary--text">
                       <router-link
-                        :to="'/' + edgep.node.other.type_.name + 's/item/' + edgep.node.other.name"
+                        :to="'/' + edgep.node.other.type_.name + '/item/' + edgep.node.other.name"
                         v-text="edgep.node.other.name"
                       ></router-link>
                     </span>

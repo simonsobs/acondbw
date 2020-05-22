@@ -20,7 +20,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "@/views/About.vue"),
   },
   {
-    path: "/simulations",
+    path: "/simulation",
     component: ProductTop,
     props: {
       title: "Simulations",
@@ -57,7 +57,7 @@ const routes = [
     ],
   },
   {
-    path: "/maps",
+    path: "/map",
     component: ProductTop,
     props: {
       title: "Maps",
@@ -97,7 +97,7 @@ const routes = [
     ],
   },
   {
-    path: "/beams",
+    path: "/beam",
     component: ProductTop,
     props: {
       title: "Beams",

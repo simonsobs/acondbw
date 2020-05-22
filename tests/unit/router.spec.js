@@ -35,12 +35,12 @@ describe("About.vue", () => {
     expect(current.params).toEqual({});
   });
 
-  it("test /simulations/item/:name", async () => {
-    await router.push("/simulations/item/simulation001");
+  it("test /simulation/item/:name", async () => {
+    await router.push("/simulation/item/simulation001");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("SimulationItem");
-    expect(current.path).toBe("/simulations/item/simulation001");
+    expect(current.path).toBe("/simulation/item/simulation001");
     expect(current.params).toEqual({
       name: "simulation001",
     });
@@ -54,12 +54,12 @@ describe("About.vue", () => {
     });
   });
 
-  it("test /simulations", async () => {
-    await router.push("/simulations");
+  it("test /simulation", async () => {
+    await router.push("/simulation");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("SimulationList");
-    expect(current.path).toBe("/simulations");
+    expect(current.path).toBe("/simulation");
     expect(current.params).toEqual({});
     expect(current.matched[0].props).toEqual({
       default: {
@@ -71,12 +71,12 @@ describe("About.vue", () => {
     });
   });
 
-  it("test /maps/item/:name", async () => {
-    await router.push("/maps/item/map001");
+  it("test /map/item/:name", async () => {
+    await router.push("/map/item/map001");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("MapItem");
-    expect(current.path).toBe("/maps/item/map001");
+    expect(current.path).toBe("/map/item/map001");
     expect(current.params).toEqual({
       name: "map001",
     });
@@ -90,12 +90,12 @@ describe("About.vue", () => {
     });
   });
 
-  it("test /maps", async () => {
-    await router.push("/maps");
+  it("test /map", async () => {
+    await router.push("/map");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("MapList");
-    expect(current.path).toBe("/maps");
+    expect(current.path).toBe("/map");
     expect(current.params).toEqual({});
     expect(current.matched[0].props).toEqual({
       default: {
@@ -107,11 +107,11 @@ describe("About.vue", () => {
     });
   });
 
-  it("test /beams/item/:name", async () => {
-    await router.push("/beams/item/beam001");
+  it("test /beam/item/:name", async () => {
+    await router.push("/beam/item/beam001");
     const current = router.history.current;
     expect(current.name).toBe("BeamItem");
-    expect(current.path).toBe("/beams/item/beam001");
+    expect(current.path).toBe("/beam/item/beam001");
     expect(current.params).toEqual({
       name: "beam001",
     });
@@ -125,11 +125,11 @@ describe("About.vue", () => {
     });
   });
 
-  it("test /beams", async () => {
-    await router.push("/beams");
+  it("test /beam", async () => {
+    await router.push("/beam");
     const current = router.history.current;
     expect(current.name).toBe("BeamList");
-    expect(current.path).toBe("/beams");
+    expect(current.path).toBe("/beam");
     expect(current.params).toEqual({});
     expect(current.matched[0].props).toEqual({
       default: {
