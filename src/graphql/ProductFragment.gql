@@ -1,11 +1,11 @@
+#import "./ProductTypeFragment.gql"
+
 fragment productFragment on Product {
   id
   productId
   typeId
   type_ {
-    id
-    typeId
-    name
+    ...productTypeFragment
   }
   name
   contact
@@ -42,9 +42,7 @@ fragment productFragment on Product {
           productId
           typeId
           type_ {
-            id
-            typeId
-            name
+            ...productTypeFragment
           }
           name
         }
