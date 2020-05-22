@@ -9,7 +9,7 @@ exports[`App.vue match snapshot 1`] = `
           <v-icon-stub></v-icon-stub>
         </v-list-item-action-stub>
         <v-list-item-content-stub>
-          <v-list-item-title-stub></v-list-item-title-stub>
+          <v-list-item-title-stub class="capitalize"></v-list-item-title-stub>
         </v-list-item-content-stub>
       </v-list-item-stub>
       <v-list-item-stub activeclass="" link="true" to="/map" tag="div" router="">
@@ -17,7 +17,7 @@ exports[`App.vue match snapshot 1`] = `
           <v-icon-stub></v-icon-stub>
         </v-list-item-action-stub>
         <v-list-item-content-stub>
-          <v-list-item-title-stub></v-list-item-title-stub>
+          <v-list-item-title-stub class="capitalize"></v-list-item-title-stub>
         </v-list-item-content-stub>
       </v-list-item-stub>
       <v-list-item-stub activeclass="" link="true" to="/beam" tag="div" router="">
@@ -25,7 +25,7 @@ exports[`App.vue match snapshot 1`] = `
           <v-icon-stub></v-icon-stub>
         </v-list-item-action-stub>
         <v-list-item-content-stub>
-          <v-list-item-title-stub></v-list-item-title-stub>
+          <v-list-item-title-stub class="capitalize"></v-list-item-title-stub>
         </v-list-item-content-stub>
       </v-list-item-stub>
     </v-list-stub>
