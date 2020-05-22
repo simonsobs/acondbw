@@ -1,0 +1,11 @@
+#import "./ProductTypeFragment.gql"
+
+query AllProductTypes {
+  allProductTypes(sort: ORDER_ASC) {
+    edges {
+      node {
+        ...productTypeFragment
+      }
+    }
+  }
+}

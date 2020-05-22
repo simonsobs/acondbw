@@ -1,0 +1,10 @@
+fragment productTypeFragment on ProductType {
+  id
+  typeId
+  name
+  order
+  indefArticle
+  singular
+  plural
+  icon
+}
