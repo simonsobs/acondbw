@@ -20,6 +20,7 @@ describe("ProductTop.vue", () => {
       vuetify,
       router,
       propsData: {
+        productTypeName: "map",
         title: "Maps",
         icon: "map",
         routeToProductList: { name: "MapList" },
