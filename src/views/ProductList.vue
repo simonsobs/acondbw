@@ -113,8 +113,6 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productTypeNameSingular: { default: "product" },
-    productTypeNamePlural: { default: "products" },
     productTypeId: { required: true },
     productItemCard: { default: "ProductItemCard" },
     nameOfRouteToProductItem: { required: true },

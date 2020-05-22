@@ -33,8 +33,6 @@ const routes = [
         component: ProductList,
         props: {
           productTypeId: 3,
-          productTypeNameSingular: "simulation",
-          productTypeNamePlural: "simulations",
           nameOfRouteToProductItem: "SimulationItem",
           disableAdd:
             process.env.VUE_APP_ACONDBW_SIMULATION_CREATION_DIALOG != "true",
@@ -66,8 +64,6 @@ const routes = [
         component: ProductList,
         props: {
           productTypeId: 1,
-          productTypeNameSingular: "map",
-          productTypeNamePlural: "maps",
           nameOfRouteToProductItem: "MapItem",
           disableAdd: process.env.VUE_APP_ACONDBW_MAP_CREATION_DIALOG != "true",
           disableEdit: process.env.VUE_APP_ACONDBW_MAP_UPDATE_DIALOG != "true",
@@ -102,8 +98,6 @@ const routes = [
         component: ProductList,
         props: {
           productTypeId: 2,
-          productTypeNameSingular: "beam",
-          productTypeNamePlural: "beams",
           nameOfRouteToProductItem: "BeamItem",
           disableAdd:
             process.env.VUE_APP_ACONDBW_BEAM_CREATION_DIALOG != "true",
