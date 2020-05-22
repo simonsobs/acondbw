@@ -47,9 +47,6 @@ describe("About.vue", () => {
     expect(current.matched[0].props).toEqual({
       default: {
         productTypeName: "simulation",
-        title: "Simulations",
-        icon: "mdi-creation",
-        routeToProductList: { name: "SimulationList" },
         itemPageName: "SimulationItem",
       },
     });
@@ -65,9 +62,6 @@ describe("About.vue", () => {
     expect(current.matched[0].props).toEqual({
       default: {
         productTypeName: "simulation",
-        title: "Simulations",
-        icon: "mdi-creation",
-        routeToProductList: { name: "SimulationList" },
         itemPageName: "SimulationItem",
       },
     });
@@ -85,9 +79,6 @@ describe("About.vue", () => {
     expect(current.matched[0].props).toEqual({
       default: {
         productTypeName: "map",
-        title: "Maps",
-        icon: "map",
-        routeToProductList: { name: "MapList" },
         itemPageName: "MapItem",
       },
     });
@@ -103,9 +94,6 @@ describe("About.vue", () => {
     expect(current.matched[0].props).toEqual({
       default: {
         productTypeName: "map",
-        title: "Maps",
-        icon: "map",
-        routeToProductList: { name: "MapList" },
         itemPageName: "MapItem",
       },
     });
@@ -122,9 +110,6 @@ describe("About.vue", () => {
     expect(current.matched[0].props).toEqual({
       default: {
         productTypeName: "beam",
-        title: "Beams",
-        icon: "mdi-spotlight-beam",
-        routeToProductList: { name: "BeamList" },
         itemPageName: "BeamItem",
       },
     });
@@ -139,9 +124,6 @@ describe("About.vue", () => {
     expect(current.matched[0].props).toEqual({
       default: {
         productTypeName: "beam",
-        title: "Beams",
-        icon: "mdi-spotlight-beam",
-        routeToProductList: { name: "BeamList" },
         itemPageName: "BeamItem",
       },
     });

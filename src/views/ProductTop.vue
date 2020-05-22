@@ -49,9 +49,6 @@ export default {
   },
   props: {
     productTypeName: { required: true },
-    title: { default: "Product Type Name" },
-    icon: { default: "mdi-nut" },
-    routeToProductList: { required: true },
     itemPageName: { default: "ProductItemPageName" }
   },
   data: () => ({

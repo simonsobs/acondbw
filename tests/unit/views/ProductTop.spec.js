@@ -30,9 +30,6 @@ describe("ProductTop.vue", () => {
       },
       propsData: {
         productTypeName: "map",
-        title: "Maps",
-        icon: "map",
-        routeToProductList: { name: "MapList" },
         itemPageName: "MapItem",
       },
       stubs: ["router-link", "router-view"],
