@@ -87,9 +87,7 @@
       </div>
     </div>
     <div v-else class="mx-2 pt-5">
-      <v-card outlined style="max-width: 980px;">
-        <v-card-text>Nothing to show here.</v-card-text>
-      </v-card>
+      <!-- state = State.NONE -->
     </div>
   </div>
 </template>
