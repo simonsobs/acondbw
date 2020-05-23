@@ -82,7 +82,10 @@ describe("ProductItem.vue", () => {
 
   it("keep name when moving away", async () => {
     const wrapper = createWrapper();
-    await router.push({ name: "MapItem", params: { name: "map001" } });
+    await router.push({
+      name: "ProductItem",
+      params: { productTypeName: "map", name: "map001" },
+    });
     await Vue.nextTick();
     expect(wrapper.vm.name).toBe("map001");
 
@@ -90,9 +93,12 @@ describe("ProductItem.vue", () => {
     await Vue.nextTick();
     expect(wrapper.vm.name).toBe("map001"); // still "map001"
 
-    await router.push({ name: "MapItem", params: { name: "map002" } });
+    await router.push({
+      name: "ProductItem",
+      params: { productTypeName: "map", name: "map002" },
+    });
     await Vue.nextTick();
-    expect(wrapper.vm.name).toBe("map001");  // still "map001". The name is set only once.
-                                             // New instance should be created for a different name.
+    expect(wrapper.vm.name).toBe("map001"); // still "map001". The name is set only once.
+    // New instance should be created for a different name.
   });
 });

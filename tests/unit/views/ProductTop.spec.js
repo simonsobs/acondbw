@@ -28,8 +28,7 @@ describe("ProductTop.vue", () => {
           },
         },
       },
-      propsData: {
-      },
+      propsData: {},
       stubs: ["router-link", "router-view"],
     });
   }
@@ -41,7 +40,10 @@ describe("ProductTop.vue", () => {
 
   it("match snapshot list", async () => {
     const wrapper = createWrapper();
-    await router.push({ name: "MapList" });
+    await router.push({
+      name: "ProductList",
+      params: { productTypeName: "map" },
+    });
     await Vue.nextTick();
     wrapper.setData({
       node: {
@@ -61,7 +63,10 @@ describe("ProductTop.vue", () => {
 
   it("match snapshot item", async () => {
     const wrapper = createWrapper();
-    await router.push({ name: "MapItem", params: { name: "map001" } });
+    await router.push({
+      name: "ProductItem",
+      params: { productTypeName: "map", name: "map001" },
+    });
     await Vue.nextTick();
     await Vue.nextTick();
     wrapper.setData({
@@ -82,8 +87,14 @@ describe("ProductTop.vue", () => {
 
   it("transition update", async () => {
     const wrapper = createWrapper();
-    await router.push({ name: "MapList" });
-    await router.push({ name: "MapItem", params: { name: "map001" } });
+    await router.push({
+      name: "ProductList",
+      params: { productTypeName: "map" },
+    });
+    await router.push({
+      name: "ProductItem",
+      params: { productTypeName: "map", name: "map001" },
+    });
 
     // Not clear how to test
     // Neither beforeRouteUpdate() or beforeRouteLeave() is called
@@ -96,7 +107,7 @@ describe("ProductTop.vue", () => {
 
   it("transition leave", async () => {
     const wrapper = createWrapper();
-    await router.push({ name: "MapList" });
+    await router.push({ name: "ProductList" });
     await router.push("/about");
 
     // Not clear how to test

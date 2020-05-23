@@ -35,97 +35,28 @@ describe("About.vue", () => {
     expect(current.params).toEqual({});
   });
 
-  it("test /simulation/item/:name", async () => {
-    await router.push("/simulation/item/simulation001");
-    const current = router.history.current;
-    expect(current.matched.length).toBe(2);
-    expect(current.name).toBe("SimulationItem");
-    expect(current.path).toBe("/simulation/item/simulation001");
-    expect(current.params).toEqual({
-      name: "simulation001",
-    });
-    expect(current.matched[0].props).toEqual({
-      default: {
-        productTypeName: "simulation",
-        itemPageName: "SimulationItem",
-      },
-    });
-  });
-
-  it("test /simulation", async () => {
-    await router.push("/simulation");
-    const current = router.history.current;
-    expect(current.matched.length).toBe(2);
-    expect(current.name).toBe("SimulationList");
-    expect(current.path).toBe("/simulation");
-    expect(current.params).toEqual({});
-    expect(current.matched[0].props).toEqual({
-      default: {
-        productTypeName: "simulation",
-        itemPageName: "SimulationItem",
-      },
-    });
-  });
-
   it("test /map/item/:name", async () => {
     await router.push("/map/item/map001");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
-    expect(current.name).toBe("MapItem");
+    expect(current.name).toBe("ProductItem");
     expect(current.path).toBe("/map/item/map001");
     expect(current.params).toEqual({
+      productTypeName: "map",
       name: "map001",
     });
-    expect(current.matched[0].props).toEqual({
-      default: {
-        productTypeName: "map",
-        itemPageName: "MapItem",
-      },
-    });
+    expect(current.matched[0].props).toEqual({});
   });
 
   it("test /map", async () => {
     await router.push("/map");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
-    expect(current.name).toBe("MapList");
+    expect(current.name).toBe("ProductList");
     expect(current.path).toBe("/map");
-    expect(current.params).toEqual({});
-    expect(current.matched[0].props).toEqual({
-      default: {
-        productTypeName: "map",
-        itemPageName: "MapItem",
-      },
-    });
-  });
-
-  it("test /beam/item/:name", async () => {
-    await router.push("/beam/item/beam001");
-    const current = router.history.current;
-    expect(current.name).toBe("BeamItem");
-    expect(current.path).toBe("/beam/item/beam001");
     expect(current.params).toEqual({
-      name: "beam001",
+      productTypeName: "map",
     });
-    expect(current.matched[0].props).toEqual({
-      default: {
-        productTypeName: "beam",
-        itemPageName: "BeamItem",
-      },
-    });
-  });
-
-  it("test /beam", async () => {
-    await router.push("/beam");
-    const current = router.history.current;
-    expect(current.name).toBe("BeamList");
-    expect(current.path).toBe("/beam");
-    expect(current.params).toEqual({});
-    expect(current.matched[0].props).toEqual({
-      default: {
-        productTypeName: "beam",
-        itemPageName: "BeamItem",
-      },
-    });
+    expect(current.matched[0].props).toEqual({});
   });
 });
