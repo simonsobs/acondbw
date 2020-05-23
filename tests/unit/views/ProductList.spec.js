@@ -31,13 +31,11 @@ describe("ProductList.vue", () => {
       },
       propsData: {
         productTypeId: 1,
-        nameOfRouteToProductItem: "MapItem",
-        productAddForm: "MapAddForm",
         disableAdd: false,
       },
       stubs: {
         ProductItemCard: true,
-        MapAddForm: true,
+        ProductAddForm: true,
       },
     });
   }

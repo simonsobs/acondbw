@@ -59,7 +59,7 @@
             </template>
             <component
               :is="productAddForm"
-              :productTypeId="productTypeId"
+              :productTypeId="productType.typeId"
               v-on:finished="dialog = false"
             ></component>
           </v-dialog>
@@ -70,7 +70,6 @@
           :is="productItemCard"
           v-for="edge in edges"
           :key="edge.node.id"
-          :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="edge.node.productId"
           collapsible="true"
           :collapsed="isCardCollapsed[edge.node.id]"
@@ -115,7 +114,6 @@ export default {
   props: {
     productTypeId: { required: true },
     productItemCard: { default: "ProductItemCard" },
-    nameOfRouteToProductItem: { required: true },
     productAddForm: { default: "ProductAddForm" },
     disableAdd: { default: false },
     disableEdit: { default: false },
@@ -137,9 +135,7 @@ export default {
     productType: {
       query: PRODUCT_TYPE,
       variables() {
-        return {
-          typeId: this.productTypeId
-        };
+        return { typeId: this.productTypeId };
       },
       result(result) {
         this.queryProductTypeError = result.error ? result.error : null;
@@ -148,9 +144,7 @@ export default {
     edges: {
       query: ALL_PRODUCTS_BY_TYPE_ID,
       variables() {
-        return {
-          typeId: this.productTypeId
-        };
+        return { typeId: this.productTypeId };
       },
       update: data => (data.allProducts ? data.allProducts.edges : null),
       result(result) {
