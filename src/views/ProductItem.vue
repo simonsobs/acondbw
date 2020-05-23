@@ -134,10 +134,6 @@ export default {
         };
       },
       skip: function() {
-        // This function prevents the query from being executed when
-        // a variable is undefined. This happens momentarily, when, for
-        // example, the path changes from
-        // "/products/item/product-name/" to "/products/".
         return !(this.productTypeId && this.name);
       },
       update: function(data) {
