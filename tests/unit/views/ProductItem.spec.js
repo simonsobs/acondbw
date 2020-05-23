@@ -28,9 +28,6 @@ describe("ProductItem.vue", () => {
       },
       propsData: {
         productTypeId: 1,
-        routeToProductList: { name: "MapList" },
-        productItemCard: "ProductItemCard",
-        nameOfRouteToProductItem: "MapItem",
       },
       stubs: {
         ProductItemCard: true,
@@ -46,9 +43,15 @@ describe("ProductItem.vue", () => {
     const wrapper = createWrapper();
     wrapper.setData({
       node: {
-        id: "TWFwOjEwMTM=",
+        id: "UHJvZHVjdDoxMDEz",
         productId: "1013",
         name: "lat20200201",
+        typeId: 1,
+        type_: {
+          id: "UHJvZHVjdFR5cGU6MQ==",
+          typeId: "1",
+          name: "map",
+        },
       },
     });
     await Vue.nextTick();
@@ -89,6 +92,7 @@ describe("ProductItem.vue", () => {
 
     await router.push({ name: "MapItem", params: { name: "map002" } });
     await Vue.nextTick();
-    expect(wrapper.vm.name).toBe("map002");
+    expect(wrapper.vm.name).toBe("map001");  // still "map001". The name is set only once.
+                                             // New instance should be created for a different name.
   });
 });
