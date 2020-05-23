@@ -29,8 +29,6 @@ describe("ProductTop.vue", () => {
         },
       },
       propsData: {
-        productTypeName: "map",
-        itemPageName: "MapItem",
       },
       stubs: ["router-link", "router-view"],
     });

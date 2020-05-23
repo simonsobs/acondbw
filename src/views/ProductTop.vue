@@ -28,7 +28,7 @@
       </v-row>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
-          <router-view :key="$route.fullPath"></router-view>
+          <router-view :key="$route.fullPath" :productTypeId="node ? node.typeId : null"></router-view>
         </keep-alive>
       </transition>
     </v-container>
@@ -48,7 +48,6 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productTypeName: { required: true },
     itemPageName: { default: "ProductItemPageName" }
   },
   data: () => ({
@@ -90,7 +89,7 @@ export default {
       query: PRODUCT_TYPE_BY_NAME,
       variables() {
         return {
-          name: this.productTypeName
+          name: this.$route.params.productTypeName
         };
       },
       update: data => data.productType,
