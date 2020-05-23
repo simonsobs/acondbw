@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Vuex from "vuex";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
@@ -12,6 +13,8 @@ Vue.use(VueRouter);
 describe("ProductDeleteForm.vue", () => {
   let localVue;
   let vuetify;
+  let actions;
+  let store;
 
   function createWrapper({ loading = false, propsData } = {}) {
     const mutate = jest.fn();
@@ -19,6 +22,7 @@ describe("ProductDeleteForm.vue", () => {
       localVue,
       router,
       vuetify,
+      store,
       mocks: {
         $apollo: {
           queries: {
@@ -50,7 +54,19 @@ describe("ProductDeleteForm.vue", () => {
 
   beforeEach(function() {
     localVue = createLocalVue();
+    localVue.use(Vuex);
     vuetify = new Vuetify();
+
+    actions = {
+      snackbarMessage: jest.fn(),
+    };
+    store = new Vuex.Store({
+      actions,
+      state: {
+        snackbar: false,
+        snackbarMessage: null,
+      },
+    });
   });
 
   it("loading", async () => {
@@ -87,6 +103,8 @@ describe("ProductDeleteForm.vue", () => {
     });
     await wrapper.vm.deleteProduct();
     expect(wrapper.vm.$apollo.mutate).toBeCalled();
-    expect(wrapper.vm.dialogSuccess).toBe(true);
+    expect(actions.snackbarMessage).toHaveBeenCalled();
+    expect(wrapper.emitted("deleted")).toBeTruthy();
+    expect(wrapper.emitted("finished")).toBeTruthy();
   });
 });

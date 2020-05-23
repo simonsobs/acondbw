@@ -27,15 +27,6 @@
           <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
         </v-card-actions>
       </div>
-      <v-dialog v-model="dialogSuccess" max-width="500px">
-        <v-card>
-          <v-card-title class="success--text">Deleted</v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text @click="closeDialogSuccess()">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-card>
     <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
   </div>
@@ -62,7 +53,6 @@ export default {
     return {
       node: null,
       error: null,
-      dialogSuccess: false,
       devtoolState: null,
       State: State
     };
@@ -126,15 +116,12 @@ export default {
             });
           }
         });
-        this.dialogSuccess = true;
+        this.$store.dispatch("snackbarMessage", "Deleted");
+        this.$emit("deleted");
+        this.$emit("finished");
       } catch (error) {
         this.error = error;
       }
-    },
-    closeDialogSuccess() {
-      this.dialogSuccess = false;
-      this.$emit("finished");
-      this.$emit("deleted");
     }
   }
 };
