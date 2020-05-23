@@ -113,7 +113,7 @@ export default {
           update: (cache, { data: { deleteProduct } }) => {
             const data = cache.readQuery({
               query: ALL_PRODUCTS_BY_TYPE_ID,
-              variables: { typeId: this.node.typeId }
+              variables: { typeId: this.node.type_.typeId }
             });
             const index = data.allProducts.edges.findIndex(
               e => e.node.productId == this.node.productId
@@ -121,7 +121,7 @@ export default {
             data.allProducts.edges.splice(index, 1);
             cache.writeQuery({
               query: ALL_PRODUCTS_BY_TYPE_ID,
-              variables: { typeId: this.node.typeId },
+              variables: { typeId: this.node.type_.typeId },
               data
             });
           }
