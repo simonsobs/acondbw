@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Vuex from "vuex";
 import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
@@ -12,6 +13,8 @@ Vue.use(VueRouter);
 describe("App.vue", () => {
   let localVue;
   let vuetify;
+  let actions;
+  let store;
   let wrapper;
 
   const edges = [
@@ -55,11 +58,21 @@ describe("App.vue", () => {
 
   beforeEach(() => {
     localVue = createLocalVue();
+    localVue.use(Vuex);
     vuetify = new Vuetify();
+    actions = {};
+    store = new Vuex.Store({
+      actions,
+      state: {
+        snackbar: false,
+        snackbarMessage: null
+      },
+    });
     wrapper = shallowMount(App, {
       localVue,
       vuetify,
       router,
+      store,
       stubs: ["router-link", "router-view"],
     });
     wrapper.setData({

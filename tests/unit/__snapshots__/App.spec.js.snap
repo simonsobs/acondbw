@@ -67,5 +67,11 @@ exports[`App.vue match snapshot 1`] = `
       </keep-alive-stub>
     </transition-stub>
   </v-content-stub>
+  <v-snackbar-stub color="secondary" bottom="true" left="true" timeout="5000">
+
+    <v-btn-stub tag="button" activeclass="" icon="true" type="button">
+      <v-icon-stub>mdi-close</v-icon-stub>
+    </v-btn-stub>
+  </v-snackbar-stub>
 </v-app-stub>
 `;
