@@ -87,7 +87,7 @@
                         <ProductDeleteForm
                           :productId="node.productId"
                           v-on:finished="deleteDialog = false; menu = false"
-                          v-on:deleted="deleteDialog = false; menu = false; node = null"
+                          v-on:deleted="deleteDialog = false; menu = false; node = null; $emit('deleted')"
                         ></ProductDeleteForm>
                       </v-dialog>
                     </v-list>
