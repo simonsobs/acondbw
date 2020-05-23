@@ -51,6 +51,7 @@ export default {
     itemPageName: { default: "ProductItemPageName" }
   },
   data: () => ({
+    productTypeName: null,
     node: null,
     error: null,
     devtoolState: null,
@@ -58,6 +59,9 @@ export default {
     transitionName: "fade-product-top-leave",
     transitionMode: "out-in"
   }),
+  mounted() {
+    this.productTypeName = this.$route.params.productTypeName;
+  },
   computed: {
     state() {
       if (this.devtoolState) {
@@ -88,11 +92,12 @@ export default {
     node: {
       query: PRODUCT_TYPE_BY_NAME,
       variables() {
-        return {
-          name: this.$route.params.productTypeName
-        };
+        return { name: this.productTypeName };
       },
       update: data => data.productType,
+      skip() {
+        return !this.productTypeName;
+      },
       result(result) {
         this.error = result.error ? result.error : null;
       }
