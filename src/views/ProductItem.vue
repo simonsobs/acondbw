@@ -12,7 +12,13 @@
         <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
-              <v-btn text icon exact :to="routeToProductList" v-on="on">
+              <v-btn
+                text
+                icon
+                exact
+                :to="{ name: 'ProductList', params: { productTypeName: node.type_.name } }"
+                v-on="on"
+              >
                 <v-icon>mdi-arrow-left</v-icon>
               </v-btn>
             </template>
@@ -32,10 +38,9 @@
       <div v-if="state == State.LOADED">
         <component
           :is="productItemCard"
-          :nameOfRouteToProductItem="nameOfRouteToProductItem"
           :productId="node.productId"
           :collapsible="false"
-          v-on:deleted="$router.push(routeToProductList)"
+          v-on:deleted="onDeleted"
           :disableEdit="disableEdit"
           :disableDelete="disableDelete"
         ></component>
@@ -65,14 +70,13 @@ export default {
   },
   props: {
     productTypeId: { required: true },
-    routeToProductList: { required: true },
     productItemCard: { default: "ProductItemCard" },
-    nameOfRouteToProductItem: { default: "MapItem" },
     disableEdit: { default: false },
     disableDelete: { default: false }
   },
   data() {
     return {
+      productTypeName: null,
       node: null,
       name: null,
       error: null,
@@ -83,11 +87,21 @@ export default {
   watch: {
     "$route.params.name": {
       handler: function(n, o) {
+        if(this.name) {
+          // don't update if already set because it updates the instance of the view
+          // before leaving. The name should be probably given from ProductTop.
+          return
+        }
         if (n) {
           this.name = n;
         }
       },
       immediate: true
+    },
+    node: function() {
+      if (this.node && this.node.type_) {
+        this.productTypeName = this.node.type_.name;
+      }
     }
   },
   computed: {
@@ -121,10 +135,10 @@ export default {
       },
       skip: function() {
         // This function prevents the query from being executed when
-        // this.name is undefined. This happens momentarily, when, for
+        // a variable is undefined. This happens momentarily, when, for
         // example, the path changes from
         // "/products/item/product-name/" to "/products/".
-        return ! this.name;
+        return !(this.productTypeId && this.name);
       },
       update: function(data) {
         return data.product;
@@ -132,6 +146,15 @@ export default {
       result(result) {
         this.error = result.error ? result.error : null;
       }
+    }
+  },
+  methods: {
+    onDeleted() {
+      console.log(this.node);
+      this.$router.push({
+        name: "ProductList",
+        params: { productTypeName: this.productTypeName }
+      });
     }
   }
 };

@@ -44,6 +44,7 @@
 <script>
 import gql from "graphql-tag";
 import PRODUCT from "@/graphql/Product.gql";
+import DELETE_PRODUCT from "@/graphql/DeleteProduct.gql";
 import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -107,20 +108,12 @@ export default {
     async deleteProduct() {
       try {
         const data = await this.$apollo.mutate({
-          mutation: gql`
-            mutation($productId: Int!) {
-              deleteProduct(productId: $productId) {
-                ok
-              }
-            }
-          `,
-          variables: {
-            productId: this.node.productId
-          },
+          mutation: DELETE_PRODUCT,
+          variables: { productId: this.node.productId },
           update: (cache, { data: { deleteProduct } }) => {
             const data = cache.readQuery({
               query: ALL_PRODUCTS_BY_TYPE_ID,
-              variables: { typeId: this.node.typeId }
+              variables: { typeId: this.node.type_.typeId }
             });
             const index = data.allProducts.edges.findIndex(
               e => e.node.productId == this.node.productId
@@ -128,7 +121,7 @@ export default {
             data.allProducts.edges.splice(index, 1);
             cache.writeQuery({
               query: ALL_PRODUCTS_BY_TYPE_ID,
-              variables: { typeId: this.node.typeId },
+              variables: { typeId: this.node.type_.typeId },
               data
             });
           }

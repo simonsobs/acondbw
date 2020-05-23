@@ -13,7 +13,7 @@
               <div class="font-weight-bold primary--text">
                 <span @click.stop>
                   <router-link
-                    :to="{ name: nameOfRouteToProductItem, params: { name: node.name } }"
+                    :to="{ name: 'ProductItem', params: { productTypeName: node.type_.name, name: node.name } }"
                     v-text="node.name"
                   ></router-link>
                 </span>
@@ -87,7 +87,7 @@
                         <ProductDeleteForm
                           :productId="node.productId"
                           v-on:finished="deleteDialog = false; menu = false"
-                          v-on:deleted="deleteDialog = false; menu = false; node = null"
+                          v-on:deleted="deleteDialog = false; menu = false; node = null; $emit('deleted')"
                         ></ProductDeleteForm>
                       </v-dialog>
                     </v-list>
@@ -190,7 +190,6 @@ export default {
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    nameOfRouteToProductItem: { required: true },
     productId: { default: null }, // node.productId not node.id
     collapsed: { default: false },
     collapsible: { default: false },
