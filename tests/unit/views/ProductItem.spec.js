@@ -81,11 +81,11 @@ describe("ProductItem.vue", () => {
   });
 
   it("keep name when moving away", async () => {
-    const wrapper = createWrapper();
     await router.push({
       name: "ProductItem",
       params: { productTypeName: "map", name: "map001" },
     });
+    const wrapper = createWrapper();
     await Vue.nextTick();
     expect(wrapper.vm.name).toBe("map001");
 

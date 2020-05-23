@@ -84,20 +84,10 @@ export default {
       State: State
     };
   },
+  mounted() {
+    this.name = this.$route.params.name;
+  },
   watch: {
-    "$route.params.name": {
-      handler: function(n, o) {
-        if(this.name) {
-          // don't update if already set because it updates the instance of the view
-          // before leaving. The name should be probably given from ProductTop.
-          return
-        }
-        if (n) {
-          this.name = n;
-        }
-      },
-      immediate: true
-    },
     node: function() {
       if (this.node && this.node.type_) {
         this.productTypeName = this.node.type_.name;
