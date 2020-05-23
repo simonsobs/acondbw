@@ -137,6 +137,9 @@ export default {
       variables() {
         return { typeId: this.productTypeId };
       },
+      skip: function() {
+        return !this.productTypeId;
+      },
       result(result) {
         this.queryProductTypeError = result.error ? result.error : null;
       }
@@ -147,6 +150,9 @@ export default {
         return { typeId: this.productTypeId };
       },
       update: data => (data.allProducts ? data.allProducts.edges : null),
+      skip: function() {
+        return !this.productTypeId;
+      },
       result(result) {
         this.error = result.error ? result.error : null;
       }

@@ -206,9 +206,10 @@ export default {
     productType: {
       query: PRODUCT_TYPE,
       variables() {
-        return {
-          typeId: this.productTypeId
-        };
+        return { typeId: this.productTypeId };
+      },
+      skip: function() {
+        return !this.productTypeId;
       },
       result(result) {
         this.queryError = result.error ? result.error : null;
