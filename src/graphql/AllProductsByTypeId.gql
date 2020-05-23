@@ -1,10 +1,10 @@
+#import "./ProductFragment.gql"
+
 query allProductsByTypeId($typeId: Int) {
   allProducts(filters: { typeId: $typeId }, sort: DATE_POSTED_DESC) {
     edges {
       node {
-        id
-        productId
-        name
+        ...productFragment
       }
     }
   }
