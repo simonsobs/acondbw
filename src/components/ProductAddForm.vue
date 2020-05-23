@@ -122,15 +122,6 @@
           <v-btn color="secondary" text @click="$emit('finished')">Close</v-btn>
         </v-card-actions>
       </div>
-      <v-dialog v-model="dialogSuccess" max-width="500px">
-        <v-card>
-          <v-card-title class="success--text">Added</v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text @click="closeDialogSuccess()">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-card>
     <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
   </div>
@@ -173,7 +164,6 @@ export default {
       form: { ...formDefault },
       valid: true,
       error: null,
-      dialogSuccess: false,
       nameRules: [
         v => !!v || "This field is required",
         v => (v || "").indexOf(" ") < 0 || "No spaces are allowed"
@@ -266,15 +256,12 @@ export default {
             });
           }
         });
-        this.dialogSuccess = true;
+        this.$store.dispatch("snackbarMessage", "Added");
+        this.resetForm();
+        this.$emit("finished");
       } catch (error) {
         this.error = error;
       }
-    },
-    closeDialogSuccess() {
-      this.dialogSuccess = false;
-      this.resetForm();
-      this.$emit("finished");
     }
   }
 };

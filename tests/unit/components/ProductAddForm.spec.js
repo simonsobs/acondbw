@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Vuex from "vuex";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
@@ -11,12 +12,15 @@ Vue.use(VueRouter);
 describe("ProductAddForm.vue", () => {
   let localVue;
   let vuetify;
+  let actions;
+  let store;
 
   function createWrapper({ loading = false } = {}) {
     const mutate = jest.fn();
     let wrapper = mount(ProductAddForm, {
       localVue,
       vuetify,
+      store,
       propsData: {
         productTypeId: 1,
       },
@@ -37,7 +41,19 @@ describe("ProductAddForm.vue", () => {
 
   beforeEach(function() {
     localVue = createLocalVue();
+    localVue.use(Vuex);
     vuetify = new Vuetify();
+
+    actions = {
+      snackbarMessage: jest.fn(),
+    };
+    store = new Vuex.Store({
+      actions,
+      state: {
+        snackbar: false,
+        snackbarMessage: null,
+      },
+    });
   });
 
   it("instantiate", async () => {
@@ -90,11 +106,7 @@ describe("ProductAddForm.vue", () => {
       input: expectedCreateProductInput,
     });
 
-    expect(wrapper.vm.dialogSuccess).toBe(true);
-
-    wrapper.vm.closeDialogSuccess();
-
-    expect(wrapper.vm.dialogSuccess).toBe(false);
+    expect(actions.snackbarMessage).toHaveBeenCalled();
     expect(wrapper.vm.form).toEqual(blankForm); // # resetForm() is called
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
