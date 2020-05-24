@@ -66,19 +66,21 @@
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
-        <component
-          :is="productItemCard"
-          v-for="edge in edges"
-          :key="edge.node.id"
-          :productId="edge.node.productId"
-          collapsible="true"
-          :collapsed="isCardCollapsed[edge.node.id]"
-          v-on:expand="isCardCollapsed[edge.node.id] = false"
-          v-on:collapse="isCardCollapsed[edge.node.id] = true"
-          :disableEdit="disableEdit"
-          :disableDelete="disableDelete"
-          class="my-1"
-        ></component>
+        <transition-group name="fade" tag="div" class="list-group">
+          <component
+            :is="productItemCard"
+            v-for="edge in edges"
+            :key="edge.node.id"
+            :productId="edge.node.productId"
+            collapsible="true"
+            :collapsed="isCardCollapsed[edge.node.id]"
+            v-on:expand="isCardCollapsed[edge.node.id] = false"
+            v-on:collapse="isCardCollapsed[edge.node.id] = true"
+            :disableEdit="disableEdit"
+            :disableDelete="disableDelete"
+            class="my-1"
+          ></component>
+        </transition-group>
       </div>
       <div v-else>
         <v-card outlined style="max-width: 980px;">
@@ -93,6 +95,8 @@
 </template>
 
 <script>
+require("vue2-animate/dist/vue2-animate.min.css");
+
 import ProductItemCard from "@/components/ProductItemCard";
 import ProductAddForm from "@/components/ProductAddForm";
 

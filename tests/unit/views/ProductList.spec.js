@@ -36,6 +36,7 @@ describe("ProductList.vue", () => {
       stubs: {
         ProductItemCard: true,
         ProductAddForm: true,
+        "transition-group": true
       },
     });
   }
