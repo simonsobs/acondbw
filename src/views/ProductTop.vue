@@ -13,7 +13,7 @@
             class="capitalize"
             style="text-decoration: none; color: inherit;"
           ></router-link>
-          <span v-if="itemPage">
+          <span v-if="itemName">
             <v-icon large color="primary">mdi-chevron-right</v-icon>
             {{ itemName }}
           </span>
@@ -47,11 +47,9 @@ export default {
   components: {
     DevToolLoadingStateOverridingMenu
   },
-  props: {
-    itemPageName: { default: "ProductItemPageName" }
-  },
   data: () => ({
     productTypeName: null,
+    itemName: null,
     node: null,
     error: null,
     devtoolState: null,
@@ -61,6 +59,7 @@ export default {
   }),
   mounted() {
     this.productTypeName = this.$route.params.productTypeName;
+    this.itemName = this.$route.params.name;
   },
   computed: {
     state() {
@@ -80,12 +79,6 @@ export default {
     },
     loading() {
       return this.$apollo.queries.node.loading;
-    },
-    itemPage() {
-      return this.$route.name == this.itemPageName;
-    },
-    itemName() {
-      return this.$route.params.name;
     }
   },
   apollo: {
