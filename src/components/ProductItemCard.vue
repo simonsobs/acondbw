@@ -133,16 +133,20 @@
               </v-col>
               <v-col cols="12" md="8" offset-md="4" class="py-2">
                 <div class="caption grey--text">Relations</div>
-                <div v-if="node.relations && node.relations.edges.length > 0">
-                  <div v-for="(edgep, index) in node.relations.edges" :key="index">
-                    <span class="subtitle-2 grey--text">{{ edgep.node.type_.name }}: </span>
-                    <span class="font-weight-bold primary--text">
-                      <router-link
-                        :to="'/' + edgep.node.other.type_.name + '/item/' + edgep.node.other.name"
-                        v-text="edgep.node.other.name"
-                      ></router-link>
+                <div v-if="relations && Object.keys(relations).length > 0">
+                  <div v-for="(redges, typeId) in relations" :key="typeId">
+                    <span class="capitalize subtitle-2 primary--text">
+                      <span v-if="redges.length > 1">{{ redges[0].node.type_.plural }}</span>
+                      <span v-else>{{ redges[0].node.type_.singular }}</span>:
                     </span>
-                    ({{ edgep.node.other.type_.name }})
+                    <span v-for="(redge, index) in redges" :key="index">
+                      <router-link
+                        class="font-weight-bold primary--text"
+                        :to="'/' + redge.node.other.type_.name + '/item/' + redge.node.other.name"
+                        v-text="redge.node.other.name"
+                      ></router-link>
+                      ({{ redge.node.other.type_.name }})<span v-if="index != redges.length - 1">, </span>
+                    </span>
                   </div>
                 </div>
                 <div v-else class="body-2 grey--text">None</div>
@@ -170,6 +174,8 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 import marked from "marked";
 
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
@@ -231,6 +237,13 @@ export default {
     },
     note() {
       return this.node.note ? marked(this.node.note) : null;
+    },
+    relations() {
+      if (this.node && this.node.relations.edges.length > 0) {
+        return _.groupBy(this.node.relations.edges, "node.type_.typeId");
+      } else {
+        return null;
+      }
     }
   },
   apollo: {
@@ -249,3 +262,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.capitalize {
+  text-transform: capitalize;
+}
+</style>
