@@ -1,0 +1,34 @@
+#import "./ProductTypeFragment.gql"
+
+query QueryForProductAddForm($typeId: Int) {
+  productType(typeId: $typeId) {
+    ...productTypeFragment
+  }
+  allProductRelationTypes {
+    edges {
+      node {
+        id
+        typeId
+        singular
+      }
+    }
+  }
+  allProductTypes {
+    edges {
+      node {
+        id
+        typeId
+        singular
+        products {
+          edges {
+            node {
+              id
+              productId
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}
