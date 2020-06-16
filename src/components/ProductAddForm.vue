@@ -147,7 +147,7 @@
         <v-card-text></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+          <v-btn color="secondary" text @click="close()">Cancel</v-btn>
           <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
           <v-btn color="primary" :disabled="!valid" @click="addProduct()">Add</v-btn>
         </v-card-actions>
@@ -162,7 +162,7 @@
         </v-card>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="$emit('finished')">Close</v-btn>
+          <v-btn color="secondary" text @click="close()">Close</v-btn>
         </v-card-actions>
       </div>
     </v-card>
@@ -295,6 +295,13 @@ export default {
     }
   },
   methods: {
+    scrollToTop() {
+      document.getElementsByClassName("v-dialog--active")[0].scrollTop = 0;
+    },
+    close() {
+      this.scrollToTop();
+      this.$emit("finished");
+    },
     resetForm() {
       // this.$refs.form.reset();
       // This line is commented out because it resets "form" to
@@ -303,6 +310,7 @@ export default {
       this.form = _.cloneDeep(formDefault);
       this.$refs.form.resetValidation();
       this.error = null;
+      this.scrollToTop();
     },
     addRelationField() {
       this.form.relations.push({ ...formRelationDefault });
@@ -356,9 +364,10 @@ export default {
         });
         this.$store.dispatch("snackbarMessage", "Added");
         this.resetForm();
-        this.$emit("finished");
+        this.close();
       } catch (error) {
         this.error = error;
+        this.scrollToTop();
       }
     }
   }
