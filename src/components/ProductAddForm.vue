@@ -89,6 +89,8 @@
                   v-model="form.paths"
                 ></v-textarea>
               </v-col>
+            </v-row>
+            <v-row class="mx-0 mb-3 px-0">
               <v-col cols="12" md="8" offset-md="4">
                 <v-textarea
                   label="Note"
@@ -98,6 +100,47 @@
                   v-model="form.note"
                 ></v-textarea>
               </v-col>
+            </v-row>
+            <v-row justify="end" class="mx-2 mb-3 px-0">
+              <v-card outlined min-width="100%">
+                <v-card-text>Relations to other products</v-card-text>
+                <v-container fluid class="px-0">
+                  <v-row class="mx-0 mb-3 px-0" v-for="(r, i) in form.relations" :key="i">
+                    <v-col cols="12" md="4">
+                      <v-autocomplete
+                        label="Relation type"
+                        :items="relationTypeItems"
+                        clearable
+                        v-model="r.typeId"
+                      ></v-autocomplete>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-autocomplete
+                        label="Product type"
+                        :items="productTypeItems"
+                        clearable
+                        v-model="r.productTypeId"
+                      ></v-autocomplete>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-autocomplete
+                        label="Product"
+                        :items="productTypeMap[r.productTypeId]"
+                        clearable
+                        hide-no-data
+                        v-model="r.productId"
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                  <v-btn
+                    color="secondary"
+                    outlined
+                    text
+                    class="mx-2"
+                    @click="addRelationField()"
+                  >Add a field</v-btn>
+                </v-container>
+              </v-card>
             </v-row>
           </v-container>
         </v-card>
@@ -130,12 +173,19 @@
   <script>
 import _ from "lodash";
 
+import QueryForProductAddForm from "@/graphql/QueryForProductAddForm.gql";
 import PRODUCT_TYPE from "@/graphql/ProductType.gql";
 import CREATE_PRODUCT from "@/graphql/CreateProduct.gql";
 import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+
+const formRelationDefault = {
+  typeId: null,
+  productTypeId: null,
+  productId: null
+};
 
 const formDefault = {
   name: "",
@@ -144,6 +194,7 @@ const formDefault = {
   producedBy: "",
   postedBy: "",
   paths: "",
+  relations: [{ ...formRelationDefault }, { ...formRelationDefault }],
   note: ""
 };
 
@@ -158,10 +209,15 @@ export default {
   data() {
     return {
       productType: null,
+      allProductRelationTypes: null,
+      allProductTypes: null,
       queryError: null,
+      relationTypeItems: null,
+      productTypeMap: null,
+      productTypeItems: null,
       devtoolState: null,
       State: State,
-      form: { ...formDefault },
+      form: _.cloneDeep(formDefault),
       valid: true,
       error: null,
       nameRules: [
@@ -194,7 +250,7 @@ export default {
   },
   apollo: {
     productType: {
-      query: PRODUCT_TYPE,
+      query: QueryForProductAddForm,
       variables() {
         return { typeId: this.productTypeId };
       },
@@ -203,6 +259,38 @@ export default {
       },
       result(result) {
         this.queryError = result.error ? result.error : null;
+
+        if (this.queryError) {
+          return;
+        }
+
+        this.productType = result.data.productType;
+        this.allProductRelationTypes = result.data.allProductRelationTypes;
+        this.allProductTypes = result.data.allProductTypes;
+
+        this.relationTypeItems = this.allProductRelationTypes.edges.map(
+          ({ node }) => ({
+            text: node.singular,
+            value: node.typeId
+          })
+        );
+
+        this.productTypeItems = this.allProductTypes.edges.map(({ node }) => ({
+          text: node.singular,
+          value: node.typeId
+        }));
+
+        this.productTypeMap = _.reduce(
+          this.allProductTypes.edges,
+          (a, { node }) => ({
+            ...a,
+            [node.typeId]: node.products.edges.map(({ node }) => ({
+              text: node.name,
+              value: node.productId
+            }))
+          }),
+          {}
+        );
       }
     }
   },
@@ -212,9 +300,12 @@ export default {
       // This line is commented out because it resets "form" to
       // the empty object {}.
       // Instead, the following two lines are used.
-      this.form = { ...formDefault };
+      this.form = _.cloneDeep(formDefault);
       this.$refs.form.resetValidation();
       this.error = null;
+    },
+    addRelationField() {
+      this.form.relations.push({ ...formRelationDefault });
     },
     async addProduct() {
       try {
@@ -236,6 +327,13 @@ export default {
           .filter((v, i, a) => a.indexOf(v) === i); // unique
 
         createProductInput.paths = paths;
+
+        createProductInput.relations = _.filter(
+          _.map(this.form.relations, x =>
+            _.pickBy(_.pick(x, ["typeId", "productId"]), _.identity)
+          ),
+          x => _.size(x) == 2
+        );
 
         const data = await this.$apollo.mutate({
           mutation: CREATE_PRODUCT,

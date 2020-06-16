@@ -100,6 +100,7 @@ describe("ProductAddForm.vue", () => {
       postedBy: "post-post",
       note: "note",
       paths: ["/a/b/c", "/x/y/z"],
+      relations: [],
     };
 
     expect(calls[0][0].variables).toEqual({
