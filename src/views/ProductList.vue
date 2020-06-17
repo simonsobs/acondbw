@@ -46,7 +46,7 @@
               }}
             </span>
           </v-tooltip>
-          <v-dialog v-model="dialog" persistent max-width="980">
+          <v-dialog v-model="dialog" persistent fullscreen transition="dialog-bottom-transition">
             <template v-slot:activator="{ on: dialog }">
               <v-tooltip bottom open-delay="800">
                 <template v-slot:activator="{ on: toolip }">
@@ -57,11 +57,18 @@
                 <span>Add {{ productType.indefArticle }} {{ productType.singular }}</span>
               </v-tooltip>
             </template>
-            <component
-              :is="productAddForm"
-              :productTypeId="productType.typeId"
-              v-on:finished="dialog = false"
-            ></component>
+            <v-card>
+              <v-app-bar dense color="secondary" style="position: sticky; top: 0; z-index: 999;">
+                <v-btn icon dark @click="dialog = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-app-bar>
+              <component
+                :is="productAddForm"
+                :productTypeId="productType.typeId"
+                v-on:finished="dialog = false"
+              ></component>
+            </v-card>
           </v-dialog>
         </v-row>
       </v-container>

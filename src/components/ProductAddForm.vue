@@ -1,13 +1,14 @@
 <template>
   <div class="product-add-form" style="position: relative;">
-    <v-card class="pa-5">
-      <v-card-title
-        v-if="state == State.LOADED"
-        class="headline primary--text"
-      >Add {{ productType.indefArticle }} {{ productType.singular }}</v-card-title>
-      <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      <v-form v-if="state == State.LOADED" ref="form" v-model="valid">
-        <v-card outlined>
+    <v-container>
+      <v-card outlined max-width="980px" class="mx-auto my-5">
+        <v-card-title
+          v-if="state == State.LOADED"
+          class="headline primary--text"
+        >Add {{ productType.indefArticle }} {{ productType.singular }}</v-card-title>
+        <v-alert v-if="error" type="error">{{ error }}</v-alert>
+        <v-form v-if="state == State.LOADED" ref="form" v-model="valid">
+          <v-divider></v-divider>
           <v-container fluid class="px-0">
             <v-row class="ma-0 px-0">
               <v-col order="1" cols="12" md="4">
@@ -101,8 +102,8 @@
                 ></v-textarea>
               </v-col>
             </v-row>
+            <v-divider></v-divider>
             <v-row justify="end" class="mx-2 mb-3 px-0">
-              <v-card outlined min-width="100%">
                 <v-card-text>Relations to other products</v-card-text>
                 <v-container fluid class="px-0">
                   <v-row class="mx-0 mb-3 px-0" v-for="(r, i) in form.relations" :key="i">
@@ -140,33 +141,33 @@
                     @click="addRelationField()"
                   >Add a field</v-btn>
                 </v-container>
-              </v-card>
             </v-row>
+            <v-divider></v-divider>
           </v-container>
-        </v-card>
-        <v-card-text></v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="close()">Cancel</v-btn>
-          <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
-          <v-btn color="primary" :disabled="!valid" @click="addProduct()">Add</v-btn>
-        </v-card-actions>
-      </v-form>
-      <div v-else>
-        <v-card outlined>
-          <div v-if="state == State.LOADING" class="mx-4 py-2">
-            <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
-          </div>
-          <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
-          <v-card-text v-else>Nothing to show here.</v-card-text>
-        </v-card>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="close()">Close</v-btn>
-        </v-card-actions>
-      </div>
-    </v-card>
-    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+          <v-card-text></v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="secondary" text @click="close()">Cancel</v-btn>
+            <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
+            <v-btn color="primary" :disabled="!valid" @click="addProduct()">Add</v-btn>
+          </v-card-actions>
+        </v-form>
+        <div v-else>
+          <v-card outlined>
+            <div v-if="state == State.LOADING" class="mx-4 py-2">
+              <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
+            </div>
+            <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
+            <v-card-text v-else>Nothing to show here.</v-card-text>
+          </v-card>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="secondary" text @click="close()">Close</v-btn>
+          </v-card-actions>
+        </div>
+      </v-card>
+      <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+    </v-container>
   </div>
 </template>
   
@@ -217,6 +218,7 @@ export default {
       productTypeItems: null,
       devtoolState: null,
       State: State,
+      step: 1,
       form: _.cloneDeep(formDefault),
       valid: true,
       error: null,
