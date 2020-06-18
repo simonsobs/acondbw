@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: "FormDateProduced",
+  name: "VTextFieldWithDatePicker",
   props: ["value", "label", "hint", "rules"],
   data() {
     return {

@@ -22,12 +22,12 @@
                 ></v-text-field>
               </v-col>
               <v-col order="3" cols="6" md="4">
-                <form-date-produced
+                <v-text-field-with-date-picker
                   label="Date produced (YYYY-MM-DD)*"
                   :hint="'The date on which the ' + productType.singular + ' was produced, e.g., 2020-05-06. This field cannot be changed later.'"
                   v-model="form.dateProduced"
                   :rules="requiredRules"
-                ></form-date-produced>
+                ></v-text-field-with-date-picker>
               </v-col>
               <v-col order="4" cols="6" md="4">
                 <v-text-field
@@ -159,7 +159,7 @@ import PRODUCT_TYPE from "@/graphql/ProductType.gql";
 import CREATE_PRODUCT from "@/graphql/CreateProduct.gql";
 import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
-import FormDateProduced from "@/components/FormDateProduced";
+import VTextFieldWithDatePicker from "@/components/VTextFieldWithDatePicker";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
@@ -184,7 +184,7 @@ const formDefault = {
 export default {
   name: "ProductAddForm",
   components: {
-    FormDateProduced,
+    VTextFieldWithDatePicker,
     DevToolLoadingStateOverridingMenu
   },
   props: {
