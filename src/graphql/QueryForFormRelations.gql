@@ -1,0 +1,29 @@
+query QueryForFormRelations {
+  allProductRelationTypes {
+    edges {
+      node {
+        id
+        typeId
+        singular
+      }
+    }
+  }
+  allProductTypes {
+    edges {
+      node {
+        id
+        typeId
+        singular
+        products {
+          edges {
+            node {
+              id
+              productId
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}
