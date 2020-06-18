@@ -27,7 +27,7 @@
         ></v-autocomplete>
       </v-col>
     </v-row>
-    <v-btn color="secondary" outlined text class="mx-2" @click="addRelationField()">Add a field</v-btn>
+    <v-btn color="secondary" outlined text class="mx-2" @click="addField()">Add a field</v-btn>
   </v-container>
 </template>
 
@@ -44,21 +44,19 @@ const formRelationDefault = {
 
 export default {
   name: "FormRelations",
-  props: [
-    "relations",
-  ],
+  props: ["relations"],
   data() {
     return {
       allProductRelationTypes: null,
       allProductTypes: null,
       queryError: null,
       relationTypeItems: null,
-      productTypeMap: null,
+      productTypeMap: {},
       productTypeItems: null
     };
   },
   methods: {
-    addRelationField() {
+    addField() {
       this.relations.push({ ...formRelationDefault });
     }
   },
