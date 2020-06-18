@@ -104,43 +104,43 @@
             </v-row>
             <v-divider></v-divider>
             <v-row justify="end" class="mx-2 mb-3 px-0">
-                <v-card-text>Relations to other products</v-card-text>
-                <v-container fluid class="px-0">
-                  <v-row class="mx-0 mb-3 px-0" v-for="(r, i) in form.relations" :key="i">
-                    <v-col cols="12" md="4">
-                      <v-autocomplete
-                        label="Relation type"
-                        :items="relationTypeItems"
-                        clearable
-                        v-model="r.typeId"
-                      ></v-autocomplete>
-                    </v-col>
-                    <v-col cols="12" md="4">
-                      <v-autocomplete
-                        label="Product type"
-                        :items="productTypeItems"
-                        clearable
-                        v-model="r.productTypeId"
-                      ></v-autocomplete>
-                    </v-col>
-                    <v-col cols="12" md="4">
-                      <v-autocomplete
-                        label="Product"
-                        :items="productTypeMap[r.productTypeId]"
-                        clearable
-                        hide-no-data
-                        v-model="r.productId"
-                      ></v-autocomplete>
-                    </v-col>
-                  </v-row>
-                  <v-btn
-                    color="secondary"
-                    outlined
-                    text
-                    class="mx-2"
-                    @click="addRelationField()"
-                  >Add a field</v-btn>
-                </v-container>
+              <v-card-text>Relations to other products</v-card-text>
+              <v-container fluid class="px-0">
+                <v-row class="mx-0 mb-3 px-0" v-for="(r, i) in form.relations" :key="i">
+                  <v-col cols="12" md="4">
+                    <v-autocomplete
+                      label="Relation type"
+                      :items="relationTypeItems"
+                      clearable
+                      v-model="r.typeId"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-autocomplete
+                      label="Product type"
+                      :items="productTypeItems"
+                      clearable
+                      v-model="r.productTypeId"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-autocomplete
+                      label="Product"
+                      :items="productTypeMap[r.productTypeId]"
+                      clearable
+                      hide-no-data
+                      v-model="r.productId"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+                <v-btn
+                  color="secondary"
+                  outlined
+                  text
+                  class="mx-2"
+                  @click="addRelationField()"
+                >Add a field</v-btn>
+              </v-container>
             </v-row>
             <v-divider></v-divider>
           </v-container>
@@ -171,7 +171,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import _ from "lodash";
 
 import QueryForProductAddForm from "@/graphql/QueryForProductAddForm.gql";
