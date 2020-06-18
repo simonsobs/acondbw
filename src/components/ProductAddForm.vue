@@ -209,8 +209,7 @@ export default {
         v => !!v || "This field is required",
         v => (v || "").indexOf(" ") < 0 || "No spaces are allowed"
       ],
-      requiredRules: [v => !!v || "This field is required"],
-      menuDateProducedDatePicker: false
+      requiredRules: [v => !!v || "This field is required"]
     };
   },
   computed: {
