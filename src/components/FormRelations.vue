@@ -32,6 +32,10 @@
 </template>
 
 <script>
+import _ from "lodash";
+
+import QueryForFormRelations from "@/graphql/QueryForFormRelations.gql";
+
 const formRelationDefault = {
   typeId: null,
   productTypeId: null,
@@ -42,16 +46,59 @@ export default {
   name: "FormRelations",
   props: [
     "relations",
-    "relationTypeItems",
-    "productTypeItems",
-    "productTypeMap"
   ],
   data() {
-    return {};
+    return {
+      allProductRelationTypes: null,
+      allProductTypes: null,
+      queryError: null,
+      relationTypeItems: null,
+      productTypeMap: null,
+      productTypeItems: null
+    };
   },
   methods: {
     addRelationField() {
       this.relations.push({ ...formRelationDefault });
+    }
+  },
+  apollo: {
+    allProductRelationTypes: {
+      query: QueryForFormRelations,
+      result(result) {
+        this.queryError = result.error ? result.error : null;
+
+        if (this.queryError) {
+          return;
+        }
+
+        this.allProductRelationTypes = result.data.allProductRelationTypes;
+        this.allProductTypes = result.data.allProductTypes;
+
+        this.relationTypeItems = this.allProductRelationTypes.edges.map(
+          ({ node }) => ({
+            text: node.singular,
+            value: node.typeId
+          })
+        );
+
+        this.productTypeItems = this.allProductTypes.edges.map(({ node }) => ({
+          text: node.singular,
+          value: node.typeId
+        }));
+
+        this.productTypeMap = _.reduce(
+          this.allProductTypes.edges,
+          (a, { node }) => ({
+            ...a,
+            [node.typeId]: node.products.edges.map(({ node }) => ({
+              text: node.name,
+              value: node.productId
+            }))
+          }),
+          {}
+        );
+      }
     }
   }
 };

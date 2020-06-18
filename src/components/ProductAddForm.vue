@@ -85,12 +85,7 @@
             <v-divider></v-divider>
             <v-row justify="end" class="mx-2 mb-3 px-0">
               <v-card-text>Relations to other products</v-card-text>
-              <form-relations
-                :relations="form.relations"
-                :relationTypeItems="relationTypeItems"
-                :productTypeItems="productTypeItems"
-                :productTypeMap="productTypeMap"
-              ></form-relations>
+              <form-relations :relations="form.relations"></form-relations>
             </v-row>
             <v-divider></v-divider>
           </v-container>
@@ -165,12 +160,7 @@ export default {
   data() {
     return {
       productType: null,
-      allProductRelationTypes: null,
-      allProductTypes: null,
       queryError: null,
-      relationTypeItems: null,
-      productTypeMap: null,
-      productTypeItems: null,
       devtoolState: null,
       State: State,
       step: 1,
@@ -221,32 +211,6 @@ export default {
         }
 
         this.productType = result.data.productType;
-        this.allProductRelationTypes = result.data.allProductRelationTypes;
-        this.allProductTypes = result.data.allProductTypes;
-
-        this.relationTypeItems = this.allProductRelationTypes.edges.map(
-          ({ node }) => ({
-            text: node.singular,
-            value: node.typeId
-          })
-        );
-
-        this.productTypeItems = this.allProductTypes.edges.map(({ node }) => ({
-          text: node.singular,
-          value: node.typeId
-        }));
-
-        this.productTypeMap = _.reduce(
-          this.allProductTypes.edges,
-          (a, { node }) => ({
-            ...a,
-            [node.typeId]: node.products.edges.map(({ node }) => ({
-              text: node.name,
-              value: node.productId
-            }))
-          }),
-          {}
-        );
       }
     }
   },
