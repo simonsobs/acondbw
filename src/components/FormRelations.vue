@@ -1,5 +1,15 @@
 <template>
   <v-container fluid class="px-0">
+    <v-row justify="end" class="mx-0">
+      <v-tooltip bottom open-delay="800">
+        <template v-slot:activator="{ on }">
+          <v-btn icon @click="refetch()" v-on="on">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </template>
+        <span>Refresh</span>
+      </v-tooltip>
+    </v-row>
     <v-row class="mx-0 mb-3 px-0" v-for="(r, i) in relations" :key="i">
       <v-col cols="12" md="4">
         <v-autocomplete
@@ -58,6 +68,9 @@ export default {
   methods: {
     addField() {
       this.relations.push({ ...formRelationDefault });
+    },
+    refetch() {
+      Object.values(this.$apollo.queries).forEach(query => query.refetch());
     }
   },
   apollo: {
