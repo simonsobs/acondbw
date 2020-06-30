@@ -104,7 +104,7 @@ import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
 export default {
-  name: "MapEditForm",
+  name: "ProductEditForm",
   components: {
     DevToolLoadingStateOverridingMenu
   },

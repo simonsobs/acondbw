@@ -68,10 +68,10 @@
                             </v-list-item-content>
                           </v-list-item>
                         </template>
-                        <MapEditForm
+                        <ProductEditForm
                           :productId="node.productId"
                           v-on:finished="editDialog = false; menu = false"
-                        ></MapEditForm>
+                        ></ProductEditForm>
                       </v-dialog>
                       <v-dialog v-model="deleteDialog" max-width="600">
                         <template v-slot:activator="{ on: deleteDialog }">
@@ -182,7 +182,7 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
 import PRODUCT from "@/graphql/Product.gql";
 
-import MapEditForm from "@/components/MapEditForm";
+import ProductEditForm from "@/components/ProductEditForm";
 import ProductDeleteForm from "@/components/ProductDeleteForm";
 
 import State from "@/utils/LoadingState.js";
@@ -191,7 +191,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateO
 export default {
   name: "ProductItemCard",
   components: {
-    MapEditForm,
+    ProductEditForm,
     ProductDeleteForm,
     DevToolLoadingStateOverridingMenu
   },
