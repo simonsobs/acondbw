@@ -1,18 +1,25 @@
 <template>
-  <div class="map-edit-form" style="position: relative;">
-    <v-card class="pa-5">
-      <v-card-title class="headline primary--text">Update the information about the map</v-card-title>
-      <v-card-text>This form is for updating the information about the map. If the map itself has been updated, a new entry should be added.</v-card-text>
-      <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      <v-form v-if="state == State.LOADED" ref="form" v-model="valid">
-        <v-card outlined>
+  <div class="product-edit-form" style="position: relative;">
+    <v-container>
+      <v-card outlined max-width="980px" class="mx-auto my-5">
+        <v-card-title
+          v-if="state == State.LOADED"
+          class="headline primary--text"
+        >Update the information about the {{ productType.singular }}</v-card-title>
+        <v-card-text
+          v-if="state == State.LOADED"
+        >This form is for updating the information about the {{ productType.singular }}. If the {{ productType.singular }} itself has been updated, a new entry should be added.</v-card-text>
+        <v-alert v-if="error" type="error">{{ error }}</v-alert>
+        <v-form v-if="state == State.LOADED" ref="form" v-model="valid">
+          <v-divider></v-divider>
           <v-container fluid class="px-0">
             <v-row class="ma-0 px-0">
               <v-col order="1" cols="12" md="4">
                 <v-text-field
                   label="Name"
                   readonly
-                  hint="Name of the map. This field cannot be changed."
+                  disabled
+                  :hint="'Name of the ' + productType.singular + '. This field cannot be changed later.'"
                   persistent-hint
                   v-model="node.name"
                 ></v-text-field>
@@ -21,7 +28,7 @@
                 <v-text-field
                   label="Contact*"
                   required
-                  hint="A person or group that can be contacted for questions or issues about the map."
+                  :hint="'A person or group that can be contacted for questions or issues about the ' + productType.singular + '.'"
                   persistent-hint
                   v-model="form.contact"
                   :rules="requiredRules"
@@ -42,7 +49,7 @@
               <v-col cols="12" md="8" offset-md="4">
                 <v-textarea
                   label="Paths"
-                  hint="A path per line. e.g., nersc:/go/to/my/maps_v3"
+                  hint="A path per line. e.g., nersc:/go/to/my/product_v3"
                   rows="2"
                   persistent-hint
                   v-model="form.paths"
@@ -58,47 +65,46 @@
                 ></v-textarea>
               </v-col>
             </v-row>
+            <v-divider></v-divider>
+            <v-row justify="end" class="mx-2 mb-3 px-0">
+              <v-card-text>Relations to other products</v-card-text>
+              <form-relations :relations="form.relations"></form-relations>
+            </v-row>
+            <v-divider></v-divider>
           </v-container>
-        </v-card>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-          <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
-          <v-btn color="primary" :disabled="!(valid && changed)" @click="editMap()">Update</v-btn>
-        </v-card-actions>
-      </v-form>
-      <div v-else>
-        <v-card outlined>
-          <div v-if="state == State.LOADING" class="mx-4 py-2">
-            <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
-          </div>
-          <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
-          <v-card-text v-else>Nothing to show here.</v-card-text>
-        </v-card>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="$emit('finished')">Close</v-btn>
-        </v-card-actions>
-      </div>
-      <v-dialog v-model="dialogSuccess" max-width="500px">
-        <v-card>
-          <v-card-title class="success--text">Updated</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text @click="closeDialogSuccess()">Close</v-btn>
+            <v-btn color="secondary" text @click="close()">Cancel</v-btn>
+            <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
+            <v-btn color="primary" :disabled="!(valid && changed)" @click="editProduct()">Update</v-btn>
           </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-card>
-    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+        </v-form>
+        <div v-else>
+          <v-card outlined>
+            <div v-if="state == State.LOADING" class="mx-4 py-2">
+              <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
+            </div>
+            <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
+            <v-card-text v-else>Nothing to show here.</v-card-text>
+          </v-card>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="secondary" text @click="close()">Close</v-btn>
+          </v-card-actions>
+        </div>
+      </v-card>
+      <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+    </v-container>
   </div>
 </template>
 
 <script>
-import gql from "graphql-tag";
+import _ from "lodash";
+
 import PRODUCT from "@/graphql/Product.gql";
-import ALL_MAPS from "@/graphql/AllMaps.gql";
-import PRODUCT_FRAGMENT from "@/graphql/ProductFragment.gql";
+import UPDATE_PRODUCT from "@/graphql/UpdateProduct.gql";
+
+import FormRelations from "@/components/FormRelations";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
@@ -106,6 +112,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateO
 export default {
   name: "ProductEditForm",
   components: {
+    FormRelations,
     DevToolLoadingStateOverridingMenu
   },
   props: {
@@ -113,11 +120,11 @@ export default {
   },
   data() {
     return {
+      productType: null,
       node: null,
       form: null,
       valid: true,
       error: null,
-      dialogSuccess: false,
       requiredRules: [v => !!v || "This field is required"],
       devtoolState: null,
       State: State
@@ -125,7 +132,7 @@ export default {
   },
   computed: {
     changed() {
-      return !(JSON.stringify(this.form) === JSON.stringify(this.formDefault))
+      return !(JSON.stringify(this.form) === JSON.stringify(this.formDefault));
     },
     state() {
       if (this.devtoolState) {
@@ -147,15 +154,15 @@ export default {
     },
     formDefault() {
       if (this.node) {
-        const ret = (({ name, contact, updatedBy, note }) => ({
-          name,
-          contact,
-          updatedBy,
-          note
-        }))(this.node);
-        ret.paths = this.node.paths.edges
-          .product(e => e.node.path)
-          .join("\n");
+        const ret = _.pick(this.node, ["name", "contact", "updatedBy", "note"]);
+        ret.paths = this.node.paths.edges.map(e => e.node.path).join("\n");
+        ret.relations = this.node.relations.edges.map(function(e) {
+          return {
+            typeId: e.node.type_.typeId,
+            productTypeId: e.node.other.type_.typeId,
+            productId: e.node.other.productId
+          };
+        });
         return ret;
       } else {
         return null;
@@ -164,8 +171,7 @@ export default {
   },
   watch: {
     formDefault: function() {
-      this.form = { ...this.formDefault };
-      console.log(this.form);
+      this.form = _.cloneDeep(this.formDefault);
     }
   },
   apollo: {
@@ -178,53 +184,63 @@ export default {
       },
       update: data => data.product,
       result(result) {
-        this.error = null;
-        if (result.error) {
-          this.error = true;
-        }
+        this.error = result.error ? result.error : null;
+        this.productType = result.data.product.type_;
       }
     }
   },
   methods: {
+    scrollToTop() {
+      document.getElementsByClassName("v-dialog--active")[0].scrollTop = 0;
+    },
+    close() {
+      this.scrollToTop();
+      this.$emit("finished");
+    },
     resetForm() {
       // this.$refs.form.reset();
       // This line is commented out because it resets "form" to
       // the empty object {}.
       // Instead, the following two lines are used.
-      this.form = { ...this.formDefault };
+      this.form = _.cloneDeep(this.formDefault);
       this.$refs.form.resetValidation();
       this.error = null;
     },
-    async editMap() {
+    async editProduct() {
       try {
-        const updateProductInput = (({ contact, updatedBy, note }) => ({
-          contact,
-          updatedBy,
-          note
-        }))(this.form);
+        const updateProductInput = _.pick(this.form, [
+          "contact",
+          "updatedBy",
+          "note"
+        ]);
+
+        updateProductInput.paths = this.form.paths
+          .split("\n")
+          .map(x => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
+          .filter(Boolean) // remove empty strings
+          .filter((v, i, a) => a.indexOf(v) === i); // unique
+
+        updateProductInput.relations = _.filter(
+          _.map(this.form.relations, x =>
+            _.pickBy(_.pick(x, ["typeId", "productId"]), _.identity)
+          ),
+          x => _.size(x) == 2
+        );
+
         const data = await this.$apollo.mutate({
-          mutation: gql`
-            mutation($productId: Int!, $input: UpdateProductInput!) {
-              updateProduct(productId: $productId, input: $input) {
-                ok
-                product {
-                  ...productFragment
-                }
-              }
-            }
-            ${PRODUCT_FRAGMENT}
-          `,
-          variables: { productId: this.node.productId, input: updateProductInput }
+          mutation: UPDATE_PRODUCT,
+          variables: {
+            productId: this.node.productId,
+            input: updateProductInput
+          }
         });
-        this.dialogSuccess = true;
+        this.$store.dispatch("snackbarMessage", "Updated");
+        this.resetForm();
+        this.close();
       } catch (error) {
         this.error = error;
+        this.scrollToTop();
       }
-    },
-    closeDialogSuccess() {
-      this.dialogSuccess = false;
-      this.resetForm();
-      this.$emit("finished");
     }
   }
 };

@@ -57,7 +57,12 @@
                       </v-btn>
                     </template>
                     <v-list dense>
-                      <v-dialog v-model="editDialog" persistent max-width="980">
+                      <v-dialog
+                        v-model="editDialog"
+                        persistent
+                        fullscreen
+                        transition="dialog-bottom-transition"
+                      >
                         <template v-slot:activator="{ on: editDialog }">
                           <v-list-item :disabled="disableEdit" v-on="{ ...editDialog }">
                             <v-list-item-icon>
@@ -68,10 +73,21 @@
                             </v-list-item-content>
                           </v-list-item>
                         </template>
-                        <ProductEditForm
-                          :productId="node.productId"
-                          v-on:finished="editDialog = false; menu = false"
-                        ></ProductEditForm>
+                        <v-card>
+                          <v-app-bar
+                            dense
+                            color="secondary"
+                            style="position: sticky; top: 0; z-index: 999;"
+                          >
+                            <v-btn icon dark @click=" menu = false; editDialog = false">
+                              <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                          </v-app-bar>
+                          <ProductEditForm
+                            :productId="node.productId"
+                            v-on:finished="menu = false; editDialog = false"
+                          ></ProductEditForm>
+                        </v-card>
                       </v-dialog>
                       <v-dialog v-model="deleteDialog" max-width="600">
                         <template v-slot:activator="{ on: deleteDialog }">
