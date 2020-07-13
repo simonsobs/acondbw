@@ -156,7 +156,7 @@ export default {
     edges: {
       query: ALL_PRODUCTS_BY_TYPE_ID,
       variables() {
-        return { typeId: this.productTypeId };
+        return { typeId: this.productTypeId, sort: ["DATE_POSTED_DESC"] };
       },
       update: data => (data.allProducts ? data.allProducts.edges : null),
       skip: function() {
