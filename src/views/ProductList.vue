@@ -1,18 +1,6 @@
 <template>
   <div class="product-list" style="position: relative;">
-    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
-    <div v-if="state == State.LOADING" class="mx-2 pt-5">
-      <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
-    </div>
-    <div v-else-if="state == State.ERROR" class="mx-2 pt-5">
-      <v-alert
-        v-if="queryProductTypeError"
-        type="error"
-        style="max-width: 980px;"
-      >{{ queryProductTypeError }}</v-alert>
-      <v-alert v-if="error" type="error" style="max-width: 980px;">{{ error }}</v-alert>
-    </div>
-    <div v-else-if="state == State.LOADED || state == State.EMPTY">
+    <div v-if="state == State.LOADED || state == State.EMPTY">
       <v-container fluid class="pa-0">
         <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
           <v-tooltip bottom open-delay="800">
@@ -95,9 +83,21 @@
         </v-card>
       </div>
     </div>
+    <div v-else-if="state == State.LOADING" class="mx-2 pt-5">
+      <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
+    </div>
+    <div v-else-if="state == State.ERROR" class="mx-2 pt-5">
+      <v-alert
+        v-if="queryProductTypeError"
+        type="error"
+        style="max-width: 980px;"
+      >{{ queryProductTypeError }}</v-alert>
+      <v-alert v-if="error" type="error" style="max-width: 980px;">{{ error }}</v-alert>
+    </div>
     <div v-else class="mx-2 pt-5">
       <!-- state = State.NONE -->
     </div>
+    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
   </div>
 </template>
 
