@@ -1,7 +1,7 @@
 #import "./ProductFragment.gql"
 
-query allProductsByTypeId($typeId: Int) {
-  allProducts(filters: { typeId: $typeId }, sort: DATE_POSTED_DESC) {
+query allProductsByTypeId($typeId: Int, $sort: [ProductSortEnum] = [DATE_POSTED_DESC]) {
+  allProducts(filters: { typeId: $typeId }, sort: $sort) {
     edges {
       node {
         ...productFragment
