@@ -2,7 +2,12 @@
   <div class="product-list" style="position: relative;">
     <div v-if="state == State.LOADED || state == State.EMPTY">
       <v-container fluid class="pa-0">
-        <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
+        <v-row
+          align="center"
+          justify="space-between"
+          class="ma-0 px-0 pt-3 pb-1"
+          style="max-width: 980px;"
+        >
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
               <v-btn
@@ -15,49 +20,81 @@
             </template>
             <span>Refresh</span>
           </v-tooltip>
-          <v-spacer></v-spacer>
-          <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
-                <v-icon>
-                  {{
-                  areAllCardsCollapsed
-                  ? "mdi-unfold-more-horizontal"
-                  : "mdi-unfold-less-horizontal"
-                  }}
-                </v-icon>
-              </v-btn>
-            </template>
-            <span>
-              {{
-              areAllCardsCollapsed ? "Expand all" : "Collapse all"
-              }}
-            </span>
-          </v-tooltip>
-          <v-dialog v-model="dialog" persistent fullscreen transition="dialog-bottom-transition">
-            <template v-slot:activator="{ on: dialog }">
-              <v-tooltip bottom open-delay="800">
-                <template v-slot:activator="{ on: toolip }">
-                  <v-btn :disabled="disableAdd" icon v-on="{ ...toolip, ...dialog }">
-                    <v-icon>mdi-plus-thick</v-icon>
-                  </v-btn>
-                </template>
-                <span>Add {{ productType.indefArticle }} {{ productType.singular }}</span>
-              </v-tooltip>
-            </template>
-            <v-card>
-              <v-app-bar dense color="secondary" style="position: sticky; top: 0; z-index: 999;">
-                <v-btn icon dark @click="dialog = false">
-                  <v-icon>mdi-close</v-icon>
+          <div></div>
+          <div></div>
+          <div v-if="state == State.LOADED">
+            <v-tooltip bottom open-delay="800">
+              <template v-slot:activator="{ on: tooltip }">
+                <v-menu left offset-y>
+                  <template v-slot:activator="{ on: menu }">
+                    <v-btn icon v-on="{ ...tooltip, ...menu}">
+                      <v-icon>mdi-sort-variant</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list flat dense>
+                    <v-subheader>Sort</v-subheader>
+                    <v-list-item-group v-model="sortItem" color="primary">
+                      <v-list-item v-for="(item, i) in sortItems" :key="i">
+                        <v-list-item-icon>
+                          <v-icon v-if="i == sortItem">mdi-check</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title v-text="item.text"></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
+                </v-menu>
+              </template>
+              <span>Sort</span>
+            </v-tooltip>
+          </div>
+          <div>
+          <span v-if="state == State.LOADED">
+            <v-tooltip bottom open-delay="800">
+              <template v-slot:activator="{ on }">
+                <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
+                  <v-icon>
+                    {{
+                    areAllCardsCollapsed
+                    ? "mdi-unfold-more-horizontal"
+                    : "mdi-unfold-less-horizontal"
+                    }}
+                  </v-icon>
                 </v-btn>
-              </v-app-bar>
-              <component
-                :is="productAddForm"
-                :productTypeId="productType.typeId"
-                v-on:finished="dialog = false"
-              ></component>
-            </v-card>
-          </v-dialog>
+              </template>
+              <span>
+                {{
+                areAllCardsCollapsed ? "Expand all" : "Collapse all"
+                }}
+              </span>
+            </v-tooltip>
+          </span>
+            <v-dialog v-model="dialog" persistent fullscreen transition="dialog-bottom-transition">
+              <template v-slot:activator="{ on: dialog }">
+                <v-tooltip bottom open-delay="800">
+                  <template v-slot:activator="{ on: tooltip }">
+                    <v-btn :disabled="disableAdd" icon v-on="{ ...tooltip, ...dialog }">
+                      <v-icon>mdi-plus-thick</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Add {{ productType.indefArticle }} {{ productType.singular }}</span>
+                </v-tooltip>
+              </template>
+              <v-card>
+                <v-app-bar dense color="secondary" style="position: sticky; top: 0; z-index: 999;">
+                  <v-btn icon dark @click="dialog = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-app-bar>
+                <component
+                  :is="productAddForm"
+                  :productTypeId="productType.typeId"
+                  v-on:finished="dialog = false"
+                ></component>
+              </v-card>
+            </v-dialog>
+          </div>
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
@@ -135,6 +172,13 @@ export default {
       dialog: false,
       edges: null,
       error: null,
+      sortItem: 0,
+      sortItems: [
+        { text: "Recently produced", value: "DATE_PRODUCED_DESC" },
+        { text: "Recently posted", value: "DATE_POSTED_DESC" },
+        { text: "Recently updated", value: "DATE_UPDATED_DESC" },
+        { text: "Name", value: "NAME_ASC" }
+      ],
       isCardCollapsed: {},
       devtoolState: null,
       State: State
@@ -156,11 +200,11 @@ export default {
     edges: {
       query: ALL_PRODUCTS_BY_TYPE_ID,
       variables() {
-        return { typeId: this.productTypeId, sort: ["DATE_POSTED_DESC"] };
+        return { typeId: this.productTypeId, sort: [this.sort] };
       },
       update: data => (data.allProducts ? data.allProducts.edges : null),
       skip: function() {
-        return !this.productTypeId;
+        return !this.productTypeId || !this.sort;
       },
       result(result) {
         this.error = result.error ? result.error : null;
@@ -192,6 +236,9 @@ export default {
         this.$apollo.queries.edges.loading ||
         this.$apollo.queries.productType.loading
       );
+    },
+    sort() {
+      return this.sortItems[this.sortItem].value;
     },
     areAllCardsCollapsed: {
       get: function() {
