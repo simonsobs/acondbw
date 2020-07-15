@@ -169,7 +169,6 @@ export default {
     return {
       productType: null,
       dialog: false,
-      edges: null,
       error: null,
       sortItem: 0,
       sortItems: [
@@ -194,11 +193,13 @@ export default {
       },
       result(result) {
         this.error = result.error ? result.error : null;
-        this.edges = result.data.productType.products.edges
       }
     }
   },
   computed: {
+    edges() {
+      return this.productType ? this.productType.products.edges : null;
+    },
     state() {
       if (this.devtoolState) {
         return this.devtoolState;
