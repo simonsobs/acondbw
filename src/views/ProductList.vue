@@ -20,8 +20,12 @@
             </template>
             <span>Refresh</span>
           </v-tooltip>
-          <div></div>
-          <div></div>
+          <div>
+            <span v-if="state == State.LOADED" class="secondary--text">
+              <span v-if="productType.products.totalCount == 1">1 {{ productType.singular }}</span>
+              <span v-else>{{ productType.products.totalCount }} {{ productType.plural }}</span>
+            </span>
+          </div>
           <div v-if="state == State.LOADED">
             <v-tooltip bottom open-delay="800">
               <template v-slot:activator="{ on: tooltip }">
