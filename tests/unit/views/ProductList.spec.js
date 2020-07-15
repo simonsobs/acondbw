@@ -23,9 +23,6 @@ describe("ProductList.vue", () => {
             productType: {
               loading: loading,
             },
-            edges: {
-              loading: loading,
-            },
           },
         },
       },
@@ -36,19 +33,10 @@ describe("ProductList.vue", () => {
       stubs: {
         ProductItemCard: true,
         ProductAddForm: true,
-        "transition-group": true
+        "transition-group": true,
       },
     });
   }
-
-  const productType = {
-    id: "UHJvZHVjdFR5cGU6MQ==",
-    typeId: "1",
-    name: "map",
-    singular: "map",
-    plural: "maps",
-    indefArticle: "a",
-  };
 
   const edges = [
     {
@@ -74,6 +62,19 @@ describe("ProductList.vue", () => {
     },
   ];
 
+  const productType = {
+    id: "UHJvZHVjdFR5cGU6MQ==",
+    typeId: "1",
+    name: "map",
+    singular: "map",
+    plural: "maps",
+    indefArticle: "a",
+    products: {
+      totalCount: 3,
+      edges: edges,
+    },
+  };
+
   beforeEach(function() {
     localVue = createLocalVue();
   });
@@ -82,7 +83,6 @@ describe("ProductList.vue", () => {
     const wrapper = createWrapper();
     wrapper.setData({
       productType: productType,
-      edges: edges,
     });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
@@ -107,8 +107,7 @@ describe("ProductList.vue", () => {
   it("none", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      productType: productType,
-      edges: [],
+      productType: { ...productType, ...{ products: { edges: [] } } },
     });
     await Vue.nextTick();
     expect(wrapper.text()).toContain("Empty. No maps are found.");
