@@ -12,7 +12,7 @@
             <template v-slot:activator="{ on }">
               <v-btn
                 icon
-                @click="$apollo.queries.edges.refetch(); areAllCardsCollapsed = true"
+                @click="$apollo.queries.productType.refetch(); areAllCardsCollapsed = true"
                 v-on="on"
               >
                 <v-icon>mdi-refresh</v-icon>
@@ -168,7 +168,6 @@ export default {
   data() {
     return {
       productType: null,
-      queryProductTypeError: null,
       dialog: false,
       edges: null,
       error: null,
@@ -188,26 +187,14 @@ export default {
     productType: {
       query: QueryForProductList,
       variables() {
-        return { typeId: this.productTypeId };
-      },
-      skip: function() {
-        return !this.productTypeId;
-      },
-      result(result) {
-        this.queryProductTypeError = result.error ? result.error : null;
-      }
-    },
-    edges: {
-      query: ALL_PRODUCTS_BY_TYPE_ID,
-      variables() {
         return { typeId: this.productTypeId, sort: [this.sort] };
       },
-      update: data => (data.allProducts ? data.allProducts.edges : null),
       skip: function() {
         return !this.productTypeId || !this.sort;
       },
       result(result) {
         this.error = result.error ? result.error : null;
+        this.edges = result.data.productType.products.edges
       }
     }
   },
@@ -219,7 +206,7 @@ export default {
 
       if (this.loading) {
         return State.LOADING;
-      } else if (this.error || this.queryProductTypeError) {
+      } else if (this.error) {
         return State.ERROR;
       } else if (this.edges) {
         if (this.edges.length) {
@@ -233,7 +220,6 @@ export default {
     },
     loading() {
       return (
-        this.$apollo.queries.edges.loading ||
         this.$apollo.queries.productType.loading
       );
     },
