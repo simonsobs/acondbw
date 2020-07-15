@@ -54,26 +54,26 @@
             </v-tooltip>
           </div>
           <div>
-          <span v-if="state == State.LOADED">
-            <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on }">
-                <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
-                  <v-icon>
-                    {{
-                    areAllCardsCollapsed
-                    ? "mdi-unfold-more-horizontal"
-                    : "mdi-unfold-less-horizontal"
-                    }}
-                  </v-icon>
-                </v-btn>
-              </template>
-              <span>
-                {{
-                areAllCardsCollapsed ? "Expand all" : "Collapse all"
-                }}
-              </span>
-            </v-tooltip>
-          </span>
+            <span v-if="state == State.LOADED">
+              <v-tooltip bottom open-delay="800">
+                <template v-slot:activator="{ on }">
+                  <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
+                    <v-icon>
+                      {{
+                      areAllCardsCollapsed
+                      ? "mdi-unfold-more-horizontal"
+                      : "mdi-unfold-less-horizontal"
+                      }}
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <span>
+                  {{
+                  areAllCardsCollapsed ? "Expand all" : "Collapse all"
+                  }}
+                </span>
+              </v-tooltip>
+            </span>
             <v-dialog v-model="dialog" persistent fullscreen transition="dialog-bottom-transition">
               <template v-slot:activator="{ on: dialog }">
                 <v-tooltip bottom open-delay="800">
@@ -224,9 +224,7 @@ export default {
       }
     },
     loading() {
-      return (
-        this.$apollo.queries.productType.loading
-      );
+      return this.$apollo.queries.productType.loading;
     },
     sort() {
       return this.sortItems[this.sortItem].value;
