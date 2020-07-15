@@ -147,7 +147,7 @@ import ProductAddForm from "@/components/ProductAddForm";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
 
-import PRODUCT_TYPE from "@/graphql/ProductType.gql";
+import QueryForProductList from "@/graphql/QueryForProductList.gql";
 import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 export default {
@@ -186,7 +186,7 @@ export default {
   },
   apollo: {
     productType: {
-      query: PRODUCT_TYPE,
+      query: QueryForProductList,
       variables() {
         return { typeId: this.productTypeId };
       },
