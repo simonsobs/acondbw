@@ -1,0 +1,7 @@
+#import "./ProductTypeFragment.gql"
+
+query QueryForProductList($typeId: Int) {
+  productType(typeId: $typeId) {
+    ...productTypeFragment
+  }
+}
