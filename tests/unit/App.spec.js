@@ -11,8 +11,6 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("App.vue", () => {
-  const ENV_ORG = process.env;
-
   let localVue;
   let vuetify;
   let actions;
@@ -20,8 +18,6 @@ describe("App.vue", () => {
   let wrapper;
 
   beforeEach(() => {
-    process.env.VUE_APP_TOOLBAR_TITLE = "Product DB Title";
-    process.env.VUE_APP_GRAPHQL_HTTP = "http://graphql.api:5000/graphql";
     localVue = createLocalVue();
     localVue.use(Vuex);
     vuetify = new Vuetify();
@@ -40,10 +36,6 @@ describe("App.vue", () => {
       store,
       stubs: ["router-link", "router-view"],
     });
-  });
-
-  afterEach(() => {
-    process.env = ENV_ORG;
   });
 
   it("match snapshot", () => {
