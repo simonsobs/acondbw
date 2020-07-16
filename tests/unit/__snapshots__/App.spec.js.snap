@@ -60,13 +60,13 @@ exports[`App.vue match snapshot 1`] = `
       </v-list-stub>
     </v-menu-stub>
   </v-app-bar-stub>
-  <v-content-stub tag="main">
+  <v-main-stub tag="main">
     <transition-stub name="fade-app-across" mode="out-in">
       <keep-alive-stub>
         <router-view-stub></router-view-stub>
       </keep-alive-stub>
     </transition-stub>
-  </v-content-stub>
+  </v-main-stub>
   <v-snackbar-stub color="secondary" tag="div" bottom="true" left="true" contentclass="" timeout="5000" transition="v-snack-transition">
 
     <v-btn-stub tag="button" activeclass="" icon="true" type="button">

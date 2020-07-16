@@ -55,13 +55,13 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
           <router-view :key="$route.fullPath"></router-view>
         </keep-alive>
       </transition>
-    </v-content>
+    </v-main>
     <v-snackbar :timeout="5000" left bottom color="secondary" v-model="$store.state.snackbar">
       {{ $store.state.snackbarMessage }}
       <v-btn icon @click="$store.dispatch('closeSnackbar')">
