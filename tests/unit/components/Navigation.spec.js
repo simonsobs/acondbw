@@ -60,6 +60,15 @@ describe("App.vue", () => {
       localVue,
       vuetify,
       router,
+      mocks: {
+        $apollo: {
+          queries: {
+            edges: {
+              loading: false,
+            },
+          },
+        },
+      },
     });
     wrapper.setData({
       edges: edges,
@@ -69,5 +78,4 @@ describe("App.vue", () => {
   it("match snapshot", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
-
 });
