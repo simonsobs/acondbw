@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProductTop.vue match snapshot item 1`] = `
-<div class="product-top" style="position: relative;">
-  <v-container-stub tag="div" fluid="true">
+<v-container-stub tag="div" fluid="true">
+  <div class="product-top" style="position: relative;">
     <!---->
     <v-row-stub tag="div" class="mx-1 mt-3">
       <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
@@ -15,14 +15,14 @@ exports[`ProductTop.vue match snapshot item 1`] = `
         <router-view-stub producttypeid="1"></router-view-stub>
       </keep-alive-stub>
     </transition-stub>
-  </v-container-stub>
-  <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
-</div>
+    <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
+  </div>
+</v-container-stub>
 `;
 
 exports[`ProductTop.vue match snapshot list 1`] = `
-<div class="product-top" style="position: relative;">
-  <v-container-stub tag="div" fluid="true">
+<v-container-stub tag="div" fluid="true">
+  <div class="product-top" style="position: relative;">
     <!---->
     <v-row-stub tag="div" class="mx-1 mt-3">
       <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
@@ -35,7 +35,7 @@ exports[`ProductTop.vue match snapshot list 1`] = `
         <router-view-stub producttypeid="1"></router-view-stub>
       </keep-alive-stub>
     </transition-stub>
-  </v-container-stub>
-  <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
-</div>
+    <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
+  </div>
+</v-container-stub>
 `;

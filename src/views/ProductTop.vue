@@ -1,6 +1,6 @@
 <template>
-  <div class="product-top" style="position: relative;">
-    <v-container fluid>
+  <v-container fluid>
+    <div class="product-top" style="position: relative;">
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <v-row class="mx-1 mt-3" style="max-width: 980px;">
         <v-col v-if="state == State.LOADED" col="8" class="display-1 primary--text pa-0 ma-0">
@@ -31,9 +31,9 @@
           <router-view :key="$route.fullPath" :productTypeId="node ? node.typeId : null"></router-view>
         </keep-alive>
       </transition>
-    </v-container>
-    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
-  </div>
+      <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+    </div>
+  </v-container>
 </template>
 
 <script>
