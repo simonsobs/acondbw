@@ -11,52 +11,17 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("App.vue", () => {
+  const ENV_ORG = process.env;
+
   let localVue;
   let vuetify;
   let actions;
   let store;
   let wrapper;
 
-  const edges = [
-    {
-      node: {
-        id: "UHJvZHVjdFR5cGU6Mw==",
-        typeId: "3",
-        name: "simulation",
-        order: 1,
-        indefArticle: "a",
-        singular: "simulation",
-        plural: "simulations",
-        icon: "mdi-creation",
-      },
-    },
-    {
-      node: {
-        id: "UHJvZHVjdFR5cGU6MQ==",
-        typeId: "1",
-        name: "map",
-        order: 2,
-        indefArticle: "a",
-        singular: "map",
-        plural: "maps",
-        icon: "mdi-map",
-      },
-    },
-    {
-      node: {
-        id: "UHJvZHVjdFR5cGU6Mg==",
-        typeId: "2",
-        name: "beam",
-        order: 3,
-        indefArticle: "a",
-        singular: "beam",
-        plural: "beams",
-        icon: "mdi-spotlight-beam",
-      },
-    },
-  ];
-
   beforeEach(() => {
+    process.env.VUE_APP_TOOLBAR_TITLE = "Product DB Title";
+    process.env.VUE_APP_GRAPHQL_HTTP = "http://graphql.api:5000/graphql";
     localVue = createLocalVue();
     localVue.use(Vuex);
     vuetify = new Vuetify();
@@ -65,7 +30,7 @@ describe("App.vue", () => {
       actions,
       state: {
         snackbar: false,
-        snackbarMessage: null
+        snackbarMessage: null,
       },
     });
     wrapper = shallowMount(App, {
@@ -75,9 +40,10 @@ describe("App.vue", () => {
       store,
       stubs: ["router-link", "router-view"],
     });
-    wrapper.setData({
-      edges: edges,
-    });
+  });
+
+  afterEach(() => {
+    process.env = ENV_ORG;
   });
 
   it("match snapshot", () => {

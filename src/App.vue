@@ -1,22 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" app clipped>
-      <v-list shaped>
-        <v-list-item
-          link
-          router
-          v-for="edge in edges"
-          :key="edge.node.typeId"
-          :to="'/' + edge.node.name"
-        >
-          <v-list-item-action>
-            <v-icon v-text="edge.node.icon"></v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="edge.node.plural" class="capitalize"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <navigation></navigation>
     </v-navigation-drawer>
     <v-app-bar app dense clipped-left>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
@@ -72,31 +57,22 @@
 </template>
 
 <script>
-import ALL_PRODUCTS_TYPES from "@/graphql/AllProductTypes.gql";
+import Navigation from "@/components/Navigation";
 
 export default {
   name: "App",
+  components: {
+    Navigation
+  },
   data: () => ({
     title: process.env.VUE_APP_TOOLBAR_TITLE,
     graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP,
     drawer: null,
-    edges: null,
-    error: null,
     transitionName: "fade-app-across",
     transitionMode: "out-in"
   }),
   created() {
     this.$vuetify.theme.dark = false;
-  },
-  apollo: {
-    edges: {
-      query: ALL_PRODUCTS_TYPES,
-      update: data =>
-        data.allProductTypes ? data.allProductTypes.edges : null,
-      result(result) {
-        this.error = result.error ? result.error : null;
-      }
-    }
   },
   watch: {
     $route(to, from) {
