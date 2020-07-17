@@ -101,19 +101,22 @@ export default {
           mutation: DELETE_PRODUCT,
           variables: { productId: this.node.productId },
           update: (cache, { data: { deleteProduct } }) => {
-            const data = cache.readQuery({
-              query: ALL_PRODUCTS_BY_TYPE_ID,
-              variables: { typeId: this.node.type_.typeId }
-            });
-            const index = data.allProducts.edges.findIndex(
-              e => e.node.productId == this.node.productId
-            );
-            data.allProducts.edges.splice(index, 1);
-            cache.writeQuery({
-              query: ALL_PRODUCTS_BY_TYPE_ID,
-              variables: { typeId: this.node.type_.typeId },
-              data
-            });
+            try {
+              const data = cache.readQuery({
+                query: ALL_PRODUCTS_BY_TYPE_ID,
+                variables: { typeId: this.node.type_.typeId }
+              });
+              const index = data.allProducts.edges.findIndex(
+                e => e.node.productId == this.node.productId
+              );
+              data.allProducts.edges.splice(index, 1);
+              cache.writeQuery({
+                query: ALL_PRODUCTS_BY_TYPE_ID,
+                variables: { typeId: this.node.type_.typeId },
+                data
+              });
+            } catch (error) {
+            }
           }
         });
         this.$store.dispatch("snackbarMessage", "Deleted");
