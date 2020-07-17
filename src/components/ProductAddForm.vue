@@ -264,23 +264,32 @@ export default {
           variables: { input: createProductInput },
           update: (cache, { data: { createProduct } }) => {
             try {
-              const data = cache.readQuery({
-                query: ALL_PRODUCTS_BY_TYPE_ID,
-                variables: { typeId: this.productTypeId }
-              });
-              data.allProducts.edges.splice(0, 0, {
-                node: createProduct.product,
-                __typename: "ProductEdge"
-              });
-              cache.writeQuery({
-                query: ALL_PRODUCTS_BY_TYPE_ID,
-                variables: { typeId: this.productTypeId },
-                data
-              });
+              // Delete all cache and dispacth "apolloMutationCalled", which triggers refetch
+              this.$apollo.provider.defaultClient.cache.data.data = {}
+
+              // The following code was used to update cache, which 
+              // is typically a recommended way. But it is commented out
+              // because it is not clear how to systematically update 
+              // all affected cache.
+
+              // const data = cache.readQuery({
+              //   query: ALL_PRODUCTS_BY_TYPE_ID,
+              //   variables: { typeId: this.productTypeId }
+              // });
+              // data.allProducts.edges.splice(0, 0, {
+              //   node: createProduct.product,
+              //   __typename: "ProductEdge"
+              // });
+              // cache.writeQuery({
+              //   query: ALL_PRODUCTS_BY_TYPE_ID,
+              //   variables: { typeId: this.productTypeId },
+              //   data
+              // });
             } catch (error) {
             }
           }
         });
+        this.$store.dispatch("apolloMutationCalled");
         this.$store.dispatch("snackbarMessage", "Added");
         this.resetForm();
         this.close();

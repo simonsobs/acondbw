@@ -46,6 +46,7 @@ describe("ProductAddForm.vue", () => {
     vuetify = new Vuetify();
 
     actions = {
+      apolloMutationCalled: jest.fn(),
       snackbarMessage: jest.fn(),
     };
     store = new Vuex.Store({
@@ -108,6 +109,7 @@ describe("ProductAddForm.vue", () => {
       input: expectedCreateProductInput,
     });
 
+    expect(actions.apolloMutationCalled).toHaveBeenCalled();
     expect(actions.snackbarMessage).toHaveBeenCalled();
     expect(wrapper.vm.form).toEqual(blankForm); // # resetForm() is called
     expect(wrapper.emitted("finished")).toBeTruthy();
