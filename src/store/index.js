@@ -6,7 +6,8 @@ Vue.use(Vuex);
 const state = {
   example: "abc",
   snackbar: false,
-  snackbarMessage: null
+  snackbarMessage: null,
+  nApolloMutations: 0
 };
 
 const mutations = {
@@ -20,6 +21,9 @@ const mutations = {
   set_snackbar(state, snackbar) {
     state.snackbar = snackbar;
   },
+  apollo_mutation_called(state) {
+    state.nApolloMutations++;
+  }
 };
 
 const actions = {
@@ -33,6 +37,9 @@ const actions = {
   closeSnackbar({ commit }) {
     commit("set_snackbar", false);
   },
+  apolloMutationCalled({ commit }) {
+    commit("apollo_mutation_called");
+  }
 };
 
 export const storeConfig = {

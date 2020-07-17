@@ -25,4 +25,12 @@ describe("store", () => {
     store.dispatch("loadExample");
     expect(store.state.example).toBe("123");
   });
+
+  it("dispatch apolloMutationCalled", () => {
+    expect(store.state.nApolloMutations).toBe(0);
+    store.dispatch("apolloMutationCalled");
+    expect(store.state.nApolloMutations).toBe(1);
+    store.dispatch("apolloMutationCalled");
+    expect(store.state.nApolloMutations).toBe(2);
+  });
 });
