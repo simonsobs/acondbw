@@ -263,19 +263,22 @@ export default {
           mutation: CREATE_PRODUCT,
           variables: { input: createProductInput },
           update: (cache, { data: { createProduct } }) => {
-            const data = cache.readQuery({
-              query: ALL_PRODUCTS_BY_TYPE_ID,
-              variables: { typeId: this.productTypeId }
-            });
-            data.allProducts.edges.splice(0, 0, {
-              node: createProduct.product,
-              __typename: "ProductEdge"
-            });
-            cache.writeQuery({
-              query: ALL_PRODUCTS_BY_TYPE_ID,
-              variables: { typeId: this.productTypeId },
-              data
-            });
+            try {
+              const data = cache.readQuery({
+                query: ALL_PRODUCTS_BY_TYPE_ID,
+                variables: { typeId: this.productTypeId }
+              });
+              data.allProducts.edges.splice(0, 0, {
+                node: createProduct.product,
+                __typename: "ProductEdge"
+              });
+              cache.writeQuery({
+                query: ALL_PRODUCTS_BY_TYPE_ID,
+                variables: { typeId: this.productTypeId },
+                data
+              });
+            } catch (error) {
+            }
           }
         });
         this.$store.dispatch("snackbarMessage", "Added");
