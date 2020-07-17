@@ -13,7 +13,8 @@ module.exports = {
     "vue/no-unused-components": "off",
     "no-unused-vars": "off",
     "no-unused-labels": "off",
-    "no-unreachable": "off"
+    "no-unreachable": "off",
+    "no-empty": "off"
   },
 
   parserOptions: {
