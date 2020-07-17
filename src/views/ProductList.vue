@@ -247,6 +247,9 @@ export default {
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
+    "$store.state.nApolloMutations": function() {
+      this.$apollo.queries.productType.refetch();
+    },
     edges: function() {
       if (this.edges == undefined) {
         return;
