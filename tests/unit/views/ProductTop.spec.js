@@ -11,6 +11,8 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("ProductTop.vue", () => {
+  const ENV_ORG = process.env;
+
   let localVue;
   let vuetify;
 
@@ -34,8 +36,15 @@ describe("ProductTop.vue", () => {
   }
 
   beforeEach(function() {
+    process.env.VUE_APP_ACONDBW_PRODUCT_CREATION_DIALOG = true;
+    process.env.VUE_APP_ACONDBW_PRODUCT_UPDATE_DIALOG = true;
+    process.env.VUE_APP_ACONDBW_PRODUCT_DELETION_DIALOG = true;
     localVue = createLocalVue();
     vuetify = new Vuetify();
+  });
+
+  afterEach(() => {
+    process.env = ENV_ORG;
   });
 
   it("match snapshot list", async () => {

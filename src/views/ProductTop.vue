@@ -28,7 +28,13 @@
       </v-row>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
-          <router-view :key="$route.fullPath" :productTypeId="node ? node.typeId : null"></router-view>
+          <router-view
+            :key="$route.fullPath"
+            :productTypeId="node ? node.typeId : null"
+            :disableAdd="disableAdd"
+            :disableEdit="disableEdit"
+            :disableDelete="disableDelete"
+          ></router-view>
         </keep-alive>
       </transition>
       <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
@@ -55,7 +61,11 @@ export default {
     devtoolState: null,
     State: State,
     transitionName: "fade-product-top-leave",
-    transitionMode: "out-in"
+    transitionMode: "out-in",
+    disableAdd: process.env.VUE_APP_ACONDBW_PRODUCT_CREATION_DIALOG != "true",
+    disableEdit: process.env.VUE_APP_ACONDBW_PRODUCT_UPDATE_DIALOG != "true",
+    disableDelete: process.env.VUE_APP_ACONDBW_PRODUCT_DELETION_DIALOG != "true"
+
   }),
   mounted() {
     this.productTypeName = this.$route.params.productTypeName;
