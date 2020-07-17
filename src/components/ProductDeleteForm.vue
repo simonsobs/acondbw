@@ -102,23 +102,32 @@ export default {
           variables: { productId: this.node.productId },
           update: (cache, { data: { deleteProduct } }) => {
             try {
-              const data = cache.readQuery({
-                query: ALL_PRODUCTS_BY_TYPE_ID,
-                variables: { typeId: this.node.type_.typeId }
-              });
-              const index = data.allProducts.edges.findIndex(
-                e => e.node.productId == this.node.productId
-              );
-              data.allProducts.edges.splice(index, 1);
-              cache.writeQuery({
-                query: ALL_PRODUCTS_BY_TYPE_ID,
-                variables: { typeId: this.node.type_.typeId },
-                data
-              });
-            } catch (error) {
-            }
+              // Delete all cache and dispacth "apolloMutationCalled", which triggers refetch
+              this.$apollo.provider.defaultClient.cache.data.data = {}
+
+              // The following code was used to update cache, which 
+              // is typically a recommended way. But it is commented out
+              // because it is not clear how to systematically update 
+              // all affected cache.
+
+              // this.$apollo.provider.defaultClient.cache.data.data = {};
+              // const data = cache.readQuery({
+              //   query: ALL_PRODUCTS_BY_TYPE_ID,
+              //   variables: { typeId: this.node.type_.typeId }
+              // });
+              // const index = data.allProducts.edges.findIndex(
+              //   e => e.node.productId == this.node.productId
+              // );
+              // data.allProducts.edges.splice(index, 1);
+              // cache.writeQuery({
+              //   query: ALL_PRODUCTS_BY_TYPE_ID,
+              //   variables: { typeId: this.node.type_.typeId },
+              //   data
+              // });
+            } catch (error) {}
           }
         });
+        this.$store.dispatch("apolloMutationCalled");
         this.$store.dispatch("snackbarMessage", "Deleted");
         this.$emit("deleted");
         this.$emit("finished");

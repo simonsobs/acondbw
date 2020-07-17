@@ -58,6 +58,7 @@ describe("ProductDeleteForm.vue", () => {
     vuetify = new Vuetify();
 
     actions = {
+      apolloMutationCalled: jest.fn(),
       snackbarMessage: jest.fn(),
     };
     store = new Vuex.Store({
@@ -103,6 +104,7 @@ describe("ProductDeleteForm.vue", () => {
     });
     await wrapper.vm.deleteProduct();
     expect(wrapper.vm.$apollo.mutate).toBeCalled();
+    expect(actions.apolloMutationCalled).toHaveBeenCalled();
     expect(actions.snackbarMessage).toHaveBeenCalled();
     expect(wrapper.emitted("deleted")).toBeTruthy();
     expect(wrapper.emitted("finished")).toBeTruthy();
