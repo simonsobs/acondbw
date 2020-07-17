@@ -102,21 +102,19 @@
         </v-row>
       </v-container>
       <div v-if="state == State.LOADED">
-        <transition-group name="fade" tag="div" class="list-group">
-          <component
-            :is="productItemCard"
-            v-for="edge in edges"
-            :key="edge.node.id"
-            :productId="edge.node.productId"
-            collapsible="true"
-            :collapsed="isCardCollapsed[edge.node.id]"
-            v-on:expand="isCardCollapsed[edge.node.id] = false"
-            v-on:collapse="isCardCollapsed[edge.node.id] = true"
-            :disableEdit="disableEdit"
-            :disableDelete="disableDelete"
-            class="my-1"
-          ></component>
-        </transition-group>
+        <component
+          :is="productItemCard"
+          v-for="edge in edges"
+          :key="edge.node.id"
+          :productId="edge.node.productId"
+          collapsible="true"
+          :collapsed="isCardCollapsed[edge.node.id]"
+          v-on:expand="isCardCollapsed[edge.node.id] = false"
+          v-on:collapse="isCardCollapsed[edge.node.id] = true"
+          :disableEdit="disableEdit"
+          :disableDelete="disableDelete"
+          class="my-1"
+        ></component>
       </div>
       <div v-else>
         <v-card outlined style="max-width: 980px;">

@@ -19,11 +19,9 @@ exports[`ProductList.vue match snapshot 1`] = `
       </div>
     </div>
     <div>
-      <transition-group-stub name="fade" tag="div" class="list-group">
-        <productitemcard-stub productid="1013" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
-        <productitemcard-stub productid="1012" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
-        <productitemcard-stub productid="1001" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
-      </transition-group-stub>
+      <productitemcard-stub productid="1013" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
+      <productitemcard-stub productid="1012" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
+      <productitemcard-stub productid="1001" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>
     </div>
   </div>
   <div><button type="button" class="v-btn v-btn--absolute v-btn--flat v-btn--icon v-btn--round theme--light v-size--default" style="top: -15px; right: -10px;"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-nut theme--light grey--text text--lighten-1" style="font-size: 12px;"></i></span></button>
