@@ -11,24 +11,21 @@
         </keep-alive>
       </transition>
     </v-main>
-    <v-snackbar :timeout="5000" left bottom color="secondary" v-model="$store.state.snackbar">
-      {{ $store.state.snackbarMessage }}
-      <v-btn icon @click="$store.dispatch('closeSnackbar')">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-    </v-snackbar>
+    <snackbar></snackbar>
   </v-app>
 </template>
 
 <script>
 import AppBar from "@/components/AppBar";
 import Navigation from "@/components/Navigation";
+import Snackbar from "@/components/Snackbar";
 
 export default {
   name: "App",
   components: {
     AppBar,
-    Navigation
+    Navigation,
+    Snackbar
   },
   data: () => ({
     drawer: null,
