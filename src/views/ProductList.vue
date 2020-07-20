@@ -1,6 +1,9 @@
 <template>
   <div class="product-list" style="position: relative;">
-    <div v-if="state == State.LOADED || state == State.EMPTY">
+    <div v-if="state == State.LOADING" class="mx-2 pt-5">
+      <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
+    </div>
+    <div v-else>
       <v-container fluid class="pa-0">
         <v-row
           align="center"
@@ -22,32 +25,34 @@
               <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
             </span>
           </div>
-          <div v-if="state == State.LOADED">
-            <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on: tooltip }">
-                <v-menu left offset-y>
-                  <template v-slot:activator="{ on: menu }">
-                    <v-btn icon v-on="{ ...tooltip, ...menu}">
-                      <v-icon>mdi-sort-variant</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list flat dense>
-                    <v-subheader>Sort</v-subheader>
-                    <v-list-item-group v-model="sortItem" color="primary">
-                      <v-list-item v-for="(item, i) in sortItems" :key="i">
-                        <v-list-item-icon>
-                          <v-icon v-if="i == sortItem">mdi-check</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title v-text="item.text"></v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-menu>
-              </template>
-              <span>Sort</span>
-            </v-tooltip>
+          <div>
+            <span v-if="state == State.LOADED && nItemsTotal > 1">
+              <v-tooltip bottom open-delay="800">
+                <template v-slot:activator="{ on: tooltip }">
+                  <v-menu left offset-y>
+                    <template v-slot:activator="{ on: menu }">
+                      <v-btn icon v-on="{ ...tooltip, ...menu}">
+                        <v-icon>mdi-sort-variant</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list flat dense>
+                      <v-subheader>Sort</v-subheader>
+                      <v-list-item-group v-model="sortItem" color="primary">
+                        <v-list-item v-for="(item, i) in sortItems" :key="i">
+                          <v-list-item-icon>
+                            <v-icon v-if="i == sortItem">mdi-check</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title v-text="item.text"></v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list-item-group>
+                    </v-list>
+                  </v-menu>
+                </template>
+                <span>Sort</span>
+              </v-tooltip>
+            </span>
           </div>
           <div>
             <span v-if="state == State.LOADED">
@@ -70,61 +75,69 @@
                 </span>
               </v-tooltip>
             </span>
-            <v-dialog v-model="dialog" persistent fullscreen transition="dialog-bottom-transition">
-              <template v-slot:activator="{ on: dialog }">
-                <v-tooltip bottom open-delay="800">
-                  <template v-slot:activator="{ on: tooltip }">
-                    <v-btn :disabled="disableAdd" icon v-on="{ ...tooltip, ...dialog }">
-                      <v-icon>mdi-plus-thick</v-icon>
+            <span v-if="state == State.LOADED || state == State.EMPTY">
+              <v-dialog
+                v-model="dialog"
+                persistent
+                fullscreen
+                transition="dialog-bottom-transition"
+              >
+                <template v-slot:activator="{ on: dialog }">
+                  <v-tooltip bottom open-delay="800">
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn :disabled="disableAdd" icon v-on="{ ...tooltip, ...dialog }">
+                        <v-icon>mdi-plus-thick</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Add {{ productType.indefArticle }} {{ productType.singular }}</span>
+                  </v-tooltip>
+                </template>
+                <v-card>
+                  <v-app-bar
+                    dense
+                    color="secondary"
+                    style="position: sticky; top: 0; z-index: 999;"
+                  >
+                    <v-btn icon dark @click="dialog = false">
+                      <v-icon>mdi-close</v-icon>
                     </v-btn>
-                  </template>
-                  <span>Add {{ productType.indefArticle }} {{ productType.singular }}</span>
-                </v-tooltip>
-              </template>
-              <v-card>
-                <v-app-bar dense color="secondary" style="position: sticky; top: 0; z-index: 999;">
-                  <v-btn icon dark @click="dialog = false">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-app-bar>
-                <component
-                  :is="productAddForm"
-                  :productTypeId="productType.typeId"
-                  v-on:finished="dialog = false"
-                ></component>
-              </v-card>
-            </v-dialog>
+                  </v-app-bar>
+                  <component
+                    :is="productAddForm"
+                    :productTypeId="productType.typeId"
+                    v-on:finished="dialog = false"
+                  ></component>
+                </v-card>
+              </v-dialog>
+            </span>
           </div>
         </v-row>
       </v-container>
-      <div v-if="state == State.LOADED">
-        <component
-          :is="productItemCard"
-          v-for="edge in edges"
-          :key="edge.node.id"
-          :productId="edge.node.productId"
-          collapsible="true"
-          :collapsed="isCardCollapsed[edge.node.id]"
-          v-on:expand="isCardCollapsed[edge.node.id] = false"
-          v-on:collapse="isCardCollapsed[edge.node.id] = true"
-          :disableEdit="disableEdit"
-          :disableDelete="disableDelete"
-          class="my-1"
-        ></component>
-      </div>
-      <div v-else>
-        <v-card outlined style="max-width: 980px;">
-          <v-card-text>Empty. No {{ productType.plural }} are found.</v-card-text>
-        </v-card>
-      </div>
     </div>
-    <div v-else-if="state == State.LOADING" class="mx-2 pt-5">
-      <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
+    <div v-if="state == State.LOADED">
+      <component
+        :is="productItemCard"
+        v-for="edge in edges"
+        :key="edge.node.id"
+        :productId="edge.node.productId"
+        collapsible="true"
+        :collapsed="isCardCollapsed[edge.node.id]"
+        v-on:expand="isCardCollapsed[edge.node.id] = false"
+        v-on:collapse="isCardCollapsed[edge.node.id] = true"
+        :disableEdit="disableEdit"
+        :disableDelete="disableDelete"
+        class="my-1"
+      ></component>
     </div>
-    <div v-else-if="state == State.ERROR" class="mx-2 pt-5">
+    <div v-else-if="state == State.EMPTY">
+      <v-card outlined style="max-width: 980px;">
+        <v-card-text>Empty. No {{ productType.plural }} are found.</v-card-text>
+      </v-card>
+    </div>
+    <div v-else-if="state == State.ERROR">
       <v-alert v-if="error" type="error" style="max-width: 980px;">{{ error }}</v-alert>
     </div>
-    <div v-else class="mx-2 pt-5">
+    <div v-else>
       <!-- state = State.NONE -->
     </div>
     <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
