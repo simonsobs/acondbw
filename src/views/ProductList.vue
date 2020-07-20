@@ -22,8 +22,8 @@
           </v-tooltip>
           <div>
             <span v-if="state == State.LOADED" class="secondary--text">
-              <span v-if="productType.products.totalCount == 1">1 {{ productType.singular }}</span>
-              <span v-else>{{ productType.products.totalCount }} {{ productType.plural }}</span>
+              <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
+              <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
             </span>
           </div>
           <div v-if="state == State.LOADED">
@@ -201,6 +201,9 @@ export default {
   computed: {
     edges() {
       return this.productType ? this.productType.products.edges : null;
+    },
+    nItemsTotal() {
+      return this.productType ? this.productType.products.totalCount : null;
     },
     state() {
       if (this.devtoolState) {
