@@ -122,11 +122,6 @@
       <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
     </div>
     <div v-else-if="state == State.ERROR" class="mx-2 pt-5">
-      <v-alert
-        v-if="queryProductTypeError"
-        type="error"
-        style="max-width: 980px;"
-      >{{ queryProductTypeError }}</v-alert>
       <v-alert v-if="error" type="error" style="max-width: 980px;">{{ error }}</v-alert>
     </div>
     <div v-else class="mx-2 pt-5">
