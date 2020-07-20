@@ -10,11 +10,7 @@
         >
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
-              <v-btn
-                icon
-                @click="$apollo.queries.productType.refetch(); areAllCardsCollapsed = true"
-                v-on="on"
-              >
+              <v-btn icon @click="refresh()" v-on="on">
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
@@ -269,6 +265,12 @@ export default {
           // this.isCardCollapsed[id] = true;
         }
       }
+    }
+  },
+  methods: {
+    refresh() {
+      this.$apollo.queries.productType.refetch();
+      this.areAllCardsCollapsed = true;
     }
   }
 };
