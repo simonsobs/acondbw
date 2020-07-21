@@ -53,10 +53,6 @@ export default {
 </script>
 
 <style scoped>
-.capitalize {
-  text-transform: capitalize;
-}
-
 .fade-app-across-enter-active {
   transition: opacity 0.8s;
 }
