@@ -1,11 +1,22 @@
 #import "./ProductTypeFragment.gql"
 #import "./ProductFragment.gql"
 
-query QueryForProductList($typeId: Int, $sort: [ProductSortEnum] = [DATE_PRODUCED_DESC], $first: Int = 10, $after: String = "") {
+query QueryForProductList(
+  $typeId: Int
+  $sort: [ProductSortEnum] = [DATE_PRODUCED_DESC]
+  $first: Int = 10
+  $after: String = ""
+) {
   productType(typeId: $typeId) {
     ...productTypeFragment
     products(sort: $sort, first: $first, after: $after) {
       totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
       edges {
         node {
           ...productFragment

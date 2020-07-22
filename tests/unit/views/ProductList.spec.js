@@ -71,6 +71,9 @@ describe("ProductList.vue", () => {
     indefArticle: "a",
     products: {
       totalCount: 3,
+      pageInfo: {
+        hasNextPage: true,
+      },
       edges: edges,
     },
   };
