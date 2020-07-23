@@ -1,56 +1,54 @@
 <template>
   <div class="product-item" style="position: relative;">
-    <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
-    <div v-if="state == State.LOADING" class="mx-2 pt-5">
+    <v-container fluid class="pa-0">
+      <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
+        <v-tooltip v-if="node" bottom open-delay="800">
+          <template v-slot:activator="{ on }">
+            <v-btn
+              text
+              icon
+              exact
+              :to="{ name: 'ProductList', params: { productTypeName: node.type_.name } }"
+              v-on="on"
+            >
+              <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+          </template>
+          <span>Back to the list</span>
+        </v-tooltip>
+        <v-tooltip bottom open-delay="800">
+          <template v-slot:activator="{ on }">
+            <v-btn :disabled="state == State.LOADING" icon @click="refresh();" v-on="on">
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+          </template>
+          <span>Refresh</span>
+        </v-tooltip>
+        <v-spacer></v-spacer>
+      </v-row>
+    </v-container>
+    <div v-if="state == State.LOADING" class="pa-3">
       <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
     </div>
-    <div v-else-if="state == State.ERROR" class="mx-2 pt-5">
-      <v-alert type="error" style="max-width: 980px;">{{ error }}</v-alert>
+    <div v-else-if="state == State.LOADED">
+      <component
+        :is="productItemCard"
+        :productId="node.productId"
+        :collapsible="false"
+        v-on:deleted="onDeleted"
+        :disableEdit="disableEdit"
+        :disableDelete="disableDelete"
+      ></component>
     </div>
-    <div v-else-if="state == State.LOADED || state == State.EMPTY">
-      <v-container fluid class="pa-0">
-        <v-row align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
-          <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn
-                text
-                icon
-                exact
-                :to="{ name: 'ProductList', params: { productTypeName: node.type_.name } }"
-                v-on="on"
-              >
-                <v-icon>mdi-arrow-left</v-icon>
-              </v-btn>
-            </template>
-            <span>Back to the list</span>
-          </v-tooltip>
-          <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn icon @click="$apollo.queries.node.refetch();" v-on="on">
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
-            </template>
-            <span>Refresh</span>
-          </v-tooltip>
-          <v-spacer></v-spacer>
-        </v-row>
-      </v-container>
-      <div v-if="state == State.LOADED">
-        <component
-          :is="productItemCard"
-          :productId="node.productId"
-          :collapsible="false"
-          v-on:deleted="onDeleted"
-          :disableEdit="disableEdit"
-          :disableDelete="disableDelete"
-        ></component>
-      </div>
+    <div v-else-if="state == State.ERROR">
+      <v-alert type="error" style="max-width: 980px;">{{ error }}</v-alert>
     </div>
     <!-- <div v-else class="mx-2 pt-5">
       <v-card outlined style="max-width: 980px;">
         <v-card-text>Nothing to show here.</v-card-text>
       </v-card>
     </div>-->
+    <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
   </div>
 </template>
 
@@ -80,6 +78,7 @@ export default {
       node: null,
       name: null,
       error: null,
+      refreshing: false,
       devtoolState: null,
       State: State
     };
@@ -88,6 +87,13 @@ export default {
     this.name = this.$route.params.name;
   },
   watch: {
+    devtoolState: function() {
+      this.error =
+        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
+    "$store.state.nApolloMutations": function() {
+      this.refresh();
+    },
     node: function() {
       if (this.node && this.node.type_) {
         this.productTypeName = this.node.type_.name;
@@ -100,12 +106,16 @@ export default {
         return this.devtoolState;
       }
 
-      if (this.loading) {
+      if (this.refreshing) {
+        return State.LOADING;
+      }
+
+      if (this.node) {
+        return State.LOADED;
+      } else if (this.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
-      } else if (this.node) {
-        return State.LOADED;
       } else {
         return State.NONE;
       }
@@ -141,6 +151,15 @@ export default {
         name: "ProductList",
         params: { productTypeName: this.productTypeName }
       });
+    },
+    async refresh() {
+      this.refreshing = true;
+      const wait = new Promise(resolve => setTimeout(resolve, 500));
+      await this.$apollo.queries.node.refetch();
+      await wait; // wait until 0.5 sec passes since starting refetch
+      // because the progress circular is too flickering if
+      // the refetch finishes too quickly
+      this.refreshing = false;
     }
   }
 };
