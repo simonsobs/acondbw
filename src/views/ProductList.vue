@@ -234,6 +234,9 @@ export default {
       return this.productType ? this.productType.products.totalCount : null;
     },
     showLoadMoreButton() {
+      if (this.loadingMore) {
+        return false;
+      }
       return (
         this.nItemsTotal > this.nItemsInitialLoad + this.nEtraItemsAutomaticLoad
       );
