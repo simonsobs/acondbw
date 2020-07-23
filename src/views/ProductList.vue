@@ -289,7 +289,7 @@ export default {
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
     "$store.state.nApolloMutations": function() {
-      this.$apollo.queries.productType.refetch();
+      this.refresh();
     },
     edges: function() {
       this.collapseCards();
