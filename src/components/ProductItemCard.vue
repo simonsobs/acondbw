@@ -185,7 +185,7 @@
       </div>
       <v-card-text v-else>Nothing to show here.</v-card-text>
     </v-card>
-    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+    <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
   </div>
 </template>
 

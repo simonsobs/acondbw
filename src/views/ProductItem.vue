@@ -1,6 +1,6 @@
 <template>
   <div class="product-item" style="position: relative;">
-    <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+    <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
     <div v-if="state == State.LOADING" class="mx-2 pt-5">
       <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
     </div>

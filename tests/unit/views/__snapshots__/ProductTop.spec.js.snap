@@ -15,7 +15,7 @@ exports[`ProductTop.vue match snapshot item 1`] = `
         <router-view-stub producttypeid="1"></router-view-stub>
       </keep-alive-stub>
     </transition-stub>
-    <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
+    <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
   </div>
 </v-container-stub>
 `;
@@ -35,7 +35,7 @@ exports[`ProductTop.vue match snapshot list 1`] = `
         <router-view-stub producttypeid="1"></router-view-stub>
       </keep-alive-stub>
     </transition-stub>
-    <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
+    <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
   </div>
 </v-container-stub>
 `;

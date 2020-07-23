@@ -37,7 +37,7 @@
           ></router-view>
         </keep-alive>
       </transition>
-      <DevToolLoadingStateOverridingMenu @state="devtoolState = $event"></DevToolLoadingStateOverridingMenu>
+      <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
     </div>
   </v-container>
 </template>
