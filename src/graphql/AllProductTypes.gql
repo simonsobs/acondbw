@@ -5,6 +5,9 @@ query AllProductTypes {
     edges {
       node {
         ...productTypeFragment
+        products {
+          totalCount
+        }
       }
     }
   }
