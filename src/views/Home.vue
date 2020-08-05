@@ -1,7 +1,18 @@
 <template>
   <v-container fill-height fluid>
     <v-row align="center" justify="center">
-      <h1>This is the home page</h1>
+    <dashboard></dashboard>
     </v-row>
   </v-container>
 </template>
+
+<script>
+import Dashboard from "@/components/Dashboard";
+
+export default {
+  name: "Home",
+  components: {
+    Dashboard
+  },
+}
+</script>
