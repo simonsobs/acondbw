@@ -90,7 +90,6 @@ describe("App.vue", () => {
   it("match snapshot", async () => {
     await Vue.nextTick();
     await Vue.nextTick();
-    console.log(wrapper.html());
     expect(wrapper.html()).toMatchSnapshot();
   });
 });
