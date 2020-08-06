@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App.vue match snapshot 1`] = `
+<div class="dashboard" style="position: relative;">
+  <div class="v-data-table elevation-1 theme--light">
+    <div class="v-data-table__wrapper">
+      <table>
+        <colgroup>
+          <col class="">
+          <col class="">
+        </colgroup>
+        <thead class="v-data-table-header">
+          <tr>
+            <th role="columnheader" scope="col" aria-label="Product type" class="text-start"><span>Product type</span></th>
+            <th role="columnheader" scope="col" aria-label="Number of products" class="text-end"><span>Number of products</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="">
+            <td class="text-start"><a href="/simulation/" class=""><span class="capitalize font-weight-bold primary--text">simulations</span></a></td>
+            <td class="text-end">1</td>
+          </tr>
+          <tr class="">
+            <td class="text-start"><a href="/map/" class=""><span class="capitalize font-weight-bold primary--text">maps</span></a></td>
+            <td class="text-end">64</td>
+          </tr>
+          <tr class="">
+            <td class="text-start"><a href="/beam/" class=""><span class="capitalize font-weight-bold primary--text">beams</span></a></td>
+            <td class="text-end">7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!---->
+  <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
+</div>
+`;
