@@ -9,10 +9,11 @@ exports[`VTextFieldWithDatePicker.vue match snapshot 1`] = `
       </div>
       <div class="v-text-field__details">
         <div class="v-messages theme--light">
-          <div class="v-messages__wrapper"></div>
+          <transition-group-stub tag="div" name="message-transition" class="v-messages__wrapper"></transition-group-stub>
         </div>
       </div>
     </div>
   </div>
+  <transition-stub name="scale-transition"></transition-stub>
 </div>
 `;

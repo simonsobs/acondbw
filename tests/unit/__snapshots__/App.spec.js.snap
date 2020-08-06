@@ -9,7 +9,7 @@ exports[`App.vue match snapshot 1`] = `
   <v-main-stub tag="main">
     <transition-stub name="fade-app-across" mode="out-in">
       <keep-alive-stub>
-        <router-view-stub></router-view-stub>
+        <router-view-stub name="default"></router-view-stub>
       </keep-alive-stub>
     </transition-stub>
   </v-main-stub>
