@@ -28,56 +28,58 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class="row mx-0 px-0 collapsible">
-          <div class="py-2 col-md-4 col-12">
-            <div class="caption grey--text">Contact</div>
-            <div>pwg-pmn</div>
-          </div>
-          <div class="py-2 col-md-3 col-6">
-            <div class="caption grey--text">Date posted</div>
-            <div>2020-02-01</div>
-          </div>
-          <div class="py-2 col-md-5 col-6">
-            <div class="caption grey--text">Posted by</div>
-            <div>pwg-pmn</div>
-          </div>
-          <div class="py-2 col-md-3 offset-md-4 col-6">
-            <div class="caption grey--text">Date updated</div>
-            <div>2020-02-01</div>
-          </div>
-          <div class="py-2 col-md-5 col-6">
-            <div class="caption grey--text">Updated by</div>
-            <div>pwg-pmn</div>
-          </div>
-          <div class="py-2 col-md-8 offset-md-4 col-12">
-            <div class="caption grey--text">Paths</div>
-            <ul>
-              <li>nersc:/go/to/my/maps_v3</li>
-            </ul>
-          </div>
-          <div class="py-2 col-md-8 offset-md-4 col-12">
-            <div class="caption grey--text">Relations</div>
-            <div>
-              <div><span class="capitalize subtitle-2 primary--text"><span></span>:
-                </span> <span><a href="/beam/item/20200207" class="font-weight-bold primary--text">20200207</a>
-                    (beam)<!----></span></div>
+        <transition-stub name="expand-transition">
+          <div class="row mx-0 px-0 collapsible">
+            <div class="py-2 col-md-4 col-12">
+              <div class="caption grey--text">Contact</div>
+              <div>pwg-pmn</div>
             </div>
-          </div>
-          <div class="py-2 col col-12">
-            <div class="row">
-              <div class="py-0 col-md-4 order-md-0 col-12 order-2 align-self-end"><span class="grey--text" style="font-size: 65%;">Data ID: </span></div>
-              <div class="py-0 col-md-8 col-12 order-1">
-                <div class="caption grey--text">Note</div>
-                <div>
-                  <ul>
-                    <li>This is a dummy test with a lat map</li>
-                    <li>A beam depends on this map</li>
-                  </ul>
+            <div class="py-2 col-md-3 col-6">
+              <div class="caption grey--text">Date posted</div>
+              <div>2020-02-01</div>
+            </div>
+            <div class="py-2 col-md-5 col-6">
+              <div class="caption grey--text">Posted by</div>
+              <div>pwg-pmn</div>
+            </div>
+            <div class="py-2 col-md-3 offset-md-4 col-6">
+              <div class="caption grey--text">Date updated</div>
+              <div>2020-02-01</div>
+            </div>
+            <div class="py-2 col-md-5 col-6">
+              <div class="caption grey--text">Updated by</div>
+              <div>pwg-pmn</div>
+            </div>
+            <div class="py-2 col-md-8 offset-md-4 col-12">
+              <div class="caption grey--text">Paths</div>
+              <ul>
+                <li>nersc:/go/to/my/maps_v3</li>
+              </ul>
+            </div>
+            <div class="py-2 col-md-8 offset-md-4 col-12">
+              <div class="caption grey--text">Relations</div>
+              <div>
+                <div><span class="capitalize subtitle-2 primary--text"><span></span>:
+                  </span> <span><a href="/beam/item/20200207" class="font-weight-bold primary--text">20200207</a>
+                    (beam)<!----></span></div>
+              </div>
+            </div>
+            <div class="py-2 col col-12">
+              <div class="row">
+                <div class="py-0 col-md-4 order-md-0 col-12 order-2 align-self-end"><span class="grey--text" style="font-size: 65%;">Data ID: </span></div>
+                <div class="py-0 col-md-8 col-12 order-1">
+                  <div class="caption grey--text">Note</div>
+                  <div>
+                    <ul>
+                      <li>This is a dummy test with a lat map</li>
+                      <li>A beam depends on this map</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition-stub>
       </div>
     </div>
   </div>
