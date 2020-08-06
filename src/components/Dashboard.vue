@@ -81,7 +81,7 @@ export default {
       } else if (this.state == State.EMPTY) {
         return [];
       } else {
-      return this.edges ? this.edges.map(edge => edge.node) : null;
+        return this.edges ? this.edges.map(edge => edge.node) : null;
       }
     }
   },
