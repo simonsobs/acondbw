@@ -7,6 +7,8 @@ exports[`App.vue match snapshot 1`] = `
     <router-link-stub to="/" tag="a" event="click" style="text-decoration: none;">Product DB Title</router-link-stub>
   </v-toolbar-title-stub>
   <v-spacer-stub></v-spacer-stub>
+  <search-window-stub></search-window-stub>
+  <v-spacer-stub></v-spacer-stub>
   <v-btn-stub tag="button" activeclass="" to="/about" icon="true" type="button">
     <v-icon-stub>mdi-information</v-icon-stub>
   </v-btn-stub>
