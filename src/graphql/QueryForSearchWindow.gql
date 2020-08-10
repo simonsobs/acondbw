@@ -1,0 +1,15 @@
+query QueryForSearchWindow {
+  allProducts(sort: DATE_PRODUCED_DESC) {
+    edges {
+      node {
+        id
+        name
+        type_ {
+          id
+          name
+          singular
+        }
+      }
+    }
+  }
+}
