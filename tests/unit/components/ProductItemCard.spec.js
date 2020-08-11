@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
+import '@testing-library/jest-dom'
+
 import ProductItemCard from "@/components/ProductItemCard.vue";
 import router from "@/router";
 
@@ -160,7 +162,11 @@ describe("ProductItemCard.vue", () => {
         node: node,
       });
       await Vue.nextTick();
-      expect(wrapper.find(".collapsible").isVisible()).toBe(visible);
+      if(visible) {
+        expect(wrapper.find(".collapsible").element).toBeVisible()
+      } else {
+        expect(wrapper.find(".collapsible").element).not.toBeVisible()
+      }
     }
   );
 });
