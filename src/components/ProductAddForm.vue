@@ -215,7 +215,10 @@ export default {
   },
   methods: {
     scrollToTop() {
-      document.getElementsByClassName("v-dialog--active")[0].scrollTop = 0;
+      const element = document.getElementsByClassName("v-dialog--active")[0];
+      if (element) {
+        element.scrollTop = 0;
+      }
     },
     close() {
       this.scrollToTop();

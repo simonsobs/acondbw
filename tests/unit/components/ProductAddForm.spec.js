@@ -24,7 +24,6 @@ describe("ProductAddForm.vue", () => {
       propsData: {
         productTypeId: 1,
       },
-      methods: { scrollToTop: jest.fn() },
       mocks: {
         $apollo: {
           queries: {
