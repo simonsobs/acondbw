@@ -159,8 +159,6 @@
 </template>
 
 <script>
-require("vue2-animate/dist/vue2-animate.min.css");
-
 import ProductItemCard from "@/components/ProductItemCard";
 import ProductAddForm from "@/components/ProductAddForm";
 
