@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^4.8.95",
+    "@testing-library/jest-dom": "^5.11.2",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.0",
