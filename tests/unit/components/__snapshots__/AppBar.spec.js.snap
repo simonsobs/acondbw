@@ -9,6 +9,8 @@ exports[`App.vue match snapshot 1`] = `
   <v-spacer-stub></v-spacer-stub>
   <search-window-stub></search-window-stub>
   <v-spacer-stub></v-spacer-stub>
+  <sign-in-stub></sign-in-stub>
+  <v-spacer-stub></v-spacer-stub>
   <v-btn-stub tag="button" activeclass="" to="/about" icon="true" type="button">
     <v-icon-stub>mdi-information</v-icon-stub>
   </v-btn-stub>
