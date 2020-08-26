@@ -6,7 +6,7 @@
     <v-card>
       <v-card-title>Sign In</v-card-title>
       <v-card-actions>
-        <v-btn block outlined>
+        <v-btn block outlined @click="signIn">
           <v-icon left>mdi-github</v-icon>Sign In with GitHub
         </v-btn>
       </v-card-actions>
@@ -22,7 +22,16 @@
 export default {
   name: "SignIn",
   data: () => ({
-    dialog: false
-  })
+    dialog: false,
+    githubClientID:'1ce266dd301a653ca64f',
+    githubClientSecret:'adb99c5ef0cdfbc052af1e3573684026bd2c1c23',
+    authorizeURL:'https://github.com/login/oauth/authorize',
+    tokenURL:'https://github.com/login/oauth/access_token',
+  }),
+  methods: {
+    signIn() {
+      console.log('Sign In')
+    }
+  }
 };
 </script>
