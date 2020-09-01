@@ -29,7 +29,6 @@ export default {
   name: "SignIn",
   data: () => ({
     githubClientID: "1ce266dd301a653ca64f",
-    githubClientSecret: "adb99c5ef0cdfbc052af1e3573684026bd2c1c23",
     authorizeURL: "https://github.com/login/oauth/authorize",
     tokenURL: "https://github.com/login/oauth/access_token",
     redirectURI: "http://localhost:8081/signin",
