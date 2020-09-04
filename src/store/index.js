@@ -7,7 +7,8 @@ const state = {
   example: "abc",
   snackbar: false,
   snackbarMessage: null,
-  nApolloMutations: 0
+  nApolloMutations: 0,
+  token: null
 };
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   },
   apollo_mutation_called(state) {
     state.nApolloMutations++;
+  },
+  set_token(state, token) {
+    state.token = token;
   }
 };
 
@@ -39,6 +43,14 @@ const actions = {
   },
   apolloMutationCalled({ commit }) {
     commit("apollo_mutation_called");
+  },
+  setToken({ commit }, token) {
+    localStorage.setItem('token', token);
+    commit("set_token", token);
+  },
+  unsetToken({ commit }) {
+    localStorage.removeItem('token');
+    commit("set_token", null);
   }
 };
 
