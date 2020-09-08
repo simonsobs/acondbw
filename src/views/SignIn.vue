@@ -22,8 +22,6 @@ import { report } from "process";
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
-import { onLogin } from "@/vue-apollo";
-
 import GitHubAuth from "@/graphql/GitHubAuth.gql";
 import GitHubUsername from "@/graphql/GitHubUsername.gql";
 
@@ -79,8 +77,7 @@ export default {
       });
       const authPayload = data.data.githubAuth.authPayload;
       const token = JSON.stringify("token " + authPayload.token);
-      await onLogin(this.$apollo, token);
-      this.$store.dispatch("setToken", token);
+      this.$store.dispatch("setToken", { token, apolloClient: this.$apollo });
       this.$store.dispatch("snackbarMessage", "Signed in");
       this.$router.push({ name: "SignIn" });
     }

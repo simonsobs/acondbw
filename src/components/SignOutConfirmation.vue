@@ -13,14 +13,11 @@
 </template>
 
 <script>
-import { onLogout } from "@/vue-apollo";
-
 export default {
   name: "SignOutConfirmation",
   methods: {
     async signOut() {
-      await onLogout(this.$apollo);
-      this.$store.dispatch("unsetToken");
+      this.$store.dispatch("unsetToken", this.$apollo);
       this.$emit("finished");
       this.$store.dispatch("snackbarMessage", "Signed out");
       this.$router.push({ name: "home" });

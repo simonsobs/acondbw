@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { onLogin, onLogout } from "@/vue-apollo";
 
 Vue.use(Vuex);
 
@@ -53,10 +54,12 @@ const actions = {
       commit("set_token", token);
     }
   },
-  setToken({ commit }, token) {
+  async setToken({ commit }, { token, apolloClient }) {
+    await onLogin(apolloClient, token);
     commit("set_token", token);
   },
-  unsetToken({ commit }) {
+  async unsetToken({ commit }, apolloClient) {
+    await onLogout(apolloClient);
     commit("set_token", null);
   },
 };
