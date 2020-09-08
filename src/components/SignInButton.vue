@@ -41,11 +41,6 @@ export default {
   apollo: {
     githubUsername: {
       query: GitHubUsername,
-      variables() {
-        return {
-          token: this.token
-        };
-      },
       skip: function() {
         return !this.token;
       },
@@ -55,11 +50,6 @@ export default {
           return;
         }
       }
-    }
-  },
-  created() {
-    if (localStorage.token && localStorage.token != "null") {
-      this.$store.dispatch("setToken", localStorage.token);
     }
   },
   computed: {

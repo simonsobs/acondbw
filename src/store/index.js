@@ -3,12 +3,15 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
+// should be the same as in vue-apollo.js
+const AUTH_TOKEN = "apollo-token";
+
 const state = {
   example: "abc",
   snackbar: false,
   snackbarMessage: null,
   nApolloMutations: 0,
-  token: null
+  token: null,
 };
 
 const mutations = {
@@ -27,7 +30,7 @@ const mutations = {
   },
   set_token(state, token) {
     state.token = token;
-  }
+  },
 };
 
 const actions = {
@@ -44,14 +47,18 @@ const actions = {
   apolloMutationCalled({ commit }) {
     commit("apollo_mutation_called");
   },
+  setTokenFromLocalStorage({ commit }) {
+    const token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
+    if (token) {
+      commit("set_token", token);
+    }
+  },
   setToken({ commit }, token) {
-    localStorage.setItem('token', token);
     commit("set_token", token);
   },
   unsetToken({ commit }) {
-    localStorage.removeItem('token');
     commit("set_token", null);
-  }
+  },
 };
 
 export const storeConfig = {
