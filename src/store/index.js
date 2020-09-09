@@ -1,11 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { onLogin, onLogout } from "@/vue-apollo";
+import { onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
 
 Vue.use(Vuex);
-
-// should be the same as in vue-apollo.js
-const AUTH_TOKEN = "apollo-token";
 
 const state = {
   example: "abc",
@@ -49,6 +46,7 @@ const actions = {
     commit("apollo_mutation_called");
   },
   setTokenFromLocalStorage({ commit }) {
+    console.log(AUTH_TOKEN);
     const token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
     if (token) {
       commit("set_token", token);

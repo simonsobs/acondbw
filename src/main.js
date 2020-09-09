@@ -3,13 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-import { createProvider } from "./vue-apollo";
+import { createProvider, AUTH_TOKEN } from "./vue-apollo";
 import { setContext } from "apollo-link-context";
 
 Vue.config.productionTip = false;
-
-// should be the same as in vue-apollo.js
-const AUTH_TOKEN = "apollo-token";
 
 // copied from https://blog.logrocket.com/handling-authentication-in-your-graphql-powered-vue-app/
 const authLink = setContext(async (_, { headers }) => {
