@@ -146,7 +146,6 @@ export default {
   },
   methods: {
     onDeleted() {
-      console.log(this.node);
       this.$router.push({
         name: "ProductList",
         params: { productTypeName: this.productTypeName }

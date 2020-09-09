@@ -22,7 +22,6 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-console.log(authLink)
 const options = { link: authLink };
 
 new Vue({

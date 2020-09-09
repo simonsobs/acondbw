@@ -46,7 +46,6 @@ const actions = {
     commit("apollo_mutation_called");
   },
   setTokenFromLocalStorage({ commit }) {
-    console.log(AUTH_TOKEN);
     const token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
     if (token) {
       commit("set_token", token);
