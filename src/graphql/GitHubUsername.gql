@@ -1,0 +1,3 @@
+query GitHubUsername {
+  githubUsername
+}

@@ -7,6 +7,8 @@
     <v-spacer></v-spacer>
     <search-window></search-window>
     <v-spacer></v-spacer>
+    <sign-in-button></sign-in-button>
+    <v-spacer></v-spacer>
     <v-btn icon to="/about">
       <v-icon>mdi-information</v-icon>
     </v-btn>
@@ -42,11 +44,13 @@
 
 <script>
 import SearchWindow from "@/components/SearchWindow";
+import SignInButton from "@/components/SignInButton";
 
 export default {
   name: "AppBar",
   components: {
-    SearchWindow
+    SearchWindow,
+    SignInButton
   },
   data: () => ({
     title: process.env.VUE_APP_TOOLBAR_TITLE,
