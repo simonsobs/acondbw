@@ -77,15 +77,19 @@ export default {
       window.location.href = uri;
     },
     async exchangeCodeForToken(code) {
-      const data = await this.$apollo.mutate({
-        mutation: GitHubAuth,
-        variables: { code: code }
-      });
-      const authPayload = data.data.githubAuth.authPayload;
-      const token = JSON.stringify("token " + authPayload.token);
-      this.$store.dispatch("setToken", { token, apolloClient: this.$apollo });
-      this.$store.dispatch("snackbarMessage", "Signed in");
-      this.$router.push({ name: "SignIn" });
+      try {
+        const data = await this.$apollo.mutate({
+          mutation: GitHubAuth,
+          variables: { code: code + "1" }
+        });
+        const authPayload = data.data.githubAuth.authPayload;
+        const token = JSON.stringify("token " + authPayload.token);
+        this.$store.dispatch("setToken", { token, apolloClient: this.$apollo });
+        this.$store.dispatch("snackbarMessage", "Signed in");
+        this.$router.push({ name: "SignIn" });
+      } catch (error) {
+        console.log(error);
+      }
     },
     tryAgain() {
       this.$router.push({ name: "SignIn" });
