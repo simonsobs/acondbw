@@ -3,6 +3,12 @@
     <v-row align="center" justify="center">
       <v-progress-circular v-if="loading" indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
       <div v-else-if="username">Signed in as {{ username }}</div>
+      <v-card v-else-if="authorizationError" outlined>
+        <v-card-title>Unsuccesful</v-card-title>
+        <v-card-actions>
+          <v-btn outlined @click="tryAgain">Try again</v-btn>
+        </v-card-actions>
+      </v-card>
       <v-card v-else>
         <v-card-title>Sign In</v-card-title>
         <v-card-actions>
@@ -80,6 +86,9 @@ export default {
       this.$store.dispatch("setToken", { token, apolloClient: this.$apollo });
       this.$store.dispatch("snackbarMessage", "Signed in");
       this.$router.push({ name: "SignIn" });
+    },
+    tryAgain() {
+      this.$router.push({ name: "SignIn" });
     }
   },
   computed: {
@@ -97,6 +106,9 @@ export default {
     },
     code() {
       return this.$route.query.code;
+    },
+    authorizationError() {
+      return this.$route.query.error ? true : false;
     },
     loading() {
       if (this.code) {
