@@ -20,7 +20,13 @@ export default {
       this.$store.dispatch("unsetToken", this.$apollo);
       this.$emit("finished");
       this.$store.dispatch("snackbarMessage", "Signed out");
-      this.$router.push({ name: "home" });
+
+      const to = { name: "home" }
+      if (this.$route.path == this.$router.resolve(to).route.path) {
+        // to avoid NavigationDuplicated
+        return;
+      }
+      this.$router.push(to);
     }
   }
 };
