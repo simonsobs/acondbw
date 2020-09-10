@@ -4,7 +4,7 @@
       <v-progress-circular v-if="loading" indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
       <div v-else-if="username">Signed in as {{ username }}</div>
       <v-card v-else-if="authorizationError" outlined>
-        <v-card-title>Unsuccesful</v-card-title>
+        <v-card-title>Unsuccessful</v-card-title>
         <v-card-actions>
           <v-btn outlined @click="tryAgain">Try again</v-btn>
         </v-card-actions>
