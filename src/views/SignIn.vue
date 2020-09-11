@@ -16,9 +16,6 @@
 </template>
 
 <script>
-import axios from "axios";
-import { report } from "process";
-
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
@@ -38,11 +35,6 @@ export default {
   apollo: {
     githubUsername: {
       query: GitHubUsername,
-      variables() {
-        return {
-          token: this.token
-        };
-      },
       skip: function() {
         return !this.token;
       },
@@ -84,9 +76,6 @@ export default {
       } catch (error) {
         this.$router.push({ name: "SignInError" });
       }
-    },
-    tryAgain() {
-      this.$router.push({ name: "SignIn" });
     }
   },
   computed: {
