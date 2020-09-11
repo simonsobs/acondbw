@@ -3,13 +3,7 @@
     <v-row align="center" justify="center">
       <v-progress-circular v-if="loading" indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
       <div v-else-if="username">Signed in as {{ username }}</div>
-      <v-card v-else-if="authorizationError" outlined>
-        <v-card-title>Unsuccessful</v-card-title>
-        <v-card-actions>
-          <v-btn outlined @click="tryAgain">Try again</v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card v-else>
+      <v-card flat v-else>
         <v-card-title>Sign In</v-card-title>
         <v-card-actions>
           <v-btn block outlined @click="signIn">
@@ -80,7 +74,7 @@ export default {
       try {
         const data = await this.$apollo.mutate({
           mutation: GitHubAuth,
-          variables: { code: code + "1" }
+          variables: { code: code }
         });
         const authPayload = data.data.githubAuth.authPayload;
         const token = JSON.stringify("token " + authPayload.token);
@@ -88,7 +82,7 @@ export default {
         this.$store.dispatch("snackbarMessage", "Signed in");
         this.$router.push({ name: "SignIn" });
       } catch (error) {
-        console.log(error);
+        this.$router.push({ name: "SignInError" });
       }
     },
     tryAgain() {
@@ -157,6 +151,14 @@ export default {
         }
 
         this.exchangeCodeForToken(this.code);
+      },
+      immediate: true
+    },
+    authorizationError: {
+      handler: function() {
+        if (this.authorizationError) {
+          this.$router.push({ name: "SignInError" });
+        }
       },
       immediate: true
     }

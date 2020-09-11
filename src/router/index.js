@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
 import SignIn from "@/views/SignIn.vue";
+import SignInError from "@/views/SignInError.vue";
 import ProductTop from "@/views/ProductTop.vue";
 import ProductList from "@/views/ProductList.vue";
 import ProductItem from "@/views/ProductItem.vue";
@@ -18,6 +19,11 @@ const routes = [
     path: "/signin",
     name: "SignIn",
     component: SignIn,
+  },
+  {
+    path: "/signin-error",
+    name: "SignInError",
+    component: SignInError,
   },
   {
     path: "/about",
