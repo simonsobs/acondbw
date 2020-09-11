@@ -121,21 +121,22 @@ export default {
         }
 
         if (!this.$route.path == this.pathToSignIn) {
+          this.$router.push({ name: "SignInError" });
           return;
         }
 
         if (!localStorage.signInState) {
-          // error
+          this.$router.push({ name: "SignInError" });
           return;
         }
 
         if (!this.$route.query.state) {
-          // error
+          this.$router.push({ name: "SignInError" });
           return;
         }
 
-        if (!localStorage.signInState == this.$route.query.state) {
-          // error
+        if (!(localStorage.signInState == this.$route.query.state)) {
+          this.$router.push({ name: "SignInError" });
           return;
         }
 
