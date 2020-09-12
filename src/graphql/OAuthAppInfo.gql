@@ -1,0 +1,7 @@
+query OAuthAppInfo {
+  oauthAppInfo {
+    clientId
+    authorizeUrl
+    redirectUri
+  }
+}

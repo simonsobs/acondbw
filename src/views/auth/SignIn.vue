@@ -19,20 +19,21 @@
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
+import OAuthAppInfo from "@/graphql/OAuthAppInfo.gql";
 import GitHubAuth from "@/graphql/GitHubAuth.gql";
 import GitHubUsername from "@/graphql/GitHubUsername.gql";
 
 export default {
   name: "SignIn",
   data: () => ({
-    githubClientID: "1ce266dd301a653ca64f",
-    authorizeURL: "https://github.com/login/oauth/authorize",
-    tokenURL: "https://github.com/login/oauth/access_token",
-    redirectURI: "http://localhost:8081/signin",
+    oauthAppInfo: null,
     githubUsername: null,
     signingIn: false
   }),
   apollo: {
+    oauthAppInfo: {
+      query: OAuthAppInfo
+    },
     githubUsername: {
       query: GitHubUsername,
       skip: function() {
@@ -53,13 +54,13 @@ export default {
       localStorage.signInState = state;
       const params = {
         response_type: "code",
-        client_id: this.githubClientID,
-        redirect_uri: this.redirectURI,
+        client_id: this.oauthAppInfo.clientId,
+        redirect_uri: this.oauthAppInfo.redirectUri,
         scope: "", // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         state: state
       };
       let queryString = querystring.stringify(params);
-      const uri = this.authorizeURL + "?" + queryString;
+      const uri = this.oauthAppInfo.authorizeUrl + "?" + queryString;
       window.location.href = uri;
     },
     async exchangeCodeForToken(code) {
@@ -98,7 +99,9 @@ export default {
       return this.$route.query.error ? true : false;
     },
     loading() {
-      if (this.code) {
+      if (!this.oauthAppInfo) {
+        return true;
+      } else if (this.code) {
         return true;
       } else if (this.token && !this.username) {
         return true;
