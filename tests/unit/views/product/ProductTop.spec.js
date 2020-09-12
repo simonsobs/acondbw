@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
-import ProductTop from "@/views/ProductTop.vue";
+import ProductTop from "@/views/product/ProductTop.vue";
 
 import router from "@/router";
 

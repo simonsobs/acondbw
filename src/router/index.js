@@ -3,9 +3,9 @@ import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
 import SignIn from "@/views/auth/SignIn.vue";
 import SignInError from "@/views/auth/SignInError.vue";
-import ProductTop from "@/views/ProductTop.vue";
-import ProductList from "@/views/ProductList.vue";
-import ProductItem from "@/views/ProductItem.vue";
+import ProductTop from "@/views/product/ProductTop.vue";
+import ProductList from "@/views/product/ProductList.vue";
+import ProductItem from "@/views/product/ProductItem.vue";
 
 Vue.use(VueRouter);
 
