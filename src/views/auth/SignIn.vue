@@ -19,9 +19,9 @@
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
-import OAuthAppInfo from "@/graphql/OAuthAppInfo.gql";
-import GitHubAuth from "@/graphql/GitHubAuth.gql";
-import GitHubUsername from "@/graphql/GitHubUsername.gql";
+import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
+import GitHubAuth from "@/graphql/auth/GitHubAuth.gql";
+import GitHubUsername from "@/graphql/auth/GitHubUsername.gql";
 
 export default {
   name: "SignIn",

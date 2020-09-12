@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import GitHubUsername from "@/graphql/GitHubUsername.gql";
+import GitHubUsername from "@/graphql/auth/GitHubUsername.gql";
 import SignOutConfirmation from "./SignOutConfirmation";
 
 export default {
