@@ -3,18 +3,25 @@
     <v-row align="center" justify="center">
       <v-progress-circular v-if="loading" indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
       <v-card v-else-if="user" flat>
-        Signed in with GitHub!
-        <v-card outlined>
-          <v-list-item>
-            <v-list-item-avatar>
-              <img :src="user.avatarUrl" />
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title class="headline">{{ user.name }}</v-list-item-title>
-              <v-list-item-subtitle>{{ user.login }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card>
+        <v-list-item>
+          <v-list-item-content>Signed in with GitHub!</v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-card outlined>
+            <v-list-item>
+              <v-list-item-avatar>
+                <img :src="user.avatarUrl" />
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title class="headline">{{ user.name }}</v-list-item-title>
+                <v-list-item-subtitle>{{ user.login }}</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-icon>
+                <v-icon left>mdi-github</v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-card>
+        </v-list-item>
       </v-card>
       <v-card flat v-else>
         <v-card-title>Sign In</v-card-title>

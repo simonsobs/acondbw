@@ -11,10 +11,13 @@
         </template>
         <v-list>
           <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title>{{ user.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ user.login }}</v-list-item-subtitle>
-          </v-list-item-content>
+            <v-list-item-content>
+              <v-list-item-title>{{ user.name }}</v-list-item-title>
+              <v-list-item-subtitle>{{ user.login }}</v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon left>mdi-github</v-icon>
+            </v-list-item-icon>
           </v-list-item>
           <v-divider></v-divider>
           <v-dialog v-model="dialog" max-width="600">
@@ -33,7 +36,10 @@
         </v-list>
       </v-menu>
     </span>
-    <v-btn v-if="!token" outlined :disabled="disabled" :to="to">Sign In</v-btn>
+    <v-btn v-if="!token" depressed :to="pathToSignIn">
+      <v-icon left>mdi-github</v-icon>
+      Sign In
+    </v-btn>
   </span>
 </template>
 
@@ -56,7 +62,7 @@ export default {
         return !this.token;
       },
       result(result) {
-        console.log(result)
+        console.log(result);
         if (!result.data.githubUser) {
           this.$store.dispatch("unsetToken");
           return;
@@ -80,13 +86,6 @@ export default {
     pathToSignIn() {
       return this.$router.resolve({ name: "SignIn" }).route.path;
       // i.e., "/signin"
-    },
-    disabled() {
-      const currentPath = this.$route.path;
-      return currentPath == this.pathToSignIn;
-    },
-    to() {
-      return this.disabled ? null : this.pathToSignIn;
     }
   },
   watch: {
