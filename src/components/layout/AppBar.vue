@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import SearchWindow from "@/components/SearchWindow";
+import SearchWindow from "@/components/utils/SearchWindow";
 import SignInButton from "@/components/auth/SignInButton";
 
 export default {

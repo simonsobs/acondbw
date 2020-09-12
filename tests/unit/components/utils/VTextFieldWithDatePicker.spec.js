@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import VTextFieldWithDatePicker from "@/components/VTextFieldWithDatePicker";
+import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker";
 
 Vue.use(Vuetify);
 
