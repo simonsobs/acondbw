@@ -39,7 +39,7 @@ import DELETE_PRODUCT from "@/graphql/DeleteProduct.gql";
 import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "ProductDeleteForm",

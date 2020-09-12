@@ -107,7 +107,7 @@ import UPDATE_PRODUCT from "@/graphql/UpdateProduct.gql";
 import FormRelations from "./FormRelations";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "ProductEditForm",

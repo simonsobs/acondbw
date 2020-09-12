@@ -127,7 +127,7 @@ import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicke
 import FormRelations from "./FormRelations";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
 const formRelationDefault = {
   typeId: null,

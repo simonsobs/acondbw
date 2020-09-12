@@ -202,7 +202,7 @@ import ProductEditForm from "@/components/product/ProductEditForm";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
 export default {
   name: "ProductItemCard",

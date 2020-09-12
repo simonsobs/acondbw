@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 import State from "@/utils/LoadingState.js";
 
 Vue.use(Vuetify);
