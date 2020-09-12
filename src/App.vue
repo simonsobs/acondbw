@@ -17,7 +17,7 @@
 
 <script>
 import AppBar from "@/components/layout/AppBar";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/layout/Navigation";
 import Snackbar from "@/components/Snackbar";
 
 export default {
