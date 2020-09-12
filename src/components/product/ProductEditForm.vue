@@ -104,7 +104,7 @@ import _ from "lodash";
 import PRODUCT from "@/graphql/Product.gql";
 import UPDATE_PRODUCT from "@/graphql/UpdateProduct.gql";
 
-import FormRelations from "@/components/FormRelations";
+import FormRelations from "./FormRelations";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";

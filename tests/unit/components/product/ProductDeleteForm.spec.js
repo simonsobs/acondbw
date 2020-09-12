@@ -4,7 +4,7 @@ import Vuex from "vuex";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import ProductDeleteForm from "@/components/ProductDeleteForm.vue";
+import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 import router from "@/router";
 
 Vue.use(Vuetify);

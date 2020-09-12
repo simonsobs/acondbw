@@ -124,7 +124,7 @@ import CREATE_PRODUCT from "@/graphql/CreateProduct.gql";
 import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
 
 import VTextFieldWithDatePicker from "@/components/VTextFieldWithDatePicker";
-import FormRelations from "@/components/FormRelations";
+import FormRelations from "./FormRelations";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";

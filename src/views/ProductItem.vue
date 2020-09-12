@@ -55,7 +55,7 @@
 <script>
 import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/ProductByTypeIdAndName.gql";
 
-import ProductItemCard from "@/components/ProductItemCard";
+import ProductItemCard from "@/components/product/ProductItemCard";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";

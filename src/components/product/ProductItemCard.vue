@@ -198,8 +198,8 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
 import PRODUCT from "@/graphql/Product.gql";
 
-import ProductEditForm from "@/components/ProductEditForm";
-import ProductDeleteForm from "@/components/ProductDeleteForm";
+import ProductEditForm from "@/components/product/ProductEditForm";
+import ProductDeleteForm from "@/components/product/ProductDeleteForm";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";

@@ -159,8 +159,8 @@
 </template>
 
 <script>
-import ProductItemCard from "@/components/ProductItemCard";
-import ProductAddForm from "@/components/ProductAddForm";
+import ProductItemCard from "@/components/product/ProductItemCard";
+import ProductAddForm from "@/components/product/ProductAddForm";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";

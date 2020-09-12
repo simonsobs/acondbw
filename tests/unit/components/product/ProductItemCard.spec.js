@@ -5,7 +5,7 @@ import { mount, createLocalVue } from "@vue/test-utils";
 
 import '@testing-library/jest-dom'
 
-import ProductItemCard from "@/components/ProductItemCard.vue";
+import ProductItemCard from "@/components/product/ProductItemCard.vue";
 import router from "@/router";
 
 Vue.use(Vuetify);
