@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import AppBar from "@/components/AppBar";
-import Navigation from "@/components/Navigation";
-import Snackbar from "@/components/Snackbar";
+import AppBar from "@/components/layout/AppBar";
+import Navigation from "@/components/layout/Navigation";
+import Snackbar from "@/components/layout/Snackbar";
 
 export default {
   name: "App",

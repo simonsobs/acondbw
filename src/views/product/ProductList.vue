@@ -159,11 +159,11 @@
 </template>
 
 <script>
-import ProductItemCard from "@/components/ProductItemCard";
-import ProductAddForm from "@/components/ProductAddForm";
+import ProductItemCard from "@/components/product/ProductItemCard";
+import ProductAddForm from "@/components/product/ProductAddForm";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
 import QueryForProductList from "@/graphql/QueryForProductList.gql";
 import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";

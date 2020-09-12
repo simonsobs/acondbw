@@ -1,5 +1,13 @@
 <template>
   <v-app-bar app dense clipped-left>
+    <!-- <v-tooltip bottom open-delay="800">
+      <template v-slot:activator="{ on }">
+        <v-btn text icon exact v-on="on" @click="$router.go(-1)">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+      </template>
+      <span>Back</span>
+    </v-tooltip>-->
     <v-app-bar-nav-icon @click="$emit('drawer')" />
     <v-toolbar-title>
       <router-link to="/" v-text="title" style="text-decoration: none; color: inherit;"></router-link>
@@ -43,8 +51,8 @@
 </template>
 
 <script>
-import SearchWindow from "@/components/SearchWindow";
-import SignInButton from "@/components/SignInButton";
+import SearchWindow from "@/components/utils/SearchWindow";
+import SignInButton from "@/components/auth/SignInButton";
 
 export default {
   name: "AppBar",

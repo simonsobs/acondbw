@@ -4,7 +4,7 @@ import Vuex from "vuex";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import ProductAddForm from "@/components/ProductAddForm.vue";
+import ProductAddForm from "@/components/product/ProductAddForm.vue";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

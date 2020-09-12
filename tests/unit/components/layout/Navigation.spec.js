@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
-import Dashboard from "@/components/Dashboard";
+import Navigation from "@/components/layout/Navigation";
 import router from "@/router";
 
 Vue.use(Vuetify);
@@ -25,9 +25,6 @@ describe("App.vue", () => {
         singular: "simulation",
         plural: "simulations",
         icon: "mdi-creation",
-        products: {
-          totalCount: 1,
-        },
       },
     },
     {
@@ -40,9 +37,6 @@ describe("App.vue", () => {
         singular: "map",
         plural: "maps",
         icon: "mdi-map",
-        products: {
-          totalCount: 64,
-        },
       },
     },
     {
@@ -55,9 +49,6 @@ describe("App.vue", () => {
         singular: "beam",
         plural: "beams",
         icon: "mdi-spotlight-beam",
-        products: {
-          totalCount: 7,
-        },
       },
     },
   ];
@@ -65,7 +56,7 @@ describe("App.vue", () => {
   beforeEach(() => {
     localVue = createLocalVue();
     vuetify = new Vuetify();
-    wrapper = mount(Dashboard, {
+    wrapper = shallowMount(Navigation, {
       localVue,
       vuetify,
       router,
@@ -78,18 +69,13 @@ describe("App.vue", () => {
           },
         },
       },
-      stubs: {
-        DevToolLoadingStateOverridingMenu: true,
-      },
     });
     wrapper.setData({
       edges: edges,
     });
   });
 
-  it("match snapshot", async () => {
-    await Vue.nextTick();
-    await Vue.nextTick();
+  it("match snapshot", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 });

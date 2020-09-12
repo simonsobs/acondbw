@@ -1,11 +1,14 @@
 <template>
-  <div class="product-add-form" style="position: relative;">
+  <div class="product-edit-form" style="position: relative;">
     <v-container>
       <v-card outlined max-width="980px" class="mx-auto my-5">
         <v-card-title
           v-if="state == State.LOADED"
           class="headline primary--text"
-        >Add {{ productType.indefArticle }} {{ productType.singular }}</v-card-title>
+        >Update the information about the {{ productType.singular }}</v-card-title>
+        <v-card-text
+          v-if="state == State.LOADED"
+        >This form is for updating the information about the {{ productType.singular }}. If the {{ productType.singular }} itself has been updated, a new entry should be added.</v-card-text>
         <v-alert v-if="error" type="error">{{ error }}</v-alert>
         <v-form v-if="state == State.LOADED" ref="form" v-model="valid">
           <v-divider></v-divider>
@@ -13,33 +16,15 @@
             <v-row class="ma-0 px-0">
               <v-col order="1" cols="12" md="4">
                 <v-text-field
-                  label="Name*"
-                  required
+                  label="Name"
+                  readonly
+                  disabled
                   :hint="'Name of the ' + productType.singular + '. This field cannot be changed later.'"
                   persistent-hint
-                  v-model="form.name"
-                  :rules="nameRules"
+                  v-model="node.name"
                 ></v-text-field>
-              </v-col>
-              <v-col order="3" cols="6" md="4">
-                <v-text-field-with-date-picker
-                  label="Date produced (YYYY-MM-DD)*"
-                  :hint="'The date on which the ' + productType.singular + ' was produced, e.g., 2020-05-06. This field cannot be changed later.'"
-                  v-model="form.dateProduced"
-                  :rules="requiredRules"
-                ></v-text-field-with-date-picker>
               </v-col>
               <v-col order="4" cols="6" md="4">
-                <v-text-field
-                  label="Produced by*"
-                  required
-                  :hint="'The person or group that produced the ' + productType.singular + ', e.g. pwg-xxx. This field cannot be changed later.'"
-                  persistent-hint
-                  v-model="form.producedBy"
-                  :rules="requiredRules"
-                ></v-text-field>
-              </v-col>
-              <v-col order="4" cols="6" offset-md="4" md="4">
                 <v-text-field
                   label="Contact*"
                   required
@@ -51,11 +36,11 @@
               </v-col>
               <v-col order="4" cols="6" md="4">
                 <v-text-field
-                  label="Posted by*"
+                  label="Updated by*"
                   required
-                  hint="The person who is filling out this form. This field cannot be changed later."
+                  hint="The person who is filling out this form."
                   persistent-hint
-                  v-model="form.postedBy"
+                  v-model="form.updatedBy"
                   :rules="requiredRules"
                 ></v-text-field>
               </v-col>
@@ -70,8 +55,6 @@
                   v-model="form.paths"
                 ></v-textarea>
               </v-col>
-            </v-row>
-            <v-row class="mx-0 mb-3 px-0">
               <v-col cols="12" md="8" offset-md="4">
                 <v-textarea
                   label="Note"
@@ -93,7 +76,7 @@
             <v-spacer></v-spacer>
             <v-btn color="secondary" text @click="close()">Cancel</v-btn>
             <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
-            <v-btn color="primary" :disabled="!valid" @click="addProduct()">Add</v-btn>
+            <v-btn color="primary" :disabled="!(valid && changed)" @click="editProduct()">Update</v-btn>
           </v-card-actions>
         </v-form>
         <div v-else>
@@ -114,66 +97,43 @@
     </v-container>
   </div>
 </template>
-  
+
 <script>
 import _ from "lodash";
 
-import QueryForProductAddForm from "@/graphql/QueryForProductAddForm.gql";
-import PRODUCT_TYPE from "@/graphql/ProductType.gql";
-import CREATE_PRODUCT from "@/graphql/CreateProduct.gql";
-import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
+import PRODUCT from "@/graphql/Product.gql";
+import UPDATE_PRODUCT from "@/graphql/UpdateProduct.gql";
 
-import VTextFieldWithDatePicker from "@/components/VTextFieldWithDatePicker";
-import FormRelations from "@/components/FormRelations";
+import FormRelations from "./FormRelations";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/DevToolLoadingStateOverridingMenu";
-
-const formRelationDefault = {
-  typeId: null,
-  productTypeId: null,
-  productId: null
-};
-
-const formDefault = {
-  name: "",
-  contact: "",
-  dateProduced: new Date().toISOString().substr(0, 10),
-  producedBy: "",
-  postedBy: "",
-  paths: "",
-  relations: [{ ...formRelationDefault }, { ...formRelationDefault }],
-  note: ""
-};
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
 export default {
-  name: "ProductAddForm",
+  name: "ProductEditForm",
   components: {
-    VTextFieldWithDatePicker,
     FormRelations,
     DevToolLoadingStateOverridingMenu
   },
   props: {
-    productTypeId: { required: true }
+    productId: { default: null } // product.productId not product.id
   },
   data() {
     return {
       productType: null,
-      queryError: null,
-      devtoolState: null,
-      State: State,
-      step: 1,
-      form: _.cloneDeep(formDefault),
+      node: null,
+      form: null,
       valid: true,
       error: null,
-      nameRules: [
-        v => !!v || "This field is required",
-        v => (v || "").indexOf(" ") < 0 || "No spaces are allowed"
-      ],
-      requiredRules: [v => !!v || "This field is required"]
+      requiredRules: [v => !!v || "This field is required"],
+      devtoolState: null,
+      State: State
     };
   },
   computed: {
+    changed() {
+      return !(JSON.stringify(this.form) === JSON.stringify(this.formDefault));
+    },
     state() {
       if (this.devtoolState) {
         return this.devtoolState;
@@ -181,44 +141,57 @@ export default {
 
       if (this.loading) {
         return State.LOADING;
-      } else if (this.queryError) {
+      } else if (this.error) {
         return State.ERROR;
-      } else if (this.productType) {
+      } else if (this.form) {
         return State.LOADED;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.productType.loading;
+      return this.$apollo.queries.node.loading;
+    },
+    formDefault() {
+      if (this.node) {
+        const ret = _.pick(this.node, ["name", "contact", "updatedBy", "note"]);
+        ret.paths = this.node.paths.edges.map(e => e.node.path).join("\n");
+        ret.relations = this.node.relations.edges.map(function(e) {
+          return {
+            typeId: e.node.type_.typeId,
+            productTypeId: e.node.other.type_.typeId,
+            productId: e.node.other.productId
+          };
+        });
+        return ret;
+      } else {
+        return null;
+      }
+    }
+  },
+  watch: {
+    formDefault: function() {
+      this.form = _.cloneDeep(this.formDefault);
     }
   },
   apollo: {
-    productType: {
-      query: QueryForProductAddForm,
+    node: {
+      query: PRODUCT,
       variables() {
-        return { typeId: this.productTypeId };
+        return {
+          productId: this.productId
+        };
       },
-      skip: function() {
-        return !this.productTypeId;
-      },
+      update: data => data.product,
       result(result) {
-        this.queryError = result.error ? result.error : null;
-
-        if (this.queryError) {
-          return;
-        }
-
-        this.productType = result.data.productType;
+        this.error = result.error ? result.error : null;
+        this.productType = result.data.product.type_;
       }
     }
   },
   methods: {
     scrollToTop() {
-      const element = document.getElementsByClassName("v-dialog--active")[0];
-      if (element) {
-        element.scrollTop = 0;
-      }
+      document.getElementsByClassName("v-dialog--active")[0].scrollTop = 0;
     },
     close() {
       this.scrollToTop();
@@ -229,33 +202,25 @@ export default {
       // This line is commented out because it resets "form" to
       // the empty object {}.
       // Instead, the following two lines are used.
-      this.form = _.cloneDeep(formDefault);
+      this.form = _.cloneDeep(this.formDefault);
       this.$refs.form.resetValidation();
       this.error = null;
-      this.scrollToTop();
     },
-    async addProduct() {
+    async editProduct() {
       try {
-        const createProductInput = _.pick(this.form, [
-          "name",
+        const updateProductInput = _.pick(this.form, [
           "contact",
-          "dateProduced",
-          "producedBy",
-          "postedBy",
+          "updatedBy",
           "note"
         ]);
 
-        createProductInput.typeId = this.productTypeId;
-
-        const paths = this.form.paths
+        updateProductInput.paths = this.form.paths
           .split("\n")
           .map(x => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
           .filter(Boolean) // remove empty strings
           .filter((v, i, a) => a.indexOf(v) === i); // unique
 
-        createProductInput.paths = paths;
-
-        createProductInput.relations = _.filter(
+        updateProductInput.relations = _.filter(
           _.map(this.form.relations, x =>
             _.pickBy(_.pick(x, ["typeId", "productId"]), _.identity)
           ),
@@ -263,37 +228,13 @@ export default {
         );
 
         const data = await this.$apollo.mutate({
-          mutation: CREATE_PRODUCT,
-          variables: { input: createProductInput },
-          update: (cache, { data: { createProduct } }) => {
-            try {
-              // Delete all cache and dispacth "apolloMutationCalled", which triggers refetch
-              this.$apollo.provider.defaultClient.cache.data.data = {}
-
-              // The following code was used to update cache, which 
-              // is typically a recommended way. But it is commented out
-              // because it is not clear how to systematically update 
-              // all affected cache.
-
-              // const data = cache.readQuery({
-              //   query: ALL_PRODUCTS_BY_TYPE_ID,
-              //   variables: { typeId: this.productTypeId }
-              // });
-              // data.allProducts.edges.splice(0, 0, {
-              //   node: createProduct.product,
-              //   __typename: "ProductEdge"
-              // });
-              // cache.writeQuery({
-              //   query: ALL_PRODUCTS_BY_TYPE_ID,
-              //   variables: { typeId: this.productTypeId },
-              //   data
-              // });
-            } catch (error) {
-            }
+          mutation: UPDATE_PRODUCT,
+          variables: {
+            productId: this.node.productId,
+            input: updateProductInput
           }
         });
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Added");
+        this.$store.dispatch("snackbarMessage", "Updated");
         this.resetForm();
         this.close();
       } catch (error) {
