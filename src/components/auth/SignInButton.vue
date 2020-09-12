@@ -1,11 +1,22 @@
 <template>
   <span>
-    <span v-if="token && username">
+    <span v-if="token && user">
       <v-menu bottom offset-y v-model="menu">
         <template v-slot:activator="{ on, attr }">
-          <v-btn text class="no-uppercase" v-bind="attr" v-on="on">{{ username }}</v-btn>
+          <v-btn icon class="no-uppercase" v-bind="attr" v-on="on">
+            <v-avatar size="36">
+              <img :src="user.avatarUrl" :alt="user.login" />
+            </v-avatar>
+          </v-btn>
         </template>
         <v-list>
+          <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>{{ user.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ user.login }}</v-list-item-subtitle>
+          </v-list-item-content>
+          </v-list-item>
+          <v-divider></v-divider>
           <v-dialog v-model="dialog" max-width="600">
             <template v-slot:activator="{ on }">
               <v-list-item v-on="on">
@@ -27,25 +38,26 @@
 </template>
 
 <script>
-import GitHubUsername from "@/graphql/auth/GitHubUsername.gql";
+import GitHubUser from "@/graphql/auth/GitHubUser.gql";
 import SignOutConfirmation from "./SignOutConfirmation";
 
 export default {
   name: "SignInButton",
   components: { SignOutConfirmation },
   data: () => ({
-    githubUsername: null,
+    githubUser: null,
     menu: false,
     dialog: false
   }),
   apollo: {
-    githubUsername: {
-      query: GitHubUsername,
+    githubUser: {
+      query: GitHubUser,
       skip: function() {
         return !this.token;
       },
       result(result) {
-        if (!result.data.githubUsername) {
+        console.log(result)
+        if (!result.data.githubUser) {
           this.$store.dispatch("unsetToken");
           return;
         }
@@ -56,13 +68,13 @@ export default {
     token() {
       return this.$store.state.token;
     },
-    username() {
+    user() {
       if (!this.token) {
         return null;
-      } else if (!this.githubUsername) {
+      } else if (!this.githubUser) {
         return null;
       } else {
-        return this.githubUsername;
+        return this.githubUser;
       }
     },
     pathToSignIn() {
@@ -80,7 +92,7 @@ export default {
   watch: {
     token: function() {
       if (!this.token) return;
-      this.$apollo.queries.githubUsername.refetch();
+      this.$apollo.queries.githubUser.refetch();
     }
   }
 };

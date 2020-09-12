@@ -2,7 +2,20 @@
   <v-container fill-height fluid>
     <v-row align="center" justify="center">
       <v-progress-circular v-if="loading" indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
-      <div v-else-if="username">Signed in as {{ username }}</div>
+      <v-card v-else-if="user" flat>
+        Signed in with GitHub!
+        <v-card outlined>
+          <v-list-item>
+            <v-list-item-avatar>
+              <img :src="user.avatarUrl" />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title class="headline">{{ user.name }}</v-list-item-title>
+              <v-list-item-subtitle>{{ user.login }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+      </v-card>
       <v-card flat v-else>
         <v-card-title>Sign In</v-card-title>
         <v-card-actions>
@@ -21,26 +34,26 @@ const cryptoRandomString = require("crypto-random-string");
 
 import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
 import GitHubAuth from "@/graphql/auth/GitHubAuth.gql";
-import GitHubUsername from "@/graphql/auth/GitHubUsername.gql";
+import GitHubUser from "@/graphql/auth/GitHubUser.gql";
 
 export default {
   name: "SignIn",
   data: () => ({
     oauthAppInfo: null,
-    githubUsername: null,
+    githubUser: null,
     signingIn: false
   }),
   apollo: {
     oauthAppInfo: {
       query: OAuthAppInfo
     },
-    githubUsername: {
-      query: GitHubUsername,
+    githubUser: {
+      query: GitHubUser,
       skip: function() {
         return !this.token;
       },
       result(result) {
-        if (!result.data.githubUsername) {
+        if (!result.data.githubUser) {
           this.$store.dispatch("unsetToken");
           return;
         }
@@ -83,13 +96,13 @@ export default {
     token() {
       return this.$store.state.token;
     },
-    username() {
+    user() {
       if (!this.token) {
         return null;
-      } else if (!this.githubUsername) {
+      } else if (!this.githubUser) {
         return null;
       } else {
-        return this.githubUsername;
+        return this.githubUser;
       }
     },
     code() {
@@ -103,7 +116,7 @@ export default {
         return true;
       } else if (this.code) {
         return true;
-      } else if (this.token && !this.username) {
+      } else if (this.token && !this.user) {
         return true;
       } else if (this.signingIn) {
         return true;
