@@ -28,7 +28,7 @@
 
 <script>
 import GitHubUsername from "@/graphql/GitHubUsername.gql";
-import SignOutConfirmation from "@/components/SignOutConfirmation";
+import SignOutConfirmation from "./SignOutConfirmation";
 
 export default {
   name: "SignInButton",

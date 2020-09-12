@@ -52,7 +52,7 @@
 
 <script>
 import SearchWindow from "@/components/SearchWindow";
-import SignInButton from "@/components/SignInButton";
+import SignInButton from "@/components/auth/SignInButton";
 
 export default {
   name: "AppBar",
