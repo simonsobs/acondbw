@@ -118,10 +118,10 @@
 <script>
 import _ from "lodash";
 
-import QueryForProductAddForm from "@/graphql/QueryForProductAddForm.gql";
-import PRODUCT_TYPE from "@/graphql/ProductType.gql";
-import CREATE_PRODUCT from "@/graphql/CreateProduct.gql";
-import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/AllProductsByTypeId.gql";
+import QueryForProductAddForm from "@/graphql/product/QueryForProductAddForm.gql";
+import PRODUCT_TYPE from "@/graphql/product/ProductType.gql";
+import CREATE_PRODUCT from "@/graphql/product/CreateProduct.gql";
+import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/product/AllProductsByTypeId.gql";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker";
 import FormRelations from "./FormRelations";

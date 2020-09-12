@@ -101,8 +101,8 @@
 <script>
 import _ from "lodash";
 
-import PRODUCT from "@/graphql/Product.gql";
-import UPDATE_PRODUCT from "@/graphql/UpdateProduct.gql";
+import PRODUCT from "@/graphql/product/Product.gql";
+import UPDATE_PRODUCT from "@/graphql/product/UpdateProduct.gql";
 
 import FormRelations from "./FormRelations";
 

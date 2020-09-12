@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import PRODUCT_TYPE_BY_NAME from "@/graphql/ProductTypeByName.gql";
+import PRODUCT_TYPE_BY_NAME from "@/graphql/product/ProductTypeByName.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";

@@ -62,7 +62,7 @@
 <script>
 import _ from "lodash";
 
-import QueryForFormRelations from "@/graphql/QueryForFormRelations.gql";
+import QueryForFormRelations from "@/graphql/product/QueryForFormRelations.gql";
 
 const formRelationDefault = {
   typeId: null,
