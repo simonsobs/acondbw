@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
-import AppBar from "@/components/AppBar";
+import AppBar from "@/components/layout/AppBar";
 import router from "@/router";
 
 Vue.use(Vuetify);

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AppBar from "@/components/AppBar";
+import AppBar from "@/components/layout/AppBar";
 import Navigation from "@/components/Navigation";
 import Snackbar from "@/components/Snackbar";
 
