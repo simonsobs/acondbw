@@ -32,7 +32,9 @@
                     </v-btn>
                   </template>
                   <v-list flat dense>
-                    <v-subheader>Sort</v-subheader>
+                    <v-list-item>
+                      <v-list-item-title>Sort</v-list-item-title>
+                    </v-list-item>
                     <v-list-item-group v-model="sortItem" color="primary">
                       <v-list-item v-for="(item, i) in sortItems" :key="i">
                         <v-list-item-icon>
