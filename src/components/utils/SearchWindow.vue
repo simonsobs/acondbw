@@ -41,7 +41,6 @@ export default {
         return data.allProducts.edges;
       },
       result(result) {
-        console.log(result);
       }
     }
   },
