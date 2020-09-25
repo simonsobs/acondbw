@@ -62,7 +62,6 @@ export default {
         return !this.token;
       },
       result(result) {
-        console.log(result);
         if (!result.data.githubUser) {
           this.$store.dispatch("unsetToken");
           return;
