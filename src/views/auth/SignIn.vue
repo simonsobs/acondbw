@@ -90,7 +90,8 @@ export default {
           variables: { code: code }
         });
         const authPayload = data.data.githubAuth.authPayload;
-        const token = JSON.stringify("token " + authPayload.token);
+        // const token = JSON.stringify("token " + authPayload.token);
+        const token = JSON.stringify(authPayload.token);
         this.$store.dispatch("setToken", { token, apolloClient: this.$apollo });
         this.$store.dispatch("snackbarMessage", "Signed in");
         this.$router.push({ name: "SignIn" });
