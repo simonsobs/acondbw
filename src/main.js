@@ -22,7 +22,10 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-const options = { link: authLink };
+// After the updgrades of node packages at the commit https://github.com/simonsobs/acondbw/commit/96cca659b9eda45816bfc8891fc76e4754313131,
+// "Authorization" is automatically included without authLink.
+// const options = { link: authLink };
+const options = { };
 
 new Vue({
   router,
