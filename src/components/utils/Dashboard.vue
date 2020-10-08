@@ -10,7 +10,7 @@
       @click:row="clickRow"
       class="elevation-1"
     >
-      <template v-slot:item.plural="{ item }">
+      <template v-slot:[`item.plural`]="{ item }">
         <router-link :to="{ name: 'ProductList', params: { productTypeName: item.name } }">
           <span class="capitalize font-weight-bold primary--text">{{ item.plural }}</span>
         </router-link>
