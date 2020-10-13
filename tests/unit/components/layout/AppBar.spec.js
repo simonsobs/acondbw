@@ -14,26 +14,40 @@ describe("App.vue", () => {
 
   let localVue;
   let vuetify;
-  let wrapper;
 
-  beforeEach(() => {
-    process.env.VUE_APP_TOOLBAR_TITLE = "Product DB Title";
-    process.env.VUE_APP_GRAPHQL_HTTP = "http://graphql.api:5000/graphql";
-    localVue = createLocalVue();
-    vuetify = new Vuetify();
-    wrapper = shallowMount(AppBar, {
+  function createWrapper(loading = false) {
+    return shallowMount(AppBar, {
       localVue,
       vuetify,
       router,
+      mocks: {
+        $apollo: {
+          queries: {
+            node: {
+              loading: loading,
+            },
+          },
+        },
+      },
     });
+  }
+
+  beforeEach(() => {
+    process.env.VUE_APP_GRAPHQL_HTTP = "http://graphql.api:5000/graphql";
+    localVue = createLocalVue();
+    vuetify = new Vuetify();
   });
 
   afterEach(() => {
     process.env = ENV_ORG;
   });
 
-  it("match snapshot", () => {
+  it("match snapshot", async () => {
+    const wrapper = createWrapper();
+    wrapper.setData({
+      title: "Toolbar Title",
+    });
+    await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
-
 });
