@@ -36,6 +36,9 @@ describe("App.vue", () => {
       store,
       stubs: ["router-link", "router-view"],
     });
+    wrapper.setData({
+      title: "Head Title",
+    });
   });
 
   it("match snapshot", () => {
