@@ -11,8 +11,6 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("ProductTop.vue", () => {
-  const ENV_ORG = process.env;
-
   let localVue;
   let vuetify;
 
@@ -35,16 +33,9 @@ describe("ProductTop.vue", () => {
     });
   }
 
-  beforeEach(function() {
-    process.env.VUE_APP_ACONDBW_PRODUCT_CREATION_DIALOG = true;
-    process.env.VUE_APP_ACONDBW_PRODUCT_UPDATE_DIALOG = true;
-    process.env.VUE_APP_ACONDBW_PRODUCT_DELETION_DIALOG = true;
+  beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
-  });
-
-  afterEach(() => {
-    process.env = ENV_ORG;
   });
 
   it("match snapshot list", async () => {
@@ -52,6 +43,14 @@ describe("ProductTop.vue", () => {
     await router.push({
       name: "ProductList",
       params: { productTypeName: "map" },
+    });
+    await Vue.nextTick();
+    wrapper.setData({
+      webConfig: {
+        productCreationDialog: true,
+        productUpdateDialog: true,
+        productDeletionDialog: true,
+      },
     });
     await Vue.nextTick();
     wrapper.setData({
@@ -77,6 +76,14 @@ describe("ProductTop.vue", () => {
       params: { productTypeName: "map", name: "map001" },
     });
     await Vue.nextTick();
+    await Vue.nextTick();
+    wrapper.setData({
+      webConfig: {
+        productCreationDialog: true,
+        productUpdateDialog: true,
+        productDeletionDialog: true,
+      },
+    });
     await Vue.nextTick();
     wrapper.setData({
       node: {

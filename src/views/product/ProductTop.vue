@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import WebConfig from "@/graphql/site/WebConfig.gql";
 import PRODUCT_TYPE_BY_NAME from "@/graphql/product/ProductTypeByName.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -62,10 +63,7 @@ export default {
     State: State,
     transitionName: "fade-product-top-leave",
     transitionMode: "out-in",
-    disableAdd: process.env.VUE_APP_ACONDBW_PRODUCT_CREATION_DIALOG != "true",
-    disableEdit: process.env.VUE_APP_ACONDBW_PRODUCT_UPDATE_DIALOG != "true",
-    disableDelete: process.env.VUE_APP_ACONDBW_PRODUCT_DELETION_DIALOG != "true"
-
+    webConfig: null
   }),
   mounted() {
     this.productTypeName = this.$route.params.productTypeName;
@@ -89,9 +87,21 @@ export default {
     },
     loading() {
       return this.$apollo.queries.node.loading;
+    },
+    disableAdd() {
+      return this.webConfig ? !this.webConfig.productCreationDialog : true;
+    },
+    disableEdit() {
+      return this.webConfig ? !this.webConfig.productUpdateDialog : true;
+    },
+    disableDelete() {
+      return this.webConfig ? !this.webConfig.productDeletionDialog : true;
     }
   },
   apollo: {
+    webConfig: {
+      query: WebConfig
+    },
     node: {
       query: PRODUCT_TYPE_BY_NAME,
       variables() {
