@@ -31,16 +31,29 @@
 </template>
 
 <script>
+import WebConfig from "@/graphql/site/WebConfig.gql";
+
 import State from "@/utils/LoadingState.js";
 
 export default {
   name: "DevToolLoadingStateOverridingMenu",
   data() {
     return {
-      enabled : process.env.VUE_APP_ACONDBW_DEVTOOL_LOADINGSTATE == "true",
       state: "off",
-      State: State
+      State: State,
+      enabled: false,
+      error: null
     };
+  },
+  apollo: {
+    enabled: {
+      query: WebConfig,
+      update: data =>
+        data.webConfig ? data.webConfig.devtoolLoadingstate : false,
+      result(result) {
+        this.error = result.error ? result.error : null;
+      }
+    }
   },
   watch: {
       state: function() {
