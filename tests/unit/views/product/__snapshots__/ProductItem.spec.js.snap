@@ -10,10 +10,6 @@ exports[`ProductItem.vue match snapshot 1`] = `
   <div>
     <productitemcard-stub productid="1013"></productitemcard-stub>
   </div>
-  <div><button type="button" class="v-btn v-btn--absolute v-btn--flat v-btn--icon v-btn--round theme--light v-size--default" style="top: -15px; right: -10px;"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-nut theme--light grey--text text--lighten-1" style="font-size: 12px;"></i></span></button>
-    <div class="v-menu">
-      <!---->
-    </div>
-  </div>
+  <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
 </div>
 `;

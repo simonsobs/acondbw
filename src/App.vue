@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import WebConfig from "@/graphql/site/WebConfig.gql";
+
 import AppBar from "@/components/layout/AppBar";
 import Navigation from "@/components/layout/Navigation";
 import Snackbar from "@/components/layout/Snackbar";
@@ -27,11 +29,29 @@ export default {
     Navigation,
     Snackbar
   },
+  metaInfo() {
+    return {
+      title: this.title || "Acondbw",
+      titleTemplate: null,
+    };
+  },
   data: () => ({
     drawer: null,
     transitionName: "fade-app-across",
-    transitionMode: "out-in"
+    transitionMode: "out-in",
+    title: null,
+    error: null,
   }),
+  apollo: {
+    title: {
+      query: WebConfig,
+      update: data =>
+        data.webConfig ? data.webConfig.headTitle : null,
+      result(result) {
+        this.error = result.error ? result.error : null;
+      }
+    }
+  },
   watch: {
     $route(to, from) {
       // update the transition effect dynamically

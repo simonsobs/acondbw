@@ -39,7 +39,7 @@ describe("ProductAddForm.vue", () => {
     return wrapper;
   }
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
     localVue.use(Vuex);
     vuetify = new Vuetify();

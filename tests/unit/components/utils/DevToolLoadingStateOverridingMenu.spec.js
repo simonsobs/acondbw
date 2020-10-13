@@ -13,15 +13,24 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
   let localVue;
   let vuetify;
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
   });
 
-  function createWrapper() {
+  function createWrapper(loading = false) {
     let wrapper = mount(DevToolLoadingStateOverridingMenu, {
       localVue,
-      vuetify
+      vuetify,
+      mocks: {
+        $apollo: {
+          queries: {
+            enabled: {
+              loading: loading,
+            },
+          },
+        },
+      },
     });
 
     return wrapper;
@@ -30,22 +39,30 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
   it("emit a state", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-        state: State.LOADING
-      });
+      enabled: true,
+    });
+    await Vue.nextTick();
+    wrapper.setData({
+      state: State.LOADING,
+    });
     await Vue.nextTick();
     expect(wrapper.emitted("state").length).toBe(1);
     expect(wrapper.emitted("state")[0]).toEqual([State.LOADING]);
-    });
+  });
 
   it("off - emit null", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-        state: State.LOADING
-      });
+      enabled: true,
+    });
     await Vue.nextTick();
     wrapper.setData({
-        state: "off"
-      });
+      state: State.LOADING,
+    });
+    await Vue.nextTick();
+    wrapper.setData({
+      state: "off",
+    });
     await Vue.nextTick();
     expect(wrapper.emitted("state").length).toBe(2);
     expect(wrapper.emitted("state")[1]).toEqual([null]);

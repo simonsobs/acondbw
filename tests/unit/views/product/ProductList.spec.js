@@ -33,6 +33,7 @@ describe("ProductList.vue", () => {
       stubs: {
         ProductItemCard: true,
         ProductAddForm: true,
+        "dev-tool-loading-state-overriding-menu": true,
         "transition-group": true,
       },
     });
@@ -78,7 +79,7 @@ describe("ProductList.vue", () => {
     },
   };
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
   });
 

@@ -31,11 +31,12 @@ describe("ProductItem.vue", () => {
       },
       stubs: {
         ProductItemCard: true,
+        "dev-tool-loading-state-overriding-menu": true,
       },
     });
   }
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
   });
 

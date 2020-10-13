@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import VueMeta from 'vue-meta';
 import Home from "@/views/Home.vue";
 import SignIn from "@/views/auth/SignIn.vue";
 import SignInError from "@/views/auth/SignInError.vue";
@@ -8,6 +9,7 @@ import ProductList from "@/views/product/ProductList.vue";
 import ProductItem from "@/views/product/ProductItem.vue";
 
 Vue.use(VueRouter);
+Vue.use(VueMeta);
 
 const routes = [
   {

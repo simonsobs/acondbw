@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import WebConfig from "@/graphql/site/WebConfig.gql";
+
 import SearchWindow from "@/components/utils/SearchWindow";
 import SignInButton from "@/components/auth/SignInButton";
 
@@ -61,9 +63,20 @@ export default {
     SignInButton
   },
   data: () => ({
-    title: process.env.VUE_APP_TOOLBAR_TITLE,
-    graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP
+    graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP,
+    title: null,
+    error: null
   }),
+  apollo: {
+    title: {
+      query: WebConfig,
+      update: data =>
+        data.webConfig ? data.webConfig.toolbarTitle : null,
+      result(result) {
+        this.error = result.error ? result.error : null;
+      }
+    }
+  },
   created() {
     this.$vuetify.theme.dark = false;
   }

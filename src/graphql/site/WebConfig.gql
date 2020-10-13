@@ -1,0 +1,11 @@
+query WebConfig {
+  webConfig {
+    configId
+    headTitle
+    toolbarTitle
+    devtoolLoadingstate
+    productCreationDialog
+    productUpdateDialog
+    productDeletionDialog
+  }
+}
