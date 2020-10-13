@@ -23,7 +23,7 @@ describe("App.vue", () => {
       mocks: {
         $apollo: {
           queries: {
-            node: {
+            title: {
               loading: loading,
             },
           },
