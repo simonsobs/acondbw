@@ -52,7 +52,7 @@ describe("ProductDeleteForm.vue", () => {
     },
   };
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
     localVue.use(Vuex);
     vuetify = new Vuetify();

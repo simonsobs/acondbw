@@ -36,7 +36,7 @@ describe("ProductItem.vue", () => {
     });
   }
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
   });
 

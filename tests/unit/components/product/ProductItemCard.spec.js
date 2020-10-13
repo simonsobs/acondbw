@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 import router from "@/router";
@@ -114,7 +114,7 @@ describe("ProductItemCard.vue", () => {
     note: "- This is a dummy test with a lat map\n- A beam depends on this map",
   };
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
   });
@@ -165,10 +165,10 @@ describe("ProductItemCard.vue", () => {
         node: node,
       });
       await Vue.nextTick();
-      if(visible) {
-        expect(wrapper.find(".collapsible").element).toBeVisible()
+      if (visible) {
+        expect(wrapper.find(".collapsible").element).toBeVisible();
       } else {
-        expect(wrapper.find(".collapsible").element).not.toBeVisible()
+        expect(wrapper.find(".collapsible").element).not.toBeVisible();
       }
     }
   );

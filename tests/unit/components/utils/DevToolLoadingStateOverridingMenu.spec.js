@@ -13,7 +13,7 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
   let localVue;
   let vuetify;
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
   });
@@ -43,12 +43,12 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
     });
     await Vue.nextTick();
     wrapper.setData({
-        state: State.LOADING
-      });
+      state: State.LOADING,
+    });
     await Vue.nextTick();
     expect(wrapper.emitted("state").length).toBe(1);
     expect(wrapper.emitted("state")[0]).toEqual([State.LOADING]);
-    });
+  });
 
   it("off - emit null", async () => {
     const wrapper = createWrapper();
@@ -57,12 +57,12 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
     });
     await Vue.nextTick();
     wrapper.setData({
-        state: State.LOADING
-      });
+      state: State.LOADING,
+    });
     await Vue.nextTick();
     wrapper.setData({
-        state: "off"
-      });
+      state: "off",
+    });
     await Vue.nextTick();
     expect(wrapper.emitted("state").length).toBe(2);
     expect(wrapper.emitted("state")[1]).toEqual([null]);

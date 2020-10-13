@@ -79,7 +79,7 @@ describe("ProductList.vue", () => {
     },
   };
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
   });
 
