@@ -36,7 +36,7 @@ export default {
     };
   },
   data: () => ({
-    drawer: null,
+    drawer: true,
     transitionName: "fade-app-across",
     transitionMode: "out-in",
     title: null,
