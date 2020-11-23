@@ -51,7 +51,7 @@ export default {
             text: edge.node.name + " (" + edge.node.type_.singular + ")",
             value: edge.node
           }))
-        : null;
+        : [];
     }
   },
   methods: {
