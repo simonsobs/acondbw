@@ -27,7 +27,7 @@ export default {
   components: {
     AppBar,
     Navigation,
-    Snackbar
+    Snackbar,
   },
   metaInfo() {
     return {
@@ -45,12 +45,11 @@ export default {
   apollo: {
     title: {
       query: WebConfig,
-      update: data =>
-        data.webConfig ? data.webConfig.headTitle : null,
+      update: (data) => (data.webConfig ? data.webConfig.headTitle : null),
       result(result) {
         this.error = result.error ? result.error : null;
-      }
-    }
+      },
+    },
   },
   watch: {
     $route(to, from) {
@@ -67,8 +66,8 @@ export default {
         this.transitionName = "fade-app-across";
         this.transitionMode = "out-in";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
