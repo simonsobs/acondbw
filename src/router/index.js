@@ -14,7 +14,7 @@ Vue.use(VueMeta);
 const routes = [
   {
     path: "/",
-    name: "home",
+    name: "Home",
     component: Home,
   },
   {
@@ -29,7 +29,7 @@ const routes = [
   },
   {
     path: "/about",
-    name: "about",
+    name: "About",
     component: () =>
       import(/* webpackChunkName: "about" */ "@/views/About.vue"),
   },
