@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
-import Dashboard from "@/components/utils/Dashboard";
+import Dashboard from "@/components/product/Dashboard";
 import router from "@/router";
 
 Vue.use(Vuetify);

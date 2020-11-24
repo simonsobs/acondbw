@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Dashboard from "@/components/utils/Dashboard";
+import Dashboard from "@/components/product/Dashboard";
 
 export default {
   name: "Home",
