@@ -7,6 +7,12 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 import router from "@/router";
 
+jest.mock('vue-apollo');
+// To prevent the error: "[vue-test-utils]: could not overwrite
+// property $apollo, this is usually caused by a plugin that has added
+// the property as a read-only value"
+// https://github.com/vuejs/vue-apollo/issues/798
+
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
