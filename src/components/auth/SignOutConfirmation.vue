@@ -17,7 +17,7 @@ export default {
   name: "SignOutConfirmation",
   methods: {
     async signOut() {
-      this.$store.dispatch("unsetToken", this.$apollo);
+      await this.$store.dispatch("unsetToken", this.$apollo);
       this.$emit("finished");
       this.$store.dispatch("snackbarMessage", "Signed out");
 
