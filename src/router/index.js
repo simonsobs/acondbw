@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import VueMeta from 'vue-meta';
+import Frame from "@/components/layout/Frame";
 import Home from "@/views/Home.vue";
 import SignIn from "@/views/auth/SignIn.vue";
 import SignInError from "@/views/auth/SignInError.vue";
@@ -15,17 +16,26 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    components: {
+      default: Home,
+      frame: Frame
+     }
   },
   {
     path: "/signin",
     name: "SignIn",
-    component: SignIn,
+    components: {
+      default: SignIn,
+      frame: Frame
+     }
   },
   {
     path: "/signin-error",
     name: "SignInError",
-    component: SignInError,
+    components: {
+      default: SignInError,
+      frame: Frame
+     }
   },
   {
     path: "/about",
@@ -35,7 +45,11 @@ const routes = [
   },
   {
     path: "/:productTypeName",
-    component: ProductTop,
+    components: {
+      default: ProductTop,
+      frame: Frame
+     },
+    meta: { requiresAuth: true },
     children: [
       {
         path: "",

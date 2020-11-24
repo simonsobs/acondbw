@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <frame></frame>
+    <router-view name="frame"></router-view>
     <v-main>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
@@ -15,13 +15,11 @@
 <script>
 import WebConfig from "@/graphql/site/WebConfig.gql";
 
-import Frame from "@/components/layout/Frame";
 import Snackbar from "@/components/layout/Snackbar";
 
 export default {
   name: "App",
   components: {
-    Frame,
     Snackbar,
   },
   metaInfo() {

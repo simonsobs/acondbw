@@ -2,7 +2,7 @@
 
 exports[`App.vue match snapshot 1`] = `
 <v-app-stub id="app">
-  <frame-stub></frame-stub>
+  <router-view-stub name="frame"></router-view-stub>
   <v-main-stub tag="main">
     <transition-stub name="fade-app-across" mode="out-in">
       <keep-alive-stub>
