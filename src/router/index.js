@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import VueMeta from 'vue-meta';
 import Frame from "@/components/layout/Frame";
+import NullFrame from "@/components/layout/NullFrame";
 import Home from "@/views/Home.vue";
 import SignIn from "@/views/auth/SignIn.vue";
 import SignInError from "@/views/auth/SignInError.vue";
@@ -26,7 +27,7 @@ const routes = [
     name: "SignIn",
     components: {
       default: SignIn,
-      frame: Frame
+      frame: NullFrame
      }
   },
   {
@@ -34,7 +35,7 @@ const routes = [
     name: "SignInError",
     components: {
       default: SignInError,
-      frame: Frame
+      frame: NullFrame
      }
   },
   {
