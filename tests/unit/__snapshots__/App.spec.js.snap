@@ -2,10 +2,7 @@
 
 exports[`App.vue match snapshot 1`] = `
 <v-app-stub id="app">
-  <v-navigation-drawer-stub app="true" mobilebreakpoint="1264" clipped="true" height="100vh" minivariantwidth="56" src="" tag="nav" width="256" value="true">
-    <navigation-stub></navigation-stub>
-  </v-navigation-drawer-stub>
-  <app-bar-stub></app-bar-stub>
+  <frame-stub></frame-stub>
   <v-main-stub tag="main">
     <transition-stub name="fade-app-across" mode="out-in">
       <keep-alive-stub>

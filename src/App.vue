@@ -1,9 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app clipped>
-      <navigation></navigation>
-    </v-navigation-drawer>
-    <app-bar v-on:drawer="drawer = !drawer"></app-bar>
+    <frame></frame>
     <v-main>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
@@ -18,15 +15,13 @@
 <script>
 import WebConfig from "@/graphql/site/WebConfig.gql";
 
-import AppBar from "@/components/layout/AppBar";
-import Navigation from "@/components/layout/Navigation";
+import Frame from "@/components/layout/Frame";
 import Snackbar from "@/components/layout/Snackbar";
 
 export default {
   name: "App",
   components: {
-    AppBar,
-    Navigation,
+    Frame,
     Snackbar,
   },
   metaInfo() {
@@ -36,7 +31,6 @@ export default {
     };
   },
   data: () => ({
-    drawer: true,
     transitionName: "fade-app-across",
     transitionMode: "out-in",
     title: null,
