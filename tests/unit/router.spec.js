@@ -23,14 +23,14 @@ describe("About.vue", () => {
   it("test /", async () => {
     await router.push("/");
     const current = router.history.current;
-    expect(current.name).toBe("home");
+    expect(current.name).toBe("Home");
     expect(current.path).toBe("/");
   });
 
   it("test /about", async () => {
     await router.push("/about");
     const current = router.history.current;
-    expect(current.name).toBe("about");
+    expect(current.name).toBe("About");
     expect(current.path).toBe("/about");
     expect(current.params).toEqual({});
   });
