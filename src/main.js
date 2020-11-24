@@ -33,7 +33,4 @@ new Vue({
   store,
   apolloProvider: createProvider(options),
   render: (h) => h(App),
-  created: function() {
-    this.$store.dispatch("setTokenFromLocalStorage");
-  }
 }).$mount("#app");

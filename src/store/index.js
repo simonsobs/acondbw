@@ -67,4 +67,7 @@ export const storeConfig = {
   actions,
 };
 
-export default new Vuex.Store(storeConfig);
+const store = new Vuex.Store(storeConfig)
+export default store;
+
+store.dispatch("setTokenFromLocalStorage");
