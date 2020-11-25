@@ -25,7 +25,7 @@ export const filesRoot =
 Vue.prototype.$filesRoot = filesRoot;
 
 // Config
-const defaultOptions = {
+const options = {
   // You can use `https` for secure connection (recommended in production)
   httpEndpoint,
   // You can use `wss` for secure connection (recommended in production)
@@ -59,12 +59,8 @@ const defaultOptions = {
   // clientState: { resolvers: { ... }, defaults: { ... } }
 };
 
-const options = { };
+const { apolloClient, wsClient } = createApolloClient(options);
 
-const { apolloClient, wsClient } = createApolloClient({
-  ...defaultOptions,
-  ...options
-});
 apolloClient.wsClient = wsClient;
 
 // Call this in the Vue app file
