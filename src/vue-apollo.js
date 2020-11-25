@@ -63,6 +63,8 @@ const { apolloClient, wsClient } = createApolloClient(options);
 
 apolloClient.wsClient = wsClient;
 
+export { apolloClient };
+
 export function createProvider() {
   // Create vue apollo provider
   const apolloProvider = new VueApollo({
