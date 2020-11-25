@@ -4,7 +4,6 @@ import {
   createApolloClient,
   restartWebsockets
 } from "vue-cli-plugin-apollo/graphql-client";
-import { setContext } from "apollo-link-context";
 
 require('regenerator-runtime/runtime');
 // https://github.com/facebook/jest/issues/3126#issuecomment-521616378
@@ -90,23 +89,6 @@ export function createProvider(options = {}) {
   return apolloProvider;
 }
 
-// copied from https://blog.logrocket.com/handling-authentication-in-your-graphql-powered-vue-app/
-const authLink = setContext(async (_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
-  // const token = localStorage.getItem(AUTH_TOKEN);
-  // Return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      authorization: token || "",
-    },
-  };
-});
-
-// After the updgrades of node packages at the commit https://github.com/simonsobs/acondbw/commit/96cca659b9eda45816bfc8891fc76e4754313131,
-// "Authorization" is automatically included without authLink.
-// const options = { link: authLink };
 const options = { };
 
 export const apolloProvider = createProvider(options);
