@@ -4,23 +4,50 @@ import VueMeta from 'vue-meta';
 import Frame from "@/components/layout/Frame";
 import NullFrame from "@/components/layout/NullFrame";
 import Home from "@/views/Home.vue";
+import Entry from "@/views/Entry.vue";
 import SignIn from "@/views/auth/SignIn.vue";
 import SignInError from "@/views/auth/SignInError.vue";
 import ProductTop from "@/views/product/ProductTop.vue";
 import ProductList from "@/views/product/ProductList.vue";
 import ProductItem from "@/views/product/ProductItem.vue";
-
+import store from "@/store"
 Vue.use(VueRouter);
 Vue.use(VueMeta);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
+    name: "Entry",
+    components: {
+      default: Entry,
+      frame: NullFrame
+     },
+     beforeEnter: (to, from, next) => {
+       const signedIn = store.state.token;
+       console.log(signedIn);
+       console.log("router");
+       if(signedIn) {
+        next({ name: "Dashboard"});
+       } else {
+        next();
+       }
+     }
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
     components: {
       default: Home,
       frame: Frame
-     }
+     },
+     beforeEnter: (to, from, next) => {
+      const signedIn = store.state.token;
+      if(signedIn) {
+        next();
+      } else {
+        next({ name: "Entry"});
+      }
+   }
   },
   {
     path: "/signin",

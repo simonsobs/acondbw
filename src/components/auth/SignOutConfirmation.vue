@@ -21,7 +21,7 @@ export default {
       this.$emit("finished");
       this.$store.dispatch("snackbarMessage", "Signed out");
 
-      const to = { name: "Home" }
+      const to = { name: "Entry" }
       if (this.$route.path == this.$router.resolve(to).route.path) {
         // to avoid NavigationDuplicated
         return;

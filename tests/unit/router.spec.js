@@ -23,7 +23,7 @@ describe("About.vue", () => {
   it("test /", async () => {
     await router.push("/");
     const current = router.history.current;
-    expect(current.name).toBe("Home");
+    expect(current.name).toBe("Entry");
     expect(current.path).toBe("/");
   });
 
