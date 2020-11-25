@@ -23,7 +23,7 @@ const routes = [
       frame: NullFrame
      },
      beforeEnter: (to, from, next) => {
-       const signedIn = store.state.token;
+       const signedIn = store.state.auth.token;
        console.log(signedIn);
        console.log("router");
        if(signedIn) {
@@ -41,7 +41,7 @@ const routes = [
       frame: Frame
      },
      beforeEnter: (to, from, next) => {
-      const signedIn = store.state.token;
+      const signedIn = store.state.auth.token;
       if(signedIn) {
         next();
       } else {

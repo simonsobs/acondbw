@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     token() {
-      return this.$store.state.token;
+      return this.$store.state.auth.token;
     },
     user() {
       if (!this.token) {
