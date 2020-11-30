@@ -29,6 +29,7 @@ export const auth = {
     },
     async unsetToken({ commit }, apolloClient) {
       localStorage.removeItem("github-user");
+      commit("set_github_user", null);
       await onLogout(apolloClient);
       commit("set_token", null);
     },
