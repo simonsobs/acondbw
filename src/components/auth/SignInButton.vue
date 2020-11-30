@@ -51,27 +51,15 @@ export default {
   name: "SignInButton",
   components: { SignOutConfirmation },
   data: () => ({
-    githubUser: null,
     menu: false,
     dialog: false
   }),
-  apollo: {
-    githubUser: {
-      query: GitHubUser,
-      skip: function() {
-        return !this.token;
-      },
-      result(result) {
-        if (!result.data || !result.data.githubUser) {
-          this.$store.dispatch("unsetToken");
-          return;
-        }
-      }
-    }
-  },
   computed: {
     token() {
       return this.$store.state.auth.token;
+    },
+    githubUser() {
+      return this.$store.state.auth.githubUser;
     },
     user() {
       if (!this.token) {
