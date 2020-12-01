@@ -53,7 +53,8 @@ export default {
     },
     async exchangeCodeForToken(code) {
       try {
-        await this.$store.dispatch("obtainToken", { code, apolloClient: this.$apollo });
+        const state = this.$route.query.state;
+        await this.$store.dispatch("obtainToken", { code, state, apolloClient: this.$apollo });
         await this.$store.dispatch("loadGitHubUser", this.$apollo);
         this.$store.dispatch("snackbarMessage", "Signed in");
         this.$router.push({ name: "SignIn" });
@@ -108,22 +109,6 @@ export default {
         }
 
         if (!this.$route.path == this.pathToSignIn) {
-          this.$router.push({ name: "SignInError" });
-          return;
-        }
-
-        const authState = JSON.parse(localStorage.getItem("auth-state"));
-        if (!authState) {
-          this.$router.push({ name: "SignInError" });
-          return;
-        }
-
-        if (!this.$route.query.state) {
-          this.$router.push({ name: "SignInError" });
-          return;
-        }
-
-        if (!(authState == this.$route.query.state)) {
           this.$router.push({ name: "SignInError" });
           return;
         }

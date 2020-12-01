@@ -55,8 +55,18 @@ export const auth = {
         throw error;
       }
     },
-    async obtainToken({ commit, dispatch }, { code, apolloClient }) {
+    async obtainToken({ commit, dispatch }, { code, state, apolloClient }) {
       try {
+        const authState = JSON.parse(localStorage.getItem("auth-state"));
+        if(!authState) {
+          throw new Error("A state was not stored.")
+        }
+        if(!state) {
+          throw new Error("A state was not returned.")
+        }
+        if(!(authState == state)) {
+          throw new Error("The state did not match.")
+        }
         const { data } = await apolloClient.mutate({
           mutation: GitHubAuth,
           variables: { code: code },
