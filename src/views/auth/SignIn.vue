@@ -41,33 +41,17 @@ const cryptoRandomString = require("crypto-random-string");
 
 import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
 import GitHubAuth from "@/graphql/auth/GitHubAuth.gql";
-import GitHubUser from "@/graphql/auth/GitHubUser.gql";
 
 export default {
   name: "SignIn",
   data: () => ({
     oauthAppInfo: null,
-    githubUser: null,
     signingIn: false
   }),
   apollo: {
     oauthAppInfo: {
       query: OAuthAppInfo
     },
-    githubUser: {
-      query: GitHubUser,
-      skip: function() {
-        return !this.token;
-      },
-      result(result) {
-        if (!result.data || !result.data.githubUser) {
-          this.$store.dispatch("signOut");
-          return;
-        } else {
-          this.$store.dispatch("setGitHubUser", result.data.githubUser);
-        }
-      }
-    }
   },
   methods: {
     signIn() {
@@ -106,6 +90,9 @@ export default {
   computed: {
     token() {
       return this.$store.state.auth.token;
+    },
+    githubUser() {
+      return this.$store.state.auth.githubUser;
     },
     user() {
       if (!this.token) {
