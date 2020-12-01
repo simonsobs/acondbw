@@ -63,6 +63,8 @@ export default {
         if (!result.data || !result.data.githubUser) {
           this.$store.dispatch("signOut");
           return;
+        } else {
+          this.$store.dispatch("setGitHubUser", result.data.githubUser);
         }
       }
     }
