@@ -6,6 +6,7 @@ import NullFrame from "@/components/layout/NullFrame";
 import Home from "@/views/Home.vue";
 import Entry from "@/views/Entry.vue";
 import SignIn from "@/views/auth/SignIn.vue";
+import Auth from "@/views/auth/Auth.vue";
 import SignInError from "@/views/auth/SignInError.vue";
 import ProductTop from "@/views/product/ProductTop.vue";
 import ProductList from "@/views/product/ProductList.vue";
@@ -54,6 +55,14 @@ const routes = [
     name: "SignIn",
     components: {
       default: SignIn,
+      frame: NullFrame
+     }
+  },
+  {
+    path: "/auth",
+    name: "Auth",
+    components: {
+      default: Auth,
       frame: NullFrame
      }
   },
