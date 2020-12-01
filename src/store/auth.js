@@ -1,4 +1,5 @@
 import { onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
+import GitHubAuth from "@/graphql/auth/GitHubAuth.gql";
 import GitHubUser from "@/graphql/auth/GitHubUser.gql";
 
 function createInitialState() {
@@ -34,7 +35,23 @@ export const auth = {
       await onLogout(apolloClient);
       commit("set_token", null);
     },
-    // async obtainToken({ commit }, apolloClient)
+    async obtainToken({ commit, dispatch }, { code, apolloClient }) {
+      try {
+        const { data } = await apolloClient.mutate({
+          mutation: GitHubAuth,
+          variables: { code: code },
+        });
+        const authPayload = data.githubAuth.authPayload;
+        const token = JSON.stringify(authPayload.token);
+        await onLogin(apolloClient, token);
+        commit("set_token", token);
+        } catch (error) {
+        console.log(error);
+        dispatch("signOut", apolloClient);
+        throw error;
+      }
+    },
+    async loadGitHubUser({ commit, dispatch }, apolloClient) {
       try {
         const { data } = await apolloClient.query({ query: GitHubUser });
         const githubUser = data.githubUser;
