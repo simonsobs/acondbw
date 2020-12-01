@@ -25,7 +25,7 @@ export const auth = {
     },
     set_github_user(state, githubUser) {
       state.githubUser = githubUser;
-    }
+    },
   },
   actions: {
     async signOut({ commit }, apolloClient) {
@@ -65,7 +65,7 @@ export const auth = {
         const token = JSON.stringify(authPayload.token);
         await onLogin(apolloClient, token);
         commit("set_token", token);
-        } catch (error) {
+      } catch (error) {
         console.log(error);
         dispatch("signOut", apolloClient);
         throw error;
