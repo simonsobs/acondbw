@@ -43,6 +43,15 @@ export default {
       return this.$route.query.error ? true : false;
     },
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.error) {
+      next({ name: "SignInError" });
+    } else if (!to.query.code) {
+      next({ path: "/" });
+    } else {
+      next();
+    }
+  },
   watch: {
     code: {
       handler: async function () {
