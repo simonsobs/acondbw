@@ -94,7 +94,8 @@ export default {
         const authPayload = data.data.githubAuth.authPayload;
         // const token = JSON.stringify("token " + authPayload.token);
         const token = JSON.stringify(authPayload.token);
-        this.$store.dispatch("setToken", { token, apolloClient: this.$apollo });
+        await this.$store.dispatch("setToken", { token, apolloClient: this.$apollo });
+        await this.$store.dispatch("loadGitHubUser", { apolloClient: this.$apollo });
         this.$store.dispatch("snackbarMessage", "Signed in");
         this.$router.push({ name: "SignIn" });
       } catch (error) {
