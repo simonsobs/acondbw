@@ -57,7 +57,7 @@ export default {
     signIn() {
       this.signingIn = true;
       const state = cryptoRandomString({ length: 16, type: "url-safe" });
-      localStorage.signInState = state;
+      localStorage.setItem("auth-state", JSON.stringify(state));
       const params = {
         response_type: "code",
         client_id: this.oauthAppInfo.clientId,
@@ -132,7 +132,8 @@ export default {
           return;
         }
 
-        if (!localStorage.signInState) {
+        const authState = JSON.parse(localStorage.getItem("auth-state"));
+        if (!authState) {
           this.$router.push({ name: "SignInError" });
           return;
         }
@@ -142,7 +143,7 @@ export default {
           return;
         }
 
-        if (!(localStorage.signInState == this.$route.query.state)) {
+        if (!(authState == this.$route.query.state)) {
           this.$router.push({ name: "SignInError" });
           return;
         }
