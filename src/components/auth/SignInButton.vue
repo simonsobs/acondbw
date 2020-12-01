@@ -1,6 +1,6 @@
 <template>
   <span>
-    <span v-if="token && user">
+    <span v-if="user">
       <v-menu bottom offset-y v-model="menu">
         <template v-slot:activator="{ on, attr }">
           <v-btn icon class="no-uppercase" v-bind="attr" v-on="on">
@@ -36,7 +36,7 @@
         </v-list>
       </v-menu>
     </span>
-    <v-btn v-if="!token" depressed :to="pathToSignIn">
+    <v-btn v-if="!user" depressed :to="pathToSignIn">
       <v-icon left>mdi-github</v-icon>
       Sign In
     </v-btn>
@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import GitHubUser from "@/graphql/auth/GitHubUser.gql";
 import SignOutConfirmation from "./SignOutConfirmation";
 
 export default {
@@ -55,32 +54,14 @@ export default {
     dialog: false
   }),
   computed: {
-    token() {
-      return this.$store.state.auth.token;
-    },
-    githubUser() {
-      return this.$store.state.auth.githubUser;
-    },
     user() {
-      if (!this.token) {
-        return null;
-      } else if (!this.githubUser) {
-        return null;
-      } else {
-        return this.githubUser;
-      }
+      return this.$store.state.auth.githubUser;
     },
     pathToSignIn() {
       return this.$router.resolve({ name: "SignIn" }).route.path;
       // i.e., "/signin"
     }
   },
-  watch: {
-    token: function() {
-      if (!this.token) return;
-      this.$apollo.queries.githubUser.refetch();
-    }
-  }
 };
 </script>
 
