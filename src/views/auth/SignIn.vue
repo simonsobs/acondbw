@@ -85,7 +85,6 @@ export default {
       return this.$route.query.error ? true : false;
     },
     loading() {
-      if (!this.oauthAppInfo) {
       if (this.code) {
         return true;
       } else if (this.token && !this.user) {
