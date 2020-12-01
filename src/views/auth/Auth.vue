@@ -72,7 +72,7 @@ export default {
         });
         await this.$store.dispatch("loadGitHubUser", this.$apollo);
         this.$store.dispatch("snackbarMessage", "Signed in");
-        this.$router.push({ name: "SignIn" });
+        this.$router.push({ name: "Dashboard" });
       } catch (error) {
         this.$router.push({ name: "SignInError" });
       }
