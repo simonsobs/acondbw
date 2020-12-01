@@ -38,11 +38,16 @@ export const auth = {
       localStorage.setItem("github-user", JSON.stringify(githubUser));
       commit("set_github_user", githubUser);
     },
-    async loadGitHubUser({ commit}, { apolloClient }) {
-      const result = await apolloClient.query({ query: GitHubUser });
-      const githubUser = result.data.githubUser;
-      localStorage.setItem("github-user", JSON.stringify(githubUser));
-      commit("set_github_user", githubUser);
+    async loadGitHubUser({ commit, dispatch }, { apolloClient }) {
+      try {
+        const result = await apolloClient.query({ query: GitHubUser });
+        const githubUser = result.data.githubUser;
+        localStorage.setItem("github-user", JSON.stringify(githubUser));
+        commit("set_github_user", githubUser);
+      } catch (error) {
+        dispatch("signOut", apolloClient);
+        throw error;
+      }
     },
   },
 };
