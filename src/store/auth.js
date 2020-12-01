@@ -34,7 +34,7 @@ export const auth = {
       await onLogout(apolloClient);
       commit("set_token", null);
     },
-    async loadGitHubUser({ commit, dispatch }, { apolloClient }) {
+    // async obtainToken({ commit }, apolloClient)
       try {
         const { data } = await apolloClient.query({ query: GitHubUser });
         const githubUser = data.githubUser;
