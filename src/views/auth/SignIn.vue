@@ -61,7 +61,7 @@ export default {
       },
       result(result) {
         if (!result.data || !result.data.githubUser) {
-          this.$store.dispatch("unsetToken");
+          this.$store.dispatch("signOut");
           return;
         }
       }
