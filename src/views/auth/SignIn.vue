@@ -1,7 +1,13 @@
 <template>
   <v-container fill-height fluid>
     <v-row align="center" justify="center">
-      <v-progress-circular v-if="loading" indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        :size="18"
+        :width="3"
+        color="grey"
+      ></v-progress-circular>
       <v-card v-else-if="user" flat>
         <v-list-item>
           <v-list-item-content>Signed in with GitHub!</v-list-item-content>
@@ -13,7 +19,9 @@
                 <img :src="user.avatarUrl" />
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title class="headline">{{ user.name }}</v-list-item-title>
+                <v-list-item-title class="headline">{{
+                  user.name
+                }}</v-list-item-title>
                 <v-list-item-subtitle>{{ user.login }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-icon>
@@ -39,13 +47,16 @@
 export default {
   name: "SignIn",
   data: () => ({
-    signingIn: false
+    signingIn: false,
   }),
   methods: {
     async signIn() {
       this.signingIn = true;
       try {
-        await this.$store.dispatch("requestAuth", { window, apolloClient: this.$apollo });
+        await this.$store.dispatch("requestAuth", {
+          window,
+          apolloClient: this.$apollo,
+        });
       } catch (error) {
         console.log(error);
         this.$router.push({ name: "SignInError" });
@@ -54,14 +65,18 @@ export default {
     async exchangeCodeForToken(code) {
       try {
         const state = this.$route.query.state;
-        await this.$store.dispatch("obtainToken", { code, state, apolloClient: this.$apollo });
+        await this.$store.dispatch("obtainToken", {
+          code,
+          state,
+          apolloClient: this.$apollo,
+        });
         await this.$store.dispatch("loadGitHubUser", this.$apollo);
         this.$store.dispatch("snackbarMessage", "Signed in");
         this.$router.push({ name: "SignIn" });
       } catch (error) {
         this.$router.push({ name: "SignInError" });
       }
-    }
+    },
   },
   computed: {
     token() {
@@ -99,11 +114,11 @@ export default {
     pathToSignIn() {
       return this.$router.resolve({ name: "SignIn" }).route.path;
       // i.e., "/signin"
-    }
+    },
   },
   watch: {
     code: {
-      handler: async function() {
+      handler: async function () {
         if (!this.code) {
           return;
         }
@@ -119,16 +134,16 @@ export default {
           this.$router.push({ name: "SignInError" });
         }
       },
-      immediate: true
+      immediate: true,
     },
     authorizationError: {
-      handler: function() {
+      handler: function () {
         if (this.authorizationError) {
           this.$router.push({ name: "SignInError" });
         }
       },
-      immediate: true
-    }
-  }
+      immediate: true,
+    },
+  },
 };
 </script>
