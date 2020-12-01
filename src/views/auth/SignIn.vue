@@ -36,38 +36,20 @@
 </template>
 
 <script>
-const querystring = require("querystring");
-const cryptoRandomString = require("crypto-random-string");
-
-import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
-import GitHubAuth from "@/graphql/auth/GitHubAuth.gql";
-
 export default {
   name: "SignIn",
   data: () => ({
-    oauthAppInfo: null,
     signingIn: false
   }),
-  apollo: {
-    oauthAppInfo: {
-      query: OAuthAppInfo
-    },
-  },
   methods: {
-    signIn() {
+    async signIn() {
       this.signingIn = true;
-      const state = cryptoRandomString({ length: 16, type: "url-safe" });
-      localStorage.setItem("auth-state", JSON.stringify(state));
-      const params = {
-        response_type: "code",
-        client_id: this.oauthAppInfo.clientId,
-        redirect_uri: this.oauthAppInfo.redirectUri,
-        scope: "", // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-        state: state
-      };
-      let queryString = querystring.stringify(params);
-      const uri = this.oauthAppInfo.authorizeUrl + "?" + queryString;
-      window.location.href = uri;
+      try {
+        await this.$store.dispatch("requestAuth", { window, apolloClient: this.$apollo });
+      } catch (error) {
+        console.log(error);
+        this.$router.push({ name: "SignInError" });
+      }
     },
     async exchangeCodeForToken(code) {
       try {
@@ -104,8 +86,7 @@ export default {
     },
     loading() {
       if (!this.oauthAppInfo) {
-        return true;
-      } else if (this.code) {
+      if (this.code) {
         return true;
       } else if (this.token && !this.user) {
         return true;
