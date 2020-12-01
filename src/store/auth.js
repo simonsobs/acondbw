@@ -34,14 +34,10 @@ export const auth = {
       await onLogout(apolloClient);
       commit("set_token", null);
     },
-    async setGitHubUser({ commit }, githubUser) {
-      localStorage.setItem("github-user", JSON.stringify(githubUser));
-      commit("set_github_user", githubUser);
-    },
     async loadGitHubUser({ commit, dispatch }, { apolloClient }) {
       try {
-        const result = await apolloClient.query({ query: GitHubUser });
-        const githubUser = result.data.githubUser;
+        const { data } = await apolloClient.query({ query: GitHubUser });
+        const githubUser = data.githubUser;
         localStorage.setItem("github-user", JSON.stringify(githubUser));
         commit("set_github_user", githubUser);
       } catch (error) {
