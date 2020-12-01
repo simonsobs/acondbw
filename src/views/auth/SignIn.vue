@@ -129,7 +129,11 @@ export default {
           return;
         }
 
-        this.exchangeCodeForToken(this.code);
+        try {
+          this.exchangeCodeForToken(this.code);
+        } catch (error) {
+          this.$router.push({ name: "SignInError" });
+        }
       },
       immediate: true
     },
