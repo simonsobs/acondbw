@@ -71,14 +71,7 @@ export default {
     },
     async exchangeCodeForToken(code) {
       try {
-        const data = await this.$apollo.mutate({
-          mutation: GitHubAuth,
-          variables: { code: code }
-        });
-        const authPayload = data.data.githubAuth.authPayload;
-        // const token = JSON.stringify("token " + authPayload.token);
-        const token = JSON.stringify(authPayload.token);
-        await this.$store.dispatch("setToken", { token, apolloClient: this.$apollo });
+        await this.$store.dispatch("obtainToken", { code, apolloClient: this.$apollo });
         await this.$store.dispatch("loadGitHubUser", this.$apollo);
         this.$store.dispatch("snackbarMessage", "Signed in");
         this.$router.push({ name: "SignIn" });
