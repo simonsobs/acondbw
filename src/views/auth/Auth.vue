@@ -17,7 +17,18 @@ export default {
   data: () => ({}),
   methods: {
     async main() {
+      if (this.$route.query.error) {
+        this.$store.dispatch("setRequestAuthError", this.$route.query);
+        this.$router.push({ name: "SignInError" });
+        return;
+      }
+
       const code = this.$route.query.code;
+      if (!code) {
+        this.$router.push({ path: "/" });
+        return;
+      }
+
       const state = this.$route.query.state;
       try {
         await this.$store.dispatch("obtainToken", {
@@ -27,21 +38,12 @@ export default {
         });
         await this.$store.dispatch("loadGitHubUser", this.$apollo);
       } catch (error) {
-        console.log(error);
         this.$router.push({ name: "SignInError" });
+        return;
       }
       this.$store.dispatch("snackbarMessage", "Signed in");
       this.$router.push({ name: "Dashboard" });
     },
-  },
-  beforeRouteEnter(to, from, next) {
-    if (to.query.error) {
-      next({ name: "SignInError" });
-    } else if (!to.query.code) {
-      next({ path: "/" });
-    } else {
-      next();
-    }
   },
   mounted: async function () {
     this.main();
