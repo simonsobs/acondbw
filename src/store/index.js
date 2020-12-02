@@ -5,11 +5,15 @@ import { auth } from "./auth";
 
 Vue.use(Vuex);
 
-const state = {
-  example: "abc",
-  snackbar: false,
-  snackbarMessage: null,
-  nApolloMutations: 0,
+// Declared as a function to avoid the problem described in
+// https://stackoverflow.com/a/59064006/7309855 in the tests.
+var state = function () {
+  return {
+    example: "abc",
+    snackbar: false,
+    snackbarMessage: null,
+    nApolloMutations: 0,
+  };
 };
 
 const mutations = {
