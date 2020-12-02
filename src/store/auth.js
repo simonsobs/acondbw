@@ -1,4 +1,4 @@
-import { onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
+import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
@@ -6,25 +6,39 @@ import GitHubAuth from "@/graphql/auth/GitHubAuth.gql";
 import GitHubUser from "@/graphql/auth/GitHubUser.gql";
 
 function createInitialState() {
+  // localStorage.removeItem(AUTH_TOKEN);
+  // localStorage.removeItem("github-user");
+  // localStorage.removeItem("auth-state");
   const token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
   const githubUser = JSON.parse(localStorage.getItem("github-user"));
   const ret = {
     token: token,
-    githubUser: githubUser
-  }
+    githubUser: githubUser,
+  };
   return ret;
 }
 
-const initialState = createInitialState();
 
 export const auth = {
-  state: initialState,
+  state: function() {
+    const initialState = createInitialState();
+    return {
+      ...initialState,
+      lastError: null,
+    }
+  },
   mutations: {
     set_token(state, token) {
       state.token = token;
     },
     set_github_user(state, githubUser) {
       state.githubUser = githubUser;
+    },
+    set_last_error(state, error) {
+      state.lastError = error;
+    },
+    clear_last_error(state) {
+      state.lastError = null;
     },
   },
   actions: {
@@ -35,6 +49,7 @@ export const auth = {
       commit("set_token", null);
     },
     async requestAuth({ commit }, { window, apolloClient }) {
+      commit("clear_last_error");
       try {
         const { data } = await apolloClient.query({ query: OAuthAppInfo });
         const oauthAppInfo = data.oauthAppInfo;
@@ -56,16 +71,17 @@ export const auth = {
       }
     },
     async obtainToken({ commit, dispatch }, { code, state, apolloClient }) {
+      commit("clear_last_error");
       try {
         const authState = JSON.parse(localStorage.getItem("auth-state"));
-        if(!authState) {
-          throw new Error("A state was not stored.")
+        if (!authState) {
+          throw new Error("A state was not stored.");
         }
-        if(!state) {
-          throw new Error("A state was not returned.")
+        if (!state) {
+          throw new Error("A state was not returned.");
         }
-        if(!(authState == state)) {
-          throw new Error("The state did not match.")
+        if (!(authState == state)) {
+          throw new Error("The state did not match.");
         }
         const { data } = await apolloClient.mutate({
           mutation: GitHubAuth,
@@ -76,12 +92,14 @@ export const auth = {
         await onLogin(apolloClient, token);
         commit("set_token", token);
       } catch (error) {
-        console.log(error);
         dispatch("signOut", apolloClient);
         throw error;
       }
     },
     async loadGitHubUser({ commit, dispatch }, apolloClient) {
+      commit("clear_last_error");
+      // await onLogout(apolloClient);
+      // localStorage.removeItem(AUTH_TOKEN);
       try {
         const { data } = await apolloClient.query({ query: GitHubUser });
         const githubUser = data.githubUser;
@@ -91,6 +109,17 @@ export const auth = {
         dispatch("signOut", apolloClient);
         throw error;
       }
+    },
+    setRequestAuthError({ commit }, query) {
+      const error = (({ error, error_description, error_uri }) => ({
+        error,
+        error_description,
+        error_uri,
+      }))(query);
+      commit("set_last_error", error);
+    },
+    clearAuthError({ commit }) {
+      commit("clear_last_error");
     },
   },
 };
