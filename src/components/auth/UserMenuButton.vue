@@ -47,7 +47,7 @@
 import SignOutConfirmation from "./SignOutConfirmation";
 
 export default {
-  name: "SignInButton",
+  name: "UserMenuButton",
   components: { SignOutConfirmation },
   data: () => ({
     menu: false,

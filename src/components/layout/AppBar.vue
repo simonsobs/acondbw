@@ -15,7 +15,7 @@
     <v-spacer></v-spacer>
     <search-window></search-window>
     <v-spacer></v-spacer>
-    <sign-in-button></sign-in-button>
+    <user-menu-button></user-menu-button>
     <v-spacer></v-spacer>
     <v-btn icon to="/about">
       <v-icon>mdi-information</v-icon>
@@ -54,13 +54,13 @@
 import WebConfig from "@/graphql/site/WebConfig.gql";
 
 import SearchWindow from "@/components/utils/SearchWindow";
-import SignInButton from "@/components/auth/SignInButton";
+import UserMenuButton from "@/components/auth/UserMenuButton";
 
 export default {
   name: "AppBar",
   components: {
     SearchWindow,
-    SignInButton
+    UserMenuButton
   },
   data: () => ({
     graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP,
