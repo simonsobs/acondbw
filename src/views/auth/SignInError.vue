@@ -20,9 +20,8 @@
           </v-alert>
         </v-card-text>
         <v-card-actions>
-          <v-btn outlined to="/">Cancel</v-btn>
           <v-spacer></v-spacer>
-          <v-btn outlined @click="tryAgain">Try again</v-btn>
+          <v-btn outlined to="/">Go back</v-btn>
         </v-card-actions>
       </v-card>
     </v-row>
@@ -40,11 +39,6 @@ export default {
       } else {
         return null;
       }
-    },
-  },
-  methods: {
-    tryAgain() {
-      this.$router.push({ name: "SignIn" });
     },
   },
 };
