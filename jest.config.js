@@ -18,4 +18,5 @@ module.exports = {
     "!**/**/MapItemWithApolloQuery.vue",
   ],
   coverageReporters: ["lcov", "text-summary"],
+  setupFiles: ["jest-localstorage-mock"]
 };
