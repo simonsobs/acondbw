@@ -49,15 +49,15 @@ const actions = {
 };
 
 const modules = {
-  auth
-}
+  auth,
+};
 
 export const storeConfig = {
   state,
   mutations,
   actions,
-  modules
+  modules,
 };
 
-const store = new Vuex.Store(storeConfig)
+const store = new Vuex.Store(storeConfig);
 export default store;
