@@ -16,31 +16,22 @@ export default {
   name: "Auth",
   data: () => ({}),
   methods: {
-    async exchangeCodeForToken(code) {
+    async main() {
+      const code = this.$route.query.code;
+      const state = this.$route.query.state;
       try {
-        const state = this.$route.query.state;
         await this.$store.dispatch("obtainToken", {
           code,
           state,
           apolloClient: this.$apollo,
         });
         await this.$store.dispatch("loadGitHubUser", this.$apollo);
-        this.$store.dispatch("snackbarMessage", "Signed in");
-        this.$router.push({ name: "Dashboard" });
       } catch (error) {
+        console.log(error);
         this.$router.push({ name: "SignInError" });
       }
-    },
-  },
-  computed: {
-    token() {
-      return this.$store.state.auth.token;
-    },
-    code() {
-      return this.$route.query.code;
-    },
-    authorizationError() {
-      return this.$route.query.error ? true : false;
+      this.$store.dispatch("snackbarMessage", "Signed in");
+      this.$router.push({ name: "Dashboard" });
     },
   },
   beforeRouteEnter(to, from, next) {
@@ -52,29 +43,8 @@ export default {
       next();
     }
   },
-  watch: {
-    code: {
-      handler: async function () {
-        if (!this.code) {
-          return;
-        }
-
-        try {
-          this.exchangeCodeForToken(this.code);
-        } catch (error) {
-          this.$router.push({ name: "SignInError" });
-        }
-      },
-      immediate: true,
-    },
-    authorizationError: {
-      handler: function () {
-        if (this.authorizationError) {
-          this.$router.push({ name: "SignInError" });
-        }
-      },
-      immediate: true,
-    },
+  mounted: async function () {
+    this.main();
   },
 };
 </script>
