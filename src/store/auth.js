@@ -9,8 +9,16 @@ function createInitialState() {
   // localStorage.removeItem(AUTH_TOKEN);
   // localStorage.removeItem("github-user");
   // localStorage.removeItem("auth-state");
-  const token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
-  const githubUser = JSON.parse(localStorage.getItem("github-user"));
+  let token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
+  let githubUser = JSON.parse(localStorage.getItem("github-user"));
+
+  if (!((token && githubUser) || (!token && !githubUser))) {
+    localStorage.removeItem(AUTH_TOKEN);
+    localStorage.removeItem("github-user");
+    token = null;
+    githubUser = null;
+  }
+
   const ret = {
     token: token,
     githubUser: githubUser,
