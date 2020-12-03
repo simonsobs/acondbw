@@ -24,8 +24,6 @@ const routes = [
       frame: NullFrame
      },
      beforeEnter: (to, from, next) => {
-       console.log(signedIn);
-       console.log("router");
        const signedIn = !!store.state.auth.token;
        if(signedIn) {
         next({ name: "Dashboard"});
