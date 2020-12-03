@@ -5,6 +5,9 @@ import { mount, createLocalVue } from "@vue/test-utils";
 
 import ProductItem from "@/views/product/ProductItem.vue";
 
+import store from "@/store";
+jest.mock("@/store")
+
 import router from "@/router";
 
 jest.mock('vue-apollo');
@@ -44,6 +47,7 @@ describe("ProductItem.vue", () => {
 
   beforeEach(function () {
     localVue = createLocalVue();
+    store.state = { auth : { token : "xyz" } };
   });
 
   it("match snapshot", async () => {

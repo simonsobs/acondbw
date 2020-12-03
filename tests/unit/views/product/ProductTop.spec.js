@@ -5,6 +5,9 @@ import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
 import ProductTop from "@/views/product/ProductTop.vue";
 
+import store from "@/store";
+jest.mock("@/store")
+
 import router from "@/router";
 
 jest.mock('vue-apollo');
@@ -42,6 +45,7 @@ describe("ProductTop.vue", () => {
   beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
+    store.state = { auth : { token : "xyz" } };
   });
 
   it("match snapshot list", async () => {
