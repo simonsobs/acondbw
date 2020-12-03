@@ -39,6 +39,7 @@ const routes = [
       default: Home,
       frame: Frame
      },
+     meta: { requiresAuth: true },
      beforeEnter: (to, from, next) => {
       const signedIn = !!store.state.auth.token;
       if(signedIn) {
