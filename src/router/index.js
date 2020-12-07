@@ -1,17 +1,23 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import VueMeta from 'vue-meta';
+import VueMeta from "vue-meta";
+
 import Frame from "@/components/layout/Frame";
 import NullFrame from "@/components/layout/NullFrame";
+
 import Home from "@/views/Home.vue";
 import Entry from "@/views/Entry.vue";
+
 import SignIn from "@/views/auth/SignIn.vue";
 import Auth from "@/views/auth/Auth.vue";
 import SignInError from "@/views/auth/SignInError.vue";
+
 import ProductTop from "@/views/product/ProductTop.vue";
 import ProductList from "@/views/product/ProductList.vue";
 import ProductItem from "@/views/product/ProductItem.vue";
-import store from "@/store"
+
+import store from "@/store";
+
 Vue.use(VueRouter);
 Vue.use(VueMeta);
 
@@ -21,57 +27,57 @@ const routes = [
     name: "Entry",
     components: {
       default: Entry,
-      frame: NullFrame
-     },
-     beforeEnter: (to, from, next) => {
-       const signedIn = !!store.state.auth.token;
-       if(signedIn) {
-        next({ name: "Dashboard"});
-       } else {
+      frame: NullFrame,
+    },
+    beforeEnter: (to, from, next) => {
+      const signedIn = !!store.state.auth.token;
+      if (signedIn) {
+        next({ name: "Dashboard" });
+      } else {
         next();
-       }
-     }
+      }
+    },
   },
   {
     path: "/dashboard",
     name: "Dashboard",
     components: {
       default: Home,
-      frame: Frame
-     },
-     meta: { requiresAuth: true },
-     beforeEnter: (to, from, next) => {
+      frame: Frame,
+    },
+    meta: { requiresAuth: true },
+    beforeEnter: (to, from, next) => {
       const signedIn = !!store.state.auth.token;
-      if(signedIn) {
+      if (signedIn) {
         next();
       } else {
-        next({ name: "Entry"});
+        next({ name: "Entry" });
       }
-   }
+    },
   },
   {
     path: "/signin",
     name: "SignIn",
     components: {
       default: SignIn,
-      frame: NullFrame
-     }
+      frame: NullFrame,
+    },
   },
   {
     path: "/auth",
     name: "Auth",
     components: {
       default: Auth,
-      frame: NullFrame
-     }
+      frame: NullFrame,
+    },
   },
   {
     path: "/signin-error",
     name: "SignInError",
     components: {
       default: SignInError,
-      frame: NullFrame
-     }
+      frame: NullFrame,
+    },
   },
   {
     path: "/about",
@@ -83,8 +89,8 @@ const routes = [
     path: "/:productTypeName",
     components: {
       default: ProductTop,
-      frame: Frame
-     },
+      frame: Frame,
+    },
     meta: { requiresAuth: true },
     children: [
       {
@@ -108,8 +114,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const authRequired = to.matched.some(record => record.meta.requiresAuth)
-  const signedIn = !!store.state.auth.token
+  const authRequired = to.matched.some((record) => record.meta.requiresAuth);
+  const signedIn = !!store.state.auth.token;
   if (authRequired) {
     if (signedIn) {
       next();
