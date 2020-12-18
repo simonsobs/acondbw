@@ -12,6 +12,10 @@ import SignIn from "@/views/auth/SignIn.vue";
 import Auth from "@/views/auth/Auth.vue";
 import SignInError from "@/views/auth/SignInError.vue";
 
+import AdminAppToken from "@/views/admin-token/AdminAppToken";
+import AdminAppAuth from "@/views/admin-token/AdminAppAuth";
+import AdminAppTokenError from "@/views/admin-token/AdminAppTokenError";
+
 import ProductTop from "@/views/product/ProductTop.vue";
 import ProductList from "@/views/product/ProductList.vue";
 import ProductItem from "@/views/product/ProductItem.vue";
@@ -76,6 +80,30 @@ const routes = [
     name: "SignInError",
     components: {
       default: SignInError,
+      frame: NullFrame,
+    },
+  },
+  {
+    path: "/admin/token",
+    name: "AdminAppToken",
+    components: {
+      default: AdminAppToken,
+      frame: NullFrame,
+    },
+  },
+  {
+    path: "/admin/auth",
+    name: "AdminAppAuth",
+    components: {
+      default: AdminAppAuth,
+      frame: NullFrame,
+    },
+  },
+  {
+    path: "/admin/token-error",
+    name: "AdminAppTokenError",
+    components: {
+      default: AdminAppTokenError,
       frame: NullFrame,
     },
   },
