@@ -1,0 +1,5 @@
+mutation StoreAdminAppToken($code: String!) {
+  storeAdminAppToken(code: $code) {
+    ok
+  }
+}
