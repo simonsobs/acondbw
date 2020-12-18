@@ -27,7 +27,6 @@ export default {
   methods: {
     async requestAuth() {
       this.loading = true;
-      console.log(this.apollo)
       try {
         await requestAuthForAdminApp(window, this.$apollo);
       } catch (error) {
