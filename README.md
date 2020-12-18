@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.com/simonsobs/acondbw.svg?branch=master)](https://travis-ci.com/simonsobs/acondbw) [![Coverage Status](https://coveralls.io/repos/github/simonsobs/acondbw/badge.svg?branch=master)](https://coveralls.io/github/simonsobs/acondbw?branch=master)
+[![Test Status](https://github.com/simonsobs/acondbw/workflows/Test/badge.svg)](https://github.com/simonsobs/acondbw/actions?query=workflow%3ATest)
+ [![Coverage Status](https://coveralls.io/repos/github/simonsobs/acondbw/badge.svg?branch=master)](https://coveralls.io/github/simonsobs/acondbw?branch=master)
+
 
 # acondbw
 
