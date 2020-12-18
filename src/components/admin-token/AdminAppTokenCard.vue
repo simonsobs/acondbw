@@ -30,7 +30,6 @@ export default {
       try {
         await requestAuthForAdminApp(window, this.$apollo);
       } catch (error) {
-        console.log(error);
         this.$router.push({ name: "AdminAppTokenError" });
         this.loading = false;
       } 
