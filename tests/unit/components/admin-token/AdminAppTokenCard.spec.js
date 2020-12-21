@@ -59,6 +59,8 @@ describe("AdminAppTokenCard.vue", () => {
       throw new Error();
     });
     wrapper.vm.requestAuth();
+    await Vue.nextTick();
+    await Vue.nextTick();
     expect(requestAuthForAdminApp.mock.calls.length).toBe(1);
     expect(wrapper.vm.loading).toBeFalsy();
     expect(router.history.current.name).toBe("AdminAppTokenError")
