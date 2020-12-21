@@ -87,7 +87,10 @@ const routes = [
         import(
           /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppToken"
         ),
-      frame: NullFrame,
+      frame: () =>
+        import(
+          /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
+        ),
     },
   },
   {
@@ -98,7 +101,10 @@ const routes = [
         import(
           /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppAuth"
         ),
-      frame: NullFrame,
+        frame: () =>
+        import(
+          /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
+        ),
     },
   },
   {
@@ -109,7 +115,10 @@ const routes = [
         import(
           /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppTokenError"
         ),
-      frame: NullFrame,
+        frame: () =>
+        import(
+          /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
+        ),
     },
   },
   {
