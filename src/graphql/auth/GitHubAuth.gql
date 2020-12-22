@@ -1,7 +1,0 @@
-mutation GitHubAuth($code: String!) {
-  githubAuth(code: $code) {
-    authPayload {
-      token
-    }
-  }
-}

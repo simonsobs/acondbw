@@ -1,0 +1,7 @@
+mutation AuthenticateWithGitHub($code: String!) {
+  authenticateWithGitHub(code: $code) {
+    authPayload {
+      token
+    }
+  }
+}

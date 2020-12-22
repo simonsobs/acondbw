@@ -2,7 +2,7 @@ import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
-import GitHubAuth from "@/graphql/auth/GitHubAuth.gql";
+import AuthenticateWithGitHub from "@/graphql/auth/AuthenticateWithGitHub.gql";
 import GitHubUser from "@/graphql/auth/GitHubUser.gql";
 
 function createInitialState() {
@@ -92,10 +92,10 @@ export const auth = {
           throw new Error("The state did not match.");
         }
         const { data } = await apolloClient.mutate({
-          mutation: GitHubAuth,
+          mutation: AuthenticateWithGitHub,
           variables: { code: code },
         });
-        const authPayload = data.githubAuth.authPayload;
+        const authPayload = data.authenticateWithGitHub.authPayload;
         const token = JSON.stringify(authPayload.token);
         await onLogin(apolloClient, token);
         commit("set_token", token);
