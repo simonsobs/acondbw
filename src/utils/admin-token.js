@@ -2,7 +2,7 @@ const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
 import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
-import StoreAdminAppToken from "@/graphql/admin-token/StoreAdminAppToken.gql";
+import AddGitHubAdminAppToken from "@/graphql/admin-token/AddGitHubAdminAppToken.gql";
 
 const AUTH_ADMIN_STATE = "auth-admin-state";
 
@@ -44,7 +44,7 @@ export async function storeAdminAppToken(code, state, apolloClient) {
       throw new Error("The state did not match.");
     }
     const { data } = await apolloClient.mutate({
-      mutation: StoreAdminAppToken,
+      mutation: AddGitHubAdminAppToken,
       variables: { code: code },
     });
     // const ok = data.StoreAdminAppToken.ok;
