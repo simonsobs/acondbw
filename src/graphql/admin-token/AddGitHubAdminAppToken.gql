@@ -1,0 +1,5 @@
+mutation AddGitHubAdminAppToken($code: String!) {
+  addGitHubAdminAppToken(code: $code) {
+    ok
+  }
+}

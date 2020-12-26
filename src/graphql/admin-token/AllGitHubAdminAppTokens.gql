@@ -1,0 +1,11 @@
+query AllGitHubAdminAppTokens {
+  allGitHubAdminAppTokens {
+    totalCount
+    edges {
+      node {
+        tokenId
+        tokenMasked
+      }
+    }
+  }
+}
