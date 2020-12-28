@@ -55,33 +55,6 @@ export const auth = {
       await onLogout(apolloClient);
       commit("set_token", null);
     },
-    async requestAuth({ commit }, { window, apolloClient }) {
-      commit("clear_last_error");
-      try {
-        const { data } = await apolloClient.query({ query: OAuthAppInfo });
-        const oauthAppInfo = data.oauthAppInfo;
-        const state = btoa(
-          JSON.stringify({
-            redirect: { name: "Auth" },
-            code: cryptoRandomString({ length: 8, type: "url-safe" }),
-          })
-        );
-        localStorage.setItem("auth-state", JSON.stringify(state));
-        const params = {
-          response_type: "code",
-          client_id: oauthAppInfo.clientId,
-          redirect_uri: oauthAppInfo.redirectUri,
-          scope: "", // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-          state: state,
-        };
-        let queryString = querystring.stringify(params);
-        const uri = oauthAppInfo.authorizeUrl + "?" + queryString;
-        window.location.href = uri;
-      } catch (error) {
-        localStorage.removeItem("auth-state");
-        throw error;
-      }
-    },
     async obtainToken({ commit, dispatch }, { code, state, apolloClient }) {
       commit("clear_last_error");
       try {
