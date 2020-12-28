@@ -61,7 +61,12 @@ export const auth = {
       try {
         const { data } = await apolloClient.query({ query: OAuthAppInfo });
         const oauthAppInfo = data.oauthAppInfo;
-        const state = cryptoRandomString({ length: 16, type: "url-safe" });
+        const state = btoa(
+          JSON.stringify({
+            redirect: { name: "Auth" },
+            code: cryptoRandomString({ length: 8, type: "url-safe" }),
+          })
+        );
         localStorage.setItem("auth-state", JSON.stringify(state));
         const params = {
           response_type: "code",
