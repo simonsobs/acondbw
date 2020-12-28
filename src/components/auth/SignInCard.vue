@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { requestAuth } from "@/utils/auth.js"
+
 export default {
   name: "SignInCard",
   data: () => ({
@@ -26,10 +28,8 @@ export default {
     async signIn() {
       this.loading = true;
       try {
-        await this.$store.dispatch("requestAuth", {
-          window,
-          apolloClient: this.$apollo,
-        });
+        this.$store.dispatch("clearAuthError");
+        await requestAuth(window, this.$apollo);
       } catch (error) {
         this.$router.push({ name: "SignInError" });
         this.loading = false;
