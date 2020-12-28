@@ -29,7 +29,9 @@ export default {
       this.loading = true;
       try {
         this.$store.dispatch("clearAuthError");
-        await requestAuth(window, this.$apollo);
+        const callbackRoute = { name: "Auth" };
+        const scope = ""; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
+        await requestAuth(window, this.$apollo, callbackRoute, scope);
       } catch (error) {
         this.$router.push({ name: "SignInError" });
         this.loading = false;
