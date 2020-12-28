@@ -13,7 +13,12 @@ export async function requestAuthForAdminApp(window, apolloClient) {
       variables: { admin: true },
     });
     const oauthAppInfo = data.oauthAppInfo;
-    const state = cryptoRandomString({ length: 16, type: "url-safe" });
+    const state = btoa(
+      JSON.stringify({
+        redirect: { name: "AdminAppAuth" },
+        code: cryptoRandomString({ length: 8, type: "url-safe" }),
+      })
+    );
     localStorage.setItem(AUTH_ADMIN_STATE, JSON.stringify(state));
     const params = {
       response_type: "code",
