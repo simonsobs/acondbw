@@ -26,14 +26,13 @@ function createInitialState() {
   return ret;
 }
 
-
 export const auth = {
-  state: function() {
+  state: function () {
     const initialState = createInitialState();
     return {
       ...initialState,
       lastError: null,
-    }
+    };
   },
   mutations: {
     set_token(state, token) {
