@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { requestAuthForAdminApp } from "@/utils/admin-token.js"
+import { requestAuth } from "@/utils/auth.js"
 
 export default {
   name: "AdminAppTokenCard",
@@ -28,7 +28,10 @@ export default {
     async requestAuth() {
       this.loading = true;
       try {
-        await requestAuthForAdminApp(window, this.$apollo);
+        this.$store.dispatch("clearAuthError");
+        const callbackRoute = { name: "AdminAppAuth" };
+        const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
+        await requestAuth(window, this.$apollo, callbackRoute, scope);
       } catch (error) {
         this.$router.push({ name: "AdminAppTokenError" });
         this.loading = false;
