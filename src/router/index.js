@@ -8,6 +8,8 @@ import NullFrame from "@/components/layout/NullFrame";
 import Home from "@/views/Home.vue";
 import Entry from "@/views/Entry.vue";
 
+import OAuthRedirect from "@/views/auth/OAuthRedirect.vue"
+
 import SignIn from "@/views/auth/SignIn.vue";
 import Auth from "@/views/auth/Auth.vue";
 import SignInError from "@/views/auth/SignInError.vue";
@@ -53,6 +55,14 @@ const routes = [
       } else {
         next({ name: "Entry" });
       }
+    },
+  },
+  {
+    path: "/oauth-redirect",
+    name: "OAuthRedirect",
+    components: {
+      default: OAuthRedirect,
+      frame: NullFrame,
     },
   },
   {
