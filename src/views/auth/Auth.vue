@@ -12,11 +12,24 @@
 </template>
 
 <script>
+import { validateState } from "@/utils/auth.js";
+
 export default {
   name: "Auth",
   data: () => ({}),
   methods: {
     async main() {
+      const state = this.$route.query.state;
+      if (!state) {
+        this.$router.push({ path: "/" });
+        return;
+      }
+
+      if (!validateState(state)) {
+        this.$router.push({ path: "/" });
+        return;
+      }
+
       if (this.$route.query.error) {
         this.$store.dispatch("setRequestAuthError", this.$route.query);
         this.$router.push({ name: "SignInError" });
@@ -29,7 +42,6 @@ export default {
         return;
       }
 
-      const state = this.$route.query.state;
       try {
         await this.$store.dispatch("obtainToken", {
           code,
