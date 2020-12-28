@@ -32,6 +32,7 @@ export default {
         });
       } catch (error) {
         this.$router.push({ name: "SignInError" });
+        this.loading = false;
       }
     },
   },
