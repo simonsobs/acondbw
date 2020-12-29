@@ -10,7 +10,7 @@ import router from "@/router";
 import store from "@/store";
 jest.mock("@/store");
 
-import { requestAuth } from "@/utils/auth.js";
+import { redirectToGitHubAuthURL } from "@/utils/auth.js";
 jest.mock("@/utils/auth.js");
 
 Vue.use(Vuetify);
@@ -33,7 +33,7 @@ describe("AdminAppTokenCard.vue", () => {
   }
 
   beforeEach(function () {
-    requestAuth.mockClear();
+    redirectToGitHubAuthURL.mockClear();
     localVue = createLocalVue();
     localVue.use(Vuex);
     vuetify = new Vuetify();
@@ -65,21 +65,21 @@ describe("AdminAppTokenCard.vue", () => {
     await Vue.nextTick();
     wrapper.vm.requestAuth();
     expect(actions.clearAuthError.mock.calls.length).toBe(1);
-    expect(requestAuth.mock.calls.length).toBe(1);
+    expect(redirectToGitHubAuthURL.mock.calls.length).toBe(1);
     expect(wrapper.vm.loading).toBeTruthy();
   });
 
   it("requestAuth error", async () => {
     const wrapper = createWrapper();
     await Vue.nextTick();
-    requestAuth.mockImplementation(() => {
+    redirectToGitHubAuthURL.mockImplementation(() => {
       throw new Error();
     });
     wrapper.vm.requestAuth();
     await Vue.nextTick();
     await Vue.nextTick();
     expect(actions.clearAuthError.mock.calls.length).toBe(1);
-    expect(requestAuth.mock.calls.length).toBe(1);
+    expect(redirectToGitHubAuthURL.mock.calls.length).toBe(1);
     expect(wrapper.vm.loading).toBeFalsy();
     expect(router.history.current.name).toBe("AdminAppTokenError");
   });

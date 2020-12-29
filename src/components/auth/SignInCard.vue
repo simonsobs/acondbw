@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { requestAuth } from "@/utils/auth.js"
+import { redirectToGitHubAuthURL } from "@/utils/auth.js"
 
 export default {
   name: "SignInCard",
@@ -31,7 +31,7 @@ export default {
         this.$store.dispatch("clearAuthError");
         const callbackRoute = { name: "Auth" };
         const scope = ""; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-        await requestAuth(window, this.$apollo, callbackRoute, scope);
+        await redirectToGitHubAuthURL(window, this.$apollo, callbackRoute, scope);
       } catch (error) {
         this.$router.push({ name: "SignInError" });
         this.loading = false;
