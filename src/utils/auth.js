@@ -3,7 +3,7 @@ const cryptoRandomString = require("crypto-random-string");
 
 import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
 
-const AUTH_STATE = "auth-state";
+export const AUTH_STATE = "auth-state";
 
 /**
  *
