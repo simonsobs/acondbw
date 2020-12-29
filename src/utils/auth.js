@@ -12,14 +12,20 @@ export const AUTH_STATE = "auth-state";
  * @param {object} callbackRoute - a route to be redirected from the rigistered callback route
  * @param {string} scope - scopes as described in https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
  */
-export async function redirectToGitHubAuthURL(window, apolloClient, callbackRoute, scope) {
+export async function redirectToGitHubAuthURL(
+  window,
+  apolloClient,
+  callbackRoute,
+  scope
+) {
   try {
     const { data } = await apolloClient.query({ query: OAuthAppInfo });
     const oauthAppInfo = data.oauthAppInfo;
+    const code = cryptoRandomString({ length: 8, type: "url-safe" });
     const state = btoa(
       JSON.stringify({
         redirect: callbackRoute,
-        code: cryptoRandomString({ length: 8, type: "url-safe" }),
+        code: code,
       })
     );
     localStorage.setItem(AUTH_STATE, JSON.stringify(state));
