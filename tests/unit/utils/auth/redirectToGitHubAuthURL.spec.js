@@ -34,6 +34,15 @@ describe("redirectToGitHubAuthURL", () => {
     expect(query).toMatchSnapshot()
     expect(JSON.parse(localStorage[AUTH_STATE])).toEqual(query.state);
   });
+
+  it("error apollo query", async () => {
+    localStorage.setItem(AUTH_STATE, JSON.stringify("old state"));
+    apolloClient.query.mockRejectedValue(new Error("error"));
+    await expect(
+      redirectToGitHubAuthURL(window, apolloClient, callbackRoute, scope)
+    ).rejects.toThrow();
+    expect(localStorage[AUTH_STATE]).toBeUndefined();
+  });
 });
 
 // https://stackoverflow.com/a/8486188/7309855
