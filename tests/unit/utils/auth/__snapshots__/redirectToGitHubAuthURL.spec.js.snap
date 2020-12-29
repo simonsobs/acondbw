@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`redirectToGitHubAuthURL success 1`] = `
+Object {
+  "client_id": "012345",
+  "redirect_uri": "http://localhost:8081/oauth-redirect",
+  "response_type": "code",
+  "scope": "read:org",
+  "state": "eyJyZWRpcmVjdCI6eyJuYW1lIjoiQXV0aCJ9LCJjb2RlIjoiYWJjZGUifQ==",
+}
+`;
