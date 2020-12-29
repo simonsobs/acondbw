@@ -28,7 +28,6 @@ export async function redirectToGitHubAuthURL(
         code: code,
       })
     );
-    localStorage.setItem(AUTH_STATE, JSON.stringify(state));
     const params = {
       response_type: "code",
       client_id: oauthAppInfo.clientId,
@@ -38,6 +37,7 @@ export async function redirectToGitHubAuthURL(
     };
     let queryString = querystring.stringify(params);
     const uri = oauthAppInfo.authorizeUrl + "?" + queryString;
+    localStorage.setItem(AUTH_STATE, JSON.stringify(state));
     window.location.href = uri;
   } catch (error) {
     localStorage.removeItem(AUTH_STATE);
