@@ -8,7 +8,7 @@ import { AUTH_STATE, redirectToGitHubAuthURL } from "@/utils/auth.js";
 
 describe("redirectToGitHubAuthURL", () => {
   const callbackRoute = { name: "Auth" };
-  const oauthAppInfo = {
+  const gitHubOAuthAppInfo = {
     clientId: "012345",
     redirectUri: "http://localhost:8081/oauth-redirect",
     authorizeUrl: "https://github.com/login/oauth/authorize",
@@ -26,7 +26,7 @@ describe("redirectToGitHubAuthURL", () => {
   });
 
   it("success", async () => {
-    apolloClient.query.mockResolvedValue({ data: { oauthAppInfo } });
+    apolloClient.query.mockResolvedValue({ data: { gitHubOAuthAppInfo } });
     await redirectToGitHubAuthURL(window, apolloClient, callbackRoute, scope);
     const url = window.location.href.split("?")[0];
     const query = getJsonFromUrl(window.location.href);
