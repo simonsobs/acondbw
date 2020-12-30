@@ -1,7 +1,0 @@
-query OAuthAppInfo($admin: Boolean = false) {
-  oauthAppInfo(admin: $admin) {
-    clientId
-    authorizeUrl
-    redirectUri
-  }
-}
