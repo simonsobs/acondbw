@@ -1,7 +1,6 @@
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
-import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
 import AddGitHubAdminAppToken from "@/graphql/admin-token/AddGitHubAdminAppToken.gql";
 
 const AUTH_ADMIN_STATE = "auth-state";

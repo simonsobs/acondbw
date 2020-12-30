@@ -1,7 +1,6 @@
 import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
-import OAuthAppInfo from "@/graphql/auth/OAuthAppInfo.gql";
 import AuthenticateWithGitHub from "@/graphql/auth/AuthenticateWithGitHub.gql";
 import GitHubUser from "@/graphql/auth/GitHubUser.gql";
 
