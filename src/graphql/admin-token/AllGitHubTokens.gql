@@ -1,5 +1,5 @@
-query AllGitHubAdminAppTokens {
-  allGitHubAdminAppTokens {
+query AllGitHubTokens {
+  allGitHubTokens {
     totalCount
     edges {
       node {
