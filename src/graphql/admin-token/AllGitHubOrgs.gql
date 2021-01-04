@@ -1,0 +1,20 @@
+query AllGitHubOrgs {
+  allGitHubOrgs {
+    totalCount
+    edges {
+      node {
+        login
+        memberships {
+          totalCount
+          edges {
+            node {
+              member {
+                login
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

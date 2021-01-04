@@ -1,0 +1,5 @@
+mutation UpdateGitHubOrgMemberLists {
+  updateGitHubOrgMemberLists {
+    ok
+  }
+}

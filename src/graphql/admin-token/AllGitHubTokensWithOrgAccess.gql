@@ -1,0 +1,12 @@
+#import "./GitHubTokenFragment.gql"
+
+query AllGitHubTokensWithOrgAccess {
+  allGitHubTokens(filters: { scopeIlike: "%read:org%" }) {
+    totalCount
+    edges {
+      node {
+        ...GitHubTokenFragment
+      }
+    }
+  }
+}

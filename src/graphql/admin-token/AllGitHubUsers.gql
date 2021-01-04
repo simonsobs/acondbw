@@ -1,0 +1,12 @@
+query AllGitHubUsers {
+  allGitHubUsers {
+    totalCount
+    edges {
+      node {
+        login
+        name
+        avatarUrl
+      }
+    }
+  }
+}
