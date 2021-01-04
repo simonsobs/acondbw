@@ -1,14 +1,11 @@
+#import "./GitHubTokenFragment.gql"
+
 query AllGitHubTokens {
   allGitHubTokens {
     totalCount
     edges {
       node {
-        tokenId
-        tokenMasked
-        scope
-        user {
-          login
-        }
+        ...GitHubTokenFragment
       }
     }
   }

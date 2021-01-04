@@ -1,0 +1,8 @@
+fragment GitHubTokenFragment on GitHubToken {
+  tokenId
+  tokenMasked
+  scope
+  user {
+    login
+  }
+}
