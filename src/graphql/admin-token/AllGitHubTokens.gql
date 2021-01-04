@@ -5,6 +5,10 @@ query AllGitHubTokens {
       node {
         tokenId
         tokenMasked
+        scope
+        user {
+          login
+        }
       }
     }
   }
