@@ -6,20 +6,51 @@
           <v-icon left>mdi-github</v-icon>Update org member list
         </v-btn>
       </v-card-actions>
-      <template v-if="allGitHubTokensData">
-        <v-data-table
-          :headers="allGitHubTokensHeaders"
-          :items="allGitHubTokensData"
-        >
-          <template v-slot:[`item.timeCreated`]="{ item }">
-            <span>{{ new Date(item.timeCreated).toLocaleString() }}</span>
-          </template></v-data-table
-        >
-        <pre>{{ allGitHubTokensData }}</pre>
-      </template>
+      <v-card>
+        <v-card-title>Tokens with org access</v-card-title>
+        <v-card-text>
+          <template v-if="allGitHubTokens">
+            <v-data-table
+              :headers="allGitHubTokensHeaders"
+              :items="allGitHubTokens.edges"
+              :hide-default-footer="true"
+            >
+              <template v-slot:[`item.node.timeCreated`]="{ item }">
+                <span>{{
+                  new Date(item.node.timeCreated).toLocaleString()
+                }}</span>
+              </template></v-data-table
+            >
+          </template>
+        </v-card-text>
+      </v-card>
+      <v-card>
+        <v-card-title>Orgnizations</v-card-title>
+        <v-card-text>
+          <template v-if="allGitHubOrgs">
+            <v-data-table
+              :headers="allGitHubOrgsHeaders"
+              :items="allGitHubOrgs.edges"
+              :hide-default-footer="true"
+            ></v-data-table>
+          </template>
+        </v-card-text>
+      </v-card>
+      <v-card>
+        <v-card-title>Users</v-card-title>
+        <v-card-text>
+          <template v-if="allGitHubUsers">
+            <v-data-table
+              :headers="allGitHubUsersHeaders"
+              :items="allGitHubUsers.edges"
+              :hide-default-footer="true"
+            ></v-data-table>
+          </template>
+        </v-card-text>
+      </v-card>
     </v-card>
     <v-row align="center" justify="center">
-      <pre>{{ allGitHubTokens }}</pre>
+      <pre>{{ allGitHubUsers }}</pre>
     </v-row>
   </v-container>
 </template>
@@ -27,6 +58,8 @@
 <script>
 // import ALL_GITHUB_TOKENS from "@/graphql/admin-token/AllGitHubTokens.gql";
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/admin-token/AllGitHubTokensWithOrgAccess.gql";
+import ALL_GIT_HUB_ORGS from "@/graphql/admin-token/AllGitHubOrgs.gql";
+import ALL_GIT_HUB_USERS from "@/graphql/admin-token/AllGitHubUsers.gql";
 import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/admin-token/UpdateGitHubOrgMemberLists.gql";
 
 export default {
@@ -34,25 +67,31 @@ export default {
   data: () => ({
     allGitHubTokens: null,
     allGitHubTokensHeaders: [
-      { text: "User", value: "user.login" },
-      { text: "Token", value: "tokenMasked" },
-      { text: "Scope", value: "scope" },
-      { text: "Created at", value: "timeCreated" },
+      { text: "User", value: "node.user.login" },
+      { text: "Token", value: "node.tokenMasked" },
+      { text: "Scope", value: "node.scope" },
+      { text: "Created at", value: "node.timeCreated" },
+    ],
+    allGitHubOrgs: null,
+    allGitHubOrgsHeaders: [
+      { text: "Org", value: "node.login" },
+      { text: "Number of members", value: "node.memberships.totalCount" },
+    ],
+    allGitHubUsers: null,
+    allGitHubUsersHeaders: [
+      { text: "User", value: "node.login" },
+      { text: "Name", value: "node.name" },
     ],
   }),
   apollo: {
     allGitHubTokens: {
       query: ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS,
     },
-  },
-  computed: {
-    allGitHubTokensData: function () {
-      if (!(this.allGitHubTokens && this.allGitHubTokens.edges)) {
-        return null;
-      } else {
-        const edges = this.allGitHubTokens.edges;
-        return edges.map((e) => e.node);
-      }
+    allGitHubOrgs: {
+      query: ALL_GIT_HUB_ORGS,
+    },
+    allGitHubUsers: {
+      query: ALL_GIT_HUB_USERS,
     },
   },
   methods: {
