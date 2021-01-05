@@ -1,0 +1,114 @@
+<template>
+  <div>
+    <template v-if="allGitHubOrgs">
+      <v-data-table
+        :headers="allGitHubOrgsHeaders"
+        :items="allGitHubOrgs.edges"
+        :hide-default-footer="true"
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="headline">Remove</v-card-title>
+                <v-card-text class="body-1 font-weight-medium error--text"
+                  >Really, remove "{{ deleteLogin }}" ?</v-card-text
+                >
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="secondary" text @click="closeDelete"
+                    >Cancel</v-btn
+                  >
+                  <v-btn color="error" text @click="deleteItemConfirm"
+                    >OK</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+          <v-alert dismissible v-model="alert" type="error">{{
+            error
+          }}</v-alert>
+        </template>
+        <template v-slot:[`item.node.avatarUrl`]="{ item }">
+          <span>
+            <v-avatar size="24">
+              <img :src="item.node.avatarUrl" />
+            </v-avatar>
+          </span>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        </template>
+      </v-data-table>
+    </template>
+  </div>
+</template>
+
+<script>
+// The implementation based on the example
+// https://vuetifyjs.com/en/components/data-tables/#crud-actions
+// https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
+
+import ALL_GIT_HUB_ORGS from "@/graphql/admin-token/AllGitHubOrgs.gql";
+import DELETE_GITHUB_ORG from "@/graphql/admin-token/DeleteGitHubOrg.gql";
+
+export default {
+  name: "GitHubOrgTable",
+  data: () => ({
+    allGitHubOrgs: null,
+    allGitHubOrgsHeaders: [
+      { text: "", value: "node.avatarUrl" },
+      { text: "Org", value: "node.login" },
+      { text: "Number of members", value: "node.memberships.totalCount" },
+      { text: "", value: "actions", sortable: false },
+    ],
+    dialogDelete: false,
+    deleteLogin: null,
+    alert: false,
+    error: null,
+  }),
+  apollo: {
+    allGitHubOrgs: {
+      query: ALL_GIT_HUB_ORGS,
+    },
+  },
+  methods: {
+    deleteItem(item) {
+      const index = this.allGitHubOrgs.edges.indexOf(item);
+      this.deleteLogin = this.allGitHubOrgs.edges[index].node.login;
+      this.dialogDelete = true;
+    },
+    async deleteItemConfirm() {
+      try {
+        const { data } = await this.$apollo.mutate({
+          mutation: DELETE_GITHUB_ORG,
+          variables: { login: this.deleteLogin },
+        });
+        this.$apollo.queries.allGitHubOrgs.refetch();
+        this.$store.dispatch("apolloMutationCalled");
+        this.$store.dispatch("snackbarMessage", "Removed");
+      } catch (error) {
+        this.error = error;
+      }
+      this.closeDelete();
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.deleteLogin = null;
+      });
+    },
+  },
+  watch: {
+    error: function (val, oldVal) {
+      this.alert = val ? true : false;
+    },
+    alert: function (val, oldVal) {
+      if (!val) {
+        this.error = null;
+      }
+    },
+  },
+};
+</script>
