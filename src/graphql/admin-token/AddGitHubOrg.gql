@@ -1,0 +1,5 @@
+mutation AddGitHubOrg($login: String!) {
+  addGitHubOrg(login: $login) {
+    ok
+  }
+}
