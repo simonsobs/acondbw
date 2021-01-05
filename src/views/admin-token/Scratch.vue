@@ -26,8 +26,11 @@
                 <span>{{
                   new Date(item.node.timeCreated).toLocaleString()
                 }}</span>
-              </template></v-data-table
-            >
+              </template>
+              <template v-slot:[`item.actions`]="{ item }">
+                <v-icon small @click="deleteToken(item)"> mdi-delete </v-icon>
+              </template>
+            </v-data-table>
           </template>
         </v-card-text>
       </v-card>
@@ -40,21 +43,7 @@
       <v-card>
         <v-card-title>Users</v-card-title>
         <v-card-text>
-          <template v-if="allGitHubUsers">
-            <v-data-table
-              :headers="allGitHubUsersHeaders"
-              :items="allGitHubUsers.edges"
-              :hide-default-footer="true"
-            >
-              <template v-slot:[`item.node.avatarUrl`]="{ item }">
-                <span>
-                  <v-avatar size="24">
-                    <img :src="item.node.avatarUrl" />
-                  </v-avatar>
-                </span>
-              </template>
-            </v-data-table>
-          </template>
+          <git-hub-user-table></git-hub-user-table>
         </v-card-text>
       </v-card>
     </v-card>
@@ -67,15 +56,16 @@
 <script>
 // import ALL_GITHUB_TOKENS from "@/graphql/admin-token/AllGitHubTokens.gql";
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/admin-token/AllGitHubTokensWithOrgAccess.gql";
-import ALL_GIT_HUB_USERS from "@/graphql/admin-token/AllGitHubUsers.gql";
 import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/admin-token/UpdateGitHubOrgMemberLists.gql";
 
 import GitHubOrgTable from "@/components/admin-token/GitHubOrgTable";
+import GitHubUserTable from "@/components/admin-token/GitHubUserTable";
 
 export default {
   name: "Scratch",
   components: {
-    GitHubOrgTable
+    GitHubOrgTable,
+    GitHubUserTable,
   },
   data: () => ({
     allGitHubTokens: null,
@@ -87,19 +77,10 @@ export default {
       { text: "Created at", value: "node.timeCreated" },
       { text: "", value: "actions", sortable: false },
     ],
-    allGitHubUsers: null,
-    allGitHubUsersHeaders: [
-      { text: "", value: "node.avatarUrl" },
-      { text: "User", value: "node.login" },
-      { text: "Name", value: "node.name" },
-    ],
   }),
   apollo: {
     allGitHubTokens: {
       query: ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS,
-    },
-    allGitHubUsers: {
-      query: ALL_GIT_HUB_USERS,
     },
   },
   methods: {
@@ -107,6 +88,10 @@ export default {
       const { data } = await this.$apollo.mutate({
         mutation: UPDATE_GITHUB_ORG_MEMBER_LIST,
       });
+    },
+    deleteToken(item) {
+      // https://vuetifyjs.com/en/components/data-tables/#crud-actions
+      console.log(item);
     },
   },
 };
