@@ -4,6 +4,8 @@ query AllGitHubOrgs {
     edges {
       node {
         login
+        avatarUrl
+        url
         memberships {
           totalCount
           edges {
