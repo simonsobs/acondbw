@@ -15,6 +15,13 @@
               :items="allGitHubTokens.edges"
               :hide-default-footer="true"
             >
+              <template v-slot:[`item.node.user.avatarUrl`]="{ item }">
+                <span>
+                  <v-avatar size="24">
+                    <img :src="item.node.user.avatarUrl" />
+                  </v-avatar>
+                </span>
+              </template>
               <template v-slot:[`item.node.timeCreated`]="{ item }">
                 <span>{{
                   new Date(item.node.timeCreated).toLocaleString()
@@ -32,7 +39,15 @@
               :headers="allGitHubOrgsHeaders"
               :items="allGitHubOrgs.edges"
               :hide-default-footer="true"
-            ></v-data-table>
+            >
+              <template v-slot:[`item.node.avatarUrl`]="{ item }">
+                <span>
+                  <v-avatar size="24">
+                    <img :src="item.node.avatarUrl" />
+                  </v-avatar>
+                </span>
+              </template>
+            </v-data-table>
           </template>
         </v-card-text>
       </v-card>
@@ -44,13 +59,21 @@
               :headers="allGitHubUsersHeaders"
               :items="allGitHubUsers.edges"
               :hide-default-footer="true"
-            ></v-data-table>
+            >
+              <template v-slot:[`item.node.avatarUrl`]="{ item }">
+                <span>
+                  <v-avatar size="24">
+                    <img :src="item.node.avatarUrl" />
+                  </v-avatar>
+                </span>
+              </template>
+            </v-data-table>
           </template>
         </v-card-text>
       </v-card>
     </v-card>
     <v-row align="center" justify="center">
-      <pre>{{ allGitHubUsers }}</pre>
+      <pre>{{ allGitHubTokens }}</pre>
     </v-row>
   </v-container>
 </template>
@@ -67,6 +90,7 @@ export default {
   data: () => ({
     allGitHubTokens: null,
     allGitHubTokensHeaders: [
+      { text: "", value: "node.user.avatarUrl" },
       { text: "User", value: "node.user.login" },
       { text: "Token", value: "node.tokenMasked" },
       { text: "Scope", value: "node.scope" },
@@ -74,11 +98,13 @@ export default {
     ],
     allGitHubOrgs: null,
     allGitHubOrgsHeaders: [
+      { text: "", value: "node.avatarUrl" },
       { text: "Org", value: "node.login" },
       { text: "Number of members", value: "node.memberships.totalCount" },
     ],
     allGitHubUsers: null,
     allGitHubUsersHeaders: [
+      { text: "", value: "node.avatarUrl" },
       { text: "User", value: "node.login" },
       { text: "Name", value: "node.name" },
     ],
