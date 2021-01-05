@@ -1,5 +1,5 @@
-query AllGitHubUsers {
-  allGitHubUsers {
+query AllGitHubUsers($orgMember: Boolean = false) {
+  allGitHubUsers(filters: { orgMember: $orgMember }) {
     totalCount
     edges {
       node {
