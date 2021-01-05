@@ -27,7 +27,10 @@ export default {
   name: "NavigationAdmin",
   data: () => ({
     edges: null,
-    links: [{ title: "admin app tokens", to: "to", icon: "mdi-key"}],
+    links: [
+      { title: "scratch", to: { name: 'AdminScratch' }, icon: "mdi-pencil"},
+      { title: "admin app tokens", to: "to", icon: "mdi-key"}
+      ],
   }),
 };
 </script>
