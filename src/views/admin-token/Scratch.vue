@@ -34,21 +34,7 @@
       <v-card>
         <v-card-title>Orgnizations</v-card-title>
         <v-card-text>
-          <template v-if="allGitHubOrgs">
-            <v-data-table
-              :headers="allGitHubOrgsHeaders"
-              :items="allGitHubOrgs.edges"
-              :hide-default-footer="true"
-            >
-              <template v-slot:[`item.node.avatarUrl`]="{ item }">
-                <span>
-                  <v-avatar size="24">
-                    <img :src="item.node.avatarUrl" />
-                  </v-avatar>
-                </span>
-              </template>
-            </v-data-table>
-          </template>
+          <git-hub-org-table></git-hub-org-table>
         </v-card-text>
       </v-card>
       <v-card>
@@ -81,12 +67,16 @@
 <script>
 // import ALL_GITHUB_TOKENS from "@/graphql/admin-token/AllGitHubTokens.gql";
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/admin-token/AllGitHubTokensWithOrgAccess.gql";
-import ALL_GIT_HUB_ORGS from "@/graphql/admin-token/AllGitHubOrgs.gql";
 import ALL_GIT_HUB_USERS from "@/graphql/admin-token/AllGitHubUsers.gql";
 import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/admin-token/UpdateGitHubOrgMemberLists.gql";
 
+import GitHubOrgTable from "@/components/admin-token/GitHubOrgTable";
+
 export default {
   name: "Scratch",
+  components: {
+    GitHubOrgTable
+  },
   data: () => ({
     allGitHubTokens: null,
     allGitHubTokensHeaders: [
@@ -95,12 +85,7 @@ export default {
       { text: "Token", value: "node.tokenMasked" },
       { text: "Scope", value: "node.scope" },
       { text: "Created at", value: "node.timeCreated" },
-    ],
-    allGitHubOrgs: null,
-    allGitHubOrgsHeaders: [
-      { text: "", value: "node.avatarUrl" },
-      { text: "Org", value: "node.login" },
-      { text: "Number of members", value: "node.memberships.totalCount" },
+      { text: "", value: "actions", sortable: false },
     ],
     allGitHubUsers: null,
     allGitHubUsersHeaders: [
@@ -112,9 +97,6 @@ export default {
   apollo: {
     allGitHubTokens: {
       query: ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS,
-    },
-    allGitHubOrgs: {
-      query: ALL_GIT_HUB_ORGS,
     },
     allGitHubUsers: {
       query: ALL_GIT_HUB_USERS,
