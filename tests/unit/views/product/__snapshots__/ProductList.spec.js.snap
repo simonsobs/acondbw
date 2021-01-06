@@ -2,22 +2,16 @@
 
 exports[`ProductList.vue match snapshot 1`] = `
 <div class="product-list" style="position: relative;">
-  <div class="container pa-0 container--fluid">
-    <div class="row ma-0 px-0 pt-3 pb-1 align-center justify-space-between" style="max-width: 980px;"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-refresh theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><!----></span>
+  <v-container-stub tag="div" fluid="true" class="pa-0">
+    <v-row-stub tag="div" align="center" justify="space-between" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
+      <v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
       <div><span class="secondary--text"><span>3 maps</span></span></div>
-      <div><span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-sort-variant theme--light"></i></span></button>
-        <div class="v-menu">
-          <!---->
-        </div><span class="v-tooltip v-tooltip--bottom"><!----></span></span>
-      </div>
-      <div><span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-unfold-more-horizontal theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><!----></span></span> <span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-plus-thick theme--light"></i></span></button><span class="v-tooltip v-tooltip--bottom"><!----></span>
-        <div role="dialog" class="v-dialog__container">
-          <!---->
-        </div>
-        </span>
-      </div>
-    </div>
-  </div>
+      <div><span><v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Sort</span></v-tooltip-stub></span></div>
+      <div><span><v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
+              Expand all
+            </span></v-tooltip-stub></span> <span><v-dialog-stub opendelay="0" closedelay="0" contentclass="" fullscreen="true" maxwidth="none" origin="center center" persistent="true" retainfocus="true" transition="dialog-bottom-transition" width="auto"> <v-card-stub loaderheight="4" tag="div"><v-app-bar-stub color="secondary" tag="header" dense="true" extensionheight="48" src="" value="true" style="position: sticky; top: 0px; z-index: 999;"><v-btn-stub dark="true" tag="button" activeclass="" icon="true" type="button"><v-icon-stub>mdi-close</v-icon-stub></v-btn-stub></v-app-bar-stub> <productaddform-stub producttypeid="1"></productaddform-stub></v-card-stub></v-dialog-stub></span></div>
+    </v-row-stub>
+  </v-container-stub>
   <!---->
   <div class="pb-16">
     <productitemcard-stub productid="1013" collapsed="true" collapsible="true" class="my-1"></productitemcard-stub>

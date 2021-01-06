@@ -4,7 +4,7 @@ exports[`ProductTop.vue match snapshot item 1`] = `
 <v-container-stub tag="div" fluid="true">
   <div class="product-top" style="position: relative;">
     <!---->
-    <v-row-stub tag="div" class="mx-1 mt-3">
+    <v-row-stub tag="div" class="mx-1 mt-3" style="max-width: 980px;">
       <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
         <router-link-stub to="/map" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub>
         <!---->
@@ -24,7 +24,7 @@ exports[`ProductTop.vue match snapshot list 1`] = `
 <v-container-stub tag="div" fluid="true">
   <div class="product-top" style="position: relative;">
     <!---->
-    <v-row-stub tag="div" class="mx-1 mt-3">
+    <v-row-stub tag="div" class="mx-1 mt-3" style="max-width: 980px;">
       <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
         <router-link-stub to="/map" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub>
         <!---->

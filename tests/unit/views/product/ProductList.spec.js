@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify";
-import { mount, createLocalVue } from "@vue/test-utils";
+import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
 import ProductList from "@/views/product/ProductList.vue";
 
@@ -20,7 +20,7 @@ describe("ProductList.vue", () => {
   let localVue;
 
   function createWrapper(loading = false) {
-    return mount(ProductList, {
+    return shallowMount(ProductList, {
       localVue,
       router,
       mocks: {
@@ -102,7 +102,7 @@ describe("ProductList.vue", () => {
     const loading = true;
     const wrapper = createWrapper(loading);
     await Vue.nextTick();
-    expect(wrapper.find(".v-progress-circular").exists()).toBe(true);
+    expect(wrapper.find("v-progress-circular-stub").exists()).toBe(true);
   });
 
   it("error", async () => {
