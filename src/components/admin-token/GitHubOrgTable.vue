@@ -4,6 +4,7 @@
       <v-data-table
         :headers="allGitHubOrgsHeaders"
         :items="allGitHubOrgs.edges"
+        :items-per-page="allGitHubOrgs.totalCount"
         :hide-default-footer="true"
       >
         <template v-slot:top>
