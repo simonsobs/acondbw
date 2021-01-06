@@ -28,8 +28,7 @@ export default {
   data: () => ({
     edges: null,
     links: [
-      { title: "scratch", to: { name: 'AdminScratch' }, icon: "mdi-pencil"},
-      { title: "admin app tokens", to: "to", icon: "mdi-key"}
+      { title: "Settings", to: { name: 'AdminScratch' }, icon: "mdi-cog"},
       ],
   }),
 };
