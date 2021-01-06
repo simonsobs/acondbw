@@ -1,0 +1,5 @@
+mutation DeleteGitHubToken($tokenId: Int!) {
+  deleteGitHubAdminAppToken(tokenId: $tokenId) {
+    ok
+  }
+}
