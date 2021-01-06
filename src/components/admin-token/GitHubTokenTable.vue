@@ -31,9 +31,9 @@
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
-                <v-card-title class="headline">Remove</v-card-title>
+                <v-card-title class="headline">Delete</v-card-title>
                 <v-card-text class="body-1 font-weight-medium error--text"
-                  >Really, remove the token?</v-card-text
+                  >Really, delete the token?</v-card-text
                 >
                 <v-card-actions>
                   <v-spacer></v-spacer>
