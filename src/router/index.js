@@ -90,6 +90,20 @@ const routes = [
     },
   },
   {
+    path: "/admin/scratch",
+    name: "AdminScratch",
+    components: {
+      default: () =>
+        import(
+          /* webpackChunkName: "admin" */ "@/views/admin-token/Scratch"
+        ),
+      frame: () =>
+        import(
+          /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
+        ),
+    },
+  },
+  {
     path: "/admin/token",
     name: "AdminAppToken",
     components: {
