@@ -39,7 +39,7 @@ export default {
         return;
       }
       this.$store.dispatch("snackbarMessage", "Admin App Token stored");
-      this.$router.push({ name: "Dashboard" });
+      this.$router.push({ name: "AdminScratch" });
     },
   },
   mounted: async function () {
