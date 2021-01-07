@@ -34,7 +34,7 @@ export default {
       try {
         await storeAdminAppToken(code, state, this.$apollo);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         this.$router.push({ name: "AdminAppTokenError" });
         return;
       }
