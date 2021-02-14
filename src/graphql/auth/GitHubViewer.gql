@@ -1,5 +1,5 @@
-query GitHubUser {
-  githubUser {
+query GitHubViewer {
+  gitHubViewer {
     login
     name
     avatarUrl

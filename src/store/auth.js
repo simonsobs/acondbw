@@ -2,7 +2,7 @@ import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 import AuthenticateWithGitHub from "@/graphql/auth/AuthenticateWithGitHub.gql";
-import GitHubUser from "@/graphql/auth/GitHubUser.gql";
+import GitHubViewer from "@/graphql/auth/GitHubViewer.gql";
 
 function createInitialState() {
   // localStorage.removeItem(AUTH_TOKEN);
@@ -85,8 +85,8 @@ export const auth = {
       // await onLogout(apolloClient);
       // localStorage.removeItem(AUTH_TOKEN);
       try {
-        const { data } = await apolloClient.query({ query: GitHubUser });
-        const githubUser = data.githubUser;
+        const { data } = await apolloClient.query({ query: GitHubViewer });
+        const githubUser = data.gitHubViewer;
         localStorage.setItem("github-user", JSON.stringify(githubUser));
         commit("set_github_user", githubUser);
       } catch (error) {
