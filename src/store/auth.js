@@ -5,15 +5,21 @@ import AuthenticateWithGitHub from "@/graphql/auth/AuthenticateWithGitHub.gql";
 import GitHubViewer from "@/graphql/auth/GitHubViewer.gql";
 
 function createInitialState() {
-  // localStorage.removeItem(AUTH_TOKEN);
-  // localStorage.removeItem("github-user");
-  // localStorage.removeItem("auth-state");
-  let token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
-  let githubUser = JSON.parse(localStorage.getItem("github-user"));
+  let token;
+  let githubUser;
 
-  if (!((token && githubUser) || (!token && !githubUser))) {
-    localStorage.removeItem(AUTH_TOKEN);
-    localStorage.removeItem("github-user");
+  try {
+    token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
+    githubUser = JSON.parse(localStorage.getItem("github-user"));
+
+    if (!((token && githubUser) || (!token && !githubUser))) {
+      localStorage.removeItem(AUTH_TOKEN);
+      localStorage.removeItem("github-user");
+      token = null;
+      githubUser = null;
+    }
+  } catch (error) {
+    localStorage.clear();
     token = null;
     githubUser = null;
   }
