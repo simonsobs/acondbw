@@ -10,29 +10,5 @@ exports[`App.vue match snapshot 1`] = `
   <search-window-stub></search-window-stub>
   <v-spacer-stub></v-spacer-stub>
   <user-menu-button-stub></user-menu-button-stub>
-  <v-spacer-stub></v-spacer-stub>
-  <v-btn-stub tag="button" activeclass="" to="/about" icon="true" type="button">
-    <v-icon-stub>mdi-information</v-icon-stub>
-  </v-btn-stub>
-  <v-menu-stub opendelay="0" closedelay="0" contentclass="" bottom="true" left="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" openonclick="true" closeonclick="true" maxheight="auto" offsety="true" origin="top left" transition="v-menu-transition">
-    <v-list-stub tag="div">
-      <v-list-item-stub activeclass="" tag="div">
-        <v-list-item-icon-stub>
-          <v-icon-stub>mdi-invert-colors</v-icon-stub>
-        </v-list-item-icon-stub>
-        <v-list-item-content-stub>
-          <v-list-item-title-stub>Toggle dark mode</v-list-item-title-stub>
-        </v-list-item-content-stub>
-      </v-list-item-stub>
-      <v-list-item-stub activeclass="" href="http://graphql.api:5000/graphql" tag="div" target="_blank">
-        <v-list-item-icon-stub>
-          <v-icon-stub>mdi-graphql</v-icon-stub>
-        </v-list-item-icon-stub>
-        <v-list-item-content-stub>
-          <v-list-item-title-stub>GraphiQL</v-list-item-title-stub>
-        </v-list-item-content-stub>
-      </v-list-item-stub>
-    </v-list-stub>
-  </v-menu-stub>
 </v-app-bar-stub>
 `;

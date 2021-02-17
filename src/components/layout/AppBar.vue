@@ -16,12 +16,12 @@
     <search-window></search-window>
     <v-spacer></v-spacer>
     <user-menu-button></user-menu-button>
-    <v-spacer></v-spacer>
+    <!-- <v-spacer></v-spacer>
     <v-btn icon to="/about">
       <v-icon>mdi-information</v-icon>
-    </v-btn>
+    </v-btn> -->
 
-    <v-menu left bottom offset-y open-on-hover :close-on-content-click="false">
+    <!-- <v-menu left bottom offset-y open-on-hover :close-on-content-click="false">
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on">
           <v-icon>mdi-dots-vertical</v-icon>
@@ -46,7 +46,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-menu>
+    </v-menu> -->
   </v-app-bar>
 </template>
 
