@@ -64,10 +64,10 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
                     (beam)<!----></span></div>
               </div>
             </div>
-            <div class="py-2 col col-12">
+            <div class="mb-2 col col-12">
               <div class="row">
-                <div class="py-0 col-md-4 order-md-0 col-12 order-2 align-self-end"><span class="grey--text" style="font-size: 65%;">Data ID: </span></div>
-                <div class="py-0 col-md-8 col-12 order-1">
+                <div class="col-md-4 order-md-0 col-12 order-2 align-self-end"><span class="grey--text" style="font-size: 65%;">Data ID: </span></div>
+                <div class="col-md-8 col-12 order-1">
                   <div class="caption grey--text">Note</div>
                   <div>
                     <ul>

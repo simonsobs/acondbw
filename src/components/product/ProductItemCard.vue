@@ -1,6 +1,6 @@
 <template>
   <div class="product-item-card" style="position: relative;">
-    <v-card outlined hover style="max-width: 980px;">
+    <v-card outlined hover style="max-width: 980px;" class="">
       <div v-if="state == State.LOADING" class="mx-4 py-2">
         <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
       </div>
@@ -167,12 +167,12 @@
                 </div>
                 <div v-else class="body-2 grey--text">None</div>
               </v-col>
-              <v-col cols="12" class="py-2">
+              <v-col cols="12" class="mb-2">
                 <v-row>
-                  <v-col order="2" order-md="0" cols="12" md="4" align-self="end" class="py-0">
+                  <v-col order="2" order-md="0" cols="12" md="4" align-self="end" class="">
                     <span class="grey--text" style="font-size: 65%;">Data ID: {{ dataId }}</span>
                   </v-col>
-                  <v-col order="1" cols="12" md="8" class="py-0">
+                  <v-col order="1" cols="12" md="8" class="">
                     <div class="caption grey--text">Note</div>
                     <div v-if="note" v-html="note"></div>
                     <div v-else class="body-2 grey--text">None</div>
