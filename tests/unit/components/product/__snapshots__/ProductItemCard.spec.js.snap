@@ -31,26 +31,8 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
         <transition-stub name="expand-transition">
           <div class="collapsible">
             <div class="row">
-              <div class="col-md-4 col-12">
+              <div class="col-md-4 offset-md-4 col-12">
                 <div class="caption grey--text">Contact</div>
-                <div>pwg-pmn</div>
-              </div>
-              <div class="col-md-3 col-6">
-                <div class="caption grey--text">Date posted</div>
-                <div>2020-02-01</div>
-              </div>
-              <div class="col-md-5 col-6">
-                <div class="caption grey--text">Posted by</div>
-                <div>pwg-pmn</div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-3 offset-md-4 col-6">
-                <div class="caption grey--text">Date updated</div>
-                <div>2020-02-01</div>
-              </div>
-              <div class="col-md-5 col-6">
-                <div class="caption grey--text">Updated by</div>
                 <div>pwg-pmn</div>
               </div>
             </div>

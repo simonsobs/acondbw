@@ -177,29 +177,9 @@
           <v-expand-transition>
             <div class="collapsible" v-show="!(collapsible && collapsed)">
               <v-row>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="4" offset-md="4">
                   <div class="caption grey--text">Contact</div>
                   <div v-text="node.contact"></div>
-                </v-col>
-                <v-col cols="6" md="3">
-                  <div class="caption grey--text">Date posted</div>
-                  <div v-text="node.datePosted"></div>
-                </v-col>
-                <v-col cols="6" md="5">
-                  <div class="caption grey--text">Posted by</div>
-                  <div v-text="node.postedBy"></div>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="6" md="3" offset-md="4">
-                  <div class="caption grey--text">Date updated</div>
-                  <div v-if="node.dateUpdated" v-text="node.dateUpdated"></div>
-                  <div v-else class="body-2 grey--text">N/A</div>
-                </v-col>
-                <v-col cols="6" md="5">
-                  <div class="caption grey--text">Updated by</div>
-                  <div v-if="node.updatedBy" v-text="node.updatedBy"></div>
-                  <div v-else class="body-2 grey--text">N/A</div>
                 </v-col>
               </v-row>
               <v-row>
