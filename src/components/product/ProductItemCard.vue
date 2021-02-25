@@ -243,11 +243,21 @@
                 style="font-size: 80%"
               >
                 <div>
-                  <div v-if="node.updatedBy">
-                    Updated on {{ node.dateUpdated }} by {{ node.updatedBy }}
+                  <div v-if="node.timeUpdated || node.updatingGitHubUser">
+                    Updated
+                    <span v-if="node.timeUpdated"
+                      >at {{ node.timeUpdated }}</span
+                    >
+                    <span v-if="node.updatingGitHubUser">
+                      by {{ node.updatingGitHubUser.login }}</span
+                    >
                   </div>
-                  <div>
-                    Posted on {{ node.datePosted }} by {{ node.postedBy }}
+                  <div v-if="node.timePosted || node.postingGitHubUser">
+                    Posted
+                    <span v-if="node.timePosted">at {{ node.timePosted }}</span>
+                    <span v-if="node.postingGitHubUser">
+                      by {{ node.postingGitHubUser.login }}</span
+                    >
                   </div>
                 </div>
                 <div>Data ID: {{ dataId }}</div>

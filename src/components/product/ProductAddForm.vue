@@ -49,16 +49,6 @@
                   :rules="requiredRules"
                 ></v-text-field>
               </v-col>
-              <v-col order="4" cols="6" md="4">
-                <v-text-field
-                  label="Posted by*"
-                  required
-                  hint="The person who is filling out this form. This field cannot be changed later."
-                  persistent-hint
-                  v-model="form.postedBy"
-                  :rules="requiredRules"
-                ></v-text-field>
-              </v-col>
             </v-row>
             <v-row class="mx-0 mb-3 px-0">
               <v-col cols="12" md="8" offset-md="4">
@@ -140,7 +130,6 @@ const formDefault = {
   contact: "",
   dateProduced: new Date().toISOString().substr(0, 10),
   producedBy: "",
-  postedBy: "",
   paths: "",
   relations: [{ ...formRelationDefault }, { ...formRelationDefault }],
   note: ""
@@ -241,7 +230,6 @@ export default {
           "contact",
           "dateProduced",
           "producedBy",
-          "postedBy",
           "note"
         ]);
 

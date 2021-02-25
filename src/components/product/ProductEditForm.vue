@@ -34,16 +34,6 @@
                   :rules="requiredRules"
                 ></v-text-field>
               </v-col>
-              <v-col order="4" cols="6" md="4">
-                <v-text-field
-                  label="Updated by*"
-                  required
-                  hint="The person who is filling out this form."
-                  persistent-hint
-                  v-model="form.updatedBy"
-                  :rules="requiredRules"
-                ></v-text-field>
-              </v-col>
             </v-row>
             <v-row class="mx-0 mb-3 px-0">
               <v-col cols="12" md="8" offset-md="4">
@@ -154,7 +144,7 @@ export default {
     },
     formDefault() {
       if (this.node) {
-        const ret = _.pick(this.node, ["name", "contact", "updatedBy", "note"]);
+        const ret = _.pick(this.node, ["name", "contact", "note"]);
         ret.paths = this.node.paths.edges.map(e => e.node.path).join("\n");
         ret.relations = this.node.relations.edges.map(function(e) {
           return {
@@ -210,7 +200,6 @@ export default {
       try {
         const updateProductInput = _.pick(this.form, [
           "contact",
-          "updatedBy",
           "note"
         ]);
 
