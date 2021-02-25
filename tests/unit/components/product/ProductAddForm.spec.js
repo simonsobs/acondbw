@@ -78,7 +78,6 @@ describe("ProductAddForm.vue", () => {
       contact: "contact-contact",
       dateProduced: "2020-01-11",
       producedBy: "map-map",
-      postedBy: "post-post",
       note: "note",
       paths: "/a/b/c\n\n \n/x/y/z \n/a/b/c",
     };
@@ -98,7 +97,6 @@ describe("ProductAddForm.vue", () => {
       contact: "contact-contact",
       dateProduced: "2020-01-11",
       producedBy: "map-map",
-      postedBy: "post-post",
       note: "note",
       paths: ["/a/b/c", "/x/y/z"],
       relations: [],

@@ -67,12 +67,8 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
             </div>
             <div class="row grey--text mt-3 no-gutters align-end justify-space-between" style="font-size: 80%;">
               <div>
-                <div>
-                  Updated on 2020-02-01 by pwg-pmn
-                </div>
-                <div>
-                  Posted on 2020-02-01 by pwg-pmn
-                </div>
+                <!---->
+                <!---->
               </div>
               <div>Data ID: </div>
             </div>
