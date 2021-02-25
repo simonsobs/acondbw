@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="px-0">
-    <v-row justify="end" class="mx-0">
+    <v-row justify="end" class="mx-0 mb-3">
       <v-tooltip bottom open-delay="800">
         <template v-slot:activator="{ on }">
           <v-btn icon @click="refetch()" v-on="on">
