@@ -246,7 +246,7 @@
                   <div v-if="node.timeUpdated || node.updatingGitHubUser">
                     Updated
                     <span v-if="node.timeUpdated"
-                      >at {{ node.timeUpdated }}</span
+                      >at {{ Intl.DateTimeFormat('default', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false}).format(Date.parse(node.timeUpdated)) }}</span
                     >
                     <span v-if="node.updatingGitHubUser">
                       by {{ node.updatingGitHubUser.login }}</span
@@ -254,7 +254,7 @@
                   </div>
                   <div v-if="node.timePosted || node.postingGitHubUser">
                     Posted
-                    <span v-if="node.timePosted">at {{ node.timePosted }}</span>
+                    <span v-if="node.timePosted">at {{ Intl.DateTimeFormat('default', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false}).format(Date.parse(node.timePosted)) }}</span>
                     <span v-if="node.postingGitHubUser">
                       by {{ node.postingGitHubUser.login }}</span
                     >
