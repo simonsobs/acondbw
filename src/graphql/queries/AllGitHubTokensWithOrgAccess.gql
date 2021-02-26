@@ -1,4 +1,4 @@
-#import "./GitHubTokenFragment.gql"
+#import "../fragments/GitHubTokenFragment.gql"
 
 query AllGitHubTokensWithOrgAccess {
   allGitHubTokens(filters: { scopeIlike: "%read:org%" }) {

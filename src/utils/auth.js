@@ -1,7 +1,7 @@
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
-import GitHubOAuthAppInfo from "@/graphql/auth/GitHubOAuthAppInfo.gql";
+import GitHubOAuthAppInfo from "@/graphql/queries/GitHubOAuthAppInfo.gql";
 
 export const AUTH_STATE = "auth-state";
 

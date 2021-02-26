@@ -20,7 +20,7 @@
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
-import QueryForSearchWindow from "@/graphql/product/QueryForSearchWindow.gql";
+import QueryForSearchWindow from "@/graphql/queries/QueryForSearchWindow.gql";
 
 export default {
   name: "SearchWindow",

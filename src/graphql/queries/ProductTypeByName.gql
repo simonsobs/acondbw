@@ -1,4 +1,4 @@
-#import "./ProductTypeFragment.gql"
+#import "../fragments/ProductTypeFragment.gql"
 
 query ProductTypeByName($name: String!) {
   productType(name: $name) {

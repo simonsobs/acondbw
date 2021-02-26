@@ -83,9 +83,9 @@
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
-import ALL_GIT_HUB_ORGS from "@/graphql/admin-token/AllGitHubOrgs.gql";
-import DELETE_GITHUB_ORG from "@/graphql/admin-token/DeleteGitHubOrg.gql";
-import ADD_GITHUB_ORG from "@/graphql/admin-token/AddGitHubOrg.gql";
+import ALL_GIT_HUB_ORGS from "@/graphql/queries/AllGitHubOrgs.gql";
+import DELETE_GITHUB_ORG from "@/graphql/mutations/DeleteGitHubOrg.gql";
+import ADD_GITHUB_ORG from "@/graphql/mutations/AddGitHubOrg.gql";
 
 export default {
   name: "GitHubOrgTable",

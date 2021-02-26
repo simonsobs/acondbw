@@ -1,4 +1,4 @@
-#import "./ProductFragment.gql"
+#import "../fragments/ProductFragment.gql"
 
 mutation CreateProduct($input: CreateProductInput!) {
   createProduct(input: $input) {

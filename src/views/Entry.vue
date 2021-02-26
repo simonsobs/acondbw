@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import WebConfig from "@/graphql/site/WebConfig.gql";
+import WebConfig from "@/graphql/queries/WebConfig.gql";
 
 import SignInCard from "@/components/auth/SignInCard";
 import Dashboard from "@/components/product/Dashboard";

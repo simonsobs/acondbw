@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import WebConfig from "@/graphql/site/WebConfig.gql";
-import PRODUCT_TYPE_BY_NAME from "@/graphql/product/ProductTypeByName.gql";
+import WebConfig from "@/graphql/queries/WebConfig.gql";
+import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";

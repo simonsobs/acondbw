@@ -1,4 +1,4 @@
-#import "./ProductFragment.gql"
+#import "../fragments/ProductFragment.gql"
 
 query Product($productId: Int) {
   product(productId: $productId) {

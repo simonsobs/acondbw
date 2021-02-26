@@ -1,5 +1,5 @@
-#import "./ProductTypeFragment.gql"
-#import "./ProductFragment.gql"
+#import "../fragments/ProductTypeFragment.gql"
+#import "../fragments/ProductFragment.gql"
 
 query QueryForProductList(
   $typeId: Int

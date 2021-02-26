@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import ALL_PRODUCTS_TYPES from "@/graphql/product/AllProductTypes.gql";
+import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";

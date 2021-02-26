@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import WebConfig from "@/graphql/site/WebConfig.gql";
+import WebConfig from "@/graphql/queries/WebConfig.gql";
 
 import State from "@/utils/LoadingState.js";
 

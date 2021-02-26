@@ -1,4 +1,4 @@
-#import "./ProductTypeFragment.gql"
+#import "../fragments/ProductTypeFragment.gql"
 
 query QueryForProductAddForm($typeId: Int) {
   productType(typeId: $typeId) {

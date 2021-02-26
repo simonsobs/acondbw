@@ -1,4 +1,4 @@
-#import "./ProductFragment.gql"
+#import "../fragments/ProductFragment.gql"
 
 query allProductsByTypeId($typeId: Int, $sort: [ProductSortEnum] = [DATE_POSTED_DESC]) {
   allProducts(filters: { typeId: $typeId }, sort: $sort) {

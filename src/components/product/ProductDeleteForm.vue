@@ -34,9 +34,9 @@
 
 <script>
 import gql from "graphql-tag";
-import PRODUCT from "@/graphql/product/Product.gql";
-import DELETE_PRODUCT from "@/graphql/product/DeleteProduct.gql";
-import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/product/AllProductsByTypeId.gql";
+import PRODUCT from "@/graphql/queries/Product.gql";
+import DELETE_PRODUCT from "@/graphql/mutations/DeleteProduct.gql";
+import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/queries/AllProductsByTypeId.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";

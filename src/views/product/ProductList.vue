@@ -167,8 +167,8 @@ import ProductAddForm from "@/components/product/ProductAddForm";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
-import QueryForProductList from "@/graphql/product/QueryForProductList.gql";
-import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/product/AllProductsByTypeId.gql";
+import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
+import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/queries/AllProductsByTypeId.gql";
 
 export default {
   name: "ProductList",

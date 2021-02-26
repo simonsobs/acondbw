@@ -1,4 +1,4 @@
-#import "./ProductFragment.gql"
+#import "../fragments/ProductFragment.gql"
 
 mutation UpdateProduct($productId: Int!, $input: UpdateProductInput!) {
   updateProduct(productId: $productId, input: $input) {

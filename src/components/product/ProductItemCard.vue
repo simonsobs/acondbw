@@ -281,7 +281,7 @@ import marked from "marked";
 
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
-import PRODUCT from "@/graphql/product/Product.gql";
+import PRODUCT from "@/graphql/queries/Product.gql";
 
 import ProductEditForm from "@/components/product/ProductEditForm";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm";

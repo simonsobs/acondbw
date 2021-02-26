@@ -35,8 +35,8 @@
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
-import ALL_GIT_HUB_USERS from "@/graphql/admin-token/AllGitHubUsers.gql";
-import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/admin-token/UpdateGitHubOrgMemberLists.gql";
+import ALL_GIT_HUB_USERS from "@/graphql/queries/AllGitHubUsers.gql";
+import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/mutations/UpdateGitHubOrgMemberLists.gql";
 
 export default {
   name: "GitHubUserTable",

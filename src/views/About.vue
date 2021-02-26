@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import VERSION from "@/graphql/site/Version.gql";
+import VERSION from "@/graphql/queries/Version.gql";
 
 export default {
   data() {

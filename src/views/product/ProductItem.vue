@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/product/ProductByTypeIdAndName.gql";
+import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/queries/ProductByTypeIdAndName.gql";
 
 import ProductItemCard from "@/components/product/ProductItemCard";
 
