@@ -4,7 +4,7 @@ exports[`App.vue match snapshot 1`] = `
 <div class="navigation" style="position: relative;">
   <div>
     <v-list-stub shaped="true" tag="div">
-      <v-list-item-stub activeclass="" link="true" to="/simulation" tag="div" router="">
+      <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
         <v-list-item-action-stub>
           <v-icon-stub>mdi-creation</v-icon-stub>
         </v-list-item-action-stub>
@@ -12,7 +12,7 @@ exports[`App.vue match snapshot 1`] = `
           <v-list-item-title-stub class="capitalize">simulations</v-list-item-title-stub>
         </v-list-item-content-stub>
       </v-list-item-stub>
-      <v-list-item-stub activeclass="" link="true" to="/map" tag="div" router="">
+      <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
         <v-list-item-action-stub>
           <v-icon-stub>mdi-map</v-icon-stub>
         </v-list-item-action-stub>
@@ -20,7 +20,7 @@ exports[`App.vue match snapshot 1`] = `
           <v-list-item-title-stub class="capitalize">maps</v-list-item-title-stub>
         </v-list-item-content-stub>
       </v-list-item-stub>
-      <v-list-item-stub activeclass="" link="true" to="/beam" tag="div" router="">
+      <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
         <v-list-item-action-stub>
           <v-icon-stub>mdi-spotlight-beam</v-icon-stub>
         </v-list-item-action-stub>

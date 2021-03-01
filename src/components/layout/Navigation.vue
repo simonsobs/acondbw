@@ -7,7 +7,7 @@
           router
           v-for="edge in edges"
           :key="edge.node.typeId"
-          :to="'/' + edge.node.name"
+          :to="{ name: 'ProductList', params: { productTypeName: edge.node.name } }"
         >
           <v-list-item-action>
             <v-icon v-text="edge.node.icon"></v-icon>

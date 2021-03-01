@@ -210,12 +210,13 @@
                       <span v-for="(redge, index) in redges" :key="index">
                         <router-link
                           class="font-weight-bold primary--text"
-                          :to="
-                            '/' +
-                            redge.node.other.type_.name +
-                            '/item/' +
-                            redge.node.other.name
-                          "
+                          :to="{
+                            name: 'ProductItem',
+                            params: {
+                              productTypeName: redge.node.other.type_.name,
+                              name: redge.node.other.name,
+                            },
+                          }"
                           v-text="redge.node.other.name"
                         ></router-link>
                         ({{ redge.node.other.type_.name }})<span

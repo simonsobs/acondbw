@@ -8,7 +8,7 @@
             <v-icon>{{ node.icon }}</v-icon>
           </span>
           <router-link
-            :to="'/' + node.name"
+            :to="{ name: 'ProductList', params: { productTypeName: node.name } }"
             v-text="node.plural"
             class="capitalize"
             style="text-decoration: none; color: inherit;"

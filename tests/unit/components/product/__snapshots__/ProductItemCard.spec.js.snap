@@ -49,7 +49,7 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
                 <div class="caption grey--text">Relations</div>
                 <div>
                   <div><span class="capitalize subtitle-2 primary--text"><span></span>:
-                    </span> <span><a href="/beam/item/20200207" class="font-weight-bold primary--text">20200207</a>
+                    </span> <span><a href="/product/beam/item/20200207" class="font-weight-bold primary--text">20200207</a>
                       (beam)<!----></span></div>
                 </div>
               </div>
