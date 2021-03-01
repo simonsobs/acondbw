@@ -1,41 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProductTop.vue match snapshot item 1`] = `
-<v-container-stub tag="div" fluid="true">
-  <div class="product-top" style="position: relative;">
-    <!---->
-    <v-row-stub tag="div" class="mx-1 mt-3" style="max-width: 980px;">
-      <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
-        <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub>
-        <!---->
-      </v-col-stub>
-    </v-row-stub>
+<v-container-stub tag="div" fluid="true" class="product-top" style="position: relative;">
+  <!---->
+  <v-row-stub tag="div" class="mx-1 mt-3" style="max-width: 980px;">
+    <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
+      <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub>
+      <!---->
+    </v-col-stub>
+  </v-row-stub>
+  <div style="">
     <transition-stub name="fade-product-top-leave" mode="out-in">
       <keep-alive-stub>
         <router-view-stub name="default" producttypeid="1"></router-view-stub>
       </keep-alive-stub>
     </transition-stub>
-    <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
   </div>
+  <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
+  <!---->
 </v-container-stub>
 `;
 
 exports[`ProductTop.vue match snapshot list 1`] = `
-<v-container-stub tag="div" fluid="true">
-  <div class="product-top" style="position: relative;">
-    <!---->
-    <v-row-stub tag="div" class="mx-1 mt-3" style="max-width: 980px;">
-      <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
-        <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub>
-        <!---->
-      </v-col-stub>
-    </v-row-stub>
+<v-container-stub tag="div" fluid="true" class="product-top" style="position: relative;">
+  <!---->
+  <v-row-stub tag="div" class="mx-1 mt-3" style="max-width: 980px;">
+    <v-col-stub tag="div" col="8" class="display-1 primary--text pa-0 ma-0"><span class="me-2"><v-icon-stub>mdi-map</v-icon-stub></span>
+      <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub>
+      <!---->
+    </v-col-stub>
+  </v-row-stub>
+  <div style="">
     <transition-stub name="fade-product-top-leave" mode="out-in">
       <keep-alive-stub>
         <router-view-stub name="default" producttypeid="1"></router-view-stub>
       </keep-alive-stub>
     </transition-stub>
-    <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
   </div>
+  <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
+  <!---->
 </v-container-stub>
 `;

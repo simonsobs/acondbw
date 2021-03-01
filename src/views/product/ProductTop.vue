@@ -1,31 +1,39 @@
 <template>
-  <v-container fluid>
-    <div class="product-top" style="position: relative;">
-      <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      <v-row class="mx-1 mt-3" style="max-width: 980px;">
-        <v-col v-if="state == State.LOADED" col="8" class="display-1 primary--text pa-0 ma-0">
-          <span class="me-2">
-            <v-icon>{{ node.icon }}</v-icon>
-          </span>
-          <router-link
-            :to="{ name: 'ProductList', params: { productTypeName: node.name } }"
-            v-text="node.plural"
-            class="capitalize"
-            style="text-decoration: none; color: inherit;"
-          ></router-link>
-          <span v-if="itemName">
-            <v-icon large color="primary">mdi-chevron-right</v-icon>
-            {{ itemName }}
-          </span>
-        </v-col>
-        <v-col v-else col="8" class="pa-0 ma-0">
-          <div v-if="state == State.LOADING" class="mx-4 py-2">
-            <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
-          </div>
-          <span v-else-if="state == State.ERROR">Error: cannot load data</span>
-          <span v-else></span>
-        </v-col>
-      </v-row>
+  <v-container
+    fluid
+    :fill-height="notFound"
+    class="product-top"
+    style="position: relative"
+  >
+    <v-progress-circular
+      v-if="loading"
+      indeterminate
+      :size="18"
+      :width="3"
+      color="grey"
+    ></v-progress-circular>
+    <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
+    <v-row v-if="loaded" class="mx-1 mt-3" style="max-width: 980px">
+      <v-col col="8" class="display-1 primary--text pa-0 ma-0">
+        <span class="me-2">
+          <v-icon>{{ node.icon }}</v-icon>
+        </span>
+        <router-link
+          :to="{
+            name: 'ProductList',
+            params: { productTypeName: node.name },
+          }"
+          v-text="node.plural"
+          class="capitalize"
+          style="text-decoration: none; color: inherit"
+        ></router-link>
+        <span v-if="itemName">
+          <v-icon large color="primary">mdi-chevron-right</v-icon>
+          {{ itemName }}
+        </span>
+      </v-col>
+    </v-row>
+    <div v-show="loaded">
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
           <router-view
@@ -37,8 +45,13 @@
           ></router-view>
         </keep-alive>
       </transition>
-      <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
     </div>
+    <dev-tool-loading-state-overriding-menu
+      @state="devtoolState = $event"
+    ></dev-tool-loading-state-overriding-menu>
+    <v-row v-if="notFound" align="center" justify="center">
+      <div class="display-2 text-center">Not Found (404)</div>
+    </v-row>
   </v-container>
 </template>
 
@@ -52,18 +65,19 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 export default {
   name: "ProductTop",
   components: {
-    DevToolLoadingStateOverridingMenu
+    DevToolLoadingStateOverridingMenu,
   },
   data: () => ({
     productTypeName: null,
     itemName: null,
+    init: true,
     node: null,
     error: null,
     devtoolState: null,
     State: State,
     transitionName: "fade-product-top-leave",
     transitionMode: "out-in",
-    webConfig: null
+    webConfig: null,
   }),
   mounted() {
     this.productTypeName = this.$route.params.productTypeName;
@@ -75,18 +89,26 @@ export default {
         return this.devtoolState;
       }
 
-      if (this.loading) {
+      if (this.$apollo.queries.node.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
       } else if (this.node) {
         return State.LOADED;
+      } else if (this.init) {
+        return State.INIT;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.node.loading;
+      return this.state == State.LOADING;
+    },
+    loaded() {
+      return this.state == State.LOADED;
+    },
+    notFound() {
+      return this.state == State.NONE;
     },
     disableAdd() {
       return this.webConfig ? !this.webConfig.productCreationDialog : true;
@@ -96,25 +118,36 @@ export default {
     },
     disableDelete() {
       return this.webConfig ? !this.webConfig.productDeletionDialog : true;
-    }
+    },
+  },
+  watch: {
+    devtoolState: function () {
+      if (this.devtoolState) {
+        this.init = this.devtoolState == State.INIT;
+      }
+
+      this.error =
+        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
   },
   apollo: {
     webConfig: {
-      query: WebConfig
+      query: WebConfig,
     },
     node: {
       query: PRODUCT_TYPE_BY_NAME,
       variables() {
         return { name: this.productTypeName };
       },
-      update: data => data.productType,
+      update: (data) => data.productType,
       skip() {
         return !this.productTypeName;
       },
       result(result) {
+        this.init = false;
         this.error = result.error ? result.error : null;
-      }
-    }
+      },
+    },
   },
   beforeRouteUpdate(to, from, next) {
     this.transitionName = "fade-product-top-update";
@@ -125,7 +158,7 @@ export default {
     this.transitionName = "fade-product-top-leave";
     this.transitionMode = "out-in";
     next();
-  }
+  },
 };
 </script>
 
