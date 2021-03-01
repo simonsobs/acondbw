@@ -171,6 +171,15 @@ const routes = [
       },
     ],
   },
+  {
+    path: "*",
+    name: "NotFound",
+    components: {
+      default: () =>
+        import(/* webpackChunkName: "error" */ "@/views/NotFound.vue"),
+        frame: NullFrame,
+    },
+  },
 ];
 
 const router = new VueRouter({

@@ -2,7 +2,7 @@ import moxios from "moxios";
 import router from "@/router/index.js";
 
 import store from "@/store";
-jest.mock("@/store")
+jest.mock("@/store");
 
 describe("router", () => {
   const ENV_ORG = process.env;
@@ -16,7 +16,7 @@ describe("router", () => {
     router.history.current = { ...ROUTER_HISTORY_CURRNT_ORG };
     router.history.pending = null;
 
-    store.state = { auth : { token : null } };
+    store.state = { auth: { token: null } };
   });
 
   afterEach(() => {
@@ -51,6 +51,15 @@ describe("router", () => {
     expect(current.name).toBe("About");
     expect(current.path).toBe("/about");
     expect(current.params).toEqual({});
+  });
+
+  it("test 404", async () => {
+    store.state.auth.token = "xyz";
+    await router.push("/no-such-path");
+    const current = router.history.current;
+    expect(current.name).toBe("NotFound");
+    expect(current.path).toBe("/no-such-path");
+    expect(current.params).toEqual({ pathMatch: "/no-such-path" });
   });
 
   it("test /product/map/item/:name", async () => {
