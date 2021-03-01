@@ -9,20 +9,26 @@
       <v-list dense>
         <v-subheader>Dev Tools</v-subheader>
         <v-list-item-group v-model="state">
+          <v-list-item :value="State.INIT">
+            <v-list-item-title>Init</v-list-item-title>
+          </v-list-item>
           <v-list-item :value="State.LOADING">
-            <v-list-item-title>loading</v-list-item-title>
+            <v-list-item-title>Loading</v-list-item-title>
           </v-list-item>
           <v-list-item :value="State.ERROR">
-            <v-list-item-title>error</v-list-item-title>
+            <v-list-item-title>Error</v-list-item-title>
+          </v-list-item>
+          <v-list-item :value="State.LOADED">
+            <v-list-item-title>Loaded</v-list-item-title>
           </v-list-item>
           <v-list-item :value="State.EMPTY">
-            <v-list-item-title>empty</v-list-item-title>
+            <v-list-item-title>Empty</v-list-item-title>
           </v-list-item>
           <v-list-item :value="State.NONE">
-            <v-list-item-title>none</v-list-item-title>
+            <v-list-item-title>None</v-list-item-title>
           </v-list-item>
           <v-list-item value="off">
-            <v-list-item-title>off</v-list-item-title>
+            <v-list-item-title>Off</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
