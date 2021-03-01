@@ -53,13 +53,13 @@ describe("router", () => {
     expect(current.params).toEqual({});
   });
 
-  it("test /map/item/:name", async () => {
+  it("test /product/map/item/:name", async () => {
     store.state.auth.token = "xyz";
-    await router.push("/map/item/map001");
+    await router.push("/product/map/item/map001");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("ProductItem");
-    expect(current.path).toBe("/map/item/map001");
+    expect(current.path).toBe("/product/map/item/map001");
     expect(current.params).toEqual({
       productTypeName: "map",
       name: "map001",
@@ -69,11 +69,11 @@ describe("router", () => {
 
   it("test /map", async () => {
     store.state.auth.token = "xyz";
-    await router.push("/map");
+    await router.push("/product/map");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("ProductList");
-    expect(current.path).toBe("/map");
+    expect(current.path).toBe("/product/map");
     expect(current.params).toEqual({
       productTypeName: "map",
     });

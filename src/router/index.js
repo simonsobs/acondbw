@@ -152,7 +152,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "@/views/About.vue"),
   },
   {
-    path: "/:productTypeName",
+    path: "/product/:productTypeName",
     components: {
       default: ProductTop,
       frame: Frame,
