@@ -9,20 +9,20 @@
       >
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
-            <v-btn :disabled="state == State.LOADING" icon @click="refresh()" v-on="on">
+            <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
           </template>
           <span>Refresh</span>
         </v-tooltip>
         <div>
-          <span v-if="state == State.LOADED" class="secondary--text">
+          <span v-if="loaded" class="secondary--text">
             <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
             <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
           </span>
         </div>
         <div>
-          <span v-if="state == State.LOADED && nItemsTotal > 1">
+          <span v-if="loaded && nItemsTotal > 1">
             <v-tooltip bottom open-delay="800">
               <template v-slot:activator="{ on: tooltip }">
                 <v-menu left offset-y>
@@ -53,7 +53,7 @@
           </span>
         </div>
         <div>
-          <span v-if="state == State.LOADED">
+          <span v-if="loaded">
             <v-tooltip bottom open-delay="800">
               <template v-slot:activator="{ on }">
                 <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
@@ -73,7 +73,7 @@
               </span>
             </v-tooltip>
           </span>
-          <span v-if="state == State.LOADED || state == State.EMPTY">
+          <span v-if="loaded || empty">
             <v-dialog v-model="dialog" persistent fullscreen transition="dialog-bottom-transition">
               <template v-slot:activator="{ on: dialog }">
                 <v-tooltip bottom open-delay="800">
@@ -102,10 +102,10 @@
         </div>
       </v-row>
     </v-container>
-    <div v-if="state == State.LOADING" class="pa-3">
+    <div v-if="loading" class="pa-3">
       <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
     </div>
-    <div v-if="state == State.LOADED" class="pb-16">
+    <div v-if="loaded" class="pb-16">
       <component
         :is="productItemCard"
         v-for="edge in edges"
@@ -145,12 +145,12 @@
         </v-row>
       </v-container>
     </div>
-    <div v-else-if="state == State.EMPTY">
+    <div v-else-if="empty">
       <v-card outlined style="max-width: 980px;">
         <v-card-text>Empty. No {{ productType.plural }} are found.</v-card-text>
       </v-card>
     </div>
-    <div v-else-if="state == State.ERROR">
+    <div v-else-if="error">
       <v-alert v-if="error" type="error" style="max-width: 980px;">{{ error }}</v-alert>
     </div>
     <div v-else>
@@ -168,7 +168,6 @@ import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
 import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
-import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/queries/AllProductsByTypeId.gql";
 
 export default {
   name: "ProductList",
@@ -189,6 +188,7 @@ export default {
     return {
       productType: null,
       dialog: false,
+      init: true,
       error: null,
       refreshing: false,
       loadingMore: false,
@@ -222,6 +222,7 @@ export default {
         return !this.productTypeId || !this.sort;
       },
       result(result) {
+        this.init = false;
         this.error = result.error ? result.error : null;
       }
     }
@@ -256,7 +257,7 @@ export default {
         } else {
           return State.EMPTY;
         }
-      } else if (this.loading) {
+      } else if (this.$apollo.queries.productType.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
@@ -265,7 +266,16 @@ export default {
       }
     },
     loading() {
-      return this.$apollo.queries.productType.loading;
+      return this.state == State.LOADING;
+    },
+    loaded() {
+      return this.state == State.LOADED;
+    },
+    empty() {
+      return this.state == State.EMPTY;
+    },
+    notFound() {
+      return this.state == State.NONE;
     },
     sort() {
       return this.sortItems[this.sortItem].value;
@@ -285,6 +295,9 @@ export default {
   },
   watch: {
     devtoolState: function() {
+      if (this.devtoolState) {
+        this.init = this.devtoolState == State.INIT;
+      }
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
