@@ -244,42 +244,16 @@
                 style="font-size: 80%"
               >
                 <div>
-                  <div v-if="node.timeUpdated || node.updatingGitHubUser">
+                  <div v-if="timeUpdated || node.updatingGitHubUser">
                     Updated
-                    <span v-if="node.timeUpdated"
-                      >at
-                      {{
-                        Intl.DateTimeFormat("default", {
-                          year: "numeric",
-                          month: "numeric",
-                          day: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                          second: "numeric",
-                          hour12: false,
-                        }).format(Date.parse(node.timeUpdated))
-                      }}</span
-                    >
+                    <span v-if="timeUpdated">at {{ timeUpdated }}</span>
                     <span v-if="node.updatingGitHubUser">
                       by {{ node.updatingGitHubUser.login }}</span
                     >
                   </div>
-                  <div v-if="node.timePosted || node.postingGitHubUser">
+                  <div v-if="timePosted || node.postingGitHubUser">
                     Posted
-                    <span v-if="node.timePosted"
-                      >at
-                      {{
-                        Intl.DateTimeFormat("default", {
-                          year: "numeric",
-                          month: "numeric",
-                          day: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                          second: "numeric",
-                          hour12: false,
-                        }).format(Date.parse(node.timePosted))
-                      }}</span
-                    >
+                    <span v-if="timePosted">at {{ timePosted }}</span>
                     <span v-if="node.postingGitHubUser">
                       by {{ node.postingGitHubUser.login }}</span
                     >
@@ -361,6 +335,16 @@ export default {
     dataId: function () {
       return defaultDataIdFromObject(this.node);
     },
+    timePosted() {
+      return this.node.timePosted
+        ? this.formatDateTime(this.node.timePosted)
+        : null;
+    },
+    timeUpdated() {
+      return this.node.timeUpdated
+        ? this.formatDateTime(this.node.timeUpdated)
+        : null;
+    },
     note() {
       return this.node.note ? marked(this.node.note) : null;
     },
@@ -384,6 +368,21 @@ export default {
       result(result) {
         this.error = result.error ? result.error : null;
       },
+    },
+  },
+  methods: {
+    formatDateTime(dateTime) {
+      const sinceEpoch = Date.parse(dateTime);
+      const format = Intl.DateTimeFormat("default", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: false,
+      });
+      return format.format(sinceEpoch);
     },
   },
 };
