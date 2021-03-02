@@ -17,6 +17,7 @@ import SignInError from "@/views/auth/SignInError.vue";
 import ProductTop from "@/views/product/ProductTop.vue";
 import ProductList from "@/views/product/ProductList.vue";
 import ProductItem from "@/views/product/ProductItem.vue";
+import ProductAdd from "@/views/product/ProductAdd.vue";
 
 import store from "@/store";
 
@@ -150,6 +151,14 @@ const routes = [
     name: "About",
     component: () =>
       import(/* webpackChunkName: "about" */ "@/views/framework/About.vue"),
+  },
+  {
+    path: "/add-product/:productTypeName",
+    components: {
+      default: ProductAdd,
+      frame: NullFrame,
+    },
+    meta: { requiresAuth: true }
   },
   {
     path: "/product/:productTypeName",
