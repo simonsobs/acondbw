@@ -18,7 +18,7 @@
         </v-tooltip>
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
-            <v-btn :disabled="state == State.LOADING" icon @click="refresh();" v-on="on">
+            <v-btn :disabled="loading" icon @click="refresh();" v-on="on">
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
           </template>
@@ -27,10 +27,10 @@
         <v-spacer></v-spacer>
       </v-row>
     </v-container>
-    <div v-if="state == State.LOADING" class="pa-3">
+    <div v-if="loading" class="pa-3">
       <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
     </div>
-    <div v-else-if="state == State.LOADED">
+    <div v-else-if="loaded">
       <component
         :is="productItemCard"
         :productId="node.productId"
@@ -40,7 +40,7 @@
         :disableDelete="disableDelete"
       ></component>
     </div>
-    <div v-else-if="state == State.ERROR">
+    <div v-else-if="error">
       <v-alert type="error" style="max-width: 980px;">{{ error }}</v-alert>
     </div>
     <!-- <div v-else class="mx-2 pt-5">
@@ -75,6 +75,7 @@ export default {
   data() {
     return {
       productTypeName: null,
+      init: true,
       node: null,
       name: null,
       error: null,
@@ -88,6 +89,9 @@ export default {
   },
   watch: {
     devtoolState: function() {
+      if (this.devtoolState) {
+        this.init = this.devtoolState == State.INIT;
+      }
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
@@ -112,7 +116,7 @@ export default {
 
       if (this.node) {
         return State.LOADED;
-      } else if (this.loading) {
+      } else if (this.$apollo.queries.node.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
@@ -121,8 +125,14 @@ export default {
       }
     },
     loading() {
-      return this.$apollo.queries.node.loading;
-    }
+      return this.state == State.LOADING;
+    },
+    loaded() {
+      return this.state == State.LOADED;
+    },
+    notFound() {
+      return this.state == State.NONE;
+    },
   },
   apollo: {
     node: {
@@ -140,6 +150,7 @@ export default {
         return data.product;
       },
       result(result) {
+        this.init = false;
         this.error = result.error ? result.error : null;
       }
     }
