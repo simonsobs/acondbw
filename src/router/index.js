@@ -165,7 +165,7 @@ const routes = [
         component: ProductList,
       },
       {
-        path: "item/:name",
+        path: ":name",
         name: "ProductItem",
         component: ProductItem,
       },

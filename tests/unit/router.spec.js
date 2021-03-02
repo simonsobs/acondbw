@@ -62,13 +62,13 @@ describe("router", () => {
     expect(current.params).toEqual({ pathMatch: "/no-such-path" });
   });
 
-  it("test /product/map/item/:name", async () => {
+  it("test /product/map/:name", async () => {
     store.state.auth.token = "xyz";
-    await router.push("/product/map/item/map001");
+    await router.push("/product/map/map001");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("ProductItem");
-    expect(current.path).toBe("/product/map/item/map001");
+    expect(current.path).toBe("/product/map/map001");
     expect(current.params).toEqual({
       productTypeName: "map",
       name: "map001",

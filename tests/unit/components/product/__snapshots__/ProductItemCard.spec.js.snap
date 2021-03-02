@@ -6,7 +6,7 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
     <div class="row">
       <div class="col-md-4 col-9 order-1">
         <div class="caption grey--text">Name</div>
-        <div class="font-weight-bold primary--text"><span><a href="/product/map/item/lat20200201" class="">lat20200201</a></span></div>
+        <div class="font-weight-bold primary--text"><span><a href="/product/map/lat20200201" class="">lat20200201</a></span></div>
       </div>
       <div class="col-md-3 col-6 order-3">
         <div class="caption grey--text">Date produced</div>
@@ -47,7 +47,7 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
             <div class="caption grey--text">Relations</div>
             <div>
               <div><span class="capitalize subtitle-2 primary--text"><span></span>:
-                </span> <span><a href="/product/beam/item/20200207" class="font-weight-bold primary--text">20200207</a>
+                </span> <span><a href="/product/beam/20200207" class="font-weight-bold primary--text">20200207</a>
                   (beam)<!----></span></div>
             </div>
           </div>
