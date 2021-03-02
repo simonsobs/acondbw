@@ -1,109 +1,135 @@
 <template>
-  <div class="product-list" style="position: relative;">
-    <v-container fluid class="pa-0">
-      <v-row
-        align="center"
-        justify="space-between"
-        class="ma-0 px-0 pt-3 pb-1"
-        style="max-width: 980px;"
-      >
-        <v-tooltip bottom open-delay="800">
-          <template v-slot:activator="{ on }">
-            <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
-              <v-icon>mdi-refresh</v-icon>
-            </v-btn>
-          </template>
-          <span>Refresh</span>
-        </v-tooltip>
-        <div>
-          <span v-if="loaded" class="secondary--text">
-            <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
-            <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
-          </span>
-        </div>
-        <div>
-          <span v-if="loaded && nItemsTotal > 1">
-            <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on: tooltip }">
-                <v-menu left offset-y>
-                  <template v-slot:activator="{ on: menu }">
-                    <v-btn icon v-on="{ ...tooltip, ...menu}">
-                      <v-icon>mdi-sort-variant</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list flat dense>
-                    <v-list-item>
-                      <v-list-item-title>Sort</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item-group v-model="sortItem" color="primary">
-                      <v-list-item v-for="(item, i) in sortItems" :key="i">
-                        <v-list-item-icon>
-                          <v-icon v-if="i == sortItem">mdi-check</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title v-text="item.text"></v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-menu>
-              </template>
-              <span>Sort</span>
-            </v-tooltip>
-          </span>
-        </div>
-        <div>
-          <span v-if="loaded">
-            <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on }">
-                <v-btn icon @click="areAllCardsCollapsed = !areAllCardsCollapsed" v-on="on">
-                  <v-icon>
-                    {{
-                    areAllCardsCollapsed
-                    ? "mdi-unfold-more-horizontal"
-                    : "mdi-unfold-less-horizontal"
-                    }}
-                  </v-icon>
-                </v-btn>
-              </template>
-              <span>
-                {{
-                areAllCardsCollapsed ? "Expand all" : "Collapse all"
-                }}
-              </span>
-            </v-tooltip>
-          </span>
-          <span v-if="loaded || empty">
-            <v-dialog v-model="dialog" persistent fullscreen transition="dialog-bottom-transition">
-              <template v-slot:activator="{ on: dialog }">
-                <v-tooltip bottom open-delay="800">
-                  <template v-slot:activator="{ on: tooltip }">
-                    <v-btn :disabled="disableAdd" icon v-on="{ ...tooltip, ...dialog }">
-                      <v-icon>mdi-plus-thick</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Add {{ productType.indefArticle }} {{ productType.singular }}</span>
-                </v-tooltip>
-              </template>
-              <v-card>
-                <v-app-bar dense color="secondary" style="position: sticky; top: 0; z-index: 999;">
-                  <v-btn icon dark @click="dialog = false">
-                    <v-icon>mdi-close</v-icon>
+  <v-container
+    fluid
+    class="product-list pa-0"
+    style="position: relative"
+  >
+    <v-row
+      align="center"
+      justify="space-between"
+      class="ma-0 px-0 pt-3 pb-1"
+      style="max-width: 980px"
+    >
+      <v-tooltip bottom open-delay="800">
+        <template v-slot:activator="{ on }">
+          <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </template>
+        <span>Refresh</span>
+      </v-tooltip>
+      <div>
+        <span v-if="loaded" class="secondary--text">
+          <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
+          <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
+        </span>
+      </div>
+      <div>
+        <span v-if="loaded && nItemsTotal > 1">
+          <v-tooltip bottom open-delay="800">
+            <template v-slot:activator="{ on: tooltip }">
+              <v-menu left offset-y>
+                <template v-slot:activator="{ on: menu }">
+                  <v-btn icon v-on="{ ...tooltip, ...menu }">
+                    <v-icon>mdi-sort-variant</v-icon>
                   </v-btn>
-                </v-app-bar>
-                <component
-                  :is="productAddForm"
-                  :productTypeId="productType.typeId"
-                  v-on:finished="dialog = false"
-                ></component>
-              </v-card>
-            </v-dialog>
-          </span>
-        </div>
-      </v-row>
-    </v-container>
+                </template>
+                <v-list flat dense>
+                  <v-list-item>
+                    <v-list-item-title>Sort</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item-group v-model="sortItem" color="primary">
+                    <v-list-item v-for="(item, i) in sortItems" :key="i">
+                      <v-list-item-icon>
+                        <v-icon v-if="i == sortItem">mdi-check</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="item.text"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-menu>
+            </template>
+            <span>Sort</span>
+          </v-tooltip>
+        </span>
+      </div>
+      <div>
+        <span v-if="loaded">
+          <v-tooltip bottom open-delay="800">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                icon
+                @click="areAllCardsCollapsed = !areAllCardsCollapsed"
+                v-on="on"
+              >
+                <v-icon>
+                  {{
+                    areAllCardsCollapsed
+                      ? "mdi-unfold-more-horizontal"
+                      : "mdi-unfold-less-horizontal"
+                  }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>
+              {{ areAllCardsCollapsed ? "Expand all" : "Collapse all" }}
+            </span>
+          </v-tooltip>
+        </span>
+        <span v-if="loaded || empty">
+          <v-dialog
+            v-model="dialog"
+            persistent
+            fullscreen
+            transition="dialog-bottom-transition"
+          >
+            <template v-slot:activator="{ on: dialog }">
+              <v-tooltip bottom open-delay="800">
+                <template v-slot:activator="{ on: tooltip }">
+                  <v-btn
+                    :disabled="disableAdd"
+                    icon
+                    v-on="{ ...tooltip, ...dialog }"
+                  >
+                    <v-icon>mdi-plus-thick</v-icon>
+                  </v-btn>
+                </template>
+                <span
+                  >Add {{ productType.indefArticle }}
+                  {{ productType.singular }}</span
+                >
+              </v-tooltip>
+            </template>
+            <v-card>
+              <v-app-bar
+                dense
+                color="secondary"
+                style="position: sticky; top: 0; z-index: 999"
+              >
+                <v-btn icon dark @click="dialog = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-app-bar>
+              <component
+                :is="productAddForm"
+                :productTypeId="productType.typeId"
+                v-on:finished="dialog = false"
+              ></component>
+            </v-card>
+          </v-dialog>
+        </span>
+      </div>
+    </v-row>
     <div v-if="loading" class="pa-3">
-      <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
+      <v-progress-circular
+        indeterminate
+        :size="26"
+        color="grey"
+      ></v-progress-circular>
     </div>
     <div v-if="loaded" class="pb-16">
       <component
@@ -120,20 +146,29 @@
         class="my-1"
       ></component>
       <div v-if="loadingMore" class="pa-3">
-        <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
+        <v-progress-circular
+          indeterminate
+          :size="26"
+          color="grey"
+        ></v-progress-circular>
       </div>
       <v-container v-if="showLoadMoreButton" fluid class="pa-0">
         <v-row
           align="center"
           justify="space-around"
           class="ma-0 px-0 pt-3 pb-1"
-          style="max-width: 980px;"
+          style="max-width: 980px"
         >
           <span></span>
           <span></span>
           <span v-if="nItemsTotal > 1">
-            <span v-if="edges.length == nItemsTotal">{{ nItemsTotal }} {{ productType.plural }}</span>
-            <span v-else>{{ edges.length }} of {{ nItemsTotal }} {{ productType.plural }}</span>
+            <span v-if="edges.length == nItemsTotal"
+              >{{ nItemsTotal }} {{ productType.plural }}</span
+            >
+            <span v-else
+              >{{ edges.length }} of {{ nItemsTotal }}
+              {{ productType.plural }}</span
+            >
           </span>
           <v-btn
             :disabled="!productType.products.pageInfo.hasNextPage"
@@ -141,23 +176,28 @@
             color="secondary"
             text
             @click="loadMore()"
-          >Load more</v-btn>
+            >Load more</v-btn
+          >
         </v-row>
       </v-container>
     </div>
     <div v-else-if="empty">
-      <v-card outlined style="max-width: 980px;">
+      <v-card outlined style="max-width: 980px">
         <v-card-text>Empty. No {{ productType.plural }} are found.</v-card-text>
       </v-card>
     </div>
     <div v-else-if="error">
-      <v-alert v-if="error" type="error" style="max-width: 980px;">{{ error }}</v-alert>
+      <v-alert v-if="error" type="error" style="max-width: 980px">{{
+        error
+      }}</v-alert>
     </div>
     <div v-else>
       <!-- state = State.NONE -->
     </div>
-    <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
-  </div>
+    <dev-tool-loading-state-overriding-menu
+      @state="devtoolState = $event"
+    ></dev-tool-loading-state-overriding-menu>
+  </v-container>
 </template>
 
 <script>
@@ -174,7 +214,7 @@ export default {
   components: {
     ProductItemCard,
     ProductAddForm,
-    DevToolLoadingStateOverridingMenu
+    DevToolLoadingStateOverridingMenu,
   },
   props: {
     productTypeId: { required: true },
@@ -182,7 +222,7 @@ export default {
     productAddForm: { default: "ProductAddForm" },
     disableAdd: { default: false },
     disableEdit: { default: false },
-    disableDelete: { default: false }
+    disableDelete: { default: false },
   },
   data() {
     return {
@@ -197,14 +237,14 @@ export default {
         { text: "Recently produced", value: "DATE_PRODUCED_DESC" },
         { text: "Recently posted", value: "DATE_POSTED_DESC" },
         { text: "Recently updated", value: "DATE_UPDATED_DESC" },
-        { text: "Name", value: "NAME_ASC" }
+        { text: "Name", value: "NAME_ASC" },
       ],
       nItemsInitialLoad: 10,
       nEtraItemsAutomaticLoad: 2,
       nItemsPerLoad: 20,
       isCardCollapsed: {},
       devtoolState: null,
-      State: State
+      State: State,
     };
   },
   apollo: {
@@ -215,17 +255,17 @@ export default {
           typeId: this.productTypeId,
           sort: [this.sort],
           first: this.nItemsInitialLoad,
-          after: ""
+          after: "",
         };
       },
-      skip: function() {
+      skip: function () {
         return !this.productTypeId || !this.sort;
       },
       result(result) {
         this.init = false;
         this.error = result.error ? result.error : null;
-      }
-    }
+      },
+    },
   },
   computed: {
     edges() {
@@ -281,33 +321,33 @@ export default {
       return this.sortItems[this.sortItem].value;
     },
     areAllCardsCollapsed: {
-      get: function() {
+      get: function () {
         return Object.keys(this.isCardCollapsed).every(
-          i => this.isCardCollapsed[i]
+          (i) => this.isCardCollapsed[i]
         );
       },
-      set: function(v) {
+      set: function (v) {
         for (const k in this.isCardCollapsed) {
           this.isCardCollapsed[k] = v;
         }
-      }
-    }
+      },
+    },
   },
   watch: {
-    devtoolState: function() {
+    devtoolState: function () {
       if (this.devtoolState) {
         this.init = this.devtoolState == State.INIT;
       }
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function() {
+    "$store.state.nApolloMutations": function () {
       this.refresh();
     },
-    edges: function() {
+    edges: function () {
       this.collapseCards();
       this.loadAllFewRemainingItems();
-    }
+    },
   },
   methods: {
     collapseCards() {
@@ -319,7 +359,7 @@ export default {
         if (!(id in this.isCardCollapsed)) {
           this.isCardCollapsed = {
             ...this.isCardCollapsed,
-            [id]: true
+            [id]: true,
           };
           // The above line of the code adds a new element {id: true} to
           // the object this.isCardCollapsed in the way that the new
@@ -342,7 +382,7 @@ export default {
     },
     async refresh() {
       this.refreshing = true;
-      const wait = new Promise(resolve => setTimeout(resolve, 500));
+      const wait = new Promise((resolve) => setTimeout(resolve, 500));
       await this.$apollo.queries.productType.refetch();
       this.areAllCardsCollapsed = true;
       await wait; // wait until 0.5 sec passes since starting refetch
@@ -360,7 +400,7 @@ export default {
         await this.$apollo.queries.productType.fetchMore({
           variables: {
             first: this.nItemsPerLoad,
-            after: this.productType.products.pageInfo.endCursor
+            after: this.productType.products.pageInfo.endCursor,
           },
           updateQuery: (previousResult, { fetchMoreResult }) => {
             return {
@@ -373,20 +413,20 @@ export default {
                     endCursor:
                       fetchMoreResult.productType.products.pageInfo.endCursor,
                     hasNextPage:
-                      fetchMoreResult.productType.products.pageInfo.hasNextPage
+                      fetchMoreResult.productType.products.pageInfo.hasNextPage,
                   },
                   edges: [
                     ...previousResult.productType.products.edges,
-                    ...fetchMoreResult.productType.products.edges
-                  ]
-                }
-              }
+                    ...fetchMoreResult.productType.products.edges,
+                  ],
+                },
+              },
             };
-          }
+          },
         });
       } catch (error) {}
       this.loadingMore = false;
-    }
-  }
+    },
+  },
 };
 </script>
