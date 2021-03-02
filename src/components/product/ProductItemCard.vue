@@ -370,7 +370,6 @@ export default {
       },
       update: (data) => data.product,
       result(result) {
-        console.log(result);
         this.init = false;
         this.error = result.error ? result.error : null;
       },
