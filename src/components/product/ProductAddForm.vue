@@ -3,11 +3,11 @@
     <v-container>
       <v-card outlined max-width="980px" class="mx-auto my-5">
         <v-card-title
-          v-if="state == State.LOADED"
+          v-if="loaded"
           class="headline primary--text"
         >Add {{ productType.indefArticle }} {{ productType.singular }}</v-card-title>
         <v-alert v-if="error" type="error">{{ error }}</v-alert>
-        <v-form v-if="state == State.LOADED" ref="form" v-model="valid">
+        <v-form v-if="loaded" ref="form" v-model="valid">
           <v-divider></v-divider>
           <v-container fluid class="px-0">
             <v-row class="ma-0 px-0">
@@ -88,11 +88,11 @@
         </v-form>
         <div v-else>
           <v-card outlined>
-            <div v-if="state == State.LOADING" class="mx-4 py-2">
+            <div v-if="loading" class="mx-4 py-2">
               <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
             </div>
-            <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
-            <v-card-text v-else>Nothing to show here.</v-card-text>
+            <v-alert v-else-if="queryError" outlined dense type="error" class="ma-2">{{ queryError }}</v-alert>
+            <v-card-text v-else-if="notFound">Not Found</v-card-text>
           </v-card>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -109,9 +109,7 @@
 import _ from "lodash";
 
 import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql";
-import PRODUCT_TYPE from "@/graphql/queries/ProductType.gql";
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
-import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/queries/AllProductsByTypeId.gql";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker";
 import FormRelations from "./FormRelations";
@@ -148,6 +146,7 @@ export default {
   data() {
     return {
       productType: null,
+      init: true,
       queryError: null,
       devtoolState: null,
       State: State,
@@ -168,18 +167,26 @@ export default {
         return this.devtoolState;
       }
 
-      if (this.loading) {
+      if (this.$apollo.queries.productType.loading) {
         return State.LOADING;
       } else if (this.queryError) {
         return State.ERROR;
       } else if (this.productType) {
         return State.LOADED;
+      } else if (this.init) {
+        return State.INIT;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.productType.loading;
+      return this.state == State.LOADING;
+    },
+    loaded() {
+      return this.state == State.LOADED;
+    },
+    notFound() {
+      return this.state == State.NONE;
     }
   },
   apollo: {
@@ -192,8 +199,8 @@ export default {
         return !this.productTypeId;
       },
       result(result) {
+        this.init = false;
         this.queryError = result.error ? result.error : null;
-
         if (this.queryError) {
           return;
         }
@@ -201,6 +208,15 @@ export default {
         this.productType = result.data.productType;
       }
     }
+  },
+  watch: {
+    devtoolState: function () {
+      if (this.devtoolState) {
+        this.init = this.devtoolState == State.INIT;
+      }
+      this.queryError =
+        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
   },
   methods: {
     scrollToTop() {
