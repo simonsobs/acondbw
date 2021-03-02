@@ -2,78 +2,76 @@
 
 exports[`ProductItemCard.vue match snapshot 1`] = `
 <div class="product-item-card v-card v-card--hover v-sheet v-sheet--outlined theme--light" style="max-width: 980px; position: relative;">
-  <div class="" style="cursor: default;">
-    <div class="container container--fluid">
-      <div class="row">
-        <div class="col-md-4 col-9 order-1">
-          <div class="caption grey--text">Name</div>
-          <div class="font-weight-bold primary--text"><span><a href="/product/map/item/lat20200201" class="">lat20200201</a></span></div>
-        </div>
-        <div class="col-md-3 col-6 order-3">
-          <div class="caption grey--text">Date produced</div>
-          <div>2020-02-01</div>
-        </div>
-        <div class="col-md-2 col-6 order-4">
-          <div class="caption grey--text">Produced by</div>
-          <div>pwg-pmn</div>
-        </div>
-        <div class="py-2 order-md-5 col col-3 order-2 align-self-center">
-          <div class="row px-1 py-0 align-start justify-end">
-            <!----> <span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-dots-vertical theme--light"></i></span></button>
-            <div class="v-menu">
-              <!---->
-            </div>
-            </span>
+  <div class="container container--fluid" style="cursor: default;">
+    <div class="row">
+      <div class="col-md-4 col-9 order-1">
+        <div class="caption grey--text">Name</div>
+        <div class="font-weight-bold primary--text"><span><a href="/product/map/item/lat20200201" class="">lat20200201</a></span></div>
+      </div>
+      <div class="col-md-3 col-6 order-3">
+        <div class="caption grey--text">Date produced</div>
+        <div>2020-02-01</div>
+      </div>
+      <div class="col-md-2 col-6 order-4">
+        <div class="caption grey--text">Produced by</div>
+        <div>pwg-pmn</div>
+      </div>
+      <div class="py-2 order-md-5 col col-3 order-2 align-self-center">
+        <div class="row px-1 py-0 align-start justify-end">
+          <!----> <span><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-dots-vertical theme--light"></i></span></button>
+          <div class="v-menu">
+            <!---->
           </div>
+          </span>
         </div>
       </div>
-      <transition-stub name="expand-transition">
-        <div class="collapsible">
-          <div class="row">
-            <div class="col-md-4 offset-md-4 col-12">
-              <div class="caption grey--text">Contact</div>
-              <div>pwg-pmn</div>
+    </div>
+    <transition-stub name="expand-transition">
+      <div class="collapsible">
+        <div class="row">
+          <div class="col-md-4 offset-md-4 col-12">
+            <div class="caption grey--text">Contact</div>
+            <div>pwg-pmn</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 offset-md-4 col-12">
+            <div class="caption grey--text">Paths</div>
+            <ul>
+              <li>nersc:/go/to/my/maps_v3</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 offset-md-4 col-12">
+            <div class="caption grey--text">Relations</div>
+            <div>
+              <div><span class="capitalize subtitle-2 primary--text"><span></span>:
+                </span> <span><a href="/product/beam/item/20200207" class="font-weight-bold primary--text">20200207</a>
+                  (beam)<!----></span></div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-8 offset-md-4 col-12">
-              <div class="caption grey--text">Paths</div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 offset-md-4 col-12 order-1">
+            <div class="caption grey--text">Note</div>
+            <div>
               <ul>
-                <li>nersc:/go/to/my/maps_v3</li>
+                <li>This is a dummy test with a lat map</li>
+                <li>A beam depends on this map</li>
               </ul>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-8 offset-md-4 col-12">
-              <div class="caption grey--text">Relations</div>
-              <div>
-                <div><span class="capitalize subtitle-2 primary--text"><span></span>:
-                  </span> <span><a href="/product/beam/item/20200207" class="font-weight-bold primary--text">20200207</a>
-                    (beam)<!----></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-8 offset-md-4 col-12 order-1">
-              <div class="caption grey--text">Note</div>
-              <div>
-                <ul>
-                  <li>This is a dummy test with a lat map</li>
-                  <li>A beam depends on this map</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="row grey--text mt-3 no-gutters align-end justify-space-between" style="font-size: 80%;">
-            <div>
-              <!---->
-              <!---->
-            </div>
-            <div>Data ID: </div>
-          </div>
         </div>
-      </transition-stub>
-    </div>
+        <div class="row grey--text mt-3 no-gutters align-end justify-space-between" style="font-size: 80%;">
+          <div>
+            <!---->
+            <!---->
+          </div>
+          <div>Data ID: </div>
+        </div>
+      </div>
+    </transition-stub>
   </div>
   <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
 </div>

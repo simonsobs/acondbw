@@ -143,8 +143,11 @@ describe("ProductItemCard.vue", () => {
 
   it("none", async () => {
     const wrapper = createWrapper();
+    wrapper.setData({
+      init: false,
+    });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain("Nothing to show here");
+    expect(wrapper.text()).toContain("Not Found");
   });
 
   it("match snapshot", async () => {
