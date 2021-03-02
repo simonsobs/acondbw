@@ -5,8 +5,8 @@ import VueMeta from "vue-meta";
 import Frame from "@/components/layout/Frame";
 import NullFrame from "@/components/layout/NullFrame";
 
-import Home from "@/views/Home.vue";
-import Entry from "@/views/Entry.vue";
+import Home from "@/views/framework/Home.vue";
+import Entry from "@/views/framework/Entry.vue";
 
 import OAuthRedirect from "@/views/auth/OAuthRedirect.vue"
 
@@ -149,7 +149,7 @@ const routes = [
     path: "/about",
     name: "About",
     component: () =>
-      import(/* webpackChunkName: "about" */ "@/views/About.vue"),
+      import(/* webpackChunkName: "about" */ "@/views/framework/About.vue"),
   },
   {
     path: "/product/:productTypeName",
@@ -176,7 +176,7 @@ const routes = [
     name: "NotFound",
     components: {
       default: () =>
-        import(/* webpackChunkName: "error" */ "@/views/NotFound.vue"),
+        import(/* webpackChunkName: "error" */ "@/views/framework/NotFound.vue"),
         frame: NullFrame,
     },
   },

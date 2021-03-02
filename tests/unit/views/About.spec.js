@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import About from "@/views/About.vue";
+import About from "@/views/framework/About.vue";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
