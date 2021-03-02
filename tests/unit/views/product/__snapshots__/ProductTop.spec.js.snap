@@ -9,13 +9,11 @@ exports[`ProductTop.vue match snapshot item 1`] = `
       <!---->
     </v-col-stub>
   </v-row-stub>
-  <div style="">
-    <transition-stub name="fade-product-top-leave" mode="out-in">
-      <keep-alive-stub>
-        <router-view-stub name="default" producttypeid="1"></router-view-stub>
-      </keep-alive-stub>
-    </transition-stub>
-  </div>
+  <transition-stub name="fade-product-top-leave" mode="out-in">
+    <keep-alive-stub>
+      <router-view-stub name="default" producttypeid="1"></router-view-stub>
+    </keep-alive-stub>
+  </transition-stub>
   <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
   <!---->
 </v-container-stub>
@@ -30,13 +28,11 @@ exports[`ProductTop.vue match snapshot list 1`] = `
       <!---->
     </v-col-stub>
   </v-row-stub>
-  <div style="">
-    <transition-stub name="fade-product-top-leave" mode="out-in">
-      <keep-alive-stub>
-        <router-view-stub name="default" producttypeid="1"></router-view-stub>
-      </keep-alive-stub>
-    </transition-stub>
-  </div>
+  <transition-stub name="fade-product-top-leave" mode="out-in">
+    <keep-alive-stub>
+      <router-view-stub name="default" producttypeid="1"></router-view-stub>
+    </keep-alive-stub>
+  </transition-stub>
   <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
   <!---->
 </v-container-stub>

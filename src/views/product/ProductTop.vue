@@ -33,7 +33,7 @@
         </span>
       </v-col>
     </v-row>
-    <div v-show="loaded">
+    <template v-show="loaded">
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
           <router-view
@@ -45,7 +45,7 @@
           ></router-view>
         </keep-alive>
       </transition>
-    </div>
+    </template>
     <dev-tool-loading-state-overriding-menu
       @state="devtoolState = $event"
     ></dev-tool-loading-state-overriding-menu>
