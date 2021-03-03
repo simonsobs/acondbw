@@ -33,7 +33,7 @@
         </span>
       </v-col>
     </v-row>
-    <template v-show="loaded">
+    <template v-if="loaded">
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
           <router-view
@@ -46,12 +46,12 @@
         </keep-alive>
       </transition>
     </template>
+    <v-row v-if="notFound" align="center" justify="center">
+      <v-col class="text-h1 text-center">Not Found (404)</v-col>
+    </v-row>
     <dev-tool-loading-state-overriding-menu
       @state="devtoolState = $event"
     ></dev-tool-loading-state-overriding-menu>
-    <v-row v-if="notFound" align="center" justify="center">
-      <div class="display-2 text-center">Not Found (404)</div>
-    </v-row>
   </v-container>
 </template>
 

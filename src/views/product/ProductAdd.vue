@@ -1,8 +1,30 @@
 <template>
-  <product-add-form
-    :productTypeId="node ? node.typeId : null"
-    v-on:finished="finished"
-  ></product-add-form>
+  <v-container
+    fluid
+    :fill-height="notFound"
+    class="product-add"
+    style="position: relative"
+  >
+    <v-progress-circular
+      v-if="loading"
+      indeterminate
+      :size="18"
+      :width="3"
+      color="grey"
+    ></v-progress-circular>
+    <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
+    <product-add-form
+      v-else-if="loaded"
+      :productTypeId="node ? node.typeId : null"
+      v-on:finished="finished"
+    ></product-add-form>
+    <v-row v-else-if="notFound" align="center" justify="center">
+      <v-col class="text-h1 text-center">Not Found (404)</v-col>
+    </v-row>
+    <dev-tool-loading-state-overriding-menu
+      @state="devtoolState = $event"
+    ></dev-tool-loading-state-overriding-menu>
+  </v-container>
 </template>
 
 <script>
@@ -27,6 +49,44 @@ export default {
     devtoolState: null,
     State: State,
   }),
+  computed: {
+    state() {
+      if (this.devtoolState) {
+        return this.devtoolState;
+      }
+
+      if (this.$apollo.queries.node.loading) {
+        return State.LOADING;
+      } else if (this.error) {
+        return State.ERROR;
+      } else if (this.node) {
+        return State.LOADED;
+      } else if (this.init) {
+        return State.INIT;
+      } else {
+        return State.NONE;
+      }
+    },
+    loading() {
+      return this.state == State.LOADING;
+    },
+    loaded() {
+      return this.state == State.LOADED;
+    },
+    notFound() {
+      return this.state == State.NONE;
+    },
+  },
+  watch: {
+    devtoolState: function () {
+      if (this.devtoolState) {
+        this.init = this.devtoolState == State.INIT;
+      }
+
+      this.error =
+        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
+  },
   apollo: {
     node: {
       query: PRODUCT_TYPE_BY_NAME,

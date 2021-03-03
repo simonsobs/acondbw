@@ -71,7 +71,7 @@
           >Add a field</v-btn
         >
       </v-col>
-      </v-row>
+    </v-row>
     <dev-tool-loading-state-overriding-menu
       @state="devtoolState = $event"
     ></dev-tool-loading-state-overriding-menu>
