@@ -79,8 +79,6 @@
 </template>
 
 <script>
-import _ from "lodash";
-
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
@@ -174,8 +172,7 @@ export default {
           value: node.typeId,
         }));
 
-        this.productTypeMap = _.reduce(
-          this.allProductTypes.edges,
+        this.productTypeMap = this.allProductTypes.edges.reduce(
           (a, { node }) => ({
             ...a,
             [node.typeId]: node.products.edges.map(({ node }) => ({
