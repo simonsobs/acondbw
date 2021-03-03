@@ -63,7 +63,7 @@ describe("ProductAddForm.vue", () => {
     expect(wrapper).toBeDefined();
   });
 
-  it("add", async () => {
+  it("submit", async () => {
     // to suppress the warning "[Vuetify] Unable to locate target [data-app]""
     const app = document.createElement("div");
     app.setAttribute("data-app", true);
@@ -86,7 +86,8 @@ describe("ProductAddForm.vue", () => {
 
     wrapper.setData({ form: form });
     await Vue.nextTick();
-    await wrapper.vm.addProduct();
+    wrapper.vm.preview();
+    await wrapper.vm.submit();
     const calls = wrapper.vm.$apollo.mutate.mock.calls;
     expect(calls.length).toBe(1);
     expect(calls[0][0].mutation).toBeDefined();
