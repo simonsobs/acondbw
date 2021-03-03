@@ -92,10 +92,10 @@
           </v-col>
         </v-row>
       </v-container>
-        <v-divider></v-divider>
-        <v-card-title>Relations to other products</v-card-title>
-          <form-relations :relations="form.relations"></form-relations>
-        <v-divider></v-divider>
+      <v-divider></v-divider>
+      <v-card-title>Relations to other products</v-card-title>
+      <form-relations :relations="form.relations"></form-relations>
+      <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="secondary" text @click="close()">Cancel</v-btn>
