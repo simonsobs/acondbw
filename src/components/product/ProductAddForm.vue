@@ -5,15 +5,15 @@
     class="product-add-form mx-auto my-5"
     style="position: relative"
   >
-    <v-card-title v-if="loaded" class="headline primary--text"
+    <v-card-title v-if="loaded" class="text-h3 primary--text"
       >Add {{ productType.indefArticle }}
       {{ productType.singular }}</v-card-title
     >
     <v-alert v-if="error" type="error">{{ error }}</v-alert>
     <v-form v-if="loaded" ref="form" v-model="valid">
       <v-divider></v-divider>
-      <v-container fluid class="px-0">
-        <v-row class="ma-0 px-0">
+      <v-container fluid>
+        <v-row>
           <v-col order="1" cols="12" md="4">
             <v-text-field
               label="Name*"
@@ -69,7 +69,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row class="mx-0 mb-3 px-0">
+        <v-row>
           <v-col cols="12" md="8" offset-md="4">
             <v-textarea
               label="Paths"
@@ -80,7 +80,7 @@
             ></v-textarea>
           </v-col>
         </v-row>
-        <v-row class="mx-0 mb-3 px-0">
+        <v-row>
           <v-col cols="12" md="8" offset-md="4">
             <v-textarea
               label="Note"
@@ -91,13 +91,11 @@
             ></v-textarea>
           </v-col>
         </v-row>
-        <v-divider></v-divider>
-        <v-row justify="end" class="mx-2 mb-3 px-0">
-          <v-card-text>Relations to other products</v-card-text>
-          <form-relations :relations="form.relations"></form-relations>
-        </v-row>
-        <v-divider></v-divider>
       </v-container>
+        <v-divider></v-divider>
+        <v-card-title>Relations to other products</v-card-title>
+          <form-relations :relations="form.relations"></form-relations>
+        <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="secondary" text @click="close()">Cancel</v-btn>

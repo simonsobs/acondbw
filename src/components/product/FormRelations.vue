@@ -1,65 +1,77 @@
 <template>
-  <v-container fluid class="px-0" style="position: relative">
-    <v-row justify="end" class="mx-0 mb-3">
-      <v-tooltip bottom open-delay="800">
-        <template v-slot:activator="{ on }">
-          <v-btn icon @click="refetch()" v-on="on">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-        </template>
-        <span>Refresh</span>
-      </v-tooltip>
+  <v-container fluid class="" style="position: relative">
+    <v-row justify="end" class="">
+      <v-col style="flex: 0">
+        <v-tooltip bottom open-delay="800">
+          <template v-slot:activator="{ on }">
+            <v-btn icon @click="refetch()" v-on="on">
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+          </template>
+          <span>Refresh</span>
+        </v-tooltip>
+      </v-col>
     </v-row>
     <template v-if="loaded">
-      <v-row class="mx-0 mb-3 px-0" v-for="(r, i) in relations" :key="i">
-        <v-card outlined width="100%">
-          <v-container class="py-0">
-            <v-row class="py-0">
-              <v-col cols="12" md="4">
-                <v-autocomplete
-                  label="Relation type"
-                  :items="relationTypeItems"
-                  clearable
-                  v-model="r.typeId"
-                ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" md="3">
-                <v-autocomplete
-                  label="Product type"
-                  :items="productTypeItems"
-                  clearable
-                  v-model="r.productTypeId"
-                ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-autocomplete
-                  label="Product"
-                  :items="productTypeMap[r.productTypeId]"
-                  clearable
-                  hide-no-data
-                  v-model="r.productId"
-                ></v-autocomplete>
-              </v-col>
-              <v-col align-self="center" cols="1">
-                <v-row justify="end">
-                  <v-tooltip bottom open-delay="800">
-                    <template v-slot:activator="{ on }">
-                      <v-btn icon @click="deleteField(i)" v-on="on">
-                        <v-icon>mdi-delete</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Delete the field</span>
-                  </v-tooltip>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
+      <v-row class="" v-for="(r, i) in relations" :key="i">
+        <v-col>
+          <v-card outlined width="100%">
+            <v-container class="">
+              <v-row>
+                <v-col cols="12" md="4">
+                  <v-autocomplete
+                    label="Relation type"
+                    :items="relationTypeItems"
+                    clearable
+                    v-model="r.typeId"
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-autocomplete
+                    label="Product type"
+                    :items="productTypeItems"
+                    clearable
+                    v-model="r.productTypeId"
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" md="4">
+                  <v-autocomplete
+                    label="Product"
+                    :items="productTypeMap[r.productTypeId]"
+                    clearable
+                    hide-no-data
+                    v-model="r.productId"
+                  ></v-autocomplete>
+                </v-col>
+                <v-col align-self="center" cols="1">
+                  <v-container>
+                    <v-row justify="end">
+                      <v-col class="pa-0" style="flex: 0">
+                        <v-tooltip bottom open-delay="800">
+                          <template v-slot:activator="{ on }">
+                            <v-btn icon @click="deleteField(i)" v-on="on">
+                              <v-icon>mdi-delete</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>Delete the field</span>
+                        </v-tooltip>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-col>
       </v-row>
     </template>
-    <v-btn color="secondary" outlined text class="mx-2" @click="addField()"
-      >Add a field</v-btn
-    >
+    <v-row>
+      <v-col>
+        <v-btn color="secondary" outlined text class="" @click="addField()"
+          >Add a field</v-btn
+        >
+      </v-col>
+      </v-row>
     <dev-tool-loading-state-overriding-menu
       @state="devtoolState = $event"
     ></dev-tool-loading-state-overriding-menu>
