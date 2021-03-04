@@ -158,7 +158,52 @@ export default {
         }
 
         this.allProductRelationTypes = result.data.allProductRelationTypes;
+        // e.g.,
+        // {
+        //   edges: [
+        //     {
+        //       node: {
+        //         id: "UHJvZHVjdFJlbGF0aW9uVHlwZTox",
+        //         typeId: "1",
+        //         singular: "parent",
+        //       },
+        //     },
+        //     {
+        //       node: {
+        //         id: "UHJvZHVjdFJlbGF0aW9uVHlwZToy",
+        //         typeId: "2",
+        //         singular: "child",
+        //       },
+        //     },
+        //   ],
+        // };
+
         this.allProductTypes = result.data.allProductTypes;
+        // e.g.,
+        // {
+        //   edges: [
+        //     {
+        //       node: {
+        //         id: "UHJvZHVjdFR5cGU6MQ==",
+        //         typeId: "1",
+        //         singular: "map",
+        //         products: {
+        //           edges: [
+        //             {
+        //               node: {
+        //                 id: "UHJvZHVjdDoxMDAx",
+        //                 productId: "1001",
+        //                 name: "lat20190213",
+        //               },
+        //             },
+        //             ...
+        //           ],
+        //         },
+        //       },
+        //     },
+        //     ...
+        //   ],
+        // };
 
         this.relationTypeItems = this.allProductRelationTypes.edges.map(
           ({ node }) => ({
@@ -166,11 +211,33 @@ export default {
             value: node.typeId,
           })
         );
+        // e.g.,
+        // [
+        //   {
+        //     text: "parent",
+        //     value: "1",
+        //   },
+        //   {
+        //     text: "child",
+        //     value: "2",
+        //   },
+        // ];
 
         this.productTypeItems = this.allProductTypes.edges.map(({ node }) => ({
           text: node.singular,
           value: node.typeId,
         }));
+        // e.g.,
+        // [
+        //   {
+        //     text: "map",
+        //     value: "1",
+        //   },
+        //   {
+        //     text: "beam",
+        //     value: "2",
+        //   },
+        // ];
 
         this.productTypeMap = this.allProductTypes.edges.reduce(
           (a, { node }) => ({
@@ -182,6 +249,17 @@ export default {
           }),
           {}
         );
+        // e.g.,
+        // {
+        //   1: [
+        //     {
+        //       text: "lat20190213",
+        //       value: "1001",
+        //     },
+        //     ...
+        //   ],
+        //   2: [ ... ]
+        // };
       },
     },
   },
