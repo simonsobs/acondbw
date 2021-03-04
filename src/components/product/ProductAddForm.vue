@@ -143,7 +143,41 @@
       </v-stepper-items>
       <v-stepper-items>
         <v-stepper-content step="3">
-          <pre>{{ createProductInput }}</pre>
+          <v-card-text v-if="createProductInput">
+            <div class="caption grey--text">Name</div>
+            <div class="font-weight-bold">{{ createProductInput.name }}</div>
+            <div class="caption grey--text">Date produced</div>
+            <div v-text="createProductInput.dateProduced"></div>
+            <div class="caption grey--text">Produced by</div>
+            <div v-text="createProductInput.producedBy"></div>
+            <div class="caption grey--text">Contact</div>
+            <div v-text="createProductInput.contact"></div>
+            <div class="caption grey--text">Paths</div>
+            <ul
+              v-if="
+                createProductInput.paths && createProductInput.paths.length > 0
+              "
+            >
+              <li
+                v-for="(p, index) in createProductInput.paths"
+                :key="index"
+                v-text="p"
+              ></li>
+            </ul>
+            <div v-else class="body-2 grey--text">None</div>
+            <div class="caption grey--text">Note</div>
+            <div v-if="notePreview" v-html="notePreview"></div>
+            <div v-else class="body-2 grey--text">None</div>
+            <div class="caption grey--text">Relations</div>
+            <ul v-if="relationPreview && relationPreview.length > 0">
+              <li v-for="(r, index) in relationPreview" :key="index">
+                {{ r.relationTypeSingular }}: {{ r.productName }} ({{
+                  r.productTypeSingular
+                }})
+              </li>
+            </ul>
+            <div v-else class="body-2 grey--text">None</div>
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="secondary" text @click="close()">Cancel</v-btn>
@@ -186,6 +220,10 @@
   
 <script>
 import _ from "lodash";
+
+import marked from "marked";
+
+import gql from "graphql-tag";
 
 import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql";
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
@@ -240,6 +278,8 @@ export default {
       ],
       requiredRules: [(v) => !!v || "This field is required"],
       createProductInput: null,
+      relationPreview: null,
+      notePreview: null,
     };
   },
   computed: {
@@ -320,11 +360,15 @@ export default {
       this.error = null;
       this.scrollToTop();
     },
-    preview() {
+    async preview() {
       this.createProductInput = this.composeCreateProductInput(
         this.productTypeId,
         this.form
       );
+      this.relationPreview = await this.composeRelationPreview(
+        this.createProductInput.relations
+      );
+      this.notePreview = this.createProductInput.note ? marked(this.createProductInput.note) : null;
       this.stepper = 3;
     },
     async submit() {
@@ -340,6 +384,44 @@ export default {
       this.$store.dispatch("snackbarMessage", "Added");
       this.resetForm();
       this.close();
+    },
+    async composeRelationPreview(relations) {
+      const QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW = gql`
+        query QueryForProductAddFormRelationsPreview(
+          $productRelationTypeId: Int!
+          $productId: Int!
+        ) {
+          productRelationType(typeId: $productRelationTypeId) {
+            singular
+          }
+          product(productId: $productId) {
+            name
+            type_ {
+              singular
+            }
+          }
+        }
+      `;
+
+      // https://flaviocopes.com/javascript-async-await-array-map/
+      const ret = await Promise.all(
+        relations.map(async (r) => {
+          const { data } = await this.$apollo.query({
+            query: QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
+            variables: {
+              productRelationTypeId: r.typeId,
+              productId: r.productId,
+            },
+          });
+          return {
+            relationTypeSingular: data.productRelationType.singular,
+            productTypeSingular: data.product.type_.singular,
+            productName: data.product.name,
+          };
+        })
+      );
+
+      return ret;
     },
     composeCreateProductInput(productTypeId, form) {
       const ret = _.pick(form, [
@@ -366,6 +448,12 @@ export default {
         ),
         (x) => _.size(x) == 2
       );
+
+      // unique https://medium.com/coding-at-dawn/how-to-use-set-to-filter-unique-items-in-javascript-es6-196c55ce924b
+      ret.relations = [
+        ...new Set(ret.relations.map((o) => JSON.stringify(o))),
+      ].map((s) => JSON.parse(s));
+
       return ret;
     },
     async addProduct(createProductInput) {
