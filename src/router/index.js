@@ -154,6 +154,7 @@ const routes = [
   },
   {
     path: "/add-product/:productTypeName",
+    name: "ProductAdd",
     components: {
       default: ProductAdd,
       frame: NullFrame,
