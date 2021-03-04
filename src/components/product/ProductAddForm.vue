@@ -355,14 +355,21 @@ export default {
       this.stepper = 1;
     },
     async preview() {
-      this.createProductInput = this.composeCreateProductInput(
-        this.productTypeId,
-        this.form
-      );
-      this.relationPreview = await this.composeRelationPreview(
-        this.createProductInput.relations
-      );
-      this.notePreview = this.createProductInput.note ? marked(this.createProductInput.note) : null;
+      try {
+        this.createProductInput = this.composeCreateProductInput(
+          this.productTypeId,
+          this.form
+        );
+        this.relationPreview = await this.composeRelationPreview(
+          this.createProductInput.relations
+        );
+        this.notePreview = this.createProductInput.note
+          ? marked(this.createProductInput.note)
+          : null;
+        this.stepper = 3;
+      } catch (error) {
+        this.error = error;
+      }
       this.stepper = 3;
     },
     async submit() {
