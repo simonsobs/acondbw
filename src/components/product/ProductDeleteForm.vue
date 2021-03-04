@@ -1,42 +1,51 @@
 <template>
-  <div class="product-delete-form" style="position: relative;">
-    <v-card class="pa-3">
-      <v-card-title
-        v-if="state == State.LOADED"
-        class="headline"
-      >Delete the {{ node.type_.singular }}</v-card-title>
-      <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      <div v-if="state == State.LOADED">
-        <v-card-text
-          class="body-1 font-weight-medium error--text"
-        >Really, delete the {{ node.type_.singular}} "{{ node.name }}"?</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-          <v-btn color="error" @click="deleteProduct()">Delete</v-btn>
-        </v-card-actions>
-      </div>
-      <div v-else>
-        <div v-if="state == State.LOADING" class="mx-4 py-2">
-          <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
-        </div>
-        <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
-        <v-card-text v-else>Nothing to show here.</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-        </v-card-actions>
-      </div>
-    </v-card>
-    <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
-  </div>
+  <v-card class="product-delete-form" style="position: relative">
+    <v-card-title v-if="loaded"
+      >Delete the {{ node.type_.singular }}</v-card-title
+    >
+    <v-card-text v-if="error" class="py-2">
+      <v-alert type="error" class="my-2">{{ error }}</v-alert>
+    </v-card-text>
+    <template v-if="loaded">
+      <v-card-text class="body-1 font-weight-medium error--text"
+        >Really, delete the {{ node.type_.singular }} "{{
+          node.name
+        }}"?</v-card-text
+      >
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+        <v-btn color="error" @click="deleteProduct()">Delete</v-btn>
+      </v-card-actions>
+    </template>
+    <template v-else>
+      <v-card-text v-if="loading" class="pa-4">
+        <v-progress-circular
+          indeterminate
+          :size="18"
+          :width="3"
+          color="grey"
+        ></v-progress-circular>
+      </v-card-text>
+      <v-card-text
+        v-else-if="notFound"
+        class="body-1 font-weight-medium text-center pa-4"
+        >Not Found</v-card-text
+      >
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+      </v-card-actions>
+    </template>
+    <dev-tool-loading-state-overriding-menu
+      @state="devtoolState = $event"
+    ></dev-tool-loading-state-overriding-menu>
+  </v-card>
 </template>
 
 <script>
-import gql from "graphql-tag";
 import PRODUCT from "@/graphql/queries/Product.gql";
 import DELETE_PRODUCT from "@/graphql/mutations/DeleteProduct.gql";
-import ALL_PRODUCTS_BY_TYPE_ID from "@/graphql/queries/AllProductsByTypeId.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
@@ -44,17 +53,18 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 export default {
   name: "ProductDeleteForm",
   components: {
-    DevToolLoadingStateOverridingMenu
+    DevToolLoadingStateOverridingMenu,
   },
   props: {
-    productId: { default: null } // product.productId not product.id
+    productId: { default: null }, // product.productId not product.id
   },
   data() {
     return {
+      init: true,
       node: null,
       error: null,
       devtoolState: null,
-      State: State
+      State: State,
     };
   },
   computed: {
@@ -63,36 +73,51 @@ export default {
         return this.devtoolState;
       }
 
-      if (this.loading) {
+      if (this.$apollo.queries.node.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
       } else if (this.node) {
         return State.LOADED;
+      } else if (this.init) {
+        return State.INIT;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.node.loading;
-    }
+      return this.state == State.LOADING;
+    },
+    loaded() {
+      return this.state == State.LOADED;
+    },
+    notFound() {
+      return this.state == State.NONE;
+    },
+  },
+  watch: {
+    devtoolState: function () {
+      if (this.devtoolState) {
+        this.init = this.devtoolState == State.INIT;
+      }
+      this.error =
+        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
   },
   apollo: {
     node: {
       query: PRODUCT,
       variables() {
         return {
-          productId: this.productId
+          productId: this.productId,
         };
       },
-      update: data => data.product,
+      update: (data) => data.product,
       result(result) {
-        this.error = null;
-        if (result.error) {
-          this.error = true;
-        }
-      }
-    }
+        this.init = false;
+        this.error = result.error ? result.error : null;
+      },
+    },
   },
   methods: {
     async deleteProduct() {
@@ -103,11 +128,11 @@ export default {
           update: (cache, { data: { deleteProduct } }) => {
             try {
               // Delete all cache and dispacth "apolloMutationCalled", which triggers refetch
-              this.$apollo.provider.defaultClient.cache.data.data = {}
+              this.$apollo.provider.defaultClient.cache.data.data = {};
 
-              // The following code was used to update cache, which 
+              // The following code was used to update cache, which
               // is typically a recommended way. But it is commented out
-              // because it is not clear how to systematically update 
+              // because it is not clear how to systematically update
               // all affected cache.
 
               // this.$apollo.provider.defaultClient.cache.data.data = {};
@@ -125,7 +150,7 @@ export default {
               //   data
               // });
             } catch (error) {}
-          }
+          },
         });
         this.$store.dispatch("apolloMutationCalled");
         this.$store.dispatch("snackbarMessage", "Deleted");
@@ -134,7 +159,7 @@ export default {
       } catch (error) {
         this.error = error;
       }
-    }
-  }
+    },
+  },
 };
 </script>

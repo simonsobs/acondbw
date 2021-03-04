@@ -86,16 +86,19 @@ describe("ProductDeleteForm.vue", () => {
   it("error", async () => {
     const wrapper = createWrapper();
     wrapper.setData({
-      error: true,
+      error: "Error message!",
     });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain("Error: cannot load data");
+    expect(wrapper.text()).toContain("Error message");
   });
 
   it("none", async () => {
     const wrapper = createWrapper();
+    wrapper.setData({
+      init: false,
+    });
     await Vue.nextTick();
-    expect(wrapper.text()).toContain("Nothing to show here");
+    expect(wrapper.text()).toContain("Not Found");
   });
 
   it("delete", async () => {
