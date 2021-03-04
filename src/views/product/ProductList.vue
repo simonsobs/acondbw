@@ -81,46 +81,16 @@
           </v-tooltip>
         </span>
         <span v-if="loaded || empty">
-          <v-dialog
-            v-model="dialog"
-            persistent
-            fullscreen
-            transition="dialog-bottom-transition"
+          <v-btn
+            :disabled="disableAdd"
+            icon
+            :to="{
+              name: 'ProductAdd',
+              params: { productTypeName: productType.name },
+            }"
           >
-            <template v-slot:activator="{ on: dialog }">
-              <v-tooltip bottom open-delay="800">
-                <template v-slot:activator="{ on: tooltip }">
-                  <v-btn
-                    :disabled="disableAdd"
-                    icon
-                    v-on="{ ...tooltip, ...dialog }"
-                  >
-                    <v-icon>mdi-plus-thick</v-icon>
-                  </v-btn>
-                </template>
-                <span
-                  >Add {{ productType.indefArticle }}
-                  {{ productType.singular }}</span
-                >
-              </v-tooltip>
-            </template>
-            <v-card>
-              <v-app-bar
-                dense
-                color="secondary"
-                style="position: sticky; top: 0; z-index: 999"
-              >
-                <v-btn icon dark @click="dialog = false">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-app-bar>
-              <component
-                :is="productAddForm"
-                :productTypeId="productType.typeId"
-                v-on:finished="dialog = false"
-              ></component>
-            </v-card>
-          </v-dialog>
+            <v-icon>mdi-plus-thick</v-icon>
+          </v-btn>
         </span>
       </div>
     </v-row>
@@ -202,7 +172,6 @@
 
 <script>
 import ProductItemCard from "@/components/product/ProductItemCard";
-import ProductAddForm from "@/components/product/ProductAddForm";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
@@ -213,7 +182,6 @@ export default {
   name: "ProductList",
   components: {
     ProductItemCard,
-    ProductAddForm,
     DevToolLoadingStateOverridingMenu,
   },
   props: {
@@ -227,7 +195,6 @@ export default {
   data() {
     return {
       productType: null,
-      dialog: false,
       init: true,
       error: null,
       refreshing: false,

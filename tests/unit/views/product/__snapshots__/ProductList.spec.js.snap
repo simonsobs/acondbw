@@ -8,7 +8,7 @@ exports[`ProductList.vue match snapshot 1`] = `
     <div><span><v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Sort</span></v-tooltip-stub></span></div>
     <div><span><v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
             Expand all
-          </span></v-tooltip-stub></span> <span><v-dialog-stub opendelay="0" closedelay="0" contentclass="" fullscreen="true" maxwidth="none" origin="center center" persistent="true" retainfocus="true" transition="dialog-bottom-transition" width="auto"> <v-card-stub loaderheight="4" tag="div"><v-app-bar-stub color="secondary" tag="header" dense="true" extensionheight="48" src="" value="true" style="position: sticky; top: 0px; z-index: 999;"><v-btn-stub dark="true" tag="button" activeclass="" icon="true" type="button"><v-icon-stub>mdi-close</v-icon-stub></v-btn-stub></v-app-bar-stub> <productaddform-stub producttypeid="1"></productaddform-stub></v-card-stub></v-dialog-stub></span></div>
+          </span></v-tooltip-stub></span> <span><v-btn-stub tag="button" activeclass="" to="[object Object]" icon="true" type="button"><v-icon-stub>mdi-plus-thick</v-icon-stub></v-btn-stub></span></div>
   </v-row-stub>
   <!---->
   <div class="pb-16">
