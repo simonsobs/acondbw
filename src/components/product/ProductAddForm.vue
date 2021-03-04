@@ -348,6 +348,7 @@ export default {
     },
     close() {
       this.scrollToTop();
+      this.resetForm();
       this.$emit("finished");
     },
     resetForm() {
@@ -358,6 +359,7 @@ export default {
       this.form = _.cloneDeep(formDefault);
       this.$refs.form.resetValidation();
       this.error = null;
+      this.stepper = 1;
       this.scrollToTop();
     },
     async preview() {
