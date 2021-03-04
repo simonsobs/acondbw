@@ -49,117 +49,121 @@
           <div class="caption grey--text">Produced by</div>
           <div v-text="node.producedBy"></div>
         </v-col>
-        <v-col order="2" order-md="5" cols="3" align-self="center" class="py-2">
-          <v-row align="start" justify="end" class="px-1 py-0">
-            <div v-if="collapsible">
-              <v-tooltip bottom open-delay="800">
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    icon
-                    @click.stop="
-                      collapsed ? $emit('expand') : $emit('collapse')
-                    "
-                    v-on="on"
-                  >
-                    <v-icon>
-                      {{ collapsed ? "mdi-chevron-down" : "mdi-chevron-up" }}
-                    </v-icon>
-                  </v-btn>
-                </template>
-                <span>{{ collapsed ? "Expand" : "Collapse" }}</span>
-              </v-tooltip>
-            </div>
-            <span @click.stop>
-              <v-menu
-                left
-                bottom
-                offset-y
-                v-model="menu"
-                :close-on-content-click="false"
-              >
-                <template v-slot:activator="{ on: menu }">
-                  <v-btn icon v-on="{ ...menu }">
-                    <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
-                </template>
-                <v-list dense>
-                  <v-dialog
-                    v-model="editDialog"
-                    persistent
-                    fullscreen
-                    transition="dialog-bottom-transition"
-                  >
-                    <template v-slot:activator="{ on: editDialog }">
-                      <v-list-item
-                        :disabled="disableEdit"
-                        v-on="{ ...editDialog }"
-                      >
-                        <v-list-item-icon>
-                          <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>Update</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </template>
-                    <v-card>
-                      <v-app-bar
-                        dense
-                        color="secondary"
-                        style="position: sticky; top: 0; z-index: 999"
-                      >
-                        <v-btn
-                          icon
-                          dark
-                          @click="
+        <v-col order="2" order-md="5" cols="3" align-self="center">
+          <v-container fluid>
+            <v-row justify="end">
+              <v-col v-if="collapsible" style="flex: 0" class="pa-0">
+                <v-tooltip bottom open-delay="800">
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      icon
+                      @click.stop="
+                        collapsed ? $emit('expand') : $emit('collapse')
+                      "
+                      v-on="on"
+                    >
+                      <v-icon>
+                        {{ collapsed ? "mdi-chevron-down" : "mdi-chevron-up" }}
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <span>{{ collapsed ? "Expand" : "Collapse" }}</span>
+                </v-tooltip>
+              </v-col>
+              <v-col @click.stop style="flex: 0" class="pa-0">
+                <v-menu
+                  left
+                  bottom
+                  offset-y
+                  v-model="menu"
+                  :close-on-content-click="false"
+                >
+                  <template v-slot:activator="{ on: menu }">
+                    <v-btn icon v-on="{ ...menu }">
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list dense>
+                    <v-dialog
+                      v-model="editDialog"
+                      persistent
+                      fullscreen
+                      transition="dialog-bottom-transition"
+                    >
+                      <template v-slot:activator="{ on: editDialog }">
+                        <v-list-item
+                          :disabled="disableEdit"
+                          v-on="{ ...editDialog }"
+                        >
+                          <v-list-item-icon>
+                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title>Update</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <v-card>
+                        <v-app-bar
+                          dense
+                          color="secondary"
+                          style="position: sticky; top: 0; z-index: 999"
+                        >
+                          <v-btn
+                            icon
+                            dark
+                            @click="
+                              menu = false;
+                              editDialog = false;
+                            "
+                          >
+                            <v-icon>mdi-close</v-icon>
+                          </v-btn>
+                        </v-app-bar>
+                        <ProductEditForm
+                          :productId="node.productId"
+                          v-on:finished="
                             menu = false;
                             editDialog = false;
                           "
+                        ></ProductEditForm>
+                      </v-card>
+                    </v-dialog>
+                    <v-dialog v-model="deleteDialog" max-width="600">
+                      <template v-slot:activator="{ on: deleteDialog }">
+                        <v-list-item
+                          :disabled="disableDelete"
+                          v-on="{ ...deleteDialog }"
                         >
-                          <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                      </v-app-bar>
-                      <ProductEditForm
+                          <v-list-item-icon>
+                            <v-icon :disabled="disableDelete"
+                              >mdi-delete</v-icon
+                            >
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title>Delete</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <ProductDeleteForm
                         :productId="node.productId"
                         v-on:finished="
+                          deleteDialog = false;
                           menu = false;
-                          editDialog = false;
                         "
-                      ></ProductEditForm>
-                    </v-card>
-                  </v-dialog>
-                  <v-dialog v-model="deleteDialog" max-width="600">
-                    <template v-slot:activator="{ on: deleteDialog }">
-                      <v-list-item
-                        :disabled="disableDelete"
-                        v-on="{ ...deleteDialog }"
-                      >
-                        <v-list-item-icon>
-                          <v-icon :disabled="disableDelete">mdi-delete</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>Delete</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </template>
-                    <ProductDeleteForm
-                      :productId="node.productId"
-                      v-on:finished="
-                        deleteDialog = false;
-                        menu = false;
-                      "
-                      v-on:deleted="
-                        deleteDialog = false;
-                        menu = false;
-                        node = null;
-                        $emit('deleted');
-                      "
-                    ></ProductDeleteForm>
-                  </v-dialog>
-                </v-list>
-              </v-menu>
-            </span>
-          </v-row>
+                        v-on:deleted="
+                          deleteDialog = false;
+                          menu = false;
+                          node = null;
+                          $emit('deleted');
+                        "
+                      ></ProductDeleteForm>
+                    </v-dialog>
+                  </v-list>
+                </v-menu>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
       <v-expand-transition>
