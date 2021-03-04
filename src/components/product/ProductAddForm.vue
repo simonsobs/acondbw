@@ -340,14 +340,7 @@ export default {
     },
   },
   methods: {
-    scrollToTop() {
-      const element = document.getElementsByClassName("v-dialog--active")[0];
-      if (element) {
-        element.scrollTop = 0;
-      }
-    },
     close() {
-      this.scrollToTop();
       this.resetForm();
       this.$emit("finished");
     },
@@ -360,7 +353,6 @@ export default {
       this.$refs.form.resetValidation();
       this.error = null;
       this.stepper = 1;
-      this.scrollToTop();
     },
     async preview() {
       this.createProductInput = this.composeCreateProductInput(
@@ -378,7 +370,6 @@ export default {
         await this.addProduct(this.createProductInput);
       } catch (error) {
         this.error = error;
-        this.scrollToTop();
         this.stepper = 1;
         return;
       }
