@@ -224,7 +224,7 @@
           <v-row>
             <v-col order="1" cols="12" md="8" offset-md="4">
               <div class="caption grey--text">Note</div>
-              <div v-if="note" v-html="note"></div>
+              <div v-if="note" class="markdown-body" v-html="note"></div>
               <div v-else class="body-2 grey--text">None</div>
             </v-col>
           </v-row>

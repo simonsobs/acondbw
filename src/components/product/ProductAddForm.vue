@@ -119,7 +119,7 @@
                       style="min-height: 180px"
                       :transition="false"
                       :reverse-transition="false"
-                      class="px-3 pt-3"
+                      class="markdown-body px-3 pt-3"
                     >
                     </v-tab-item>
                   </v-tabs-items>
@@ -189,7 +189,7 @@
             </ul>
             <div v-else class="body-2 grey--text">None</div>
             <div class="caption grey--text">Note</div>
-            <div v-if="notePreview" v-html="notePreview"></div>
+            <div v-if="notePreview" class="markdown-body" v-html="notePreview"></div>
             <div v-else class="body-2 grey--text">None</div>
             <div class="caption grey--text">Relations</div>
             <ul v-if="relationPreview && relationPreview.length > 0">
