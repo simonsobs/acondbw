@@ -12,6 +12,12 @@
         </v-tooltip>
       </v-col>
     </v-row>
+    <v-progress-circular
+      v-if="loading"
+      indeterminate
+      :size="26"
+      color="grey"
+    ></v-progress-circular>
     <template v-if="loaded">
       <v-row class="" v-for="(r, i) in relations" :key="i">
         <v-col>
@@ -64,14 +70,14 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-btn color="secondary" outlined text class="" @click="addField()"
+            >Add a field</v-btn
+          >
+        </v-col>
+      </v-row>
     </template>
-    <v-row>
-      <v-col>
-        <v-btn color="secondary" outlined text class="" @click="addField()"
-          >Add a field</v-btn
-        >
-      </v-col>
-    </v-row>
     <dev-tool-loading-state-overriding-menu
       @state="devtoolState = $event"
     ></dev-tool-loading-state-overriding-menu>
@@ -102,6 +108,7 @@ export default {
       allProductTypes: null,
       init: true,
       queryError: null,
+      refreshing: false,
       devtoolState: null,
       State: State,
       relationTypeItems: null,
@@ -113,6 +120,10 @@ export default {
     state() {
       if (this.devtoolState) {
         return this.devtoolState;
+      }
+
+      if (this.refreshing) {
+        return State.LOADING;
       }
 
       if (this.$apollo.queries.allProductRelationTypes.loading) {
@@ -270,8 +281,14 @@ export default {
     deleteField(i) {
       this.relations.splice(i, 1);
     },
-    refetch() {
+    async refetch() {
+      this.refreshing = true;
+      const wait = new Promise((resolve) => setTimeout(resolve, 500));
       Object.values(this.$apollo.queries).forEach((query) => query.refetch());
+      await wait; // wait until 0.5 sec passes since starting refetch
+      // because the progress circular is too flickering if
+      // the refetch finishes too quickly
+      this.refreshing = false;
     },
   },
 };
