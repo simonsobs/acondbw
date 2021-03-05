@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid class="" style="position: relative">
-    <v-row justify="end" class="">
+  <v-container fluid style="position: relative">
+    <v-row justify="end">
       <v-col style="flex: 0">
         <v-tooltip bottom open-delay="800">
           <template v-slot:activator="{ on }">
@@ -20,10 +20,10 @@
     ></v-progress-circular>
     <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
     <template v-if="loaded">
-      <v-row class="" v-for="(r, i) in relations" :key="i">
+      <v-row v-for="(r, i) in relations" :key="i">
         <v-col>
-          <v-card outlined width="100%">
-            <v-container class="">
+          <v-card outlined>
+            <v-container>
               <v-row>
                 <v-col cols="12" md="4">
                   <v-autocomplete
@@ -73,7 +73,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-btn color="secondary" outlined text class="" @click="addField()"
+          <v-btn color="secondary" outlined text @click="addField()"
             >Add a field</v-btn
           >
         </v-col>
