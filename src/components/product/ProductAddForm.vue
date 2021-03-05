@@ -92,14 +92,37 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" md="8" offset-md="4">
-                  <v-textarea
-                    label="Note"
-                    hint="will be parsed as Markdown"
-                    persistent-hint
-                    rows="3"
-                    v-model="form.note"
-                  ></v-textarea>
+                <v-col cols="12" md="8" offset-md="4" class="mt-4">
+                  <label class="v-label theme--light">Note</label>
+                  <v-tabs v-model="tabNote" class="mb-1">
+                    <v-tab key="edit">Edit</v-tab>
+                    <v-tab key="preview">Preview</v-tab>
+                  </v-tabs>
+                  <v-tabs-items v-model="tabNote">
+                    <v-tab-item
+                      key="edit"
+                      style="min-height: 180px"
+                      :transition="false"
+                      :reverse-transition="false"
+                    >
+                      <v-textarea
+                        solo
+                        outlined
+                        label="Note will be parsed as Markdown"
+                        rows="5"
+                        v-model="form.note"
+                      ></v-textarea>
+                    </v-tab-item>
+                    <v-tab-item
+                      key="preview"
+                      v-html="noteMarked"
+                      style="min-height: 180px"
+                      :transition="false"
+                      :reverse-transition="false"
+                      class="px-3 pt-3"
+                    >
+                    </v-tab-item>
+                  </v-tabs-items>
                 </v-col>
               </v-row>
             </v-container>
@@ -270,6 +293,7 @@ export default {
       State: State,
       step: 1,
       form: _.cloneDeep(formDefault),
+      tabNote: null,
       valid: true,
       error: null,
       nameRules: [
@@ -309,6 +333,11 @@ export default {
     notFound() {
       return this.state == State.NONE;
     },
+    noteMarked() {
+      return this.form.note
+        ? marked(this.form.note)
+        : "<em>Nothing to preview</em>";
+    },
   },
   apollo: {
     productType: {
@@ -341,8 +370,10 @@ export default {
   },
   methods: {
     close() {
-      this.resetForm();
       this.$emit("finished");
+      setTimeout(() => {
+        this.resetForm();
+      }, 500); // reset 0.5 sec after so that the reset form won't be shown.
     },
     resetForm() {
       // this.$refs.form.reset();
@@ -352,6 +383,7 @@ export default {
       this.form = _.cloneDeep(formDefault);
       this.$refs.form.resetValidation();
       this.error = null;
+      this.tabNote = null;
       this.stepper = 1;
     },
     async preview() {
