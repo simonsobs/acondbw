@@ -58,7 +58,7 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
         <div class="row">
           <div class="col-md-8 offset-md-4 col-12 order-1">
             <div class="caption grey--text">Note</div>
-            <div>
+            <div class="markdown-body">
               <ul>
                 <li>This is a dummy test with a lat map</li>
                 <li>A beam depends on this map</li>
