@@ -1,20 +1,17 @@
 <template>
-  <v-container fill-height fluid>
+  <v-container fill-height fluid style="align-items: stretch">
     <v-row align="center" justify="center">
-      <v-col cols="6">
-        <v-container fill-height fluid>
-          <v-row align="center" justify="center">
-            <div class="text-h3">
-              {{ title }}
-            </div>
-          </v-row>
-        </v-container>
-        <!-- <dashboard></dashboard> -->
+      <v-col cols="12" md="6">
+        <div class="text-h3 text-center">
+          {{ title }}
+        </div>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <v-container fill-height fluid>
           <v-row align="center" justify="center">
-            <sign-in-card></sign-in-card>
+            <v-col style="flex: 0">
+              <sign-in-card></sign-in-card>
+            </v-col>
           </v-row>
         </v-container>
       </v-col>
