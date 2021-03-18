@@ -2,7 +2,7 @@
   <v-container>
     <ais-instant-search :search-client="searchClient" index-name="products">
       <ais-search-box>
-        <div slot-scope="{ currentRefinement, isSearchStalled, refine }">
+        <template v-slot:default="{ currentRefinement, isSearchStalled, refine }">
           <v-text-field
             outlined
             rounded
@@ -14,14 +14,16 @@
             :value="currentRefinement"
             @input="refine($event)"
           />
-        </div>
+        </template>
       </ais-search-box>
       <ais-hits>
-        <v-card outlined slot="item" slot-scope="{ item }">
+        <template v-slot:item="{ item }">
+        <v-card outlined>
           <v-card-title v-html="item._highlightResult.name.value"></v-card-title>
           <v-card-text v-html="item._highlightResult.note.value"></v-card-text>
           <pre>{{ item }}</pre>
         </v-card>
+        </template>
       </ais-hits>
     </ais-instant-search>
   </v-container>
