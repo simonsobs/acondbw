@@ -33,24 +33,14 @@
       </v-stepper-items>
       <v-stepper-items>
         <v-stepper-content step="2">
-          <v-card-text>
-            <div class="caption grey--text">
-              New {{ productType.singular }} name
-            </div>
-            <div class="grey--text text--darken-2" v-text="form.name"></div>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-title class="primary--text"
-            >Add relations to other products</v-card-title
-          >
-          <form-relations :relations="form.relations"></form-relations>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="secondary" text @click="close()">Cancel</v-btn>
-            <v-btn color="secondary" text @click="stepper = 1">Back</v-btn>
-            <v-btn color="primary" text @click="preview">Preview</v-btn>
-          </v-card-actions>
+          <product-add-form-step-relations
+            :name="form.name"
+            :relations="form.relations"
+            :productType="productType"
+            @cancel="close()"
+            @back="stepper = 1"
+            @preview="preview"
+          ></product-add-form-step-relations>
         </v-stepper-content>
       </v-stepper-items>
       <v-stepper-items>
@@ -108,7 +98,7 @@ import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
 
 import ProductAddFormStepStart from "./ProductAddFormStepStart";
-import FormRelations from "./FormRelations";
+import ProductAddFormStepRelations from "./ProductAddFormStepRelations";
 import ProductAddFormStepPreview from "./ProductAddFormStepPreview";
 
 import State from "@/utils/LoadingState.js";
@@ -134,7 +124,7 @@ export default {
   name: "ProductAddForm",
   components: {
     ProductAddFormStepStart,
-    FormRelations,
+    ProductAddFormStepRelations,
     ProductAddFormStepPreview,
     DevToolLoadingStateOverridingMenu
   },
