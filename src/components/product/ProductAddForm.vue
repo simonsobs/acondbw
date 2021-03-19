@@ -47,8 +47,6 @@
         <v-stepper-content step="3">
           <product-add-form-step-preview
             :createProductInput="createProductInput"
-            :relationPreview="relationPreview"
-            :notePreview="notePreview"
             @cancel="close()"
             @back="stepper = 2"
             @submit="submit"
@@ -91,8 +89,6 @@
 import _ from "lodash";
 
 import marked from "marked";
-
-import gql from "graphql-tag";
 
 import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql";
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
@@ -143,8 +139,6 @@ export default {
       form: _.cloneDeep(formDefault),
       error: null,
       createProductInput: null,
-      relationPreview: null,
-      notePreview: null,
     };
   },
   computed: {
@@ -231,12 +225,6 @@ export default {
           this.productTypeId,
           this.form
         );
-        this.relationPreview = await this.composeRelationPreview(
-          this.createProductInput.relations
-        );
-        this.notePreview = this.createProductInput.note
-          ? marked(this.createProductInput.note)
-          : null;
         this.stepper = 3;
       } catch (error) {
         this.error = error;
@@ -255,44 +243,6 @@ export default {
       this.$store.dispatch("snackbarMessage", "Added");
       this.resetForm();
       this.close();
-    },
-    async composeRelationPreview(relations) {
-      const QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW = gql`
-        query QueryForProductAddFormRelationsPreview(
-          $productRelationTypeId: Int!
-          $productId: Int!
-        ) {
-          productRelationType(typeId: $productRelationTypeId) {
-            singular
-          }
-          product(productId: $productId) {
-            name
-            type_ {
-              singular
-            }
-          }
-        }
-      `;
-
-      // https://flaviocopes.com/javascript-async-await-array-map/
-      const ret = await Promise.all(
-        relations.map(async (r) => {
-          const { data } = await this.$apollo.query({
-            query: QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
-            variables: {
-              productRelationTypeId: r.typeId,
-              productId: r.productId,
-            },
-          });
-          return {
-            relationTypeSingular: data.productRelationType.singular,
-            productTypeSingular: data.product.type_.singular,
-            productName: data.product.name,
-          };
-        })
-      );
-
-      return ret;
     },
     composeCreateProductInput(productTypeId, form) {
       const ret = _.pick(form, [

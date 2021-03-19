@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-alert v-if="error" type="error">{{ error }}</v-alert>
     <v-card-text v-if="createProductInput">
       <div class="caption grey--text">Name</div>
       <div class="font-weight-bold">{{ createProductInput.name }}</div>
@@ -43,12 +44,85 @@
 </template>
 
 <script>
+import marked from "marked";
+
+import gql from "graphql-tag";
+
 export default {
   name: "ProductAddFormStepPreview",
   props: {
     createProductInput: Object,
-    relationPreview: Array,
-    notePreview: String,
+  },
+  data() {
+    return {
+      error: null,
+      relationPreview: null,
+      notePreview: null,
+    };
+  },
+  watch: {
+    async createProductInput() {
+      this.error = null;
+      this.relationPreview = null;
+      this.notePreview = null;
+
+      if (!this.createProductInput) {
+        return;
+      }
+
+      try {
+        this.relationPreview = await this.composeRelationPreview(
+          this.createProductInput.relations
+        );
+
+        this.notePreview = this.createProductInput.note
+          ? marked(this.createProductInput.note)
+          : null;
+
+      } catch (error) {
+        this.error = error;
+      }
+    },
+  },
+  methods: {
+    async composeRelationPreview(relations) {
+      const QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW = gql`
+        query QueryForProductAddFormRelationsPreview(
+          $productRelationTypeId: Int!
+          $productId: Int!
+        ) {
+          productRelationType(typeId: $productRelationTypeId) {
+            singular
+          }
+          product(productId: $productId) {
+            name
+            type_ {
+              singular
+            }
+          }
+        }
+      `;
+
+      // https://flaviocopes.com/javascript-async-await-array-map/
+      const ret = await Promise.all(
+        relations.map(async (r) => {
+          const { data } = await this.$apollo.query({
+            query: QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
+            variables: {
+              productRelationTypeId: r.typeId,
+              productId: r.productId,
+            },
+          });
+          return {
+            relationTypeSingular: data.productRelationType.singular,
+            productTypeSingular: data.product.type_.singular,
+            productName: data.product.name,
+          };
+        })
+      );
+
+      return ret;
+    },
   },
 };
 </script>
