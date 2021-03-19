@@ -7,6 +7,7 @@ import NullFrame from "@/components/layout/NullFrame";
 
 import Home from "@/views/framework/Home.vue";
 import Entry from "@/views/framework/Entry.vue";
+import SearchTest from "@/views/framework/SearchTest.vue";
 
 import OAuthRedirect from "@/views/auth/OAuthRedirect.vue"
 
@@ -57,6 +58,15 @@ const routes = [
         next({ name: "Entry" });
       }
     },
+  },
+  {
+    path: "/search-test",
+    name: "SearchTest",
+    components: {
+      default: SearchTest,
+      frame: Frame,
+    },
+    meta: { requiresAuth: true },
   },
   {
     path: "/oauth-redirect",

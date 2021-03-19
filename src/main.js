@@ -4,6 +4,9 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import { apolloProvider } from "./vue-apollo";
+import InstantSearch from 'vue-instantsearch';
+
+Vue.use(InstantSearch);
 
 Vue.config.productionTip = false;
 
