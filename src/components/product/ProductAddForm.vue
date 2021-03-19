@@ -55,47 +55,14 @@
       </v-stepper-items>
       <v-stepper-items>
         <v-stepper-content step="3">
-          <v-card-text v-if="createProductInput">
-            <div class="caption grey--text">Name</div>
-            <div class="font-weight-bold">{{ createProductInput.name }}</div>
-            <div class="caption grey--text">Date produced</div>
-            <div v-text="createProductInput.dateProduced"></div>
-            <div class="caption grey--text">Produced by</div>
-            <div v-text="createProductInput.producedBy"></div>
-            <div class="caption grey--text">Contact</div>
-            <div v-text="createProductInput.contact"></div>
-            <div class="caption grey--text">Paths</div>
-            <ul
-              v-if="
-                createProductInput.paths && createProductInput.paths.length > 0
-              "
-            >
-              <li
-                v-for="(p, index) in createProductInput.paths"
-                :key="index"
-                v-text="p"
-              ></li>
-            </ul>
-            <div v-else class="body-2 grey--text">None</div>
-            <div class="caption grey--text">Note</div>
-            <div v-if="notePreview" class="markdown-body" v-html="notePreview"></div>
-            <div v-else class="body-2 grey--text">None</div>
-            <div class="caption grey--text">Relations</div>
-            <ul v-if="relationPreview && relationPreview.length > 0">
-              <li v-for="(r, index) in relationPreview" :key="index">
-                {{ r.relationTypeSingular }}: {{ r.productName }} ({{
-                  r.productTypeSingular
-                }})
-              </li>
-            </ul>
-            <div v-else class="body-2 grey--text">None</div>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="secondary" text @click="close()">Cancel</v-btn>
-            <v-btn color="secondary" text @click="stepper = 2">Back</v-btn>
-            <v-btn color="primary" text @click="submit">Submit</v-btn>
-          </v-card-actions>
+          <product-add-form-step-preview
+            :createProductInput="createProductInput"
+            :relationPreview="relationPreview"
+            :notePreview="notePreview"
+            @cancel="close()"
+            @back="stepper = 2"
+            @submit="submit"
+          ></product-add-form-step-preview>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -142,6 +109,7 @@ import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
 
 import ProductAddFormStepStart from "./ProductAddFormStepStart";
 import FormRelations from "./FormRelations";
+import ProductAddFormStepPreview from "./ProductAddFormStepPreview";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
@@ -167,7 +135,8 @@ export default {
   components: {
     ProductAddFormStepStart,
     FormRelations,
-    DevToolLoadingStateOverridingMenu,
+    ProductAddFormStepPreview,
+    DevToolLoadingStateOverridingMenu
   },
   props: {
     productTypeId: { required: true },
