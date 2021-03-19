@@ -88,8 +88,6 @@
 <script>
 import _ from "lodash";
 
-import marked from "marked";
-
 import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql";
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
 
@@ -167,11 +165,6 @@ export default {
     },
     notFound() {
       return this.state == State.NONE;
-    },
-    noteMarked() {
-      return this.form.note
-        ? marked(this.form.note)
-        : "<em>Nothing to preview</em>";
     },
   },
   apollo: {
