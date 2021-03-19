@@ -16,7 +16,7 @@
     <product-add-form
       v-else-if="loaded"
       :productTypeId="node ? node.typeId : null"
-      v-on:finished="finished"
+      @finished="finished"
     ></product-add-form>
     <v-row v-else-if="notFound" align="center" justify="center">
       <v-col class="text-h1 text-center">Not Found (404)</v-col>
