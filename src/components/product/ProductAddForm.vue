@@ -22,191 +22,35 @@
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
-          <v-form ref="form" v-model="valid">
-            <v-container fluid>
-              <v-row>
-                <v-col order="1" cols="12" md="4">
-                  <v-text-field
-                    label="Name*"
-                    required
-                    :hint="
-                      'Name of the ' +
-                      productType.singular +
-                      '. This field cannot be changed later.'
-                    "
-                    persistent-hint
-                    v-model="form.name"
-                    :rules="nameRules"
-                  ></v-text-field>
-                </v-col>
-                <v-col order="3" cols="6" md="4">
-                  <v-text-field-with-date-picker
-                    label="Date produced (YYYY-MM-DD)*"
-                    :hint="
-                      'The date on which the ' +
-                      productType.singular +
-                      ' was produced, e.g., 2020-05-06. This field cannot be changed later.'
-                    "
-                    v-model="form.dateProduced"
-                    :rules="requiredRules"
-                  ></v-text-field-with-date-picker>
-                </v-col>
-                <v-col order="4" cols="6" md="4">
-                  <v-text-field
-                    label="Produced by*"
-                    required
-                    :hint="
-                      'The person or group that produced the ' +
-                      productType.singular +
-                      ', e.g. pwg-xxx. This field cannot be changed later.'
-                    "
-                    persistent-hint
-                    v-model="form.producedBy"
-                    :rules="requiredRules"
-                  ></v-text-field>
-                </v-col>
-                <v-col order="4" cols="6" offset-md="4" md="4">
-                  <v-text-field
-                    label="Contact*"
-                    required
-                    :hint="
-                      'A person or group that can be contacted for questions or issues about the ' +
-                      productType.singular +
-                      '.'
-                    "
-                    persistent-hint
-                    v-model="form.contact"
-                    :rules="requiredRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" md="8" offset-md="4">
-                  <v-textarea
-                    label="Paths"
-                    hint="A path per line. e.g., nersc:/go/to/my/product_v3"
-                    rows="2"
-                    persistent-hint
-                    v-model="form.paths"
-                  ></v-textarea>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" md="8" offset-md="4" class="mt-4">
-                  <label class="v-label theme--light">Note</label>
-                  <v-tabs v-model="tabNote" class="mb-1">
-                    <v-tab key="edit">Edit</v-tab>
-                    <v-tab key="preview">Preview</v-tab>
-                  </v-tabs>
-                  <v-tabs-items v-model="tabNote">
-                    <v-tab-item
-                      key="edit"
-                      style="min-height: 180px"
-                      :transition="false"
-                      :reverse-transition="false"
-                    >
-                      <v-textarea
-                        solo
-                        outlined
-                        label="Note will be parsed as Markdown"
-                        rows="5"
-                        v-model="form.note"
-                      ></v-textarea>
-                    </v-tab-item>
-                    <v-tab-item
-                      key="preview"
-                      v-html="noteMarked"
-                      style="min-height: 180px"
-                      :transition="false"
-                      :reverse-transition="false"
-                      class="markdown-body px-3 pt-3"
-                    >
-                    </v-tab-item>
-                  </v-tabs-items>
-                </v-col>
-              </v-row>
-            </v-container>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="secondary" text @click="close()">Cancel</v-btn>
-              <v-btn color="secondary" text @click="resetForm()">Reset</v-btn>
-              <v-btn
-                color="primary"
-                :disabled="!valid"
-                text
-                @click="stepper = 2"
-                >Next</v-btn
-              >
-            </v-card-actions>
-          </v-form>
+          <product-add-form-step-start
+            :form="form"
+            :productType="productType"
+            @cancel="close()"
+            @reset="resetForm()"
+            @next="stepper = 2"
+          ></product-add-form-step-start>
         </v-stepper-content>
       </v-stepper-items>
       <v-stepper-items>
         <v-stepper-content step="2">
-          <v-card-text>
-            <div class="caption grey--text">
-              New {{ productType.singular }} name
-            </div>
-            <div class="grey--text text--darken-2" v-text="form.name"></div>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-title class="primary--text"
-            >Add relations to other products</v-card-title
-          >
-          <form-relations :relations="form.relations"></form-relations>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="secondary" text @click="close()">Cancel</v-btn>
-            <v-btn color="secondary" text @click="stepper = 1">Back</v-btn>
-            <v-btn color="primary" text @click="preview">Preview</v-btn>
-          </v-card-actions>
+          <product-add-form-step-relations
+            :name="form.name"
+            :relations="form.relations"
+            :productType="productType"
+            @cancel="close()"
+            @back="stepper = 1"
+            @preview="preview"
+          ></product-add-form-step-relations>
         </v-stepper-content>
       </v-stepper-items>
       <v-stepper-items>
         <v-stepper-content step="3">
-          <v-card-text v-if="createProductInput">
-            <div class="caption grey--text">Name</div>
-            <div class="font-weight-bold">{{ createProductInput.name }}</div>
-            <div class="caption grey--text">Date produced</div>
-            <div v-text="createProductInput.dateProduced"></div>
-            <div class="caption grey--text">Produced by</div>
-            <div v-text="createProductInput.producedBy"></div>
-            <div class="caption grey--text">Contact</div>
-            <div v-text="createProductInput.contact"></div>
-            <div class="caption grey--text">Paths</div>
-            <ul
-              v-if="
-                createProductInput.paths && createProductInput.paths.length > 0
-              "
-            >
-              <li
-                v-for="(p, index) in createProductInput.paths"
-                :key="index"
-                v-text="p"
-              ></li>
-            </ul>
-            <div v-else class="body-2 grey--text">None</div>
-            <div class="caption grey--text">Note</div>
-            <div v-if="notePreview" class="markdown-body" v-html="notePreview"></div>
-            <div v-else class="body-2 grey--text">None</div>
-            <div class="caption grey--text">Relations</div>
-            <ul v-if="relationPreview && relationPreview.length > 0">
-              <li v-for="(r, index) in relationPreview" :key="index">
-                {{ r.relationTypeSingular }}: {{ r.productName }} ({{
-                  r.productTypeSingular
-                }})
-              </li>
-            </ul>
-            <div v-else class="body-2 grey--text">None</div>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="secondary" text @click="close()">Cancel</v-btn>
-            <v-btn color="secondary" text @click="stepper = 2">Back</v-btn>
-            <v-btn color="primary" text @click="submit">Submit</v-btn>
-          </v-card-actions>
+          <product-add-form-step-preview
+            :createProductInput="createProductInput"
+            @cancel="close()"
+            @back="stepper = 2"
+            @submit="submit"
+          ></product-add-form-step-preview>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -244,15 +88,12 @@
 <script>
 import _ from "lodash";
 
-import marked from "marked";
-
-import gql from "graphql-tag";
-
 import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql";
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
 
-import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker";
-import FormRelations from "./FormRelations";
+import ProductAddFormStepStart from "./ProductAddFormStepStart";
+import ProductAddFormStepRelations from "./ProductAddFormStepRelations";
+import ProductAddFormStepPreview from "./ProductAddFormStepPreview";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
@@ -276,9 +117,10 @@ const formDefault = {
 export default {
   name: "ProductAddForm",
   components: {
-    VTextFieldWithDatePicker,
-    FormRelations,
-    DevToolLoadingStateOverridingMenu,
+    ProductAddFormStepStart,
+    ProductAddFormStepRelations,
+    ProductAddFormStepPreview,
+    DevToolLoadingStateOverridingMenu
   },
   props: {
     productTypeId: { required: true },
@@ -293,17 +135,8 @@ export default {
       State: State,
       step: 1,
       form: _.cloneDeep(formDefault),
-      tabNote: null,
-      valid: true,
       error: null,
-      nameRules: [
-        (v) => !!v || "This field is required",
-        (v) => (v || "").indexOf(" ") < 0 || "No spaces are allowed",
-      ],
-      requiredRules: [(v) => !!v || "This field is required"],
       createProductInput: null,
-      relationPreview: null,
-      notePreview: null,
     };
   },
   computed: {
@@ -332,11 +165,6 @@ export default {
     },
     notFound() {
       return this.state == State.NONE;
-    },
-    noteMarked() {
-      return this.form.note
-        ? marked(this.form.note)
-        : "<em>Nothing to preview</em>";
     },
   },
   apollo: {
@@ -381,9 +209,7 @@ export default {
       // the empty object {}.
       // Instead, the following two lines are used.
       this.form = _.cloneDeep(formDefault);
-      this.$refs.form.resetValidation();
       this.error = null;
-      this.tabNote = null;
       this.stepper = 1;
     },
     async preview() {
@@ -392,12 +218,6 @@ export default {
           this.productTypeId,
           this.form
         );
-        this.relationPreview = await this.composeRelationPreview(
-          this.createProductInput.relations
-        );
-        this.notePreview = this.createProductInput.note
-          ? marked(this.createProductInput.note)
-          : null;
         this.stepper = 3;
       } catch (error) {
         this.error = error;
@@ -416,44 +236,6 @@ export default {
       this.$store.dispatch("snackbarMessage", "Added");
       this.resetForm();
       this.close();
-    },
-    async composeRelationPreview(relations) {
-      const QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW = gql`
-        query QueryForProductAddFormRelationsPreview(
-          $productRelationTypeId: Int!
-          $productId: Int!
-        ) {
-          productRelationType(typeId: $productRelationTypeId) {
-            singular
-          }
-          product(productId: $productId) {
-            name
-            type_ {
-              singular
-            }
-          }
-        }
-      `;
-
-      // https://flaviocopes.com/javascript-async-await-array-map/
-      const ret = await Promise.all(
-        relations.map(async (r) => {
-          const { data } = await this.$apollo.query({
-            query: QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
-            variables: {
-              productRelationTypeId: r.typeId,
-              productId: r.productId,
-            },
-          });
-          return {
-            relationTypeSingular: data.productRelationType.singular,
-            productTypeSingular: data.product.type_.singular,
-            productName: data.product.name,
-          };
-        })
-      );
-
-      return ret;
     },
     composeCreateProductInput(productTypeId, form) {
       const ret = _.pick(form, [
