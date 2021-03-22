@@ -115,7 +115,7 @@
     <v-divider></v-divider>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="$emit('cancel')">Cancel</v-btn>
+      <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
       <v-btn color="secondary" text @click="reset">Reset</v-btn>
       <v-btn color="primary" :disabled="$v.$invalid" text @click="$emit('next')"
         >Next</v-btn
@@ -262,6 +262,14 @@ export default {
       field.$model = value;
       field.$touch();
     }, 500),
+    cancel() {
+      this.$emit("cancel");
+      setTimeout(() => {
+        this.error = null;
+        this.$v.$reset();
+        this.tabNote = null;
+      }, 500); // reset 0.5 sec after so that the reset form won't be shown.
+    },
     reset() {
       this.error = null;
       this.$v.$reset();
