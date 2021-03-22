@@ -1,6 +1,7 @@
 <template>
   <v-form ref="form">
     <v-container fluid>
+      <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <v-row>
         <v-col order="1" cols="12" md="4">
           <v-text-field
@@ -137,7 +138,6 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker";
 
 async function isNameAvailable(name, productTypeId, apolloClient) {
-
   const QUERY = gql`
     query QueryProductNameInProductAddFormStepStart(
       $typeId: Int!
@@ -178,6 +178,7 @@ export default {
     productType: { required: true },
   },
   data: () => ({
+    error: null,
     tabNote: null,
   }),
   validations: {
@@ -186,7 +187,16 @@ export default {
         required,
         async unique(value) {
           if (value === "") return true;
-          return await isNameAvailable(value.trim(), this.productType.typeId, this.$apollo);
+          try {
+            return await isNameAvailable(
+              value.trim(),
+              this.productType.typeId,
+              this.$apollo
+            );
+          } catch (error) {
+            this.error = error;
+            return true;
+          }
         },
       },
       producedBy: { required },
@@ -240,6 +250,7 @@ export default {
       field.$touch();
     }, 500),
     reset() {
+      this.error = null;
       this.$v.$reset();
       this.tabNote = null;
       this.$emit("reset");
