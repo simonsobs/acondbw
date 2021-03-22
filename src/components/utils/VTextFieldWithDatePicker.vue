@@ -16,6 +16,7 @@
         v-bind:value="value"
         v-on:input="$emit('input', $event)"
         :rules="rules"
+        :error-messages="errorMessages"
         v-on="on"
       ></v-text-field>
     </template>
@@ -32,11 +33,11 @@
 <script>
 export default {
   name: "VTextFieldWithDatePicker",
-  props: ["value", "label", "hint", "rules"],
+  props: ["value", "label", "hint", "rules", "errorMessages"],
   data() {
     return {
-      menu: false
+      menu: false,
     };
-  }
+  },
 };
 </script>
