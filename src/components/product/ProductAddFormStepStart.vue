@@ -12,9 +12,9 @@
               '. This field cannot be changed later.'
             "
             persistent-hint
-            v-model="form.name"
             :error-messages="nameErrors"
-            @input="$v.form.name.$touch()"
+            :value="$v.form.name.$model"
+            @input="debounceInput($v.form.name, $event)"
             @blur="$v.form.name.$touch()"
           ></v-text-field>
         </v-col>
@@ -27,7 +27,9 @@
               ' was produced, e.g., 2020-05-06. This field cannot be changed later.'
             "
             v-model="form.dateProduced"
-            :rules="requiredRules"
+            :error-messages="dateProducedErrors"
+            @input="$v.form.dateProduced.$touch()"
+            @blur="$v.form.dateProduced.$touch()"
           ></v-text-field-with-date-picker>
         </v-col>
         <v-col order="4" cols="6" md="4">
@@ -114,15 +116,18 @@
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="$emit('cancel')">Cancel</v-btn>
       <v-btn color="secondary" text @click="reset">Reset</v-btn>
-      <v-btn color="primary" :disabled="!valid" text @click="$emit('next')"
+      <v-btn color="primary" :disabled="$v.$invalid" text @click="$emit('next')"
         >Next</v-btn
       >
     </v-card-actions>
+    <pre>{{ $v }}</pre>
   </v-form>
 </template>
 
 <script>
+import _ from "lodash";
 import marked from "marked";
+import gql from "graphql-tag";
 
 import { required, maxLength, email } from "vuelidate/lib/validators";
 
@@ -144,22 +149,64 @@ export default {
   data: () => ({
     tabNote: null,
     valid: true,
-    nameRules: [
-      (v) => !!v || "This field is required",
-    ],
+    nameRules: [(v) => !!v || "This field is required"],
     requiredRules: [(v) => !!v || "This field is required"],
   }),
   validations: {
     form: {
-      name: { required },
-      producedBy: { required },
-      contact: { required },
+      name: {
+        required,
+        async isUnique(value) {
+          if (value === "") return true;
+          const QUERY = gql`
+            query QueryProductNameInProductAddFormStepStart(
+              $typeId: Int!
+              $name: String!
+            ) {
+              product(typeId: $typeId, name: $name) {
+                productId
+                typeId
+                name
+              }
+            }
+          `;
+
+          const { data } = await this.$apollo.query({
+            query: QUERY,
+            variables: {
+              typeId: this.productType.typeId,
+              name: value.trim(),
+            },
+          });
+
+          if (data.product) {
+            // the name isn't available
+            return false;
+          }
+
+          return true;
+        },
       },
+      producedBy: { required },
+      dateProduced: { required },
+      contact: { required },
+    },
   },
   computed: {
     nameErrors() {
       const errors = [];
       const field = this.$v.form.name;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      !field.isUnique &&
+        errors.push(
+          `The name "${this.$v.form.name.$model.trim()}" is not available.`
+        );
+      return errors;
+    },
+    dateProducedErrors() {
+      const errors = [];
+      const field = this.$v.form.dateProduced;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       return errors;
@@ -185,8 +232,13 @@ export default {
     },
   },
   methods: {
+    debounceInput: _.debounce(function (field, value) {
+      // https://github.com/vuelidate/vuelidate/issues/320#issuecomment-395349377
+      field.$model = value;
+      field.$touch();
+    }, 500),
     reset() {
-      this.$refs.form.resetValidation();
+      this.$v.$reset();
       this.tabNote = null;
       this.$emit("reset");
     },
