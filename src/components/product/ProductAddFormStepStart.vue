@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid">
+  <v-form ref="form">
     <v-container fluid>
       <v-row>
         <v-col order="1" cols="12" md="4">
@@ -148,15 +148,12 @@ export default {
   },
   data: () => ({
     tabNote: null,
-    valid: true,
-    nameRules: [(v) => !!v || "This field is required"],
-    requiredRules: [(v) => !!v || "This field is required"],
   }),
   validations: {
     form: {
       name: {
         required,
-        async isUnique(value) {
+        async unique(value) {
           if (value === "") return true;
           const QUERY = gql`
             query QueryProductNameInProductAddFormStepStart(
@@ -198,7 +195,7 @@ export default {
       const field = this.$v.form.name;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
-      !field.isUnique &&
+      !field.unique &&
         errors.push(
           `The name "${this.$v.form.name.$model.trim()}" is not available.`
         );
