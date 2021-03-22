@@ -1,6 +1,7 @@
 <template>
-  <v-form ref="form" v-model="valid">
+  <v-form ref="form">
     <v-container fluid>
+      <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <v-row>
         <v-col order="1" cols="12" md="4">
           <v-text-field
@@ -12,8 +13,10 @@
               '. This field cannot be changed later.'
             "
             persistent-hint
-            v-model="form.name"
-            :rules="nameRules"
+            :error-messages="nameErrors"
+            :value="$v.form.name.$model"
+            @input="debounceInput($v.form.name, $event)"
+            @blur="$v.form.name.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="3" cols="6" md="4">
@@ -25,7 +28,9 @@
               ' was produced, e.g., 2020-05-06. This field cannot be changed later.'
             "
             v-model="form.dateProduced"
-            :rules="requiredRules"
+            :error-messages="dateProducedErrors"
+            @input="$v.form.dateProduced.$touch()"
+            @blur="$v.form.dateProduced.$touch()"
           ></v-text-field-with-date-picker>
         </v-col>
         <v-col order="4" cols="6" md="4">
@@ -39,7 +44,9 @@
             "
             persistent-hint
             v-model="form.producedBy"
-            :rules="requiredRules"
+            :error-messages="producedByErrors"
+            @input="$v.form.producedBy.$touch()"
+            @blur="$v.form.producedBy.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="4" cols="6" offset-md="4" md="4">
@@ -53,7 +60,9 @@
             "
             persistent-hint
             v-model="form.contact"
-            :rules="requiredRules"
+            :error-messages="contactErrors"
+            @input="$v.form.contact.$touch()"
+            @blur="$v.form.contact.$touch()"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -108,20 +117,65 @@
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="$emit('cancel')">Cancel</v-btn>
       <v-btn color="secondary" text @click="reset">Reset</v-btn>
-      <v-btn color="primary" :disabled="!valid" text @click="$emit('next')"
+      <v-btn color="primary" :disabled="$v.$invalid" text @click="$emit('next')"
         >Next</v-btn
       >
     </v-card-actions>
+    <pre>{{ $v }}</pre>
   </v-form>
 </template>
 
 <script>
+import _ from "lodash";
 import marked from "marked";
+import gql from "graphql-tag";
+
+import { required, maxLength, email } from "vuelidate/lib/validators";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker";
+
+async function isNameAvailable(name, productTypeId, apolloClient) {
+  const QUERY = gql`
+    query QueryProductNameInProductAddFormStepStart(
+      $typeId: Int!
+      $name: String!
+    ) {
+      product(typeId: $typeId, name: $name) {
+        productId
+        typeId
+        name
+      }
+    }
+  `;
+
+  const { data } = await apolloClient.query({
+    query: QUERY,
+    variables: {
+      typeId: productTypeId,
+      name: name,
+    },
+  });
+
+  if (data.product) {
+    // the name isn't available
+    return false;
+  }
+
+  return true;
+}
+
+function parsableAsDate(value) {
+  // test format "YYYY-MM-DD"
+  const reg = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}?$/;
+  if (!reg.test(value)) {
+    return false;
+  }
+
+  return !isNaN(new Date(value));
+}
 
 export default {
   name: "ProductAddFormStepStart",
@@ -134,15 +188,69 @@ export default {
     productType: { required: true },
   },
   data: () => ({
+    error: null,
     tabNote: null,
-    valid: true,
-    nameRules: [
-      (v) => !!v || "This field is required",
-      (v) => (v || "").indexOf(" ") < 0 || "No spaces are allowed",
-    ],
-    requiredRules: [(v) => !!v || "This field is required"],
   }),
+  validations: {
+    form: {
+      name: {
+        required,
+        async unique(value) {
+          if (value === "") return true;
+          try {
+            return await isNameAvailable(
+              value.trim(),
+              this.productType.typeId,
+              this.$apollo
+            );
+          } catch (error) {
+            this.error = error;
+            return true;
+          }
+        },
+      },
+      producedBy: { required },
+      dateProduced: { required, parsableAsDate },
+      contact: { required },
+    },
+  },
   computed: {
+    nameErrors() {
+      const errors = [];
+      const field = this.$v.form.name;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      !field.unique &&
+        errors.push(
+          `The name "${this.$v.form.name.$model.trim()}" is not available.`
+        );
+      return errors;
+    },
+    dateProducedErrors() {
+      const errors = [];
+      const field = this.$v.form.dateProduced;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      !field.parsableAsDate &&
+        errors.push(
+          `"${this.$v.form.dateProduced.$model}" cannot be parsed as a date.`
+        );
+      return errors;
+    },
+    producedByErrors() {
+      const errors = [];
+      const field = this.$v.form.producedBy;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      return errors;
+    },
+    contactErrors() {
+      const errors = [];
+      const field = this.$v.form.contact;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      return errors;
+    },
     noteMarked() {
       return this.form.note
         ? marked(this.form.note)
@@ -150,8 +258,14 @@ export default {
     },
   },
   methods: {
+    debounceInput: _.debounce(function (field, value) {
+      // https://github.com/vuelidate/vuelidate/issues/320#issuecomment-395349377
+      field.$model = value;
+      field.$touch();
+    }, 500),
     reset() {
-      this.$refs.form.resetValidation();
+      this.error = null;
+      this.$v.$reset();
       this.tabNote = null;
       this.$emit("reset");
     },
