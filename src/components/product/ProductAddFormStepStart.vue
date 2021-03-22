@@ -136,6 +136,37 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker";
 
+async function isNameAvailable(name, productTypeId, apolloClient) {
+
+  const QUERY = gql`
+    query QueryProductNameInProductAddFormStepStart(
+      $typeId: Int!
+      $name: String!
+    ) {
+      product(typeId: $typeId, name: $name) {
+        productId
+        typeId
+        name
+      }
+    }
+  `;
+
+  const { data } = await apolloClient.query({
+    query: QUERY,
+    variables: {
+      typeId: productTypeId,
+      name: name,
+    },
+  });
+
+  if (data.product) {
+    // the name isn't available
+    return false;
+  }
+
+  return true;
+}
+
 export default {
   name: "ProductAddFormStepStart",
   components: {
@@ -155,33 +186,7 @@ export default {
         required,
         async unique(value) {
           if (value === "") return true;
-          const QUERY = gql`
-            query QueryProductNameInProductAddFormStepStart(
-              $typeId: Int!
-              $name: String!
-            ) {
-              product(typeId: $typeId, name: $name) {
-                productId
-                typeId
-                name
-              }
-            }
-          `;
-
-          const { data } = await this.$apollo.query({
-            query: QUERY,
-            variables: {
-              typeId: this.productType.typeId,
-              name: value.trim(),
-            },
-          });
-
-          if (data.product) {
-            // the name isn't available
-            return false;
-          }
-
-          return true;
+          return await isNameAvailable(value.trim(), this.productType.typeId, this.$apollo);
         },
       },
       producedBy: { required },
