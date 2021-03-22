@@ -167,6 +167,16 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
   return true;
 }
 
+function parsableAsDate(value) {
+  // test format "YYYY-MM-DD"
+  const reg = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}?$/;
+  if (!reg.test(value)) {
+    return false;
+  }
+
+  return !isNaN(new Date(value));
+}
+
 export default {
   name: "ProductAddFormStepStart",
   components: {
@@ -200,7 +210,7 @@ export default {
         },
       },
       producedBy: { required },
-      dateProduced: { required },
+      dateProduced: { required, parsableAsDate },
       contact: { required },
     },
   },
@@ -221,6 +231,10 @@ export default {
       const field = this.$v.form.dateProduced;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
+      !field.parsableAsDate &&
+        errors.push(
+          `"${this.$v.form.dateProduced.$model}" cannot be parsed as a date.`
+        );
       return errors;
     },
     producedByErrors() {
