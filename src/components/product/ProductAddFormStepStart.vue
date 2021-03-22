@@ -13,7 +13,9 @@
             "
             persistent-hint
             v-model="form.name"
-            :rules="nameRules"
+            :error-messages="nameErrors"
+            @input="$v.form.name.$touch()"
+            @blur="$v.form.name.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="3" cols="6" md="4">
@@ -39,7 +41,9 @@
             "
             persistent-hint
             v-model="form.producedBy"
-            :rules="requiredRules"
+            :error-messages="producedByErrors"
+            @input="$v.form.producedBy.$touch()"
+            @blur="$v.form.producedBy.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="4" cols="6" offset-md="4" md="4">
@@ -53,7 +57,9 @@
             "
             persistent-hint
             v-model="form.contact"
-            :rules="requiredRules"
+            :error-messages="contactErrors"
+            @input="$v.form.contact.$touch()"
+            @blur="$v.form.contact.$touch()"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -118,6 +124,8 @@
 <script>
 import marked from "marked";
 
+import { required, maxLength, email } from "vuelidate/lib/validators";
+
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
 
@@ -141,7 +149,35 @@ export default {
     ],
     requiredRules: [(v) => !!v || "This field is required"],
   }),
+  validations: {
+    form: {
+      name: { required },
+      producedBy: { required },
+      contact: { required },
+      },
+  },
   computed: {
+    nameErrors() {
+      const errors = [];
+      const field = this.$v.form.name;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      return errors;
+    },
+    producedByErrors() {
+      const errors = [];
+      const field = this.$v.form.producedBy;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      return errors;
+    },
+    contactErrors() {
+      const errors = [];
+      const field = this.$v.form.contact;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      return errors;
+    },
     noteMarked() {
       return this.form.note
         ? marked(this.form.note)
