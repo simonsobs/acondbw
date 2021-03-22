@@ -121,7 +121,6 @@
         >Next</v-btn
       >
     </v-card-actions>
-    <pre>{{ $v }}</pre>
   </v-form>
 </template>
 
