@@ -20,11 +20,6 @@ export default {
   methods: {
     async main() {
       const state = this.$route.query.state;
-      if (!state) {
-        this.$router.push({ path: "/" });
-        return;
-      }
-
       if (!validateState(state)) {
         this.$router.push({ path: "/" });
         return;
