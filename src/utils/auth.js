@@ -103,9 +103,9 @@ export async function isSignedIn(apolloClient) {
 }
 
 export async function signOut(apolloClient) {
-    await onLogout(apolloClient);
-    localStorage.removeItem("github-user");
-    localStorage.clear();
+  await onLogout(apolloClient);
+  localStorage.removeItem("github-user");
+  localStorage.clear();
 }
 
 export async function signIn(code, state, apolloClient) {
