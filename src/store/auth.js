@@ -1,9 +1,6 @@
 import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
-const querystring = require("querystring");
-const cryptoRandomString = require("crypto-random-string");
-import AuthenticateWithGitHub from "@/graphql/mutations/AuthenticateWithGitHub.gql";
 import GitHubViewer from "@/graphql/queries/GitHubViewer.gql";
-import { validateState } from "@/utils/auth.js";
+import { exchangeCodeForToken } from "@/utils/auth.js";
 
 function createInitialState() {
   let token;
@@ -64,15 +61,7 @@ export const auth = {
     async obtainToken({ commit, dispatch }, { code, state, apolloClient }) {
       commit("clear_last_error");
       try {
-        if (!validateState(state)) {
-          throw new Error("The state was invalid.");
-        }
-        const { data } = await apolloClient.mutate({
-          mutation: AuthenticateWithGitHub,
-          variables: { code: code },
-        });
-        const authPayload = data.authenticateWithGitHub.authPayload;
-        const token = JSON.stringify(authPayload.token);
+        const token = await exchangeCodeForToken(code, state, apolloClient);
         await onLogin(apolloClient, token);
         commit("set_token", token);
       } catch (error) {

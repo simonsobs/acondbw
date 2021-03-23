@@ -1,9 +1,11 @@
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
-import GitHubOAuthAppInfo from "@/graphql/queries/GitHubOAuthAppInfo.gql";
-
 export const AUTH_STATE = "auth-state";
+
+import GitHubOAuthAppInfo from "@/graphql/queries/GitHubOAuthAppInfo.gql";
+import AuthenticateWithGitHub from "@/graphql/mutations/AuthenticateWithGitHub.gql";
+
 
 /**
  *
@@ -62,4 +64,17 @@ export function validateState(state) {
     return false;
   }
   return true;
+}
+
+export async function exchangeCodeForToken(code, state, apolloClient) {
+  if (!validateState(state)) {
+    throw new Error("The state was invalid.");
+  }
+  const { data } = await apolloClient.mutate({
+    mutation: AuthenticateWithGitHub,
+    variables: { code: code },
+  });
+  const authPayload = data.authenticateWithGitHub.authPayload;
+  const token = JSON.stringify(authPayload.token);
+  return token;
 }
