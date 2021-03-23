@@ -1,13 +1,13 @@
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
+import { router, checkAuthForCurrentRoute } from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import { apolloProvider } from "./vue-apollo";
-import Vuelidate from 'vuelidate'
-import InstantSearch from 'vue-instantsearch';
+import Vuelidate from "vuelidate";
+import InstantSearch from "vue-instantsearch";
 
-Vue.use(Vuelidate)
+Vue.use(Vuelidate);
 Vue.use(InstantSearch);
 
 Vue.config.productionTip = false;
@@ -17,5 +17,23 @@ new Vue({
   vuetify,
   store,
   apolloProvider,
+  created() {
+    this.$store.dispatch("checkIfSignedIn", this.$apollo);
+  },
+  computed: {
+    isSignedIn() {
+      return !!this.$store.state.auth.token;
+    },
+  },
+  watch: {
+    isSignedIn: {
+      immediate: true,
+      handler: function (val) {
+        if (!val) {
+          checkAuthForCurrentRoute();
+        }
+      },
+    },
+  },
   render: (h) => h(App),
 }).$mount("#app");
