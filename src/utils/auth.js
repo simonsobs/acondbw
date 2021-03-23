@@ -67,6 +67,12 @@ export function validateState(state) {
   return true;
 }
 
+export async function signOut(apolloClient) {
+    await onLogout(apolloClient);
+    localStorage.removeItem("github-user");
+    localStorage.clear();
+}
+
 export async function signIn(code, state, apolloClient) {
   try {
     const token = await exchangeCodeForToken(code, state, apolloClient);
@@ -75,8 +81,7 @@ export async function signIn(code, state, apolloClient) {
     localStorage.setItem("github-user", JSON.stringify(gitHubViewer));
     return { token, gitHubViewer };
   } catch (error) {
-    await onLogout(apolloClient);
-    localStorage.removeItem("github-user");
+    await signOut(apolloClient);
     throw error;
   }
 }
