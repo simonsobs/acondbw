@@ -7,6 +7,7 @@ export const AUTH_STATE = "auth-state";
 import GitHubOAuthAppInfo from "@/graphql/queries/GitHubOAuthAppInfo.gql";
 import AuthenticateWithGitHub from "@/graphql/mutations/AuthenticateWithGitHub.gql";
 import GitHubViewer from "@/graphql/queries/GitHubViewer.gql";
+import IsSignedIn from "@/graphql/queries/IsSignedIn.gql";
 
 /**
  *
@@ -88,6 +89,17 @@ export function restoreFromLocalStorage() {
   }
 
   return { token, gitHubViewer };
+}
+
+export async function isSignedIn(apolloClient) {
+  try {
+    const { data } = await apolloClient.query({ query: IsSignedIn });
+    if (data.isSignedIn) {
+      return true;
+    }
+  } catch {}
+  await signOut(apolloClient);
+  return false;
 }
 
 export async function signOut(apolloClient) {
