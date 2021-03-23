@@ -67,6 +67,29 @@ export function validateState(state) {
   return true;
 }
 
+export function restoreFromLocalStorage() {
+  let token;
+  let gitHubViewer;
+
+  try {
+    token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
+    gitHubViewer = JSON.parse(localStorage.getItem("github-user"));
+
+    if (!((token && gitHubViewer) || (!token && !gitHubViewer))) {
+      localStorage.removeItem(AUTH_TOKEN);
+      localStorage.removeItem("github-user");
+      token = null;
+      gitHubViewer = null;
+    }
+  } catch (error) {
+    localStorage.clear();
+    token = null;
+    gitHubViewer = null;
+  }
+
+  return { token, gitHubViewer };
+}
+
 export async function signOut(apolloClient) {
     await onLogout(apolloClient);
     localStorage.removeItem("github-user");

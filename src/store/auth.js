@@ -1,31 +1,12 @@
-import { apolloClient, AUTH_TOKEN } from "@/vue-apollo";
-import { signIn, signOut } from "@/utils/auth.js";
+import { signIn, signOut, restoreFromLocalStorage } from "@/utils/auth.js";
 
 function createInitialState() {
-  let token;
-  let githubUser;
-
   try {
-    token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
-    githubUser = JSON.parse(localStorage.getItem("github-user"));
-
-    if (!((token && githubUser) || (!token && !githubUser))) {
-      localStorage.removeItem(AUTH_TOKEN);
-      localStorage.removeItem("github-user");
-      token = null;
-      githubUser = null;
-    }
+    const { token, gitHubViewer } = restoreFromLocalStorage();
+    return { token, githubUser: gitHubViewer };
   } catch (error) {
-    localStorage.clear();
-    token = null;
-    githubUser = null;
+    return { token: null, githubUser: null };
   }
-
-  const ret = {
-    token: token,
-    githubUser: githubUser,
-  };
-  return ret;
 }
 
 export const auth = {
