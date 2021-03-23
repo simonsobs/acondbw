@@ -15,6 +15,12 @@ describe("validateState", () => {
     expect(result).toBeTruthy();
   });
 
+  it.each([null, ""])("fail empty %p", (state) => {
+    localStorage.setItem(AUTH_STATE, JSON.stringify("abc"));
+    const result = validateState(state);
+    expect(result).toBeFalsy();
+  });
+
   it("fail no state in localStorate", () => {
     const state = "abc";
     const result = validateState(state);
