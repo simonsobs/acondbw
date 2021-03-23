@@ -1,11 +1,12 @@
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 
+import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
 export const AUTH_STATE = "auth-state";
 
 import GitHubOAuthAppInfo from "@/graphql/queries/GitHubOAuthAppInfo.gql";
 import AuthenticateWithGitHub from "@/graphql/mutations/AuthenticateWithGitHub.gql";
-
+import GitHubViewer from "@/graphql/queries/GitHubViewer.gql";
 
 /**
  *
@@ -66,6 +67,20 @@ export function validateState(state) {
   return true;
 }
 
+export async function signIn(code, state, apolloClient) {
+  try {
+    const token = await exchangeCodeForToken(code, state, apolloClient);
+    await onLogin(apolloClient, token);
+    const gitHubViewer = await getGitHubViewer();
+    localStorage.setItem("github-user", JSON.stringify(gitHubViewer));
+    return { token, gitHubViewer };
+  } catch (error) {
+    await onLogout(apolloClient);
+    localStorage.removeItem("github-user");
+    throw error;
+  }
+}
+
 export async function exchangeCodeForToken(code, state, apolloClient) {
   if (!validateState(state)) {
     throw new Error("The state was invalid.");
@@ -77,4 +92,9 @@ export async function exchangeCodeForToken(code, state, apolloClient) {
   const authPayload = data.authenticateWithGitHub.authPayload;
   const token = JSON.stringify(authPayload.token);
   return token;
+}
+
+export async function getGitHubViewer() {
+  const { data } = await apolloClient.query({ query: GitHubViewer });
+  return data.gitHubViewer;
 }

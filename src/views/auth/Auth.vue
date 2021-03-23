@@ -38,12 +38,11 @@ export default {
       }
 
       try {
-        await this.$store.dispatch("obtainToken", {
+        await this.$store.dispatch("signIn", {
           code,
           state,
           apolloClient: this.$apollo,
         });
-        await this.$store.dispatch("loadGitHubUser", this.$apollo);
       } catch (error) {
         this.$router.push({ name: "SignInError" });
         return;

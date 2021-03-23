@@ -1,6 +1,5 @@
 import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
-import GitHubViewer from "@/graphql/queries/GitHubViewer.gql";
-import { exchangeCodeForToken } from "@/utils/auth.js";
+import { signIn } from "@/utils/auth.js";
 
 function createInitialState() {
   let token;
@@ -58,26 +57,12 @@ export const auth = {
       await onLogout(apolloClient);
       commit("set_token", null);
     },
-    async obtainToken({ commit, dispatch }, { code, state, apolloClient }) {
+    async signIn({ commit, dispatch }, { code, state, apolloClient }) {
       commit("clear_last_error");
       try {
-        const token = await exchangeCodeForToken(code, state, apolloClient);
-        await onLogin(apolloClient, token);
+        const { token, gitHubViewer } = await signIn(code, state, apolloClient);
         commit("set_token", token);
-      } catch (error) {
-        dispatch("signOut", apolloClient);
-        throw error;
-      }
-    },
-    async loadGitHubUser({ commit, dispatch }, apolloClient) {
-      commit("clear_last_error");
-      // await onLogout(apolloClient);
-      // localStorage.removeItem(AUTH_TOKEN);
-      try {
-        const { data } = await apolloClient.query({ query: GitHubViewer });
-        const githubUser = data.gitHubViewer;
-        localStorage.setItem("github-user", JSON.stringify(githubUser));
-        commit("set_github_user", githubUser);
+        commit("set_github_user", gitHubViewer);
       } catch (error) {
         dispatch("signOut", apolloClient);
         throw error;
