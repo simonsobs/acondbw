@@ -1,5 +1,5 @@
-import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
-import { signIn } from "@/utils/auth.js";
+import { apolloClient, AUTH_TOKEN } from "@/vue-apollo";
+import { signIn, signOut } from "@/utils/auth.js";
 
 function createInitialState() {
   let token;
@@ -52,10 +52,9 @@ export const auth = {
   },
   actions: {
     async signOut({ commit }, apolloClient) {
-      localStorage.removeItem("github-user");
       commit("set_github_user", null);
-      await onLogout(apolloClient);
       commit("set_token", null);
+      await signOut(apolloClient);
     },
     async signIn({ commit, dispatch }, { code, state, apolloClient }) {
       commit("clear_last_error");
