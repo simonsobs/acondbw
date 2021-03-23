@@ -1,4 +1,9 @@
-import { signIn, signOut, restoreFromLocalStorage } from "@/utils/auth.js";
+import {
+  signIn,
+  signOut,
+  restoreFromLocalStorage,
+  isSignedIn,
+} from "@/utils/auth.js";
 
 function createInitialState() {
   try {
@@ -32,6 +37,13 @@ export const auth = {
     },
   },
   actions: {
+    async checkIfSignedIn({ dispatch }, apolloClient) {
+      try {
+        const result = await isSignedIn(apolloClient);
+        if (result) return;
+      } catch {}
+      dispatch("signOut", apolloClient);
+    },
     async signOut({ commit }, apolloClient) {
       commit("set_github_user", null);
       commit("set_token", null);
