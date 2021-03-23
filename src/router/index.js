@@ -222,4 +222,12 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-export default router;
+function checkAuthForCurrentRoute() {
+  const authRequired = router.currentRoute.matched.some((record) => record.meta.requiresAuth);
+  const signedIn = !!store.state.auth.token;
+  if(authRequired && !signedIn) {
+    router.push("/");
+  }
+}
+
+export { router as default, router, checkAuthForCurrentRoute };
