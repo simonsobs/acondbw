@@ -45,6 +45,11 @@ export async function redirectToGitHubAuthURL(
   }
 }
 
+/**
+ * Validate the state by comparing the one stored in localStorage
+ * @param {string} state - the state returned from the auth server
+ * @returns {boolean} true if validated
+ */
 export function validateState(state) {
   if (!state) {
     return false;
