@@ -3,6 +3,7 @@ const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 import AuthenticateWithGitHub from "@/graphql/mutations/AuthenticateWithGitHub.gql";
 import GitHubViewer from "@/graphql/queries/GitHubViewer.gql";
+import { validateState } from "@/utils/auth.js";
 
 function createInitialState() {
   let token;
@@ -63,15 +64,8 @@ export const auth = {
     async obtainToken({ commit, dispatch }, { code, state, apolloClient }) {
       commit("clear_last_error");
       try {
-        const authState = JSON.parse(localStorage.getItem("auth-state"));
-        if (!authState) {
-          throw new Error("A state was not stored.");
-        }
-        if (!state) {
-          throw new Error("A state was not returned.");
-        }
-        if (!(authState == state)) {
-          throw new Error("The state did not match.");
+        if (!validateState(state)) {
+          throw new Error("The state was invalid.");
         }
         const { data } = await apolloClient.mutate({
           mutation: AuthenticateWithGitHub,
