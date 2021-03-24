@@ -56,7 +56,7 @@ export default {
     DevToolLoadingStateOverridingMenu,
   },
   props: {
-    productId: { default: null }, // product.productId not product.id
+    productId: [String, Number], // product.productId not product.id
   },
   data() {
     return {
