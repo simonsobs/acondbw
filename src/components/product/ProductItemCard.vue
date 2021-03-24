@@ -120,13 +120,13 @@
                             <v-icon>mdi-close</v-icon>
                           </v-btn>
                         </v-app-bar>
-                        <ProductEditForm
+                        <product-Edit-form
                           :productId="node.productId"
                           v-on:finished="
                             menu = false;
                             editDialog = false;
                           "
-                        ></ProductEditForm>
+                        ></product-Edit-form>
                       </v-card>
                     </v-dialog>
                     <v-dialog v-model="deleteDialog" max-width="600">
@@ -145,7 +145,7 @@
                           </v-list-item-content>
                         </v-list-item>
                       </template>
-                      <ProductDeleteForm
+                      <product-delete-form
                         :productId="node.productId"
                         v-on:finished="
                           deleteDialog = false;
@@ -157,7 +157,7 @@
                           node = null;
                           $emit('deleted');
                         "
-                      ></ProductDeleteForm>
+                      ></product-delete-form>
                     </v-dialog>
                   </v-list>
                 </v-menu>
