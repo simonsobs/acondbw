@@ -74,6 +74,7 @@ export default {
         this.$store.dispatch("apolloMutationCalled");
         this.$store.dispatch("snackbarMessage", "Added");
         this.$emit("finished");
+        this.delayedReset();
       } catch (error) {
         console.log(error);
         this.error = error;
