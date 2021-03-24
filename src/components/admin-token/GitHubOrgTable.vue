@@ -21,22 +21,12 @@
                 @finished="addFormFinished"
               ></git-hub-org-add-form>
             </v-dialog>
-            <v-dialog v-model="dialogDelete" max-width="500px">
-              <v-card>
-                <v-card-title class="headline">Remove</v-card-title>
-                <v-card-text class="body-1 font-weight-medium error--text"
-                  >Really, remove "{{ deleteLogin }}" ?</v-card-text
-                >
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="secondary" text @click="closeDelete"
-                    >Cancel</v-btn
-                  >
-                  <v-btn color="error" text @click="deleteItemConfirm"
-                    >OK</v-btn
-                  >
-                </v-card-actions>
-              </v-card>
+            <v-dialog v-model="dialogRemove" max-width="500px">
+              <git-hub-org-remove-form
+                :login="removeLogin"
+                @cancel="removeFormCanceled"
+                @finished="removeFormFinished"
+              ></git-hub-org-remove-form>
             </v-dialog>
           </v-toolbar>
           <v-alert dismissible v-model="alert" type="error">{{
@@ -51,7 +41,7 @@
           </span>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+          <v-icon small @click="openRemoveForm(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
     </template>
@@ -64,14 +54,15 @@
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
 import ALL_GIT_HUB_ORGS from "@/graphql/queries/AllGitHubOrgs.gql";
-import DELETE_GITHUB_ORG from "@/graphql/mutations/DeleteGitHubOrg.gql";
 
 import GitHubOrgAddForm from "./GitHubOrgAddForm";
+import GitHubOrgRemoveForm from "./GitHubOrgRemoveForm";
 
 export default {
   name: "GitHubOrgTable",
   components: {
     GitHubOrgAddForm,
+    GitHubOrgRemoveForm,
   },
   data: () => ({
     allGitHubOrgs: null,
@@ -82,8 +73,8 @@ export default {
       { text: "", value: "actions", sortable: false, align: "end" },
     ],
     dialogAdd: false,
-    dialogDelete: false,
-    deleteLogin: null,
+    dialogRemove: false,
+    removeLogin: null,
     alert: false,
     error: null,
   }),
@@ -94,36 +85,32 @@ export default {
   },
   methods: {
     addFormCanceled() {
-      this.dialogAdd = false;
+      this.closeAddDialog();
     },
     addFormFinished() {
-      this.dialogAdd = false;
       this.$apollo.queries.allGitHubOrgs.refetch();
+      this.closeAddDialog();
     },
-    deleteItem(item) {
-      const index = this.allGitHubOrgs.edges.indexOf(item);
-      this.deleteLogin = this.allGitHubOrgs.edges[index].node.login;
-      this.dialogDelete = true;
+    closeAddDialog() {
+      this.dialogAdd = false;
     },
-    async deleteItemConfirm() {
-      try {
-        const { data } = await this.$apollo.mutate({
-          mutation: DELETE_GITHUB_ORG,
-          variables: { login: this.deleteLogin },
-        });
-        this.$apollo.queries.allGitHubOrgs.refetch();
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Removed");
-      } catch (error) {
-        this.error = error;
-      }
-      this.closeDelete();
+    removeFormCanceled() {
+      this.closeRemoveForm();
     },
-    closeDelete() {
-      this.dialogDelete = false;
+    removeFormFinished() {
+      this.$apollo.queries.allGitHubOrgs.refetch();
+      this.closeRemoveForm();
+    },
+    closeRemoveForm() {
+      this.dialogRemove = false;
       this.$nextTick(() => {
-        this.deleteLogin = null;
+        this.removeLogin = null;
       });
+    },
+    openRemoveForm(item) {
+      const index = this.allGitHubOrgs.edges.indexOf(item);
+      this.removeLogin = this.allGitHubOrgs.edges[index].node.login;
+      this.dialogRemove = true;
     },
   },
   watch: {
