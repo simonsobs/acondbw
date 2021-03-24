@@ -2,13 +2,16 @@
   <v-card>
     <v-card-title>Add a GitHub organization</v-card-title>
     <v-card-text>
-    <v-alert v-if="error" type="error">{{ error }}</v-alert>
+      <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <v-container>
         <v-row>
           <v-col cols="12">
             <v-text-field
-              v-model="login"
               label="GitHub organization account name"
+              v-model="login"
+              :error-messages="loginErrors"
+              @input="$v.login.$touch()"
+              @blur="$v.login.$touch()"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -17,12 +20,17 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
-      <v-btn color="primary" text @click="add">Add</v-btn>
+      <v-btn color="secondary" text @click="reset">Reset</v-btn>
+      <v-btn color="primary" :disabled="$v.$invalid" text @click="add"
+        >Add</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
+
 import ADD_GITHUB_ORG from "@/graphql/mutations/AddGitHubOrg.gql";
 
 export default {
@@ -31,6 +39,16 @@ export default {
     login: "",
     error: null,
   }),
+  validations: { login: { required } },
+  computed: {
+    loginErrors() {
+      const errors = [];
+      const field = this.$v.login;
+      if (!field.$dirty) return errors;
+      !field.required && errors.push("This field is required");
+      return errors;
+    },
+  },
   methods: {
     cancel() {
       this.$emit("cancel");
@@ -44,6 +62,7 @@ export default {
     },
     reset() {
       this.login = "";
+      this.$v.$reset();
       this.error = null;
     },
     async add() {
