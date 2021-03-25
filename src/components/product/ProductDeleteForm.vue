@@ -14,8 +14,8 @@
       >
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-        <v-btn color="error" @click="deleteProduct()">Delete</v-btn>
+        <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
+        <v-btn color="error" @click="remove">Delete</v-btn>
       </v-card-actions>
     </template>
     <template v-else>
@@ -34,7 +34,7 @@
       >
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
+        <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
       </v-card-actions>
     </template>
     <dev-tool-loading-state-overriding-menu
@@ -120,7 +120,20 @@ export default {
     },
   },
   methods: {
-    async deleteProduct() {
+    cancel() {
+      this.$emit("cancel");
+      this.delayedReset();
+    },
+    delayedReset() {
+      // reset 0.5 sec after so that the reset form won't be shown.
+      setTimeout(() => {
+        this.reset();
+      }, 500);
+    },
+    reset() {
+      this.error = null;
+    },
+    async remove() {
       try {
         const data = await this.$apollo.mutate({
           mutation: DELETE_PRODUCT,
@@ -154,8 +167,8 @@ export default {
         });
         this.$store.dispatch("apolloMutationCalled");
         this.$store.dispatch("snackbarMessage", "Deleted");
-        this.$emit("deleted");
         this.$emit("finished");
+        this.delayedReset();
       } catch (error) {
         this.error = error;
       }

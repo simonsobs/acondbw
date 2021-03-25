@@ -147,16 +147,8 @@
                       </template>
                       <product-delete-form
                         :productId="node.productId"
-                        v-on:finished="
-                          deleteDialog = false;
-                          menu = false;
-                        "
-                        v-on:deleted="
-                          deleteDialog = false;
-                          menu = false;
-                          node = null;
-                          $emit('deleted');
-                        "
+                        @cancel="onDeleteFormCancelled"
+                        @finished="onDeleteFormFinished"
                       ></product-delete-form>
                     </v-dialog>
                   </v-list>
@@ -392,6 +384,18 @@ export default {
         hour12: false,
       });
       return format.format(sinceEpoch);
+    },
+    onDeleteFormCancelled() {
+      this.closeDeleteForm();
+    },
+    onDeleteFormFinished() {
+      this.closeDeleteForm();
+      this.node = null;
+      this.$emit("deleted");
+    },
+    closeDeleteForm() {
+      this.deleteDialog = false;
+      this.menu = false;
     },
   },
 };

@@ -111,11 +111,10 @@ describe("ProductDeleteForm.vue", () => {
     wrapper.setData({
       node: node,
     });
-    await wrapper.vm.deleteProduct();
+    await wrapper.vm.remove();
     expect(wrapper.vm.$apollo.mutate).toBeCalled();
     expect(actions.apolloMutationCalled).toHaveBeenCalled();
     expect(actions.snackbarMessage).toHaveBeenCalled();
-    expect(wrapper.emitted("deleted")).toBeTruthy();
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
 });
