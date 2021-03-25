@@ -129,28 +129,6 @@
                         ></product-Edit-form>
                       </v-card>
                     </v-dialog>
-                    <v-dialog v-model="updatePathsDialog" max-width="800">
-                      <template v-slot:activator="{ on: updatePathsDialog }">
-                        <v-list-item
-                          :disabled="disableEdit"
-                          v-on="{ ...updatePathsDialog }"
-                        >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title
-                              >Update paths</v-list-item-title
-                            >
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                      <product-update-paths-form
-                        :node="node"
-                        @cancel="onUpdatePathsFormCancelled"
-                        @finished="onUpdatePathsFormFinished"
-                      ></product-update-paths-form>
-                    </v-dialog>
                     <v-dialog v-model="changeContactDialog" max-width="600">
                       <template v-slot:activator="{ on: changeContactDialog }">
                         <v-list-item
@@ -172,6 +150,28 @@
                         @cancel="onChangeContactFormCancelled"
                         @finished="onChangeContactFormFinished"
                       ></product-change-contact-form>
+                    </v-dialog>
+                    <v-dialog v-model="updatePathsDialog" max-width="800">
+                      <template v-slot:activator="{ on: updatePathsDialog }">
+                        <v-list-item
+                          :disabled="disableEdit"
+                          v-on="{ ...updatePathsDialog }"
+                        >
+                          <v-list-item-icon>
+                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title
+                              >Update paths</v-list-item-title
+                            >
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <product-update-paths-form
+                        :node="node"
+                        @cancel="onUpdatePathsFormCancelled"
+                        @finished="onUpdatePathsFormFinished"
+                      ></product-update-paths-form>
                     </v-dialog>
                     <v-dialog v-model="deleteDialog" max-width="600">
                       <template v-slot:activator="{ on: deleteDialog }">
