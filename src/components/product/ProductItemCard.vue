@@ -136,12 +136,12 @@
                           v-on="{ ...changeContactDialog }"
                         >
                           <v-list-item-icon>
-                            <v-icon :disabled="disableEdit"
-                              >mdi-pencil</v-icon
-                            >
+                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>
-                            <v-list-item-title>Change contact</v-list-item-title>
+                            <v-list-item-title
+                              >Change contact</v-list-item-title
+                            >
                           </v-list-item-content>
                         </v-list-item>
                       </template>
@@ -299,7 +299,7 @@ export default {
     ProductEditForm,
     ProductChangeContactForm,
     ProductDeleteForm,
-    DevToolLoadingStateOverridingMenu
+    DevToolLoadingStateOverridingMenu,
   },
   props: {
     productId: { default: null }, // node.productId not node.id
