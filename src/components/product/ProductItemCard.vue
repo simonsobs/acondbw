@@ -129,6 +129,28 @@
                         ></product-Edit-form>
                       </v-card>
                     </v-dialog>
+                    <v-dialog v-model="updatePathsDialog" max-width="800">
+                      <template v-slot:activator="{ on: updatePathsDialog }">
+                        <v-list-item
+                          :disabled="disableEdit"
+                          v-on="{ ...updatePathsDialog }"
+                        >
+                          <v-list-item-icon>
+                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title
+                              >Update paths</v-list-item-title
+                            >
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <product-update-paths-form
+                        :node="node"
+                        @cancel="onUpdatePathsFormCancelled"
+                        @finished="onUpdatePathsFormFinished"
+                      ></product-update-paths-form>
+                    </v-dialog>
                     <v-dialog v-model="changeContactDialog" max-width="600">
                       <template v-slot:activator="{ on: changeContactDialog }">
                         <v-list-item
@@ -288,6 +310,7 @@ import PRODUCT from "@/graphql/queries/Product.gql";
 
 import ProductEditForm from "@/components/product/ProductEditForm";
 import ProductChangeContactForm from "@/components/product/ProductChangeContactForm";
+import ProductUpdatePathsForm from "@/components/product/ProductUpdatePathsForm";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm";
 
 import State from "@/utils/LoadingState.js";
@@ -298,6 +321,7 @@ export default {
   components: {
     ProductEditForm,
     ProductChangeContactForm,
+    ProductUpdatePathsForm,
     ProductDeleteForm,
     DevToolLoadingStateOverridingMenu,
   },
@@ -313,6 +337,7 @@ export default {
       menu: false,
       editDialog: false,
       changeContactDialog: false,
+      updatePathsDialog: false,
       deleteDialog: false,
       init: true,
       node: null,
@@ -418,6 +443,16 @@ export default {
     },
     closeChangeContactForm() {
       this.changeContactDialog = false;
+      this.menu = false;
+    },
+    onUpdatePathsFormCancelled() {
+      this.closeUpdatePathsForm();
+    },
+    onUpdatePathsFormFinished() {
+      this.closeUpdatePathsForm();
+    },
+    closeUpdatePathsForm() {
+      this.updatePathsDialog = false;
       this.menu = false;
     },
     onDeleteFormCancelled() {
