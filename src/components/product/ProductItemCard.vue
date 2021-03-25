@@ -173,6 +173,28 @@
                         @finished="onUpdatePathsFormFinished"
                       ></product-update-paths-form>
                     </v-dialog>
+                    <v-dialog v-model="editNoteDialog" max-width="800">
+                      <template v-slot:activator="{ on: editNoteDialog }">
+                        <v-list-item
+                          :disabled="disableEdit"
+                          v-on="{ ...editNoteDialog }"
+                        >
+                          <v-list-item-icon>
+                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title
+                              >Edit note</v-list-item-title
+                            >
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <product-edit-note-form
+                        :node="node"
+                        @cancel="onEditNoteFormCancelled"
+                        @finished="onEditNoteFormFinished"
+                      ></product-edit-note-form>
+                    </v-dialog>
                     <v-dialog v-model="deleteDialog" max-width="600">
                       <template v-slot:activator="{ on: deleteDialog }">
                         <v-list-item
@@ -311,6 +333,7 @@ import PRODUCT from "@/graphql/queries/Product.gql";
 import ProductEditForm from "@/components/product/ProductEditForm";
 import ProductChangeContactForm from "@/components/product/ProductChangeContactForm";
 import ProductUpdatePathsForm from "@/components/product/ProductUpdatePathsForm";
+import ProductEditNoteForm from "@/components/product/ProductEditNoteForm";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm";
 
 import State from "@/utils/LoadingState.js";
@@ -322,6 +345,7 @@ export default {
     ProductEditForm,
     ProductChangeContactForm,
     ProductUpdatePathsForm,
+    ProductEditNoteForm,
     ProductDeleteForm,
     DevToolLoadingStateOverridingMenu,
   },
@@ -338,6 +362,7 @@ export default {
       editDialog: false,
       changeContactDialog: false,
       updatePathsDialog: false,
+      editNoteDialog: false,
       deleteDialog: false,
       init: true,
       node: null,
@@ -453,6 +478,16 @@ export default {
     },
     closeUpdatePathsForm() {
       this.updatePathsDialog = false;
+      this.menu = false;
+    },
+    onEditNoteFormCancelled() {
+      this.closeEditNoteForm();
+    },
+    onEditNoteFormFinished() {
+      this.closeEditNoteForm();
+    },
+    closeEditNoteForm() {
+      this.editNoteDialog = false;
       this.menu = false;
     },
     onDeleteFormCancelled() {
