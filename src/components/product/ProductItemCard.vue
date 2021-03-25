@@ -129,6 +129,28 @@
                         ></product-Edit-form>
                       </v-card>
                     </v-dialog>
+                    <v-dialog v-model="changeContactDialog" max-width="600">
+                      <template v-slot:activator="{ on: changeContactDialog }">
+                        <v-list-item
+                          :disabled="disableEdit"
+                          v-on="{ ...changeContactDialog }"
+                        >
+                          <v-list-item-icon>
+                            <v-icon :disabled="disableEdit"
+                              >mdi-pencil</v-icon
+                            >
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title>Change contact</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <product-change-contact-form
+                        :node="node"
+                        @cancel="onChangeContactFormCancelled"
+                        @finished="onChangeContactFormFinished"
+                      ></product-change-contact-form>
+                    </v-dialog>
                     <v-dialog v-model="deleteDialog" max-width="600">
                       <template v-slot:activator="{ on: deleteDialog }">
                         <v-list-item
@@ -265,6 +287,7 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 import PRODUCT from "@/graphql/queries/Product.gql";
 
 import ProductEditForm from "@/components/product/ProductEditForm";
+import ProductChangeContactForm from "@/components/product/ProductChangeContactForm";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm";
 
 import State from "@/utils/LoadingState.js";
@@ -274,8 +297,9 @@ export default {
   name: "ProductItemCard",
   components: {
     ProductEditForm,
+    ProductChangeContactForm,
     ProductDeleteForm,
-    DevToolLoadingStateOverridingMenu,
+    DevToolLoadingStateOverridingMenu
   },
   props: {
     productId: { default: null }, // node.productId not node.id
@@ -288,6 +312,7 @@ export default {
     return {
       menu: false,
       editDialog: false,
+      changeContactDialog: false,
       deleteDialog: false,
       init: true,
       node: null,
@@ -384,6 +409,16 @@ export default {
         hour12: false,
       });
       return format.format(sinceEpoch);
+    },
+    onChangeContactFormCancelled() {
+      this.closeChangeContactForm();
+    },
+    onChangeContactFormFinished() {
+      this.closeChangeContactForm();
+    },
+    closeChangeContactForm() {
+      this.changeContactDialog = false;
+      this.menu = false;
     },
     onDeleteFormCancelled() {
       this.closeDeleteForm();
