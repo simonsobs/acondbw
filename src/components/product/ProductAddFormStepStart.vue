@@ -183,6 +183,7 @@ export default {
     DevToolLoadingStateOverridingMenu,
   },
   props: {
+    formResetCount: Number,
     form: {
       type: Object,
       required: true,
@@ -261,6 +262,11 @@ export default {
         ? marked(this.form.note)
         : "<em>Nothing to preview</em>";
     },
+  },
+  watch: {
+    formResetCount() {
+        this.$v.$reset();
+    }
   },
   methods: {
     debounceInput: _.debounce(function (field, value) {

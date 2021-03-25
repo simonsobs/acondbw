@@ -24,6 +24,7 @@
         <v-stepper-content step="1">
           <product-add-form-step-start
             :form="form"
+            :form-reset-count="formResetCount"
             :productType="productType"
             @cancel="close()"
             @reset="resetForm()"
@@ -120,7 +121,7 @@ export default {
     ProductAddFormStepStart,
     ProductAddFormStepRelations,
     ProductAddFormStepPreview,
-    DevToolLoadingStateOverridingMenu
+    DevToolLoadingStateOverridingMenu,
   },
   props: {
     productTypeId: { required: true },
@@ -135,6 +136,7 @@ export default {
       State: State,
       step: 1,
       form: _.cloneDeep(formDefault),
+      formResetCount: 0,
       error: null,
       createProductInput: null,
     };
@@ -209,6 +211,7 @@ export default {
       // the empty object {}.
       // Instead, the following two lines are used.
       this.form = _.cloneDeep(formDefault);
+      this.formResetCount++;
       this.error = null;
       this.stepper = 1;
     },
