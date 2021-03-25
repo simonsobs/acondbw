@@ -183,8 +183,14 @@ export default {
     DevToolLoadingStateOverridingMenu,
   },
   props: {
-    form: { required: true },
-    productType: { required: true },
+    form: {
+      type: Object,
+      required: true,
+    },
+    productType: {
+      type: Object,
+      required: true,
+    },
   },
   data: () => ({
     error: null,
