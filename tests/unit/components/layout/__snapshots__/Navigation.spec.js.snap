@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App.vue match snapshot 1`] = `
-<div class="navigation" style="position: relative;">
+<div class="navigation">
   <v-list-stub shaped="true" tag="div">
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
       <v-list-item-action-stub>
@@ -28,6 +28,7 @@ exports[`App.vue match snapshot 1`] = `
       </v-list-item-content-stub>
     </v-list-item-stub>
   </v-list-stub>
+  <v-bottom-navigation-stub absolute="true" height="56" inputvalue="true" activeclass="v-btn--active" hideonscroll="true" class="px-3"></v-bottom-navigation-stub>
   <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
 </div>
 `;
