@@ -84,51 +84,6 @@
                     </v-btn>
                   </template>
                   <v-list dense>
-                    <v-dialog
-                      v-model="editDialog"
-                      persistent
-                      fullscreen
-                      transition="dialog-bottom-transition"
-                    >
-                      <template v-slot:activator="{ on: editDialog }">
-                        <v-list-item
-                          :disabled="disableEdit"
-                          v-on="{ ...editDialog }"
-                        >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Update</v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                      <v-card>
-                        <v-app-bar
-                          dense
-                          color="secondary"
-                          style="position: sticky; top: 0; z-index: 999"
-                        >
-                          <v-btn
-                            icon
-                            dark
-                            @click="
-                              menu = false;
-                              editDialog = false;
-                            "
-                          >
-                            <v-icon>mdi-close</v-icon>
-                          </v-btn>
-                        </v-app-bar>
-                        <product-Edit-form
-                          :productId="node.productId"
-                          v-on:finished="
-                            menu = false;
-                            editDialog = false;
-                          "
-                        ></product-Edit-form>
-                      </v-card>
-                    </v-dialog>
                     <v-dialog v-model="changeContactDialog" max-width="600">
                       <template v-slot:activator="{ on: changeContactDialog }">
                         <v-list-item
@@ -352,7 +307,6 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
 import PRODUCT from "@/graphql/queries/Product.gql";
 
-import ProductEditForm from "@/components/product/ProductEditForm";
 import ProductChangeContactForm from "@/components/product/ProductChangeContactForm";
 import ProductUpdatePathsForm from "@/components/product/ProductUpdatePathsForm";
 import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm";
@@ -365,7 +319,6 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 export default {
   name: "ProductItemCard",
   components: {
-    ProductEditForm,
     ProductChangeContactForm,
     ProductUpdatePathsForm,
     ProductUpdateRelationsForm,
@@ -383,7 +336,6 @@ export default {
   data() {
     return {
       menu: false,
-      editDialog: false,
       changeContactDialog: false,
       updatePathsDialog: false,
       updateRelationsDialog: false,
