@@ -17,23 +17,27 @@ describe("store", () => {
   });
 
   const token = "xyz";
-  const githubUser = {
-    login: "octocat",
-    name: "monalisa octocat",
-    avatar_url: "https://github.com/images/error/octocat_happy.gif",
+  const signInInfo = {
+    gitHubViewer: {
+      login: "octocat",
+      name: "monalisa octocat",
+      avatar_url: "https://github.com/images/error/octocat_happy.gif",
+    },
+    isSignedIn: true,
+    isAdmin: false,
   };
 
-it("initial state signed in", () => {
+  it("initial state signed in", () => {
     localStorage.setItem(AUTH_TOKEN, JSON.stringify(token));
-    localStorage.setItem("github-user", JSON.stringify(githubUser));
+    localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
     const store = new Vuex.Store(cloneDeep(storeConfig));
     expect(store.state.auth.token).toBe(token);
-    expect(store.state.auth.githubUser).toEqual(githubUser);
+    expect(store.state.auth.githubUser).toEqual(signInInfo.gitHubViewer);
   });
 
   it("initial state not signed in", () => {
     localStorage.removeItem(AUTH_TOKEN);
-    localStorage.removeItem("github-user");
+    localStorage.removeItem("sign-in-info");
     const store = new Vuex.Store(cloneDeep(storeConfig));
     expect(store.state.auth.token).toBe(null);
     expect(store.state.auth.githubUser).toBe(null);
@@ -41,15 +45,15 @@ it("initial state signed in", () => {
 
   it("initial state error only token", () => {
     localStorage.setItem(AUTH_TOKEN, JSON.stringify(token));
-    localStorage.removeItem("github-user");
+    localStorage.removeItem("sign-in-info");
     const store = new Vuex.Store(cloneDeep(storeConfig));
     expect(store.state.auth.token).toBe(null);
     expect(store.state.auth.githubUser).toBe(null);
   });
 
-  it("initial state error only user", () => {
+  it("initial state error only sign-in info", () => {
     localStorage.removeItem(AUTH_TOKEN);
-    localStorage.setItem("github-user", JSON.stringify(githubUser));
+    localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
     const store = new Vuex.Store(cloneDeep(storeConfig));
     expect(store.state.auth.token).toBe(null);
     expect(store.state.auth.githubUser).toBe(null);

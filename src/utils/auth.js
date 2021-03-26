@@ -1,5 +1,6 @@
 const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
+import _ from "lodash";
 
 import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
 export const AUTH_STATE = "auth-state";
@@ -7,6 +8,7 @@ export const AUTH_STATE = "auth-state";
 import GitHubOAuthAppInfo from "@/graphql/queries/GitHubOAuthAppInfo.gql";
 import AuthenticateWithGitHub from "@/graphql/mutations/AuthenticateWithGitHub.gql";
 import GitHubViewer from "@/graphql/queries/GitHubViewer.gql";
+import SignInInfo from "@/graphql/queries/SignInInfo.gql";
 import IsSignedIn from "@/graphql/queries/IsSignedIn.gql";
 
 /**
@@ -69,33 +71,32 @@ export function validateState(state) {
 }
 
 export function restoreFromLocalStorage() {
-  let token;
-  let gitHubViewer;
-
   try {
-    token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
-    gitHubViewer = JSON.parse(localStorage.getItem("github-user"));
+    const token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
+    const signInInfo = JSON.parse(localStorage.getItem("sign-in-info"));
 
-    if (!((token && gitHubViewer) || (!token && !gitHubViewer))) {
-      localStorage.removeItem(AUTH_TOKEN);
-      localStorage.removeItem("github-user");
-      token = null;
-      gitHubViewer = null;
+    if (token && signInInfo) {
+      return { token, ...signInInfo };
     }
-  } catch (error) {
+  } catch {
     localStorage.clear();
-    token = null;
-    gitHubViewer = null;
   }
 
-  return { token, gitHubViewer };
+  localStorage.removeItem(AUTH_TOKEN);
+  localStorage.removeItem("sign-in-info");
+  // do not call localStorage.clear() here because it will delete
+  // AUTH_STATE when redirected from the auth server
+
+  return { token: null, gitHubViewer: null, isSignedIn: false, isAdmin: false };
 }
 
 export async function isSignedIn(apolloClient) {
   try {
     const { data } = await apolloClient.query({ query: IsSignedIn });
     if (data.isSignedIn) {
-      return true;
+      const signInInfo = await getSignInInfo();
+      localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
+      return signInInfo;
     }
   } catch {}
   await signOut(apolloClient);
@@ -104,7 +105,6 @@ export async function isSignedIn(apolloClient) {
 
 export async function signOut(apolloClient) {
   await onLogout(apolloClient);
-  localStorage.removeItem("github-user");
   localStorage.clear();
 }
 
@@ -112,9 +112,9 @@ export async function signIn(code, state, apolloClient) {
   try {
     const token = await exchangeCodeForToken(code, state, apolloClient);
     await onLogin(apolloClient, token);
-    const gitHubViewer = await getGitHubViewer();
-    localStorage.setItem("github-user", JSON.stringify(gitHubViewer));
-    return { token, gitHubViewer };
+    const signInInfo = await getSignInInfo();
+    localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
+    return { token, signInInfo };
   } catch (error) {
     await signOut(apolloClient);
     throw error;
@@ -134,7 +134,7 @@ export async function exchangeCodeForToken(code, state, apolloClient) {
   return token;
 }
 
-export async function getGitHubViewer() {
-  const { data } = await apolloClient.query({ query: GitHubViewer });
-  return data.gitHubViewer;
+export async function getSignInInfo() {
+  const { data } = await apolloClient.query({ query: SignInInfo });
+  return _.pick(data, ["isSignedIn", "isAdmin", "gitHubViewer"]);
 }

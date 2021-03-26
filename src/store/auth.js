@@ -7,10 +7,20 @@ import {
 
 function createInitialState() {
   try {
-    const { token, gitHubViewer } = restoreFromLocalStorage();
-    return { token, githubUser: gitHubViewer };
+    const {
+      token,
+      gitHubViewer,
+      isSignedIn,
+      isAdmin,
+    } = restoreFromLocalStorage();
+    return {
+      token,
+      githubUser: gitHubViewer,
+      isSignedIn,
+      isAdmin,
+    };
   } catch (error) {
-    return { token: null, githubUser: null };
+    return { token: null, githubUser: null, isSignedIn: false, isAdmin: false };
   }
 }
 
@@ -26,8 +36,15 @@ export const auth = {
     set_token(state, token) {
       state.token = token;
     },
-    set_github_user(state, githubUser) {
-      state.githubUser = githubUser;
+    set_sign_in_info(state, obj) {
+      state.githubUser = obj.gitHubViewer;
+      state.isSignedIn = obj.isSignedIn;
+      state.isAdmin = obj.isAdmin;
+    },
+    reset_sign_in_info(state) {
+      state.githubUser = null;
+      state.isSignedIn = false;
+      state.isAdmin = false;
     },
     set_last_error(state, error) {
       state.lastError = error;
@@ -37,24 +54,28 @@ export const auth = {
     },
   },
   actions: {
-    async checkIfSignedIn({ dispatch }, apolloClient) {
+    async checkIfSignedIn({ commit, dispatch }, apolloClient) {
       try {
         const result = await isSignedIn(apolloClient);
-        if (result) return;
-      } catch {}
+        if (result) {
+          commit("set_sign_in_info", result);
+          return;
+        }
+      } catch (error) {
+      }
       dispatch("signOut", apolloClient);
     },
     async signOut({ commit }, apolloClient) {
-      commit("set_github_user", null);
+      commit("reset_sign_in_info");
       commit("set_token", null);
       await signOut(apolloClient);
     },
     async signIn({ commit, dispatch }, { code, state, apolloClient }) {
       commit("clear_last_error");
       try {
-        const { token, gitHubViewer } = await signIn(code, state, apolloClient);
+        const { token, signInInfo } = await signIn(code, state, apolloClient);
         commit("set_token", token);
-        commit("set_github_user", gitHubViewer);
+        commit("set_sign_in_info", signInInfo);
       } catch (error) {
         dispatch("signOut", apolloClient);
         throw error;

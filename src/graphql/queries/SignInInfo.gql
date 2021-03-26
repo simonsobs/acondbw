@@ -1,0 +1,9 @@
+query SignInInfo {
+  isSignedIn
+  isAdmin
+  gitHubViewer {
+    login
+    name
+    avatarUrl
+  }
+}
