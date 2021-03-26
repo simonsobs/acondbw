@@ -1,35 +1,44 @@
 <template>
-  <div class="navigation" style="position: relative;">
-    <div v-if="state == State.LOADED">
-      <v-list shaped>
-        <v-list-item
-          link
-          router
-          v-for="edge in edges"
-          :key="edge.node.typeId"
-          :to="{ name: 'ProductList', params: { productTypeName: edge.node.name } }"
-        >
-          <v-list-item-action>
-            <v-icon v-text="edge.node.icon"></v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="edge.node.plural" class="capitalize"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </div>
-    <v-alert
-      v-else-if="state == State.EMPTY"
-      outlined
-      dense
-      type="info"
-      class="ma-2"
-    >No product types are defined.</v-alert>
-    <div v-else-if="state == State.LOADING" class="mx-2 pt-5">
-      <v-progress-circular indeterminate :size="26" color="grey"></v-progress-circular>
-    </div>
-    <v-alert v-else-if="state == State.ERROR" outlined dense type="error" class="ma-2">{{ error }}</v-alert>
-    <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
+  <div class="navigation" style="position: relative">
+    <v-list v-if="loaded" shaped>
+      <v-list-item
+        link
+        router
+        v-for="edge in edges"
+        :key="edge.node.typeId"
+        :to="{
+          name: 'ProductList',
+          params: { productTypeName: edge.node.name },
+        }"
+      >
+        <v-list-item-action>
+          <v-icon v-text="edge.node.icon"></v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title
+            v-text="edge.node.plural"
+            class="capitalize"
+          ></v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <v-alert v-else-if="empty" outlined dense type="info" class="ma-2"
+      >No product types are defined.</v-alert
+    >
+    <v-progress-circular
+      v-else-if="loading"
+      indeterminate
+      :size="18"
+      :width="3"
+      color="grey"
+      class="mx-5 mt-5"
+    ></v-progress-circular>
+    <v-alert v-else-if="error" outlined dense type="error" class="ma-2">{{
+      error
+    }}</v-alert>
+    <dev-tool-loading-state-overriding-menu
+      @state="devtoolState = $event"
+    ></dev-tool-loading-state-overriding-menu>
   </div>
 </template>
 
@@ -42,31 +51,22 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 export default {
   name: "Navigation",
   components: {
-    DevToolLoadingStateOverridingMenu
+    DevToolLoadingStateOverridingMenu,
   },
   data: () => ({
+    init: true,
     edges: null,
     error: null,
     devtoolState: null,
-    State: State
+    State: State,
   }),
-  apollo: {
-    edges: {
-      query: ALL_PRODUCTS_TYPES,
-      update: data =>
-        data.allProductTypes ? data.allProductTypes.edges : null,
-      result(result) {
-        this.error = result.error ? result.error : null;
-      }
-    }
-  },
   computed: {
     state() {
       if (this.devtoolState) {
         return this.devtoolState;
       }
 
-      if (this.loading) {
+      if (this.$apollo.queries.edges.loading) {
         return State.LOADING;
       } else if (this.error) {
         return State.ERROR;
@@ -76,14 +76,45 @@ export default {
         } else {
           return State.EMPTY;
         }
+      } else if (this.init) {
+        return State.INIT;
       } else {
         return State.NONE;
       }
     },
     loading() {
-      return this.$apollo.queries.edges.loading;
-    }
-  }
+      return this.state == State.LOADING;
+    },
+    loaded() {
+      return this.state == State.LOADED;
+    },
+    empty() {
+      return this.state == State.EMPTY;
+    },
+    notFound() {
+      return this.state == State.NONE;
+    },
+  },
+  watch: {
+    devtoolState: function () {
+      if (this.devtoolState) {
+        this.init = this.devtoolState == State.INIT;
+      }
+      this.error =
+        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
+  },
+  apollo: {
+    edges: {
+      query: ALL_PRODUCTS_TYPES,
+      update: (data) =>
+        data.allProductTypes ? data.allProductTypes.edges : null,
+      result(result) {
+        this.init = false;
+        this.error = result.error ? result.error : null;
+      },
+    },
+  },
 };
 </script>
 
