@@ -5,7 +5,7 @@
         indeterminate
         :size="18"
         :width="3"
-        color="grey"
+        color="primary"
       ></v-progress-circular>
     </v-row>
   </v-container>
