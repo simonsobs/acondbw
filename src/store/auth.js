@@ -15,12 +15,12 @@ function createInitialState() {
     } = restoreFromLocalStorage();
     return {
       token,
-      githubUser: gitHubViewer,
+      gitHubViewer: gitHubViewer,
       isSignedIn,
       isAdmin,
     };
   } catch (error) {
-    return { token: null, githubUser: null, isSignedIn: false, isAdmin: false };
+    return { token: null, gitHubViewer: null, isSignedIn: false, isAdmin: false };
   }
 }
 
@@ -37,12 +37,12 @@ export const auth = {
       state.token = token;
     },
     set_sign_in_info(state, obj) {
-      state.githubUser = obj.gitHubViewer;
+      state.gitHubViewer = obj.gitHubViewer;
       state.isSignedIn = obj.isSignedIn;
       state.isAdmin = obj.isAdmin;
     },
     reset_sign_in_info(state) {
-      state.githubUser = null;
+      state.gitHubViewer = null;
       state.isSignedIn = false;
       state.isAdmin = false;
     },

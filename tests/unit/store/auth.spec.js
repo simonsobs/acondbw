@@ -32,7 +32,7 @@ describe("store", () => {
     localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
     const store = new Vuex.Store(cloneDeep(storeConfig));
     expect(store.state.auth.token).toBe(token);
-    expect(store.state.auth.githubUser).toEqual(signInInfo.gitHubViewer);
+    expect(store.state.auth.gitHubViewer).toEqual(signInInfo.gitHubViewer);
   });
 
   it("initial state not signed in", () => {
@@ -40,7 +40,7 @@ describe("store", () => {
     localStorage.removeItem("sign-in-info");
     const store = new Vuex.Store(cloneDeep(storeConfig));
     expect(store.state.auth.token).toBe(null);
-    expect(store.state.auth.githubUser).toBe(null);
+    expect(store.state.auth.gitHubViewer).toBe(null);
   });
 
   it("initial state error only token", () => {
@@ -48,7 +48,7 @@ describe("store", () => {
     localStorage.removeItem("sign-in-info");
     const store = new Vuex.Store(cloneDeep(storeConfig));
     expect(store.state.auth.token).toBe(null);
-    expect(store.state.auth.githubUser).toBe(null);
+    expect(store.state.auth.gitHubViewer).toBe(null);
   });
 
   it("initial state error only sign-in info", () => {
@@ -56,6 +56,6 @@ describe("store", () => {
     localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
     const store = new Vuex.Store(cloneDeep(storeConfig));
     expect(store.state.auth.token).toBe(null);
-    expect(store.state.auth.githubUser).toBe(null);
+    expect(store.state.auth.gitHubViewer).toBe(null);
   });
 });

@@ -55,7 +55,7 @@ export default {
   }),
   computed: {
     user() {
-      return this.$store.state.auth.githubUser;
+      return this.$store.state.auth.gitHubViewer;
     },
     pathToSignIn() {
       return this.$router.resolve({ name: "SignIn" }).route.path;
