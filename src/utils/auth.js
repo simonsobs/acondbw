@@ -76,7 +76,7 @@ export function restoreFromLocalStorage() {
     const signInInfo = JSON.parse(localStorage.getItem("sign-in-info"));
 
     if (token && signInInfo) {
-      return { token, ...signInInfo };
+      return { token, signInInfo };
     }
   } catch {
     localStorage.clear();
@@ -87,7 +87,10 @@ export function restoreFromLocalStorage() {
   // do not call localStorage.clear() here because it will delete
   // AUTH_STATE when redirected from the auth server
 
-  return { token: null, gitHubViewer: null, isSignedIn: false, isAdmin: false };
+  return {
+    token: null,
+    signInInfo: { gitHubViewer: null, isSignedIn: false, isAdmin: false },
+  };
 }
 
 export async function isSignedIn(apolloClient) {

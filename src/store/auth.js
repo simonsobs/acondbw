@@ -7,20 +7,18 @@ import {
 
 function createInitialState() {
   try {
-    const {
-      token,
-      gitHubViewer,
-      isSignedIn,
-      isAdmin,
-    } = restoreFromLocalStorage();
+    const { token, signInInfo } = restoreFromLocalStorage();
     return {
       token,
-      gitHubViewer: gitHubViewer,
-      isSignedIn,
-      isAdmin,
+      ...signInInfo,
     };
   } catch (error) {
-    return { token: null, gitHubViewer: null, isSignedIn: false, isAdmin: false };
+    return {
+      token: null,
+      gitHubViewer: null,
+      isSignedIn: false,
+      isAdmin: false,
+    };
   }
 }
 
@@ -61,8 +59,7 @@ export const auth = {
           commit("set_sign_in_info", result);
           return;
         }
-      } catch (error) {
-      }
+      } catch (error) {}
       dispatch("signOut", apolloClient);
     },
     async signOut({ commit }, apolloClient) {
