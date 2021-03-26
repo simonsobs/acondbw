@@ -76,7 +76,6 @@ export default {
         this.$emit("finished");
         this.delayedReset();
       } catch (error) {
-        console.log(error);
         this.error = error;
       }
     },
