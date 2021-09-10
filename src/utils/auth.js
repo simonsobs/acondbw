@@ -1,5 +1,5 @@
 const querystring = require("querystring");
-const cryptoRandomString = require("crypto-random-string");
+import cryptoRandomString from 'crypto-random-string';
 import _ from "lodash";
 
 import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
