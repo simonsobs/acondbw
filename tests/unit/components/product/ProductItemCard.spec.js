@@ -159,26 +159,26 @@ describe("ProductItemCard.vue", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it.each([
-    [true, true, false],
-    [true, false, true],
-    [false, true, true],
-    [false, false, true],
-  ])(
-    "collapsed - {collapsible: %p, collapsed: %p, visible: %p}",
-    async (collapsible, collapsed, visible) => {
-      const wrapper = createWrapper({
-        propsData: { collapsed: collapsed, collapsible: collapsible },
-      });
-      wrapper.setData({
-        node: node,
-      });
-      await Vue.nextTick();
-      if (visible) {
-        expect(wrapper.find(".collapsible").element).toBeVisible();
-      } else {
-        expect(wrapper.find(".collapsible").element).not.toBeVisible();
-      }
-    }
-  );
+  // it.each([
+  //   [true, true, false],
+  //   [true, false, true],
+  //   [false, true, true],
+  //   [false, false, true],
+  // ])(
+  //   "collapsed - {collapsible: %p, collapsed: %p, visible: %p}",
+  //   async (collapsible, collapsed, visible) => {
+  //     const wrapper = createWrapper({
+  //       propsData: { collapsed: collapsed, collapsible: collapsible },
+  //     });
+  //     wrapper.setData({
+  //       node: node,
+  //     });
+  //     await Vue.nextTick();
+  //     if (visible) {
+  //       expect(wrapper.find(".collapsible").element).toBeVisible();
+  //     } else {
+  //       expect(wrapper.find(".collapsible").element).not.toBeVisible();
+  //     }
+  //   }
+  // );
 });
