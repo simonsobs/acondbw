@@ -70,4 +70,28 @@ fragment productFragment on Product {
     }
   }
   note
+  attributesText {
+    edges {
+      node {
+        name
+        value
+      }
+    }
+  }
+  attributesDate {
+    edges {
+      node {
+        name
+        value
+      }
+    }
+  }
+  attributesDateTime {
+    edges {
+      node {
+        name
+        value
+      }
+    }
+  }
 }
