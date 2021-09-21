@@ -116,9 +116,7 @@
                             <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>
-                            <v-list-item-title
-                              >Update paths</v-list-item-title
-                            >
+                            <v-list-item-title>Update paths</v-list-item-title>
                           </v-list-item-content>
                         </v-list-item>
                       </template>
@@ -129,7 +127,9 @@
                       ></product-update-paths-form>
                     </v-dialog>
                     <v-dialog v-model="updateRelationsDialog" max-width="800">
-                      <template v-slot:activator="{ on: updateRelationsDialog }">
+                      <template
+                        v-slot:activator="{ on: updateRelationsDialog }"
+                      >
                         <v-list-item
                           :disabled="disableEdit"
                           v-on="{ ...updateRelationsDialog }"
@@ -160,9 +160,7 @@
                             <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>
-                            <v-list-item-title
-                              >Edit note</v-list-item-title
-                            >
+                            <v-list-item-title>Edit note</v-list-item-title>
                           </v-list-item-content>
                         </v-list-item>
                       </template>
@@ -353,7 +351,7 @@ export default {
       if (this.devtoolState) {
         return this.devtoolState;
       }
-      
+
       if (this.$apollo.queries.node.loading) {
         return State.LOADING;
       } else if (this.error) {
