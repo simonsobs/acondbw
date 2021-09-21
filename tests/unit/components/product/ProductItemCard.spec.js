@@ -8,7 +8,7 @@ import "@testing-library/jest-dom";
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 import router from "@/router";
 
-jest.mock('vue-apollo');
+jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
 // property $apollo, this is usually caused by a plugin that has added
 // the property as a read-only value"
@@ -118,6 +118,35 @@ describe("ProductItemCard.vue", () => {
       ],
     },
     note: "- This is a dummy test with a lat map\n- A beam depends on this map",
+    attributesText: {
+      edges: [
+        {
+          node: {
+            name: "contact",
+            value: "pwg-pmn",
+          },
+        },
+        {
+          node: {
+            name: "produced_by",
+            value: "pwg-pmn",
+          },
+        },
+      ],
+    },
+    attributesDate: {
+      edges: [
+        {
+          node: {
+            name: "date_produced",
+            value: "2020-02-01",
+          },
+        },
+      ],
+    },
+    attributesDateTime: {
+      edges: [],
+    },
   };
 
   beforeEach(function () {
