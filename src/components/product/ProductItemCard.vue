@@ -43,11 +43,11 @@
         </v-col>
         <v-col order="3" cols="6" md="3">
           <div class="caption grey--text">Date produced</div>
-          <div v-text="node.dateProduced"></div>
+          <div v-text="attributes['date_produced']"></div>
         </v-col>
         <v-col order="4" cols="6" md="2">
           <div class="caption grey--text">Produced by</div>
-          <div v-text="node.producedBy"></div>
+          <div v-text="attributes['produced_by']"></div>
         </v-col>
         <v-col order="2" order-md="5" cols="3" align-self="center">
           <v-container fluid>
@@ -102,6 +102,7 @@
                       </template>
                       <product-change-contact-form
                         :node="node"
+                        :attributes="attributes"
                         @cancel="onChangeContactFormCancelled"
                         @finished="onChangeContactFormFinished"
                       ></product-change-contact-form>
@@ -204,7 +205,7 @@
           <v-row>
             <v-col cols="12" md="4" offset-md="4">
               <div class="caption grey--text">Contact</div>
-              <div v-text="node.contact"></div>
+              <div v-text="attributes['contact']"></div>
             </v-col>
           </v-row>
           <v-row>
@@ -395,6 +396,22 @@ export default {
       } else {
         return null;
       }
+    },
+    attributes() {
+      if (!this.node) return null;
+
+      const keys = ["attributesText", "attributesDate", "attributesDateTime"];
+      const ret = keys.reduce(
+        (a, key) => ({
+          ...a,
+          ...this.node[key].edges.reduce(
+            (r, { node }) => ({ ...r, ...{ [node.name]: node.value } }),
+            {}
+          ),
+        }),
+        {}
+      );
+      return ret;
     },
   },
   watch: {

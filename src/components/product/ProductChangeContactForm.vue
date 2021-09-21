@@ -6,7 +6,7 @@
     >
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      Current contact: {{ node.contact }}
+      Current contact: {{ attributes["contact"] }}
       <v-text-field
         label="New contact"
         v-model="newContact"
@@ -35,6 +35,7 @@ export default {
   name: "ProductChangeContactForm",
   props: {
     node: Object,
+    attributes: Object
   },
   data() {
     return {
