@@ -3,8 +3,8 @@
 exports[`ProductItem.vue match snapshot 1`] = `
 <v-container-stub tag="div" fluid="true" class="product-item pa-0" style="position: relative;">
   <v-row-stub tag="div" align="start" justify="end" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
-    <v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Back to the list</span></v-tooltip-stub>
-    <v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
+    <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" fixed="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Back to the list</span></v-tooltip-stub>
+    <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" fixed="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
     <v-spacer-stub></v-spacer-stub>
   </v-row-stub>
   <div>

@@ -3,10 +3,10 @@
 exports[`ProductList.vue match snapshot 1`] = `
 <v-container-stub tag="div" fluid="true" class="product-list pa-0" style="position: relative;">
   <v-row-stub tag="div" align="center" justify="space-between" class="ma-0 px-0 pt-3 pb-1" style="max-width: 980px;">
-    <v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
+    <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" fixed="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
     <div><span class="secondary--text"><span>3 maps</span></span></div>
-    <div><span><v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Sort</span></v-tooltip-stub></span></div>
-    <div><span><v-tooltip-stub opendelay="800" closedelay="0" contentclass="" bottom="true" fixed="true" openonhover="true" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
+    <div><span><v-tooltip-stub opendelay="800" closedelay="0" bottom="true" fixed="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Sort</span></v-tooltip-stub></span></div>
+    <div><span><v-tooltip-stub opendelay="800" closedelay="0" bottom="true" fixed="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
             Expand all
           </span></v-tooltip-stub></span> <span><v-btn-stub tag="button" activeclass="" to="[object Object]" icon="true" type="button"><v-icon-stub>mdi-plus-thick</v-icon-stub></v-btn-stub></span></div>
   </v-row-stub>

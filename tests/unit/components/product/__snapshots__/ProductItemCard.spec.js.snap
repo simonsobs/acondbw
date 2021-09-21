@@ -20,7 +20,7 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
         <div class="container container--fluid">
           <div class="row justify-end">
             <!---->
-            <div class="pa-0 col" style="flex: 0 0px;"><button type="button" class="v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-dots-vertical theme--light"></i></span></button>
+            <div class="pa-0 col" style="flex: 0 0px;"><button type="button" class="v-btn v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-dots-vertical theme--light"></i></span></button>
               <div class="v-menu">
                 <!---->
               </div>
