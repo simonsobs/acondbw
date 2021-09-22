@@ -400,7 +400,7 @@ export default {
     attributes() {
       if (!this.node) return null;
 
-      const keys = ["attributesText", "attributesDate", "attributesDateTime"];
+      const keys = ["attributesUnicodeText", "attributesDate", "attributesDateTime"];
       const ret = keys.reduce(
         (a, key) => ({
           ...a,

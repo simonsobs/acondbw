@@ -118,7 +118,7 @@ describe("ProductItemCard.vue", () => {
       ],
     },
     note: "- This is a dummy test with a lat map\n- A beam depends on this map",
-    attributesText: {
+    attributesUnicodeText: {
       edges: [
         {
           node: {

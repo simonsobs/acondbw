@@ -70,7 +70,7 @@ fragment productFragment on Product {
     }
   }
   note
-  attributesText {
+  attributesUnicodeText {
     edges {
       node {
         name
