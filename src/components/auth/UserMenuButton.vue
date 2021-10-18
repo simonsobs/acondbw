@@ -36,7 +36,7 @@
         </v-list>
       </v-menu>
     </span>
-    <v-btn v-if="!user" depressed :to="pathToSignIn">
+    <v-btn v-else depressed :to="pathToSignIn">
       <v-icon left>mdi-github</v-icon>
       Sign In
     </v-btn>
