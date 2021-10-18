@@ -9,7 +9,7 @@ import Home from "@/views/framework/Home.vue";
 import Entry from "@/views/framework/Entry.vue";
 import SearchTest from "@/views/framework/SearchTest.vue";
 
-import OAuthRedirect from "@/views/auth/OAuthRedirect.vue"
+import OAuthRedirect from "@/views/auth/OAuthRedirect.vue";
 
 import SignIn from "@/views/auth/SignIn.vue";
 import Auth from "@/views/auth/Auth.vue";
@@ -105,9 +105,7 @@ const routes = [
     name: "AdminScratch",
     components: {
       default: () =>
-        import(
-          /* webpackChunkName: "admin" */ "@/views/admin-token/Scratch"
-        ),
+        import(/* webpackChunkName: "admin" */ "@/views/admin-token/Scratch"),
       frame: () =>
         import(
           /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
@@ -136,7 +134,7 @@ const routes = [
         import(
           /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppAuth"
         ),
-        frame: () =>
+      frame: () =>
         import(
           /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
         ),
@@ -150,7 +148,7 @@ const routes = [
         import(
           /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppTokenError"
         ),
-        frame: () =>
+      frame: () =>
         import(
           /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
         ),
@@ -169,7 +167,7 @@ const routes = [
       default: ProductAdd,
       frame: NullFrame,
     },
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/product/:productTypeName",
@@ -196,8 +194,10 @@ const routes = [
     name: "NotFound",
     components: {
       default: () =>
-        import(/* webpackChunkName: "error" */ "@/views/framework/NotFound.vue"),
-        frame: NullFrame,
+        import(
+          /* webpackChunkName: "error" */ "@/views/framework/NotFound.vue"
+        ),
+      frame: NullFrame,
     },
   },
 ];
@@ -223,9 +223,11 @@ router.beforeEach((to, from, next) => {
 });
 
 function checkAuthForCurrentRoute() {
-  const authRequired = router.currentRoute.matched.some((record) => record.meta.requiresAuth);
+  const authRequired = router.currentRoute.matched.some(
+    (record) => record.meta.requiresAuth
+  );
   const signedIn = store.state.auth.isSignedIn;
-  if(authRequired && !signedIn) {
+  if (authRequired && !signedIn) {
     router.push("/");
   }
 }
