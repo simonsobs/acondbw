@@ -42,7 +42,12 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <sign-out-confirmation v-on:finished="dialog = false; menu = false"></sign-out-confirmation>
+            <sign-out-confirmation
+              v-on:finished="
+                dialog = false;
+                menu = false;
+              "
+            ></sign-out-confirmation>
           </v-dialog>
         </v-list>
       </v-menu>
@@ -62,7 +67,7 @@ export default {
   components: { SignOutConfirmation },
   data: () => ({
     menu: false,
-    dialog: false
+    dialog: false,
   }),
   computed: {
     user() {
@@ -74,7 +79,7 @@ export default {
     pathToSignIn() {
       return this.$router.resolve({ name: "SignIn" }).route.path;
       // i.e., "/signin"
-    }
+    },
   },
 };
 </script>
