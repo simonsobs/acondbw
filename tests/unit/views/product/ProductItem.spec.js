@@ -47,7 +47,7 @@ describe("ProductItem.vue", () => {
 
   beforeEach(function () {
     localVue = createLocalVue();
-    store.state = { auth : { token : "xyz" } };
+    store.state = { auth : { isSignedIn : true } };
   });
 
   it("match snapshot", async () => {

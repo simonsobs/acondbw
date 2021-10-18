@@ -16,7 +16,7 @@ describe("router", () => {
     router.history.current = { ...ROUTER_HISTORY_CURRNT_ORG };
     router.history.pending = null;
 
-    store.state = { auth: { token: null } };
+    store.state = { auth: { isSignedIn: false, isAdmin: false } };
   });
 
   afterEach(() => {
@@ -26,7 +26,7 @@ describe("router", () => {
   });
 
   it("test /", async () => {
-    store.state.auth.token = "xyz";
+    store.state.auth.isSignedIn = true;
     try {
       await router.push("/");
     } catch (err) {
@@ -54,7 +54,7 @@ describe("router", () => {
   });
 
   it("test 404", async () => {
-    store.state.auth.token = "xyz";
+    store.state.auth.isSignedIn = true;
     await router.push("/no-such-path");
     const current = router.history.current;
     expect(current.name).toBe("NotFound");
@@ -63,7 +63,7 @@ describe("router", () => {
   });
 
   it("test /product/map/:name", async () => {
-    store.state.auth.token = "xyz";
+    store.state.auth.isSignedIn = true;
     await router.push("/product/map/map001");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);
@@ -77,7 +77,7 @@ describe("router", () => {
   });
 
   it("test /map", async () => {
-    store.state.auth.token = "xyz";
+    store.state.auth.isSignedIn = true;
     await router.push("/product/map");
     const current = router.history.current;
     expect(current.matched.length).toBe(2);

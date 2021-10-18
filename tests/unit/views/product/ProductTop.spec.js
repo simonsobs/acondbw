@@ -45,7 +45,7 @@ describe("ProductTop.vue", () => {
   beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
-    store.state = { auth : { token : "xyz" } };
+    store.state = { auth : { isSignedIn : true } };
   });
 
   it("match snapshot list", async () => {

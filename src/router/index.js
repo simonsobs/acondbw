@@ -34,7 +34,7 @@ const routes = [
       frame: NullFrame,
     },
     beforeEnter: (to, from, next) => {
-      const signedIn = !!store.state.auth.token;
+      const signedIn = store.state.auth.isSignedIn;
       if (signedIn) {
         next({ name: "Dashboard" });
       } else {
@@ -51,7 +51,7 @@ const routes = [
     },
     meta: { requiresAuth: true },
     beforeEnter: (to, from, next) => {
-      const signedIn = !!store.state.auth.token;
+      const signedIn = store.state.auth.isSignedIn;
       if (signedIn) {
         next();
       } else {
@@ -210,7 +210,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const authRequired = to.matched.some((record) => record.meta.requiresAuth);
-  const signedIn = !!store.state.auth.token;
+  const signedIn = store.state.auth.isSignedIn;
   if (authRequired) {
     if (signedIn) {
       next();
@@ -224,7 +224,7 @@ router.beforeEach((to, from, next) => {
 
 function checkAuthForCurrentRoute() {
   const authRequired = router.currentRoute.matched.some((record) => record.meta.requiresAuth);
-  const signedIn = !!store.state.auth.token;
+  const signedIn = store.state.auth.isSignedIn;
   if(authRequired && !signedIn) {
     router.push("/");
   }
