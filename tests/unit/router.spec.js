@@ -11,7 +11,7 @@ describe("router", () => {
   beforeEach(() => {
     moxios.install();
 
-    // Ideatly, VueRouter should be instantiated for each test.
+    // Ideally, VueRouter should be instantiated for each test.
     // But instead here, only the current and pending are set.
     router.history.current = { ...ROUTER_HISTORY_CURRNT_ORG };
     router.history.pending = null;
