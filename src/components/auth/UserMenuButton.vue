@@ -20,6 +20,17 @@
             </v-list-item-icon>
           </v-list-item>
           <v-divider></v-divider>
+          <template v-if="isAdmin">
+            <v-list-item :to="{ name: 'AdminScratch' }">
+              <v-list-item-icon>
+                <v-icon>mdi-cog</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Admin</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+          </template>
           <v-dialog v-model="dialog" max-width="600">
             <template v-slot:activator="{ on }">
               <v-list-item v-on="on">
@@ -56,6 +67,9 @@ export default {
   computed: {
     user() {
       return this.$store.state.auth.gitHubViewer;
+    },
+    isAdmin() {
+      return this.$store.state.auth.isAdmin;
     },
     pathToSignIn() {
       return this.$router.resolve({ name: "SignIn" }).route.path;
