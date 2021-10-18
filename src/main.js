@@ -22,7 +22,7 @@ new Vue({
   },
   computed: {
     isSignedIn() {
-      return !!this.$store.state.auth.token;
+      return this.$store.state.auth.isSignedIn;
     },
   },
   watch: {
