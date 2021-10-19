@@ -28,8 +28,8 @@ export default {
   data: () => ({
     edges: null,
     links: [
-      { title: "Settings", to: { name: 'AdminScratch' }, icon: "mdi-cog"},
-      ],
+      { title: "Settings", to: { name: "AdminScratch" }, icon: "mdi-cog" },
+    ],
   }),
 };
 </script>
