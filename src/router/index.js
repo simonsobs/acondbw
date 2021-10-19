@@ -106,6 +106,11 @@ const routes = [
     components: { default: SignInError, frame: NullFrame },
   },
   {
+    path: "/admin",
+    name: "Admin",
+    redirect: { name: "AdminScratch" },
+  },
+  {
     path: "/admin/scratch",
     name: "AdminScratch",
     components: { default: Scratch, frame: FrameAdmin },
