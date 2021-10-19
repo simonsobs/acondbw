@@ -23,7 +23,7 @@
 import _ from "lodash";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
-import FormRelations from "./FormRelations";
+import FormRelations from "./FormRelations.vue";
 
 function composeRelations(node) {
   return node.relations.edges.map(function (e) {

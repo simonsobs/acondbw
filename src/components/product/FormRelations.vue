@@ -87,7 +87,7 @@
 
 <script>
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import QueryForFormRelations from "@/graphql/queries/QueryForFormRelations.gql";
 

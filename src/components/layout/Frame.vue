@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import AppBar from "./AppBar";
-import Navigation from "./Navigation";
+import AppBar from "./AppBar.vue";
+import Navigation from "./Navigation.vue";
 
 export default {
   name: "Frame",

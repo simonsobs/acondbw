@@ -2,8 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import VueMeta from "vue-meta";
 
-import Frame from "@/components/layout/Frame";
-import NullFrame from "@/components/layout/NullFrame";
+import Frame from "@/components/layout/Frame.vue";
+import NullFrame from "@/components/layout/NullFrame.vue";
 
 import Home from "@/views/framework/Home.vue";
 import Entry from "@/views/framework/Entry.vue";

@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import GitHubTokenTable from "@/components/admin/GitHubTokenTable";
-import GitHubOrgTable from "@/components/admin/GitHubOrgTable";
-import GitHubUserTable from "@/components/admin/GitHubUserTable";
+import GitHubTokenTable from "@/components/admin/GitHubTokenTable.vue";
+import GitHubOrgTable from "@/components/admin/GitHubOrgTable.vue";
+import GitHubUserTable from "@/components/admin/GitHubUserTable.vue";
 
 export default {
   name: "Scratch",

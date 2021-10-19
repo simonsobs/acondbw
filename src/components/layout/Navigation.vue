@@ -50,7 +50,7 @@
 import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 export default {
   name: "Navigation",

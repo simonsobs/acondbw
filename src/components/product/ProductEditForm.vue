@@ -94,10 +94,10 @@ import _ from "lodash";
 import PRODUCT from "@/graphql/queries/Product.gql";
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 
-import FormRelations from "./FormRelations";
+import FormRelations from "./FormRelations.vue";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 export default {
   name: "ProductEditForm",

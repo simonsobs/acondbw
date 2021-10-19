@@ -31,9 +31,9 @@
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-import ProductAddForm from "@/components/product/ProductAddForm";
+import ProductAddForm from "@/components/product/ProductAddForm.vue";
 
 export default {
   name: "ProductAdd",

@@ -22,8 +22,8 @@
 <script>
 import WebConfig from "@/graphql/queries/WebConfig.gql";
 
-import SignInCard from "@/components/auth/SignInCard";
-import Dashboard from "@/components/product/Dashboard";
+import SignInCard from "@/components/auth/SignInCard.vue";
+import Dashboard from "@/components/product/Dashboard.vue";
 
 export default {
   name: "Home",

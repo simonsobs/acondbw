@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import AdminAppTokenCard from "@/components/admin-token/AdminAppTokenCard";
+import AdminAppTokenCard from "@/components/admin-token/AdminAppTokenCard.vue";
 
 export default {
   name: "AdminAppToken",

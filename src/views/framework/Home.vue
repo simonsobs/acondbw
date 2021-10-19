@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Dashboard from "@/components/product/Dashboard";
+import Dashboard from "@/components/product/Dashboard.vue";
 
 export default {
   name: "Home",

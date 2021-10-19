@@ -171,10 +171,10 @@
 </template>
 
 <script>
-import ProductItemCard from "@/components/product/ProductItemCard";
+import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
 

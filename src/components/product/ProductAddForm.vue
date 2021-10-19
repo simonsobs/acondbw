@@ -92,12 +92,12 @@ import _ from "lodash";
 import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql";
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
 
-import ProductAddFormStepStart from "./ProductAddFormStepStart";
-import ProductAddFormStepRelations from "./ProductAddFormStepRelations";
-import ProductAddFormStepPreview from "./ProductAddFormStepPreview";
+import ProductAddFormStepStart from "./ProductAddFormStepStart.vue";
+import ProductAddFormStepRelations from "./ProductAddFormStepRelations.vue";
+import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 const formRelationDefault = {
   typeId: null,

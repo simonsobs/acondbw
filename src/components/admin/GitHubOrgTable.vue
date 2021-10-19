@@ -55,8 +55,8 @@
 
 import ALL_GIT_HUB_ORGS from "@/graphql/queries/AllGitHubOrgs.gql";
 
-import GitHubOrgAddForm from "./GitHubOrgAddForm";
-import GitHubOrgRemoveForm from "./GitHubOrgRemoveForm";
+import GitHubOrgAddForm from "./GitHubOrgAddForm.vue";
+import GitHubOrgRemoveForm from "./GitHubOrgRemoveForm.vue";
 
 export default {
   name: "GitHubOrgTable",

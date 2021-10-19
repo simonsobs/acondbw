@@ -53,8 +53,8 @@
 <script>
 import WebConfig from "@/graphql/queries/WebConfig.gql";
 
-import SearchWindow from "@/components/utils/SearchWindow";
-import UserMenuButton from "@/components/auth/UserMenuButton";
+import SearchWindow from "@/components/utils/SearchWindow.vue";
+import UserMenuButton from "@/components/auth/UserMenuButton.vue";
 
 export default {
   name: "AppBar",

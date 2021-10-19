@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import SignOutConfirmation from "./SignOutConfirmation";
+import SignOutConfirmation from "./SignOutConfirmation.vue";
 
 export default {
   name: "UserMenuButton",

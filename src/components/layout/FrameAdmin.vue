@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import AppBar from "./AppBar";
-import NavigationAdmin from "./NavigationAdmin";
+import AppBar from "./AppBar.vue";
+import NavigationAdmin from "./NavigationAdmin.vue";
 
 export default {
   name: "FrameAdmin",

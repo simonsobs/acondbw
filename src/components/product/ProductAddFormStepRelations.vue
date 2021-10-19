@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import FormRelations from "./FormRelations";
+import FormRelations from "./FormRelations.vue";
 
 export default {
   name: "ProductAddFormStepRelations",

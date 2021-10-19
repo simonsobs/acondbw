@@ -306,14 +306,14 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
 import PRODUCT from "@/graphql/queries/Product.gql";
 
-import ProductChangeContactForm from "@/components/product/ProductChangeContactForm";
-import ProductUpdatePathsForm from "@/components/product/ProductUpdatePathsForm";
-import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm";
-import ProductEditNoteForm from "@/components/product/ProductEditNoteForm";
-import ProductDeleteForm from "@/components/product/ProductDeleteForm";
+import ProductChangeContactForm from "@/components/product/ProductChangeContactForm.vue";
+import ProductUpdatePathsForm from "@/components/product/ProductUpdatePathsForm.vue";
+import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
+import ProductEditNoteForm from "@/components/product/ProductEditNoteForm.vue";
+import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 export default {
   name: "ProductItemCard",

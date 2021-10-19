@@ -18,7 +18,7 @@
 
 <script>
 import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import QueryForSearchWindow from "@/graphql/queries/QueryForSearchWindow.gql";
 
