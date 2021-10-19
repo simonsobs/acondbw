@@ -105,7 +105,7 @@ const routes = [
     name: "AdminScratch",
     components: {
       default: () =>
-        import(/* webpackChunkName: "admin" */ "@/views/admin-token/Scratch"),
+        import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch"),
       frame: () =>
         import(
           /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
