@@ -21,7 +21,7 @@
           </v-list-item>
           <v-divider></v-divider>
           <template v-if="isAdmin">
-            <v-list-item :to="{ name: 'AdminScratch' }">
+            <v-list-item :to="{ name: 'Admin' }">
               <v-list-item-icon>
                 <v-icon>mdi-cog</v-icon>
               </v-list-item-icon>
