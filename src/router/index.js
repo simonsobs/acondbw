@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import VueMeta from "vue-meta";
 
+import store from "@/store";
+
 import Frame from "@/components/layout/Frame.vue";
 import NullFrame from "@/components/layout/NullFrame.vue";
 
@@ -19,8 +21,6 @@ import ProductTop from "@/views/product/ProductTop.vue";
 import ProductList from "@/views/product/ProductList.vue";
 import ProductItem from "@/views/product/ProductItem.vue";
 import ProductAdd from "@/views/product/ProductAdd.vue";
-
-import store from "@/store";
 
 Vue.use(VueRouter);
 Vue.use(VueMeta);
@@ -107,9 +107,7 @@ const routes = [
       default: () =>
         import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch"),
       frame: () =>
-        import(
-          /* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"
-        ),
+        import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"),
     },
   },
   {
@@ -121,9 +119,7 @@ const routes = [
           /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppToken"
         ),
       frame: () =>
-        import(
-          /* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"
-        ),
+        import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"),
     },
   },
   {
@@ -135,9 +131,7 @@ const routes = [
           /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppAuth"
         ),
       frame: () =>
-        import(
-          /* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"
-        ),
+        import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"),
     },
   },
   {
@@ -149,9 +143,7 @@ const routes = [
           /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppTokenError"
         ),
       frame: () =>
-        import(
-          /* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"
-        ),
+        import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"),
     },
   },
   {
