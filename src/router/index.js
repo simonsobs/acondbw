@@ -22,6 +22,26 @@ import ProductList from "@/views/product/ProductList.vue";
 import ProductItem from "@/views/product/ProductItem.vue";
 import ProductAdd from "@/views/product/ProductAdd.vue";
 
+const About = () => import("@/views/framework/About.vue");
+const NotFound = () => import("@/views/framework/NotFound.vue");
+
+const FrameAdmin = () =>
+  import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin.vue");
+const Scratch = () =>
+  import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch.vue");
+const AdminAppToken = () =>
+  import(
+    /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppToken.vue"
+  );
+const AdminAppAuth = () =>
+  import(
+    /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppAuth.vue"
+  );
+const AdminAppTokenError = () =>
+  import(
+    /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppTokenError.vue"
+  );
+
 Vue.use(VueRouter);
 Vue.use(VueMeta);
 
@@ -62,135 +82,73 @@ const routes = [
   {
     path: "/search-test",
     name: "SearchTest",
-    components: {
-      default: SearchTest,
-      frame: Frame,
-    },
+    components: { default: SearchTest, frame: Frame },
     meta: { requiresAuth: true },
   },
   {
     path: "/oauth-redirect",
     name: "OAuthRedirect",
-    components: {
-      default: OAuthRedirect,
-      frame: NullFrame,
-    },
+    components: { default: OAuthRedirect, frame: NullFrame },
   },
   {
     path: "/signin",
     name: "SignIn",
-    components: {
-      default: SignIn,
-      frame: NullFrame,
-    },
+    components: { default: SignIn, frame: NullFrame },
   },
   {
     path: "/auth",
     name: "Auth",
-    components: {
-      default: Auth,
-      frame: NullFrame,
-    },
+    components: { default: Auth, frame: NullFrame },
   },
   {
     path: "/signin-error",
     name: "SignInError",
-    components: {
-      default: SignInError,
-      frame: NullFrame,
-    },
+    components: { default: SignInError, frame: NullFrame },
   },
   {
     path: "/admin/scratch",
     name: "AdminScratch",
-    components: {
-      default: () =>
-        import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch"),
-      frame: () =>
-        import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"),
-    },
+    components: { default: Scratch, frame: FrameAdmin },
   },
   {
     path: "/admin/token",
     name: "AdminAppToken",
-    components: {
-      default: () =>
-        import(
-          /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppToken"
-        ),
-      frame: () =>
-        import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"),
-    },
+    components: { default: AdminAppToken, frame: FrameAdmin },
   },
   {
     path: "/admin/auth",
     name: "AdminAppAuth",
-    components: {
-      default: () =>
-        import(
-          /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppAuth"
-        ),
-      frame: () =>
-        import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"),
-    },
+    components: { default: AdminAppAuth, frame: FrameAdmin },
   },
   {
     path: "/admin/token-error",
     name: "AdminAppTokenError",
-    components: {
-      default: () =>
-        import(
-          /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppTokenError"
-        ),
-      frame: () =>
-        import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"),
-    },
+    components: { default: AdminAppTokenError, frame: FrameAdmin },
   },
   {
     path: "/about",
     name: "About",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "@/views/framework/About.vue"),
+    component: About,
   },
   {
     path: "/add-product/:productTypeName",
     name: "ProductAdd",
-    components: {
-      default: ProductAdd,
-      frame: NullFrame,
-    },
+    components: { default: ProductAdd, frame: NullFrame },
     meta: { requiresAuth: true },
   },
   {
     path: "/product/:productTypeName",
-    components: {
-      default: ProductTop,
-      frame: Frame,
-    },
+    components: { default: ProductTop, frame: Frame },
     meta: { requiresAuth: true },
     children: [
-      {
-        path: "",
-        name: "ProductList",
-        component: ProductList,
-      },
-      {
-        path: ":name",
-        name: "ProductItem",
-        component: ProductItem,
-      },
+      { path: "", name: "ProductList", component: ProductList },
+      { path: ":name", name: "ProductItem", component: ProductItem },
     ],
   },
   {
     path: "*",
     name: "NotFound",
-    components: {
-      default: () =>
-        import(
-          /* webpackChunkName: "error" */ "@/views/framework/NotFound.vue"
-        ),
-      frame: NullFrame,
-    },
+    components: { default: NotFound, frame: NullFrame },
   },
 ];
 
