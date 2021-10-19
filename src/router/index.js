@@ -108,7 +108,7 @@ const routes = [
         import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch"),
       frame: () =>
         import(
-          /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
+          /* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"
         ),
     },
   },
@@ -122,7 +122,7 @@ const routes = [
         ),
       frame: () =>
         import(
-          /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
+          /* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"
         ),
     },
   },
@@ -136,7 +136,7 @@ const routes = [
         ),
       frame: () =>
         import(
-          /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
+          /* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"
         ),
     },
   },
@@ -150,7 +150,7 @@ const routes = [
         ),
       frame: () =>
         import(
-          /* webpackChunkName: "admin" */ "@/components/layout/FrameAdmin"
+          /* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin"
         ),
     },
   },

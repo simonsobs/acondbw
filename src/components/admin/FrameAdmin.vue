@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import AppBar from "./AppBar.vue";
+import AppBar from "@/components/layout/AppBar.vue";
 import NavigationAdmin from "./NavigationAdmin.vue";
 
 export default {
