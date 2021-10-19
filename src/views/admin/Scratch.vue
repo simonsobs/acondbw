@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import GitHubTokenTable from "@/components/admin-token/GitHubTokenTable";
-import GitHubOrgTable from "@/components/admin-token/GitHubOrgTable";
-import GitHubUserTable from "@/components/admin-token/GitHubUserTable";
+import GitHubTokenTable from "@/components/admin/GitHubTokenTable";
+import GitHubOrgTable from "@/components/admin/GitHubOrgTable";
+import GitHubUserTable from "@/components/admin/GitHubUserTable";
 
 export default {
   name: "Scratch",
