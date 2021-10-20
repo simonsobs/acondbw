@@ -1,12 +1,12 @@
 <template>
   <v-card>
     <v-card-title
-      >Change the contact for the {{ node.type_.singular }}
+      >Change the {{ attribute.name }} for the {{ node.type_.singular }}
       {{ node.name }}</v-card-title
     >
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      Current contact: {{ attributes["contact"] }}
+      Current contact: {{ attribute.value }}
       <v-text-field
         label="New contact"
         v-model="newContact"
@@ -35,7 +35,7 @@ export default {
   name: "ProductChangeContactForm",
   props: {
     node: Object,
-    attributes: Object
+    attribute: Object,
   },
   data() {
     return {
@@ -71,7 +71,14 @@ export default {
     },
     async submit() {
       try {
-        const updateProductInput = { contact: this.newContact };
+        const updateProductInput = {
+          contact: this.newContact,
+          attributes: {
+            unicodeText: [
+              { fieldId: this.attribute.fieldId, value: this.newContact },
+            ],
+          },
+        };
         const data = await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT,
           variables: {

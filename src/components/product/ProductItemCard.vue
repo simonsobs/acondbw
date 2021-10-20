@@ -43,11 +43,11 @@
         </v-col>
         <v-col order="3" cols="6" md="3">
           <div class="caption grey--text">Date produced</div>
-          <div v-text="attributes['date_produced']"></div>
+          <div v-text="attributes['date_produced']['value']"></div>
         </v-col>
         <v-col order="4" cols="6" md="2">
           <div class="caption grey--text">Produced by</div>
-          <div v-text="attributes['produced_by']"></div>
+          <div v-text="attributes['produced_by']['value']"></div>
         </v-col>
         <v-col order="2" order-md="5" cols="3" align-self="center">
           <v-container fluid>
@@ -102,7 +102,7 @@
                       </template>
                       <product-change-contact-form
                         :node="node"
-                        :attributes="attributes"
+                        :attribute="attributes['contact']"
                         @cancel="onChangeContactFormCancelled"
                         @finished="onChangeContactFormFinished"
                       ></product-change-contact-form>
@@ -205,7 +205,7 @@
           <v-row>
             <v-col cols="12" md="4" offset-md="4">
               <div class="caption grey--text">Contact</div>
-              <div v-text="attributes['contact']"></div>
+              <div v-text="attributes['contact']['value']"></div>
             </v-col>
           </v-row>
           <v-row>
@@ -414,7 +414,16 @@ export default {
         (a, key) => ({
           ...a,
           ...this.node[key].edges.reduce(
-            (r, { node }) => ({ ...r, ...{ [node.name]: node.value } }),
+            (r, { node }) => ({
+              ...r,
+              ...{
+                [node.name]: {
+                  fieldId: node.fieldId,
+                  name: node.name,
+                  value: node.value,
+                },
+              },
+            }),
             {}
           ),
         }),
