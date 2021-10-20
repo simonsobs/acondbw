@@ -110,7 +110,7 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
-    redirect: { name: "AdminScratch" },
+    redirect: { name: "AdminVersion" },
   },
   {
     path: "/admin/versions",
