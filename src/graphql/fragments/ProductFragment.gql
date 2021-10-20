@@ -73,6 +73,7 @@ fragment productFragment on Product {
   attributesUnicodeText {
     edges {
       node {
+        fieldId
         name
         field {
           name
@@ -85,6 +86,7 @@ fragment productFragment on Product {
   attributesBoolean {
     edges {
       node {
+        fieldId
         name
         field {
           name
@@ -97,6 +99,7 @@ fragment productFragment on Product {
   attributesInteger {
     edges {
       node {
+        fieldId
         name
         field {
           name
@@ -109,6 +112,7 @@ fragment productFragment on Product {
   attributesFloat {
     edges {
       node {
+        fieldId
         name
         field {
           name
@@ -121,6 +125,7 @@ fragment productFragment on Product {
   attributesDate {
     edges {
       node {
+        fieldId
         name
         field {
           name
@@ -133,6 +138,7 @@ fragment productFragment on Product {
   attributesDateTime {
     edges {
       node {
+        fieldId
         name
         field {
           name
@@ -145,6 +151,7 @@ fragment productFragment on Product {
   attributesTime {
     edges {
       node {
+        fieldId
         name
         field {
           name
