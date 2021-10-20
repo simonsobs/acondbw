@@ -400,7 +400,16 @@ export default {
     attributes() {
       if (!this.node) return null;
 
-      const keys = ["attributesUnicodeText", "attributesDate", "attributesDateTime"];
+      const keys = [
+        "attributesUnicodeText",
+        "attributesBoolean",
+        "attributesInteger",
+        "attributesFloat",
+        "attributesDate",
+        "attributesDateTime",
+        "attributesTime",
+      ].filter((k) => k in this.node);
+
       const ret = keys.reduce(
         (a, key) => ({
           ...a,
