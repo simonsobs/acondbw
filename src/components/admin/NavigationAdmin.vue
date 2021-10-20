@@ -28,7 +28,11 @@ export default {
   data: () => ({
     edges: null,
     links: [
-      { title: "Settings", to: { name: "AdminScratch" }, icon: "mdi-cog" },
+      {
+        title: "scratch",
+        to: { name: "AdminScratch" },
+        icon: "mdi-note-edit-outline",
+      },
     ],
   }),
 };
