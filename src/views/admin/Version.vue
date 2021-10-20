@@ -31,9 +31,6 @@ export default {
     versions: {
       query: VERSIONS,
       update: (data) => data,
-      result(result) {
-        console.log(result);
-      },
     },
   },
 };
