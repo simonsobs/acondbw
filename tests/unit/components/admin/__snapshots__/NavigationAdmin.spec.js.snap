@@ -5,10 +5,18 @@ exports[`App.vue match snapshot 1`] = `
   <v-list-stub shaped="true" tag="div">
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
       <v-list-item-action-stub>
-        <v-icon-stub>mdi-cog</v-icon-stub>
+        <v-icon-stub>mdi-scatter-plot-outline</v-icon-stub>
       </v-list-item-action-stub>
       <v-list-item-content-stub>
-        <v-list-item-title-stub class="capitalize">Settings</v-list-item-title-stub>
+        <v-list-item-title-stub class="capitalize">versions</v-list-item-title-stub>
+      </v-list-item-content-stub>
+    </v-list-item-stub>
+    <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
+      <v-list-item-action-stub>
+        <v-icon-stub>mdi-note-edit-outline</v-icon-stub>
+      </v-list-item-action-stub>
+      <v-list-item-content-stub>
+        <v-list-item-title-stub class="capitalize">scratch</v-list-item-title-stub>
       </v-list-item-content-stub>
     </v-list-item-stub>
   </v-list-stub>

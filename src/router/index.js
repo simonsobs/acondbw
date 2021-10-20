@@ -27,6 +27,8 @@ const NotFound = () => import("@/views/framework/NotFound.vue");
 
 const FrameAdmin = () =>
   import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin.vue");
+const Version = () =>
+  import(/* webpackChunkName: "admin" */ "@/views/admin/Version.vue");
 const Scratch = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch.vue");
 const AdminAppToken = () =>
@@ -109,6 +111,11 @@ const routes = [
     path: "/admin",
     name: "Admin",
     redirect: { name: "AdminScratch" },
+  },
+  {
+    path: "/admin/versions",
+    name: "AdminVersion",
+    components: { default: Version, frame: FrameAdmin },
   },
   {
     path: "/admin/scratch",

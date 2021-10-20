@@ -29,6 +29,11 @@ export default {
     edges: null,
     links: [
       {
+        title: "versions",
+        to: { name: "AdminVersion" },
+        icon: "mdi-scatter-plot-outline",
+      },
+      {
         title: "scratch",
         to: { name: "AdminScratch" },
         icon: "mdi-note-edit-outline",

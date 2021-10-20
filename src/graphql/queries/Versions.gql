@@ -1,0 +1,4 @@
+query Versions {
+  version
+  alembicVersion
+}
