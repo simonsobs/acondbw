@@ -1,15 +1,21 @@
 <template>
-  <div>
-    <div class="display-1">Versions</div>
-    <div>
-      <span class="font-weight-medium">Server version:</span
-      >{{ versions.version }}
-    </div>
-    <div>
-      <span class="font-weight-medium">Alembic migration version:</span
-      >{{ versions.alembicVersion }}
-    </div>
-  </div>
+  <v-container fluid>
+    <v-row>
+      <v-col>
+        <v-card flat>
+          <v-card-title>Versions</v-card-title>
+          <v-card-text>
+            <span class="font-weight-medium">Server version:</span
+            >{{ versions.version }}
+          </v-card-text>
+          <v-card-text>
+            <span class="font-weight-medium">Alembic migration version:</span
+            >{{ versions.alembicVersion }}
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
