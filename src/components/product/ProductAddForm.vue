@@ -88,6 +88,7 @@
   
 <script>
 import _ from "lodash";
+import { camelCase } from "camel-case";
 
 import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql";
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
@@ -167,6 +168,19 @@ export default {
     },
     notFound() {
       return this.state == State.NONE;
+    },
+    fields() {
+      if (!this.productType) return null;
+      const ret = this.productType.fields.edges.reduce(
+        (a, { node }) => ({
+          ...a,
+          ...{
+            [camelCase(node.field.name)]: node,
+          },
+        }),
+        {}
+      );
+      return ret;
     },
   },
   apollo: {
