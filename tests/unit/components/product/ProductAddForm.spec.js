@@ -39,6 +39,54 @@ describe("ProductAddForm.vue", () => {
     return wrapper;
   }
 
+  const productType = {
+    id: "UHJvZHVjdFR5cGU6MQ==",
+    typeId: "1",
+    name: "map",
+    order: 2,
+    indefArticle: "a",
+    singular: "map",
+    plural: "maps",
+    icon: "mdi-map",
+    fields: {
+      edges: [
+        {
+          node: {
+            typeId: "1",
+            fieldId: "1",
+            field: {
+              fieldId: "1",
+              name: "contact",
+              type_: "UNICODE_TEXT",
+            },
+          },
+        },
+        {
+          node: {
+            typeId: "1",
+            fieldId: "2",
+            field: {
+              fieldId: "2",
+              name: "produced_by",
+              type_: "UNICODE_TEXT",
+            },
+          },
+        },
+        {
+          node: {
+            typeId: "1",
+            fieldId: "3",
+            field: {
+              fieldId: "3",
+              name: "date_produced",
+              type_: "DATE",
+            },
+          },
+        },
+      ],
+    },
+  };
+
   beforeEach(function () {
     localVue = createLocalVue();
     localVue.use(Vuex);
@@ -70,6 +118,8 @@ describe("ProductAddForm.vue", () => {
     document.body.append(app);
 
     const wrapper = createWrapper();
+    wrapper.setData({ productType: productType });
+    await Vue.nextTick();
     wrapper.vm.$refs.form = {};
     wrapper.vm.$refs.form.resetValidation = jest.fn();
 
@@ -101,6 +151,24 @@ describe("ProductAddForm.vue", () => {
       note: "note",
       paths: ["/a/b/c", "/x/y/z"],
       relations: [],
+      attributes: {
+        date: [
+          {
+            fieldId: "3",
+            value: "2020-01-11",
+          },
+        ],
+        unicodeText: [
+          {
+            fieldId: "1",
+            value: "contact-contact",
+          },
+          {
+            fieldId: "2",
+            value: "map-map",
+          },
+        ],
+      },
     };
 
     expect(calls[0][0].variables).toEqual({
