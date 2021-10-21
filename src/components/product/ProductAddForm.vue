@@ -285,6 +285,16 @@ export default {
         ...new Set(ret.relations.map((o) => JSON.stringify(o))),
       ].map((s) => JSON.parse(s));
 
+      const keys = ["contact", "dateProduced", "producedBy"].filter(
+        (k) => k in this.fields
+      );
+      ret.attributes = keys.reduce((a, k) => {
+        const typeName = camelCase(this.fields[k].field.type_);
+        a[typeName] = a[typeName] ? a[typeName] : [];
+        a[typeName].push({ fieldId: this.fields[k].fieldId, value: ret[k] });
+        return a;
+      }, {});
+
       return ret;
     },
     async addProduct(createProductInput) {
