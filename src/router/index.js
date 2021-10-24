@@ -29,6 +29,8 @@ const FrameAdmin = () =>
   import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin.vue");
 const Version = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Version.vue");
+  const Log = () =>
+  import(/* webpackChunkName: "admin" */ "@/views/admin/Log.vue");
 const Scratch = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch.vue");
 const AdminAppToken = () =>
@@ -116,6 +118,11 @@ const routes = [
     path: "/admin/versions",
     name: "AdminVersion",
     components: { default: Version, frame: FrameAdmin },
+  },
+  {
+    path: "/admin/log",
+    name: "AdminLog",
+    components: { default: Log, frame: FrameAdmin },
   },
   {
     path: "/admin/scratch",

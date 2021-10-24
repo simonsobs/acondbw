@@ -34,6 +34,11 @@ export default {
         icon: "mdi-scatter-plot-outline",
       },
       {
+        title: "log",
+        to: { name: "AdminLog" },
+        icon: "mdi-exclamation-thick",
+      },
+      {
         title: "scratch",
         to: { name: "AdminScratch" },
         icon: "mdi-note-edit-outline",

@@ -1,0 +1,13 @@
+query AllLogs {
+  allLogs {
+    totalCount
+    edges {
+      node {
+        id_
+        time
+        level
+        message
+      }
+    }
+  }
+}

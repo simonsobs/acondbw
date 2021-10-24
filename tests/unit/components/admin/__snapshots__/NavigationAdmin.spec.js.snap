@@ -13,6 +13,14 @@ exports[`App.vue match snapshot 1`] = `
     </v-list-item-stub>
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
       <v-list-item-action-stub>
+        <v-icon-stub>mdi-exclamation-thick</v-icon-stub>
+      </v-list-item-action-stub>
+      <v-list-item-content-stub>
+        <v-list-item-title-stub class="capitalize">log</v-list-item-title-stub>
+      </v-list-item-content-stub>
+    </v-list-item-stub>
+    <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
+      <v-list-item-action-stub>
         <v-icon-stub>mdi-note-edit-outline</v-icon-stub>
       </v-list-item-action-stub>
       <v-list-item-content-stub>
