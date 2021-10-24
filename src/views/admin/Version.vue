@@ -3,12 +3,10 @@
     <v-row>
       <v-col>
         <v-card flat>
-          <v-card-title>Versions</v-card-title>
+          <v-card-title class="text-h4">Versions</v-card-title>
           <v-card-text>
             <span class="font-weight-medium">Server version:</span
-            >{{ versions.version }}
-          </v-card-text>
-          <v-card-text>
+            >{{ versions.version }}<br />
             <span class="font-weight-medium">Alembic migration version:</span
             >{{ versions.alembicVersion }}
           </v-card-text>
@@ -35,4 +33,3 @@ export default {
   },
 };
 </script>
-
