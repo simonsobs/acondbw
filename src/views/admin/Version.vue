@@ -5,6 +5,8 @@
         <v-card flat>
           <v-card-title class="text-h4">Versions</v-card-title>
           <v-card-text v-if="versions">
+            <span class="font-weight-medium">App version:</span
+            >{{ $store.getters.appVersion }}<br />
             <span class="font-weight-medium">Server version:</span
             >{{ versions.version }}<br />
             <span class="font-weight-medium">Alembic migration version:</span
