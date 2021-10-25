@@ -29,7 +29,7 @@ const FrameAdmin = () =>
   import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin.vue");
 const Version = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Version.vue");
-  const Log = () =>
+const Log = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Log.vue");
 const Scratch = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch.vue");
