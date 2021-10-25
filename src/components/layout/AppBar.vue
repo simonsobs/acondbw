@@ -10,7 +10,11 @@
     </v-tooltip>-->
     <v-app-bar-nav-icon @click="$emit('drawer')" />
     <v-toolbar-title>
-      <router-link to="/" v-text="title" style="text-decoration: none; color: inherit;"></router-link>
+      <router-link
+        to="/"
+        v-text="title"
+        style="text-decoration: none; color: inherit"
+      ></router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <search-window></search-window>
@@ -60,25 +64,24 @@ export default {
   name: "AppBar",
   components: {
     SearchWindow,
-    UserMenuButton
+    UserMenuButton,
   },
   data: () => ({
     graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP,
     title: null,
-    error: null
+    error: null,
   }),
   apollo: {
     title: {
       query: WebConfig,
-      update: data =>
-        data.webConfig ? data.webConfig.toolbarTitle : null,
+      update: (data) => (data.webConfig ? data.webConfig.toolbarTitle : null),
       result(result) {
         this.error = result.error ? result.error : null;
-      }
-    }
+      },
+    },
   },
   created() {
     this.$vuetify.theme.dark = false;
-  }
+  },
 };
 </script>
