@@ -15,7 +15,7 @@
 <script>
 import WebConfig from "@/graphql/queries/WebConfig.gql";
 
-import Snackbar from "@/components/layout/Snackbar";
+import Snackbar from "@/components/layout/Snackbar.vue";
 
 export default {
   name: "App",
