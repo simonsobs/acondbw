@@ -13,7 +13,14 @@ var state = function () {
     snackbar: false,
     snackbarMessage: null,
     nApolloMutations: 0,
+    packageVersion: process.env.PACKAGE_VERSION || "0",
   };
+};
+
+const getters = {
+  appVersion: (state) => {
+    return state.packageVersion;
+  },
 };
 
 const mutations = {
@@ -54,6 +61,7 @@ const modules = {
 
 export const storeConfig = {
   state,
+  getters,
   mutations,
   actions,
   modules,
