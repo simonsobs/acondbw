@@ -18,7 +18,7 @@ new Vue({
   store,
   apolloProvider,
   created() {
-    this.$store.dispatch("checkIfSignedIn", this.$apollo);
+    this.$store.dispatch("initWithAsyncActions", this.$apollo);
   },
   computed: {
     isSignedIn() {

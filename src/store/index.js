@@ -40,6 +40,9 @@ const mutations = {
 };
 
 const actions = {
+  initWithAsyncActions({ dispatch }, apolloClient) {
+    dispatch("checkIfSignedIn", apolloClient);
+  },
   loadExample({ commit }) {
     const example = "123";
     commit("set_example", example);
