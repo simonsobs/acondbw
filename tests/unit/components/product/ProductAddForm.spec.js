@@ -34,7 +34,11 @@ describe("ProductAddForm.vue", () => {
           mutate,
         },
       },
-      stubs: ["dev-tool-loading-state-overriding-menu"],
+      stubs: [
+        "dev-tool-loading-state-overriding-menu",
+        "product-add-form-step-start",
+        "product-add-form-step-relations",
+      ],
     });
 
     return wrapper;
