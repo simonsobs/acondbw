@@ -3,6 +3,8 @@ import Vuex from "vuex";
 
 import { auth } from "./auth";
 
+import QUERY_WEB_CONFIG from "@/graphql/queries/WebConfig.gql";
+
 Vue.use(Vuex);
 
 // Declared as a function to avoid the problem described in
@@ -14,6 +16,7 @@ var state = function () {
     snackbarMessage: null,
     nApolloMutations: 0,
     packageVersion: process.env.PACKAGE_VERSION || "0",
+    webConfig: {},
   };
 };
 
@@ -37,11 +40,23 @@ const mutations = {
   apollo_mutation_called(state) {
     state.nApolloMutations++;
   },
+  set_web_config(state, data) {
+    state.webConfig = data;
+  },
 };
 
 const actions = {
   initWithAsyncActions({ dispatch }, apolloClient) {
+    dispatch("loadWebConfig", apolloClient);
     dispatch("checkIfSignedIn", apolloClient);
+  },
+  async loadWebConfig({ commit, dispatch }, apolloClient) {
+    try {
+      const { data } = await apolloClient.query({ query: QUERY_WEB_CONFIG });
+      commit("set_web_config", data.webConfig);
+    } catch (error) {
+      // console.error(error);
+    }
   },
   loadExample({ commit }) {
     const example = "123";
