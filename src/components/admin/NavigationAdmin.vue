@@ -39,6 +39,11 @@ export default {
         icon: "mdi-exclamation-thick",
       },
       {
+        title: "Theme",
+        to: { name: "AdminTheme" },
+        icon: "mdi-format-color-fill",
+      },
+      {
         title: "scratch",
         to: { name: "AdminScratch" },
         icon: "mdi-note-edit-outline",
