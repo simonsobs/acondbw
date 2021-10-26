@@ -23,10 +23,10 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
       localVue,
       vuetify,
       mocks: {
-        $apollo: {
-          queries: {
-            enabled: {
-              loading: loading,
+        $store: {
+          state: {
+            webConfig: {
+              devtoolLoadingstate: true
             },
           },
         },
@@ -38,9 +38,6 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
 
   it("emit a state", async () => {
     const wrapper = createWrapper();
-    wrapper.setData({
-      enabled: true,
-    });
     await Vue.nextTick();
     wrapper.setData({
       state: State.LOADING,
@@ -52,9 +49,6 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
 
   it("off - emit null", async () => {
     const wrapper = createWrapper();
-    wrapper.setData({
-      enabled: true,
-    });
     await Vue.nextTick();
     wrapper.setData({
       state: State.LOADING,

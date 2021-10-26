@@ -5,7 +5,7 @@ import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
 import store from "@/store";
-jest.mock("@/store")
+jest.mock("@/store");
 
 import App from "@/App.vue";
 import router from "@/router";
@@ -25,7 +25,7 @@ describe("App.vue", () => {
     localVue.use(Vuex);
     vuetify = new Vuetify();
 
-    store.state = { auth : { token : "xyz" } };
+    store.state = { auth: { token: "xyz" } };
     // set token here instead of to token_ below because the router is
     // directly importing the store in @/router/index.js
 
@@ -35,17 +35,17 @@ describe("App.vue", () => {
       state: {
         snackbar: false,
         snackbarMessage: null,
+        webConfig: {
+          headTitle: "Head Title",
+        },
       },
     });
     wrapper = shallowMount(App, {
       localVue,
       vuetify,
       router,
-      store : store_,
+      store: store_,
       stubs: ["router-link", "router-view"],
-    });
-    wrapper.setData({
-      title: "Head Title",
     });
   });
 
@@ -61,9 +61,9 @@ describe("App.vue", () => {
 
   it("transition across", async () => {
     await router.push("/maps");
-    try{
+    try {
       await router.push("/");
-    } catch(err) {
+    } catch (err) {
       // Error: Redirected when going from "/" to "/" via a navigation guard.
       // https://stackoverflow.com/questions/62223195/vue-router-uncaught-in-promise-error-redirected-from-login-to-via-a
     }

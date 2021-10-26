@@ -55,8 +55,6 @@
 </template>
 
 <script>
-import WebConfig from "@/graphql/queries/WebConfig.gql";
-
 import SearchWindow from "@/components/utils/SearchWindow.vue";
 import UserMenuButton from "@/components/auth/UserMenuButton.vue";
 
@@ -67,18 +65,13 @@ export default {
     UserMenuButton,
   },
   data: () => ({
-    graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP,
-    title: null,
+    // graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP,
     error: null,
   }),
-  apollo: {
-    title: {
-      query: WebConfig,
-      update: (data) => (data.webConfig ? data.webConfig.toolbarTitle : null),
-      result(result) {
-        this.error = result.error ? result.error : null;
-      },
-    },
+  computed: {
+    title() {
+      return this.$store.state.webConfig.toolbarTitle || "";
+    }
   },
   created() {
     this.$vuetify.theme.dark = false;

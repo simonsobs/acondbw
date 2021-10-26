@@ -6,7 +6,7 @@ import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 import AppBar from "@/components/layout/AppBar";
 import router from "@/router";
 
-jest.mock('vue-apollo');
+jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
 // property $apollo, this is usually caused by a plugin that has added
 // the property as a read-only value"
@@ -27,10 +27,10 @@ describe("App.vue", () => {
       vuetify,
       router,
       mocks: {
-        $apollo: {
-          queries: {
-            title: {
-              loading: loading,
+        $store: {
+          state: {
+            webConfig: {
+              toolbarTitle: "Toolbar Title",
             },
           },
         },
@@ -50,9 +50,6 @@ describe("App.vue", () => {
 
   it("match snapshot", async () => {
     const wrapper = createWrapper();
-    wrapper.setData({
-      title: "Toolbar Title",
-    });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });

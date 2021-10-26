@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import WebConfig from "@/graphql/queries/WebConfig.gql";
-
 import Snackbar from "@/components/layout/Snackbar.vue";
 
 export default {
@@ -31,17 +29,13 @@ export default {
   data: () => ({
     transitionName: "fade-app-across",
     transitionMode: "out-in",
-    title: null,
+    // title: null,
     error: null,
   }),
-  apollo: {
-    title: {
-      query: WebConfig,
-      update: (data) => (data.webConfig ? data.webConfig.headTitle : null),
-      result(result) {
-        this.error = result.error ? result.error : null;
-      },
-    },
+  computed: {
+    title() {
+      return this.$store.state.webConfig.headTitle || false;
+    }
   },
   watch: {
     $route(to, from) {

@@ -34,6 +34,7 @@ describe("ProductAddForm.vue", () => {
           mutate,
         },
       },
+      stubs: ["dev-tool-loading-state-overriding-menu"],
     });
 
     return wrapper;

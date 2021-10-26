@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import WebConfig from "@/graphql/queries/WebConfig.gql";
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -77,7 +76,6 @@ export default {
     State: State,
     transitionName: "fade-product-top-leave",
     transitionMode: "out-in",
-    webConfig: null,
   }),
   mounted() {
     this.productTypeName = this.$route.params.productTypeName;
@@ -111,13 +109,13 @@ export default {
       return this.state == State.NONE;
     },
     disableAdd() {
-      return this.webConfig ? !this.webConfig.productCreationDialog : true;
+      return !this.$store.state.webConfig.productCreationDialog;
     },
     disableEdit() {
-      return this.webConfig ? !this.webConfig.productUpdateDialog : true;
+      return !this.$store.state.webConfig.productUpdateDialog;
     },
     disableDelete() {
-      return this.webConfig ? !this.webConfig.productDeletionDialog : true;
+      return !this.$store.state.webConfig.productDeletionDialog;
     },
   },
   watch: {
@@ -131,9 +129,6 @@ export default {
     },
   },
   apollo: {
-    webConfig: {
-      query: WebConfig,
-    },
     node: {
       query: PRODUCT_TYPE_BY_NAME,
       variables() {

@@ -6,11 +6,11 @@ import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 import ProductTop from "@/views/product/ProductTop.vue";
 
 import store from "@/store";
-jest.mock("@/store")
+jest.mock("@/store");
 
 import router from "@/router";
 
-jest.mock('vue-apollo');
+jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
 // property $apollo, this is usually caused by a plugin that has added
 // the property as a read-only value"
@@ -29,6 +29,15 @@ describe("ProductTop.vue", () => {
       vuetify,
       router,
       mocks: {
+        $store: {
+          state: {
+            webConfig: {
+              productCreationDialog: true,
+              productUpdateDialog: true,
+              productDeletionDialog: true,
+            },
+          },
+        },
         $apollo: {
           queries: {
             node: {
@@ -45,7 +54,7 @@ describe("ProductTop.vue", () => {
   beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
-    store.state = { auth : { isSignedIn : true } };
+    store.state = { auth: { isSignedIn: true } };
   });
 
   it("match snapshot list", async () => {
@@ -53,14 +62,6 @@ describe("ProductTop.vue", () => {
     await router.push({
       name: "ProductList",
       params: { productTypeName: "map" },
-    });
-    await Vue.nextTick();
-    wrapper.setData({
-      webConfig: {
-        productCreationDialog: true,
-        productUpdateDialog: true,
-        productDeletionDialog: true,
-      },
     });
     await Vue.nextTick();
     wrapper.setData({

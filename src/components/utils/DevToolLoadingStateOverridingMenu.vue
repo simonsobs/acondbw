@@ -37,8 +37,6 @@
 </template>
 
 <script>
-import WebConfig from "@/graphql/queries/WebConfig.gql";
-
 import State from "@/utils/LoadingState.js";
 
 export default {
@@ -47,19 +45,13 @@ export default {
     return {
       state: "off",
       State: State,
-      enabled: false,
       error: null,
     };
   },
-  apollo: {
-    enabled: {
-      query: WebConfig,
-      update: (data) =>
-        data.webConfig ? data.webConfig.devtoolLoadingstate : false,
-      result(result) {
-        this.error = result.error ? result.error : null;
-      },
-    },
+  computed: {
+    enabled() {
+      return this.$store.state.webConfig.devtoolLoadingstate || false;
+    }
   },
   watch: {
     state: function () {
