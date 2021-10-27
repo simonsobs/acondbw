@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import WebConfig from "@/graphql/queries/WebConfig.gql";
-
 import SignInCard from "@/components/auth/SignInCard.vue";
 import Dashboard from "@/components/product/Dashboard.vue";
 
@@ -31,14 +29,10 @@ export default {
     SignInCard,
     Dashboard,
   },
-  apollo: {
-    title: {
-      query: WebConfig,
-      update: (data) => (data.webConfig ? data.webConfig.toolbarTitle : null),
-      result(result) {
-        this.error = result.error ? result.error : null;
-      },
-    },
+  computed: {
+    title() {
+      return this.$store.state.webConfig.toolbarTitle || "";
+    }
   },
 };
 </script>
