@@ -22,7 +22,7 @@ export default {
   },
   metaInfo() {
     return {
-      title: this.title || "Acondbw",
+      title: this.title || "loading...",
       titleTemplate: null,
     };
   },
@@ -34,7 +34,7 @@ export default {
   }),
   computed: {
     title() {
-      return this.$store.state.webConfig.headTitle || false;
+      return this.$store.state.webConfig.headTitle || "";
     }
   },
   watch: {
