@@ -24,6 +24,7 @@ import ProductAdd from "@/views/product/ProductAdd.vue";
 
 const About = () => import("@/views/framework/About.vue");
 const NotFound = () => import("@/views/framework/NotFound.vue");
+const AccessDenied = () => import("@/views/framework/AccessDenied.vue");
 
 const FrameAdmin = () =>
   import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin.vue");
@@ -172,6 +173,11 @@ const routes = [
     ],
   },
   {
+    path: "/access-denied",
+    name: "AccessDenied",
+    components: { default: AccessDenied, frame: NullFrame },
+  },
+  {
     path: "*",
     name: "NotFound",
     components: { default: NotFound, frame: NullFrame },
@@ -191,7 +197,7 @@ router.beforeEach((to, from, next) => {
     if (signedIn) {
       next();
     } else {
-      next("/");
+      next({ name: "AccessDenied" });
     }
   } else {
     next();
