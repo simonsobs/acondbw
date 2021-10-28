@@ -121,21 +121,25 @@ const routes = [
     path: "/admin/versions",
     name: "AdminVersion",
     components: { default: Version, frame: FrameAdmin },
+    meta: { requiresAdmin: true },
   },
   {
     path: "/admin/log",
     name: "AdminLog",
     components: { default: Log, frame: FrameAdmin },
+    meta: { requiresAdmin: true },
   },
   {
     path: "/admin/theme",
     name: "AdminTheme",
     components: { default: Theme, frame: FrameAdmin },
+    meta: { requiresAdmin: true },
   },
   {
     path: "/admin/scratch",
     name: "AdminScratch",
     components: { default: Scratch, frame: FrameAdmin },
+    meta: { requiresAdmin: true },
   },
   {
     path: "/admin/token",
@@ -191,17 +195,20 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const authRequired = to.matched.some((record) => record.meta.requiresAuth);
-  const signedIn = store.state.auth.isSignedIn;
-  if (authRequired) {
-    if (signedIn) {
-      next();
-    } else {
-      next({ name: "AccessDenied" });
-    }
-  } else {
-    next();
+  const adminRequired = to.matched.some((record) => record.meta.requiresAdmin);
+  const isAdmin = store.state.auth.isAdmin;
+  if (adminRequired && !isAdmin) {
+    next({ name: "AccessDenied" });
+    return;
   }
+
+  const authRequired = to.matched.some((record) => record.meta.requiresAuth);
+  const isSignedIn = store.state.auth.isSignedIn;
+  if (authRequired && !isSignedIn) {
+    next({ name: "AccessDenied" });
+    return;
+  }
+  next();
 });
 
 function checkAuthForCurrentRoute() {
