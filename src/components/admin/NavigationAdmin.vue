@@ -39,7 +39,12 @@ export default {
         icon: "mdi-exclamation-thick",
       },
       {
-        title: "Theme",
+        title: "config",
+        to: { name: "AdminConfig" },
+        icon: "mdi-cog",
+      },
+      {
+        title: "theme",
         to: { name: "AdminTheme" },
         icon: "mdi-format-color-fill",
       },

@@ -32,6 +32,8 @@ const Version = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Version.vue");
 const Log = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Log.vue");
+  const Config = () =>
+  import(/* webpackChunkName: "admin" */ "@/views/admin/Config.vue");
 const Theme = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Theme.vue");
 const Scratch = () =>
@@ -127,6 +129,12 @@ const routes = [
     path: "/admin/log",
     name: "AdminLog",
     components: { default: Log, frame: FrameAdmin },
+    meta: { requiresAdmin: true },
+  },
+  {
+    path: "/admin/config",
+    name: "AdminConfig",
+    components: { default: Config, frame: FrameAdmin },
     meta: { requiresAdmin: true },
   },
   {

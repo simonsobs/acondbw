@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import { auth } from "./auth";
 
 import QUERY_WEB_CONFIG from "@/graphql/queries/WebConfig.gql";
+import MUTATION_SAVE_WEB_CONFIG from "@/graphql/mutations/SaveWebConfig.gql";
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ var state = function () {
     nApolloMutations: 0,
     packageVersion: process.env.PACKAGE_VERSION || "0",
     webConfig: {},
+    webConfigLoaded: false,
   };
 };
 
@@ -43,6 +45,9 @@ const mutations = {
   set_web_config(state, data) {
     state.webConfig = data;
   },
+  set_web_config_loaded(state, data) {
+    state.webConfigLoaded = data;
+  },
 };
 
 const actions = {
@@ -53,10 +58,24 @@ const actions = {
   async loadWebConfig({ commit, dispatch }, apolloClient) {
     try {
       const { data } = await apolloClient.query({ query: QUERY_WEB_CONFIG });
-      const webConfig = JSON.parse(data.webConfig.json)
+      const webConfig = JSON.parse(data.webConfig.json);
       commit("set_web_config", webConfig);
+      commit("set_web_config_loaded", true);
     } catch (error) {
       // console.error(error);
+    }
+  },
+  setWebConfig({ commit }, webConfig) {
+    commit("set_web_config", webConfig);
+  },
+  async uploadWebConfig({ state }, apolloClient) {
+    try {
+      const { data } = await apolloClient.mutate({
+        mutation: MUTATION_SAVE_WEB_CONFIG,
+        variables: { json: JSON.stringify(state.webConfig) },
+      });
+    } catch (e) {
+      // console.error(e);
     }
   },
   loadExample({ commit }) {
