@@ -8,6 +8,15 @@ import MUTATION_SAVE_WEB_CONFIG from "@/graphql/mutations/SaveWebConfig.gql";
 
 Vue.use(Vuex);
 
+const WEB_CONFIG_FIELDS = [
+  "headTitle",
+  "toolbarTitle",
+  "devtoolLoadingstate",
+  "productCreationDialog",
+  "productUpdateDialog",
+  "productDeletionDialog",
+];
+
 // Declared as a function to avoid the problem described in
 // https://stackoverflow.com/a/59064006/7309855 in the tests.
 var state = function () {
@@ -58,7 +67,9 @@ const actions = {
   async loadWebConfig({ commit, dispatch }, apolloClient) {
     try {
       const { data } = await apolloClient.query({ query: QUERY_WEB_CONFIG });
-      const webConfig = JSON.parse(data.webConfig.json);
+      const base = Object.fromEntries(WEB_CONFIG_FIELDS.map((e) => [e, null]));
+      const saved = JSON.parse(data.webConfig.json);
+      const webConfig = { ...base, ...saved };
       commit("set_web_config", webConfig);
       commit("set_web_config_loaded", true);
     } catch (error) {
