@@ -53,8 +53,8 @@ const actions = {
   async loadWebConfig({ commit, dispatch }, apolloClient) {
     try {
       const { data } = await apolloClient.query({ query: QUERY_WEB_CONFIG });
-      const web_config = JSON.parse(data.webConfig.json)
-      commit("set_web_config", web_config);
+      const webConfig = JSON.parse(data.webConfig.json)
+      commit("set_web_config", webConfig);
     } catch (error) {
       // console.error(error);
     }
