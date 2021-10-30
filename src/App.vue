@@ -29,7 +29,6 @@ export default {
   data: () => ({
     transitionName: "fade-app-across",
     transitionMode: "out-in",
-    // title: null,
     error: null,
   }),
   computed: {
