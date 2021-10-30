@@ -15,6 +15,8 @@ const WEB_CONFIG_FIELDS = [
   "productCreationDialog",
   "productUpdateDialog",
   "productDeletionDialog",
+  "primary",
+  "on-primary"
 ];
 
 // Declared as a function to avoid the problem described in

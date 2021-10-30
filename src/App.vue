@@ -34,9 +34,27 @@ export default {
   computed: {
     title() {
       return this.$store.state.webConfig.headTitle || "";
-    }
+    },
   },
   watch: {
+    "$store.state.webConfig": {
+      immediate: true,
+      handler(webConfig) {
+        try {
+          if (Object.entries(webConfig).length === 0) return; // empty
+          const theme_fields = ["primary", "on-primary"];
+          const theme_config = theme_fields
+            .filter((e) => e in webConfig && webConfig[e])
+            .reduce((a, e) => ({ ...a, ...{ [e]: webConfig[e] } }), {});
+          this.$vuetify.theme.themes.light = {
+            ...this.$vuetify.theme.themes.light,
+            ...theme_config,
+          };
+        } catch (e) {
+          // console.error(e);
+        }
+      },
+    },
     $route(to, from) {
       // update the transition effect dynamically
       // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition

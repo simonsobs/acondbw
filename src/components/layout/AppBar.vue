@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app dense clipped-left>
+  <v-app-bar app dense clipped-left class="primary on-primary--text">
     <!-- <v-tooltip bottom open-delay="800">
       <template v-slot:activator="{ on }">
         <v-btn text icon exact v-on="on" @click="$router.go(-1)">
@@ -8,7 +8,7 @@
       </template>
       <span>Back</span>
     </v-tooltip>-->
-    <v-app-bar-nav-icon @click="$emit('drawer')" />
+    <v-app-bar-nav-icon @click="$emit('drawer')" class="on-primary--text" />
     <v-toolbar-title>
       <router-link
         to="/"
