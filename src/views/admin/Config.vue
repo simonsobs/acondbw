@@ -64,7 +64,7 @@
             <v-btn
               color="primary"
               text
-              :disabled="!changed || error"
+              :disabled="!changed || !!error"
               @click="saveToServer()"
             >
               Save to server
