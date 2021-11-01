@@ -72,7 +72,7 @@
         <div v-else>
           <v-card outlined>
             <div v-if="state == State.LOADING" class="mx-4 py-2">
-              <v-progress-circular indeterminate :size="18" :width="3" color="grey"></v-progress-circular>
+              <v-progress-circular indeterminate :size="18" :width="3" color="secondary"></v-progress-circular>
             </div>
             <v-card-text v-else-if="state == State.ERROR">Error: cannot load data</v-card-text>
             <v-card-text v-else>Nothing to show here.</v-card-text>

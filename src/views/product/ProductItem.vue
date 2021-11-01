@@ -41,7 +41,7 @@
       <v-progress-circular
         indeterminate
         :size="26"
-        color="grey"
+        color="secondary"
       ></v-progress-circular>
     </div>
     <v-alert v-else-if="error" type="error" style="max-width: 980px">{{

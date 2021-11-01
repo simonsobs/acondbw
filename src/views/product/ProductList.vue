@@ -98,7 +98,7 @@
       <v-progress-circular
         indeterminate
         :size="26"
-        color="grey"
+        color="secondary"
       ></v-progress-circular>
     </div>
     <div v-if="loaded" class="pb-16">
@@ -119,7 +119,7 @@
         <v-progress-circular
           indeterminate
           :size="26"
-          color="grey"
+          color="secondary"
         ></v-progress-circular>
       </div>
       <v-container v-if="showLoadMoreButton" fluid class="pa-0">

@@ -10,7 +10,7 @@
         indeterminate
         :size="18"
         :width="3"
-        color="grey"
+        color="secondary"
       ></v-progress-circular>
     </v-card-text>
     <v-alert v-else-if="error" outlined dense type="error" class="ma-2">{{

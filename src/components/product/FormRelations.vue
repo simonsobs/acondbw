@@ -16,7 +16,7 @@
       v-if="loading"
       indeterminate
       :size="26"
-      color="grey"
+      color="secondary"
     ></v-progress-circular>
     <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
     <template v-if="loaded">

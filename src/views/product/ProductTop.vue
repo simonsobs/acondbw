@@ -10,7 +10,7 @@
       indeterminate
       :size="18"
       :width="3"
-      color="grey"
+      color="secondary"
     ></v-progress-circular>
     <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
     <v-row v-if="loaded" class="mx-1 mt-3" style="max-width: 980px">

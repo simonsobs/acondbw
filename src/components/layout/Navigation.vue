@@ -30,7 +30,7 @@
       indeterminate
       :size="18"
       :width="3"
-      color="grey"
+      color="secondary"
       class="mx-5 mt-5"
     ></v-progress-circular>
     <v-alert v-else-if="error" outlined dense type="error" class="ma-2">{{

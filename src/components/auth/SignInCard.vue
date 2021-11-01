@@ -4,7 +4,7 @@
     indeterminate
     :size="18"
     :width="3"
-    color="grey"
+    color="secondary"
   ></v-progress-circular>
   <v-card flat v-else>
     <v-card-title>Sign In</v-card-title>
