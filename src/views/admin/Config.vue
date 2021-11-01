@@ -10,6 +10,7 @@
           <v-data-table
             :headers="headers"
             :items="items"
+            :items-per-page="items.length"
             :hide-default-footer="true"
           >
             <!-- <template v-slot:[slotName]="{ item }">
