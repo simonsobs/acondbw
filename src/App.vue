@@ -42,7 +42,19 @@ export default {
       handler(webConfig) {
         try {
           if (Object.entries(webConfig).length === 0) return; // empty
-          const theme_fields = ["primary", "on-primary"];
+          const theme_fields_base = [
+            "primary",
+            "secondary",
+            "accent",
+            "error",
+            "info",
+            "success",
+            "warning",
+          ];
+          const theme_fields = [
+            ...theme_fields_base,
+            ...theme_fields_base.map((k) => `on-${k}`),
+          ];
           const theme_config = theme_fields
             .filter((e) => e in webConfig && webConfig[e])
             .reduce((a, e) => ({ ...a, ...{ [e]: webConfig[e] } }), {});

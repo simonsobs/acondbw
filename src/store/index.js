@@ -16,7 +16,19 @@ const WEB_CONFIG_FIELDS = [
   "productUpdateDialog",
   "productDeletionDialog",
   "primary",
-  "on-primary"
+  "on-primary",
+  "secondary",
+  "on-secondary",
+  "accent",
+  "on-accent",
+  "error",
+  "on-error",
+  "info",
+  "on-info",
+  "success",
+  "on-success",
+  "warning",
+  "on-warning",
 ];
 
 // Declared as a function to avoid the problem described in
