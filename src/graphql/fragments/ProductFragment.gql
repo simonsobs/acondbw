@@ -74,7 +74,6 @@ fragment productFragment on Product {
     edges {
       node {
         fieldId
-        name
         field {
           name
           type_
@@ -87,7 +86,6 @@ fragment productFragment on Product {
     edges {
       node {
         fieldId
-        name
         field {
           name
           type_
@@ -100,7 +98,6 @@ fragment productFragment on Product {
     edges {
       node {
         fieldId
-        name
         field {
           name
           type_
@@ -113,7 +110,6 @@ fragment productFragment on Product {
     edges {
       node {
         fieldId
-        name
         field {
           name
           type_
@@ -126,7 +122,6 @@ fragment productFragment on Product {
     edges {
       node {
         fieldId
-        name
         field {
           name
           type_
@@ -139,7 +134,6 @@ fragment productFragment on Product {
     edges {
       node {
         fieldId
-        name
         field {
           name
           type_
@@ -152,7 +146,6 @@ fragment productFragment on Product {
     edges {
       node {
         fieldId
-        name
         field {
           name
           type_
