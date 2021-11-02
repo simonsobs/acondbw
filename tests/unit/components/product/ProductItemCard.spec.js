@@ -123,14 +123,18 @@ describe("ProductItemCard.vue", () => {
         {
           node: {
             fieldId: 1,
-            name: "contact",
+            field: {
+              name: "contact",
+            },
             value: "pwg-pmn",
           },
         },
         {
           node: {
             fieldId: 2,
-            name: "produced_by",
+            field: {
+              name: "produced_by",
+            },
             value: "pwg-pmn",
           },
         },
@@ -141,7 +145,9 @@ describe("ProductItemCard.vue", () => {
         {
           node: {
             fieldId: 3,
-            name: "date_produced",
+            field: {
+              name: "date_produced",
+            },
             value: "2020-02-01",
           },
         },

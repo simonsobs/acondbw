@@ -417,9 +417,9 @@ export default {
             (r, { node }) => ({
               ...r,
               ...{
-                [node.name]: {
+                [node.field.name]: {
                   fieldId: node.fieldId,
-                  name: node.name,
+                  name: node.field.name,
                   value: node.value,
                 },
               },
