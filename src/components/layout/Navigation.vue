@@ -22,9 +22,9 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-    <v-alert v-else-if="empty" outlined dense type="info" class="ma-2"
-      >No product types are defined.</v-alert
-    >
+    <v-alert v-else-if="empty" outlined dense type="info" class="ma-2">
+      No product types are defined.
+    </v-alert>
     <v-progress-circular
       v-else-if="loading"
       indeterminate
@@ -33,9 +33,9 @@
       color="secondary"
       class="mx-5 mt-5"
     ></v-progress-circular>
-    <v-alert v-else-if="error" outlined dense type="error" class="ma-2">{{
-      error
-    }}</v-alert>
+    <v-alert v-else-if="error" outlined dense type="error" class="ma-2">
+      {{ error }}
+    </v-alert>
     <v-bottom-navigation absolute hide-on-scroll class="px-3">
       <!-- <v-spacer></v-spacer>
       <v-icon>mdi-plus-thick</v-icon> -->
@@ -115,7 +115,7 @@ export default {
         data.allProductTypes ? data.allProductTypes.edges : null,
       result(result) {
         this.init = false;
-        this.error = result.error ? result.error : null;
+        this.error = result.error || null;
       },
     },
   },
