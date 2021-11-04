@@ -1,9 +1,5 @@
 <template>
-  <v-container
-    fluid
-    class="product-list pa-0"
-    style="position: relative"
-  >
+  <v-container fluid class="product-list pa-0" style="position: relative">
     <v-row
       align="center"
       justify="space-between"
