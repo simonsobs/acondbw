@@ -6,7 +6,7 @@ import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 import Navigation from "@/components/layout/Navigation";
 import router from "@/router";
 
-jest.mock('vue-apollo');
+jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
 // property $apollo, this is usually caused by a plugin that has added
 // the property as a read-only value"
@@ -31,6 +31,9 @@ describe("App.vue", () => {
         singular: "simulation",
         plural: "simulations",
         icon: "mdi-creation",
+        products: {
+          totalCount: 0,
+        },
       },
     },
     {
@@ -43,6 +46,9 @@ describe("App.vue", () => {
         singular: "map",
         plural: "maps",
         icon: "mdi-map",
+        products: {
+          totalCount: 58,
+        },
       },
     },
     {
@@ -55,6 +61,9 @@ describe("App.vue", () => {
         singular: "beam",
         plural: "beams",
         icon: "mdi-spotlight-beam",
+        products: {
+          totalCount: 5,
+        },
       },
     },
   ];

@@ -4,28 +4,37 @@ exports[`App.vue match snapshot 1`] = `
 <div class="navigation">
   <v-list-stub shaped="true" tag="div">
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
-      <v-list-item-action-stub>
+      <v-list-item-action-stub class="mr-4">
         <v-icon-stub>mdi-creation</v-icon-stub>
       </v-list-item-action-stub>
       <v-list-item-content-stub>
         <v-list-item-title-stub class="capitalize">simulations</v-list-item-title-stub>
       </v-list-item-content-stub>
+      <v-list-item-icon-stub class="ml-2">
+        <!---->
+      </v-list-item-icon-stub>
     </v-list-item-stub>
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
-      <v-list-item-action-stub>
+      <v-list-item-action-stub class="mr-4">
         <v-icon-stub>mdi-map</v-icon-stub>
       </v-list-item-action-stub>
       <v-list-item-content-stub>
         <v-list-item-title-stub class="capitalize">maps</v-list-item-title-stub>
       </v-list-item-content-stub>
+      <v-list-item-icon-stub class="ml-2">
+        <v-chip-stub small="true" activeclass="" tag="span" active="true" closeicon="$delete" closelabel="$vuetify.close" filtericon="$complete">58</v-chip-stub>
+      </v-list-item-icon-stub>
     </v-list-item-stub>
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
-      <v-list-item-action-stub>
+      <v-list-item-action-stub class="mr-4">
         <v-icon-stub>mdi-spotlight-beam</v-icon-stub>
       </v-list-item-action-stub>
       <v-list-item-content-stub>
         <v-list-item-title-stub class="capitalize">beams</v-list-item-title-stub>
       </v-list-item-content-stub>
+      <v-list-item-icon-stub class="ml-2">
+        <v-chip-stub small="true" activeclass="" tag="span" active="true" closeicon="$delete" closelabel="$vuetify.close" filtericon="$complete">5</v-chip-stub>
+      </v-list-item-icon-stub>
     </v-list-item-stub>
   </v-list-stub>
   <v-bottom-navigation-stub absolute="true" height="56" inputvalue="true" activeclass="v-btn--active" hideonscroll="true" tag="div" class="px-3"></v-bottom-navigation-stub>

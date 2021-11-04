@@ -11,7 +11,7 @@
           params: { productTypeName: edge.node.name },
         }"
       >
-        <v-list-item-action>
+        <v-list-item-action class="mr-4">
           <v-icon v-text="edge.node.icon"></v-icon>
         </v-list-item-action>
         <v-list-item-content>
@@ -20,6 +20,13 @@
             class="capitalize"
           ></v-list-item-title>
         </v-list-item-content>
+        <v-list-item-icon class="ml-2">
+          <v-chip
+            small
+            v-if="!!edge.node.products.totalCount"
+            v-text="edge.node.products.totalCount"
+          ></v-chip>
+        </v-list-item-icon>
       </v-list-item>
     </v-list>
     <v-alert v-else-if="empty" outlined dense type="info" class="ma-2">
@@ -106,6 +113,9 @@ export default {
       }
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
+    "$store.state.nApolloMutations": function () {
+      this.$apollo.queries.edges.refetch();
     },
   },
   apollo: {
