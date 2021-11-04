@@ -8,7 +8,7 @@ exports[`ProductList.vue match snapshot 1`] = `
     <div><span><v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Sort</span></v-tooltip-stub></span></div>
     <div><span><v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
             Expand all
-          </span></v-tooltip-stub></span> <span><v-btn-stub tag="button" activeclass="" to="[object Object]" icon="true" type="button"><v-icon-stub>mdi-plus-thick</v-icon-stub></v-btn-stub></span></div>
+          </span></v-tooltip-stub></span> <span><v-btn-stub tag="button" activeclass="" to="[object Object]" fab="true" type="button" class="ml-3 secondary"><v-icon-stub class="on-secondary--text">mdi-plus-thick</v-icon-stub></v-btn-stub></span></div>
   </v-row-stub>
   <!---->
   <div class="pb-16">

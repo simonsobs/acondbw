@@ -79,13 +79,14 @@
         <span v-if="loaded || empty">
           <v-btn
             :disabled="disableAdd"
-            icon
+            fab
+            class="ml-3 secondary"
             :to="{
               name: 'ProductAdd',
               params: { productTypeName: productType.name },
             }"
           >
-            <v-icon>mdi-plus-thick</v-icon>
+            <v-icon class="on-secondary--text">mdi-plus-thick</v-icon>
           </v-btn>
         </span>
       </div>
