@@ -22,6 +22,9 @@ import ProductList from "@/views/product/ProductList.vue";
 import ProductItem from "@/views/product/ProductItem.vue";
 import ProductAdd from "@/views/product/ProductAdd.vue";
 
+import ProductType from "@/views/admin/ProductType.vue";
+
+
 const About = () => import("@/views/framework/About.vue");
 const NotFound = () => import("@/views/framework/NotFound.vue");
 const AccessDenied = () => import("@/views/framework/AccessDenied.vue");
@@ -118,6 +121,12 @@ const routes = [
     path: "/admin",
     name: "Admin",
     redirect: { name: "AdminVersion" },
+  },
+  {
+    path: "/admin/product-type",
+    name: "ProductType",
+    components: { default: ProductType, frame: FrameAdmin },
+    meta: { requiresAdmin: true },
   },
   {
     path: "/admin/versions",

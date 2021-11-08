@@ -43,6 +43,14 @@ exports[`App.vue match snapshot 1`] = `
         <v-list-item-title-stub class="capitalize">users</v-list-item-title-stub>
       </v-list-item-content-stub>
     </v-list-item-stub>
+    <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
+      <v-list-item-action-stub>
+        <v-icon-stub>mdi-shape</v-icon-stub>
+      </v-list-item-action-stub>
+      <v-list-item-content-stub>
+        <v-list-item-title-stub class="capitalize">product types</v-list-item-title-stub>
+      </v-list-item-content-stub>
+    </v-list-item-stub>
   </v-list-stub>
 </div>
 `;

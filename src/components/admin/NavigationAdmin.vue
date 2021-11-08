@@ -53,6 +53,11 @@ export default {
         to: { name: "AdminUser" },
         icon: "mdi-account-multiple",
       },
+      {
+        title: "product types",
+        to: { name: "ProductType" },
+        icon: "mdi-shape",
+      },
     ],
   }),
 };
