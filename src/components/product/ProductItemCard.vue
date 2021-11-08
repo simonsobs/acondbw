@@ -15,8 +15,6 @@
       v-else-if="loaded"
       @click="$emit('expand')"
       style="cursor: default"
-      fluid
-      class=""
     >
       <v-row>
         <v-col order="1" cols="9" md="4">
@@ -45,7 +43,7 @@
           <div v-text="attributes['produced_by']['value']"></div>
         </v-col>
         <v-col order="2" order-md="5" cols="3" align-self="center">
-          <v-container fluid>
+          <v-container>
             <v-row justify="end">
               <v-col v-if="collapsible" style="flex: 0" class="pa-0">
                 <v-tooltip bottom open-delay="800">

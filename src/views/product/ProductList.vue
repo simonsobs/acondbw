@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="product-list pa-0" style="position: relative">
+  <v-container class="product-list pa-0" style="position: relative">
     <v-row align="center" justify="space-between" class="ma-0 px-0 pt-3 pb-1">
       <v-tooltip bottom open-delay="800">
         <template v-slot:activator="{ on }">
@@ -114,7 +114,7 @@
           color="secondary"
         ></v-progress-circular>
       </div>
-      <v-container v-if="showLoadMoreButton" fluid class="pa-0">
+      <v-container v-if="showLoadMoreButton" class="pa-0">
         <v-row
           align="center"
           justify="space-around"

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="position: relative">
+  <v-container style="position: relative">
     <v-row justify="end">
       <v-col style="flex: 0">
         <v-tooltip bottom open-delay="800">

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProductList.vue match snapshot 1`] = `
-<v-container-stub tag="div" fluid="true" class="product-list pa-0" style="position: relative;">
+<v-container-stub tag="div" class="product-list pa-0" style="position: relative;">
   <v-row-stub tag="div" align="center" justify="space-between" class="ma-0 px-0 pt-3 pb-1">
     <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
     <div><span class="secondary--text"><span>3 maps</span></span></div>

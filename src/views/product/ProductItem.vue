@@ -1,6 +1,5 @@
 <template>
   <v-container
-    fluid
     class="product-item pa-0"
     style="position: relative"
   >
@@ -8,7 +7,6 @@
       align="start"
       justify="end"
       class="ma-0 px-0 pt-3 pb-1"
-      style="max-width: 980px"
     >
       <v-tooltip v-if="node" bottom open-delay="800">
         <template v-slot:activator="{ on }">

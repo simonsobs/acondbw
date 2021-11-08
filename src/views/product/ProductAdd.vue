@@ -1,6 +1,5 @@
 <template>
   <v-container
-    fluid
     :fill-height="notFound"
     class="product-add"
     style="position: relative"

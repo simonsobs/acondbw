@@ -2,7 +2,7 @@
 
 exports[`ProductItemCard.vue match snapshot 1`] = `
 <div class="product-item-card v-card v-card--hover v-sheet v-sheet--outlined theme--light" style="position: relative;">
-  <div class="container container--fluid" style="cursor: default;">
+  <div class="container" style="cursor: default;">
     <div class="row">
       <div class="col-md-4 col-9 order-1">
         <div class="caption grey--text">Name</div>
@@ -17,7 +17,7 @@ exports[`ProductItemCard.vue match snapshot 1`] = `
         <div>pwg-pmn</div>
       </div>
       <div class="order-md-5 col col-3 order-2 align-self-center">
-        <div class="container container--fluid">
+        <div class="container">
           <div class="row justify-end">
             <!---->
             <div class="pa-0 col" style="flex: 0 0px;"><button type="button" class="v-btn v-btn--icon v-btn--round theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-dots-vertical theme--light"></i></span></button>
