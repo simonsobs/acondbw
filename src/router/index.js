@@ -36,8 +36,8 @@ const Log = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Config.vue");
 const Theme = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Theme.vue");
-const Scratch = () =>
-  import(/* webpackChunkName: "admin" */ "@/views/admin/Scratch.vue");
+const User = () =>
+  import(/* webpackChunkName: "admin" */ "@/views/admin/User.vue");
 const AdminAppToken = () =>
   import(
     /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppToken.vue"
@@ -144,9 +144,9 @@ const routes = [
     meta: { requiresAdmin: true },
   },
   {
-    path: "/admin/scratch",
-    name: "AdminScratch",
-    components: { default: Scratch, frame: FrameAdmin },
+    path: "/admin/users",
+    name: "AdminUser",
+    components: { default: User, frame: FrameAdmin },
     meta: { requiresAdmin: true },
   },
   {

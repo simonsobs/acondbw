@@ -49,9 +49,9 @@ export default {
         icon: "mdi-format-color-fill",
       },
       {
-        title: "scratch",
-        to: { name: "AdminScratch" },
-        icon: "mdi-note-edit-outline",
+        title: "users",
+        to: { name: "AdminUser" },
+        icon: "mdi-account-multiple",
       },
     ],
   }),
