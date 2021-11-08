@@ -8,7 +8,7 @@
       </template>
       <span>Back</span>
     </v-tooltip>-->
-    <v-app-bar-nav-icon @click="$emit('drawer')" class="on-primary--text" />
+    <v-app-bar-nav-icon @click="$emit('drawer')" class="d-lg-none on-primary--text" />
     <v-toolbar-title>
       <router-link
         to="/"
