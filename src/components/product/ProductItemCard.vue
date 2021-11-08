@@ -1,10 +1,5 @@
 <template>
-  <v-card
-    outlined
-    hover
-    class="product-item-card"
-    style="position: relative"
-  >
+  <v-card outlined hover class="product-item-card" style="position: relative">
     <v-card-text v-if="loading">
       <v-progress-circular
         indeterminate

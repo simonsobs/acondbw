@@ -1,10 +1,6 @@
 <template>
   <v-container fluid class="product-list pa-0" style="position: relative">
-    <v-row
-      align="center"
-      justify="space-between"
-      class="ma-0 px-0 pt-3 pb-1"
-    >
+    <v-row align="center" justify="space-between" class="ma-0 px-0 pt-3 pb-1">
       <v-tooltip bottom open-delay="800">
         <template v-slot:activator="{ on }">
           <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
@@ -152,9 +148,7 @@
       </v-card>
     </div>
     <div v-else-if="error">
-      <v-alert v-if="error" type="error">{{
-        error
-      }}</v-alert>
+      <v-alert v-if="error" type="error">{{ error }}</v-alert>
     </div>
     <div v-else>
       <!-- state = State.NONE -->
