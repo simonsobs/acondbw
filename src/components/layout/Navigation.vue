@@ -43,7 +43,7 @@
     <v-alert v-else-if="error" outlined dense type="error" class="ma-2">
       {{ error }}
     </v-alert>
-    <v-bottom-navigation absolute hide-on-scroll class="px-3">
+    <v-bottom-navigation absolute class="px-3">
       <!-- <v-spacer></v-spacer>
       <v-icon>mdi-plus-thick</v-icon> -->
     </v-bottom-navigation>

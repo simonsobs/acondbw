@@ -37,7 +37,7 @@ exports[`App.vue match snapshot 1`] = `
       </v-list-item-icon-stub>
     </v-list-item-stub>
   </v-list-stub>
-  <v-bottom-navigation-stub absolute="true" height="56" inputvalue="true" activeclass="v-btn--active" hideonscroll="true" tag="div" class="px-3"></v-bottom-navigation-stub>
+  <v-bottom-navigation-stub absolute="true" height="56" inputvalue="true" activeclass="v-btn--active" tag="div" class="px-3"></v-bottom-navigation-stub>
   <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
 </div>
 `;
