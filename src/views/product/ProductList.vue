@@ -4,7 +4,6 @@
       align="center"
       justify="space-between"
       class="ma-0 px-0 pt-3 pb-1"
-      style="max-width: 980px"
     >
       <v-tooltip bottom open-delay="800">
         <template v-slot:activator="{ on }">
@@ -124,7 +123,6 @@
           align="center"
           justify="space-around"
           class="ma-0 px-0 pt-3 pb-1"
-          style="max-width: 980px"
         >
           <span></span>
           <span></span>
@@ -149,12 +147,12 @@
       </v-container>
     </div>
     <div v-else-if="empty">
-      <v-card outlined style="max-width: 980px">
+      <v-card outlined>
         <v-card-text>Empty. No {{ productType.plural }} are found.</v-card-text>
       </v-card>
     </div>
     <div v-else-if="error">
-      <v-alert v-if="error" type="error" style="max-width: 980px">{{
+      <v-alert v-if="error" type="error">{{
         error
       }}</v-alert>
     </div>

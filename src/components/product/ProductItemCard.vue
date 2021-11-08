@@ -3,7 +3,7 @@
     outlined
     hover
     class="product-item-card"
-    style="max-width: 980px; position: relative"
+    style="position: relative"
   >
     <v-card-text v-if="loading">
       <v-progress-circular

@@ -1,6 +1,5 @@
 <template>
   <v-container
-    fluid
     :fill-height="notFound"
     class="product-top"
     style="position: relative"
@@ -13,7 +12,7 @@
       color="secondary"
     ></v-progress-circular>
     <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
-    <v-row v-if="loaded" class="mx-1 mt-3" style="max-width: 980px">
+    <v-row v-if="loaded" class="mx-1 mt-3">
       <v-col col="8" class="display-1 primary--text pa-0 ma-0">
         <span class="me-2">
           <v-icon>{{ node.icon }}</v-icon>
