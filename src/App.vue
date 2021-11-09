@@ -87,9 +87,11 @@ export default {
 </script>
 
 <!-- https://github.com/sindresorhus/github-markdown-css -->
-<style scoped>
+<style>
 @import "../node_modules/github-markdown-css/github-markdown-light.css";
+</style>
 
+<style scoped>
 .fade-app-across-enter-active {
   transition: opacity 0.8s;
 }
