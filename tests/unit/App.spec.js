@@ -25,8 +25,8 @@ describe("App.vue", () => {
     localVue.use(Vuex);
     vuetify = new Vuetify();
 
-    store.state = { auth: { token: "xyz" } };
-    // set token here instead of to token_ below because the router is
+    store.state = { auth: { isSignedIn: true } };
+    // set isSignedIn here because the router is
     // directly importing the store in @/router/index.js
 
     actions = {};
@@ -60,7 +60,7 @@ describe("App.vue", () => {
   });
 
   it("transition across", async () => {
-    await router.push("/maps");
+    await router.push("/product/map");
     try {
       await router.push("/");
     } catch (err) {
@@ -73,8 +73,8 @@ describe("App.vue", () => {
   });
 
   it("transition within", async () => {
-    await router.push("/maps");
-    await router.push("/maps/item/map001");
+    await router.push("/product/map");
+    await router.push("/product/map/map001");
     const trans_attrs = wrapper.find("transition-stub").attributes();
     expect(trans_attrs.name).toBe("fade-app-within");
     expect(trans_attrs.mode).toBe("out-in");
