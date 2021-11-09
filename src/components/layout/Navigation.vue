@@ -11,13 +11,13 @@
           params: { productTypeName: edge.node.name },
         }"
       >
-        <v-list-item-action class="mr-4">
+        <v-list-item-action class="mr-5">
           <v-icon v-text="edge.node.icon"></v-icon>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title
             v-text="edge.node.plural"
-            class="capitalize"
+            class="capitalize condensed"
           ></v-list-item-title>
         </v-list-item-content>
         <v-list-item-icon class="ml-2">
@@ -135,5 +135,10 @@ export default {
 <style scoped>
 .capitalize {
   text-transform: capitalize;
+}
+
+.condensed {
+  font-family: "Roboto Condensed", Roboto, sans-serif;
+  /* Google Fonts are imported in src/styles/variables.scss */
 }
 </style>
