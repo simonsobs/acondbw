@@ -17,7 +17,7 @@
         <v-list-item-content>
           <v-list-item-title
             v-text="edge.node.plural"
-            class="capitalize condensed"
+            class="capitalize condensed-font"
           ></v-list-item-title>
         </v-list-item-content>
         <v-list-item-icon class="ml-2">
@@ -137,7 +137,7 @@ export default {
   text-transform: capitalize;
 }
 
-.condensed {
+.condensed-font {
   font-family: "Roboto Condensed", Roboto, sans-serif;
   /* Google Fonts are imported in src/styles/variables.scss */
 }
