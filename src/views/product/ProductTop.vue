@@ -4,49 +4,49 @@
     class="product-top"
     style="position: relative"
   >
-    <v-progress-circular
-      v-if="loading"
-      indeterminate
-      :size="18"
-      :width="3"
-      color="secondary"
-    ></v-progress-circular>
-    <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
-    <v-row v-if="loaded" class="mx-1 mt-3">
-      <v-col col="8" class="text-h4 primary--text pa-0 ma-0">
-        <span class="me-2">
-          <v-icon>{{ node.icon }}</v-icon>
-        </span>
-        <router-link
-          :to="{
-            name: 'ProductList',
-            params: { productTypeName: node.name },
-          }"
-          v-text="node.plural"
-          class="capitalize"
-          style="text-decoration: none; color: inherit"
-        ></router-link>
-        <span v-if="itemName">
-          <v-icon large color="primary">mdi-chevron-right</v-icon>
-          {{ itemName }}
-        </span>
-      </v-col>
-    </v-row>
-    <template v-if="loaded">
-      <transition :name="transitionName" :mode="transitionMode">
-        <keep-alive>
-          <router-view
-            :key="$route.fullPath"
-            :productTypeId="node ? node.typeId : null"
-            :disableAdd="disableAdd"
-            :disableEdit="disableEdit"
-            :disableDelete="disableDelete"
-          ></router-view>
-        </keep-alive>
-      </transition>
-    </template>
     <v-row v-if="notFound" align="center" justify="center">
       <v-col class="text-h1 text-center">Not Found (404)</v-col>
+    </v-row>
+    <v-row v-else>
+      <v-col>
+        <v-progress-circular
+          v-if="loading"
+          indeterminate
+          :size="18"
+          :width="3"
+          color="secondary"
+        ></v-progress-circular>
+        <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
+        <v-card flat v-if="loaded">
+          <v-card-title class="text-h4 primary--text">
+            <v-icon large class="me-3" v-text="node.icon"></v-icon>
+            <router-link
+              :to="{
+                name: 'ProductList',
+                params: { productTypeName: node.name },
+              }"
+              v-text="node.plural"
+              class="capitalize"
+              style="text-decoration: none; color: inherit"
+            ></router-link>
+            <span v-if="itemName">
+              <v-icon large color="primary">mdi-chevron-right</v-icon>
+              {{ itemName }}
+            </span>
+          </v-card-title>
+          <transition :name="transitionName" :mode="transitionMode">
+            <keep-alive>
+              <router-view
+                :key="$route.fullPath"
+                :productTypeId="node ? node.typeId : null"
+                :disableAdd="disableAdd"
+                :disableEdit="disableEdit"
+                :disableDelete="disableDelete"
+              ></router-view>
+            </keep-alive>
+          </transition>
+        </v-card>
+      </v-col>
     </v-row>
     <dev-tool-loading-state-overriding-menu
       @state="devtoolState = $event"

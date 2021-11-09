@@ -1,63 +1,62 @@
 <template>
-  <v-container
-    class="product-item pa-0"
-    style="position: relative"
-  >
-    <v-row
-      align="start"
-      justify="end"
-      class="ma-0 px-0 pt-3 pb-1"
-    >
-      <v-tooltip v-if="node" bottom open-delay="800">
-        <template v-slot:activator="{ on }">
-          <v-btn
-            text
-            icon
-            exact
-            :to="{
-              name: 'ProductList',
-              params: { productTypeName: node.type_.name },
-            }"
-            v-on="on"
-          >
-            <v-icon>mdi-arrow-left</v-icon>
-          </v-btn>
-        </template>
-        <span>Back to the list</span>
-      </v-tooltip>
-      <v-tooltip bottom open-delay="800">
-        <template v-slot:activator="{ on }">
-          <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-        </template>
-        <span>Refresh</span>
-      </v-tooltip>
-      <v-spacer></v-spacer>
+  <v-container class="product-item" style="position: relative">
+    <v-row>
+      <v-col class="pb-0">
+        <v-card-actions class="align-end" style="height: 56px">
+          <v-tooltip v-if="node" bottom open-delay="800">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                text
+                icon
+                exact
+                :to="{
+                  name: 'ProductList',
+                  params: { productTypeName: node.type_.name },
+                }"
+                v-on="on"
+              >
+                <v-icon>mdi-arrow-left</v-icon>
+              </v-btn>
+            </template>
+            <span>Back to the list</span>
+          </v-tooltip>
+          <v-tooltip bottom open-delay="800">
+            <template v-slot:activator="{ on }">
+              <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
+                <v-icon>mdi-refresh</v-icon>
+              </v-btn>
+            </template>
+            <span>Refresh</span>
+          </v-tooltip>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-col>
     </v-row>
-    <div v-if="loading" class="pa-3">
-      <v-progress-circular
-        indeterminate
-        :size="26"
-        color="secondary"
-      ></v-progress-circular>
-    </div>
-    <v-alert v-else-if="error" type="error" style="max-width: 980px">{{
-      error
-    }}</v-alert>
-    <div v-else-if="loaded">
-      <component
-        :is="productItemCard"
-        :productId="node.productId"
-        :collapsible="false"
-        v-on:deleted="onDeleted"
-        :disableEdit="disableEdit"
-        :disableDelete="disableDelete"
-      ></component>
-    </div>
-    <v-card v-if="notFound" outlined style="max-width: 980px;">
-      <v-card-text class="text-body-1">Not Found (404)</v-card-text>
-    </v-card>
+    <v-row>
+      <v-col v-if="loading">
+        <v-progress-circular
+          indeterminate
+          :size="26"
+          color="secondary"
+        ></v-progress-circular>
+      </v-col>
+      <v-col v-else-if="error">
+        <v-alert type="error">{{ error }}</v-alert>
+      </v-col>
+      <v-col v-else-if="loaded" class="pt-0">
+        <component
+          :is="productItemCard"
+          :productId="node.productId"
+          :collapsible="false"
+          v-on:deleted="onDeleted"
+          :disableEdit="disableEdit"
+          :disableDelete="disableDelete"
+        ></component>
+      </v-col>
+      <v-col v-if="notFound">
+        <v-card-text class="text-body-1">Not Found (404)</v-card-text>
+      </v-col>
+    </v-row>
     <dev-tool-loading-state-overriding-menu
       @state="devtoolState = $event"
     ></dev-tool-loading-state-overriding-menu>

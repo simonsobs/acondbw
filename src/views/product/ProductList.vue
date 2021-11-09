@@ -1,158 +1,156 @@
 <template>
-  <v-container class="product-list pa-0" style="position: relative">
-    <v-row align="center" justify="space-between" class="ma-0 px-0 pt-3 pb-1">
-      <v-tooltip bottom open-delay="800">
-        <template v-slot:activator="{ on }">
-          <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-        </template>
-        <span>Refresh</span>
-      </v-tooltip>
-      <div>
-        <span v-if="loaded" class="secondary--text">
-          <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
-          <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
-        </span>
-      </div>
-      <div>
-        <span v-if="loaded && nItemsTotal > 1">
-          <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on: tooltip }">
-              <v-menu left offset-y>
-                <template v-slot:activator="{ on: menu }">
-                  <v-btn icon v-on="{ ...tooltip, ...menu }">
-                    <v-icon>mdi-sort-variant</v-icon>
-                  </v-btn>
-                </template>
-                <v-list flat dense>
-                  <v-list-item>
-                    <v-list-item-title>Sort</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item-group v-model="sortItem" color="primary">
-                    <v-list-item v-for="(item, i) in sortItems" :key="i">
-                      <v-list-item-icon>
-                        <v-icon v-if="i == sortItem">mdi-check</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="item.text"
-                        ></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
-              </v-menu>
-            </template>
-            <span>Sort</span>
-          </v-tooltip>
-        </span>
-      </div>
-      <div>
-        <span v-if="loaded">
+  <v-container class="product-list" style="position: relative">
+    <v-row>
+      <v-col class="pb-0">
+        <v-card-actions class="align-end" style="height: 56px">
           <v-tooltip bottom open-delay="800">
             <template v-slot:activator="{ on }">
-              <v-btn
-                icon
-                @click="areAllCardsCollapsed = !areAllCardsCollapsed"
-                v-on="on"
-              >
-                <v-icon>
-                  {{
-                    areAllCardsCollapsed
-                      ? "mdi-unfold-more-horizontal"
-                      : "mdi-unfold-less-horizontal"
-                  }}
-                </v-icon>
+              <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
+                <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
-            <span>
-              {{ areAllCardsCollapsed ? "Expand all" : "Collapse all" }}
-            </span>
+            <span>Refresh</span>
           </v-tooltip>
-        </span>
-        <span v-if="loaded || empty">
-          <v-btn
-            :disabled="disableAdd"
-            fab
-            class="ml-3 secondary"
-            :to="{
-              name: 'ProductAdd',
-              params: { productTypeName: productType.name },
-            }"
-          >
-            <v-icon class="on-secondary--text">mdi-plus-thick</v-icon>
-          </v-btn>
-        </span>
-      </div>
+          <v-spacer></v-spacer>
+          <span v-if="loaded" class="secondary--text">
+            <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
+            <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
+          </span>
+          <v-spacer></v-spacer>
+          <span v-if="loaded && nItemsTotal > 1">
+            <v-tooltip bottom open-delay="800">
+              <template v-slot:activator="{ on: tooltip }">
+                <v-menu left offset-y>
+                  <template v-slot:activator="{ on: menu }">
+                    <v-btn icon v-on="{ ...tooltip, ...menu }">
+                      <v-icon>mdi-sort-variant</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list flat dense>
+                    <v-list-item>
+                      <v-list-item-title>Sort</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-group v-model="sortItem" color="primary">
+                      <v-list-item v-for="(item, i) in sortItems" :key="i">
+                        <v-list-item-icon>
+                          <v-icon v-if="i == sortItem">mdi-check</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title
+                            v-text="item.text"
+                          ></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
+                </v-menu>
+              </template>
+              <span>Sort</span>
+            </v-tooltip>
+          </span>
+          <v-spacer></v-spacer>
+          <span v-if="loaded">
+            <v-tooltip bottom open-delay="800">
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  icon
+                  @click="areAllCardsCollapsed = !areAllCardsCollapsed"
+                  v-on="on"
+                >
+                  <v-icon>
+                    {{
+                      areAllCardsCollapsed
+                        ? "mdi-unfold-more-horizontal"
+                        : "mdi-unfold-less-horizontal"
+                    }}
+                  </v-icon>
+                </v-btn>
+              </template>
+              <span>
+                {{ areAllCardsCollapsed ? "Expand all" : "Collapse all" }}
+              </span>
+            </v-tooltip>
+          </span>
+          <span v-if="loaded || empty">
+            <v-btn
+              :disabled="disableAdd"
+              fab
+              class="ml-3 secondary"
+              :to="{
+                name: 'ProductAdd',
+                params: { productTypeName: productType.name },
+              }"
+            >
+              <v-icon class="on-secondary--text">mdi-plus-thick</v-icon>
+            </v-btn>
+          </span>
+        </v-card-actions>
+      </v-col>
     </v-row>
-    <div v-if="loading" class="pa-3">
-      <v-progress-circular
-        indeterminate
-        :size="26"
-        color="secondary"
-      ></v-progress-circular>
-    </div>
-    <div v-if="loaded" class="pb-16">
-      <component
-        :is="productItemCard"
-        v-for="edge in edges"
-        :key="edge.node.id"
-        :productId="edge.node.productId"
-        collapsible="true"
-        :collapsed="isCardCollapsed[edge.node.id]"
-        v-on:expand="isCardCollapsed[edge.node.id] = false"
-        v-on:collapse="isCardCollapsed[edge.node.id] = true"
-        :disableEdit="disableEdit"
-        :disableDelete="disableDelete"
-        class="my-1"
-      ></component>
-      <div v-if="loadingMore" class="pa-3">
+    <v-row>
+      <v-col v-if="loading">
         <v-progress-circular
           indeterminate
           :size="26"
           color="secondary"
         ></v-progress-circular>
-      </div>
-      <v-container v-if="showLoadMoreButton" class="pa-0">
-        <v-row
-          align="center"
-          justify="space-around"
-          class="ma-0 px-0 pt-3 pb-1"
-        >
-          <span></span>
-          <span></span>
+      </v-col>
+      <v-col v-if="loaded" class="pt-0 pb-16">
+        <component
+          :is="productItemCard"
+          v-for="edge in edges"
+          :key="edge.node.id"
+          :productId="edge.node.productId"
+          collapsible="true"
+          :collapsed="isCardCollapsed[edge.node.id]"
+          v-on:expand="isCardCollapsed[edge.node.id] = false"
+          v-on:collapse="isCardCollapsed[edge.node.id] = true"
+          :disableEdit="disableEdit"
+          :disableDelete="disableDelete"
+          class="my-1"
+        ></component>
+        <div v-if="loadingMore" class="pa-3">
+          <v-progress-circular
+            indeterminate
+            :size="26"
+            color="secondary"
+          ></v-progress-circular>
+        </div>
+        <v-card-actions v-if="showLoadMoreButton">
+          <v-spacer></v-spacer>
           <span v-if="nItemsTotal > 1">
-            <span v-if="edges.length == nItemsTotal"
-              >{{ nItemsTotal }} {{ productType.plural }}</span
-            >
-            <span v-else
-              >{{ edges.length }} of {{ nItemsTotal }}
-              {{ productType.plural }}</span
-            >
+            <span v-if="edges.length == nItemsTotal">
+              {{ nItemsTotal }} {{ productType.plural }}
+            </span>
+            <span v-else>
+              {{ edges.length }} of {{ nItemsTotal }}
+              {{ productType.plural }}
+            </span>
           </span>
+          <v-spacer></v-spacer>
           <v-btn
             :disabled="!productType.products.pageInfo.hasNextPage"
             outlined
             color="secondary"
             text
             @click="loadMore()"
-            >Load more</v-btn
           >
-        </v-row>
-      </v-container>
-    </div>
-    <div v-else-if="empty">
-      <v-card outlined>
-        <v-card-text>Empty. No {{ productType.plural }} are found.</v-card-text>
-      </v-card>
-    </div>
-    <div v-else-if="error">
-      <v-alert v-if="error" type="error">{{ error }}</v-alert>
-    </div>
-    <div v-else>
-      <!-- state = State.NONE -->
-    </div>
+            Load more
+          </v-btn>
+        </v-card-actions>
+      </v-col>
+      <v-col v-else-if="empty">
+        <v-card-text>
+          Empty. No {{ productType.plural }} are found.
+        </v-card-text>
+      </v-col>
+      <v-col v-else-if="error">
+        <v-alert v-if="error" type="error">{{ error }}</v-alert>
+      </v-col>
+      <v-col v-else>
+        <!-- state = State.NONE -->
+      </v-col>
+    </v-row>
     <dev-tool-loading-state-overriding-menu
       @state="devtoolState = $event"
     ></dev-tool-loading-state-overriding-menu>
