@@ -71,10 +71,10 @@ export default {
       // update the transition effect dynamically
       // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
 
-      const toTopDir = to.path.split("/")[1]; // e.g., "/abc/def/ghi/" -> "abc"
-      const fromTopDir = from.path.split("/")[1];
+      const toDir = to.path.split("/")[2]; // e.g., "/product/map/abc-def/" -> "map"
+      const fromDir = from.path.split("/")[2];
 
-      if (toTopDir == fromTopDir) {
+      if (toDir == fromDir) {
         this.transitionName = "fade-app-within";
         this.transitionMode = "out-in";
       } else {
