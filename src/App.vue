@@ -89,6 +89,15 @@ export default {
 <!-- https://github.com/sindresorhus/github-markdown-css -->
 <style>
 @import "../node_modules/github-markdown-css/github-markdown-light.css";
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.condensed-font {
+  font-family: "Roboto Condensed", Roboto, sans-serif;
+  /* Google Fonts are imported in src/styles/variables.scss */
+}
 </style>
 
 <style scoped>

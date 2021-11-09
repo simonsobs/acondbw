@@ -131,14 +131,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.capitalize {
-  text-transform: capitalize;
-}
-
-.condensed-font {
-  font-family: "Roboto Condensed", Roboto, sans-serif;
-  /* Google Fonts are imported in src/styles/variables.scss */
-}
-</style>
