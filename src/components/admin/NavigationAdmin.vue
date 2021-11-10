@@ -14,7 +14,7 @@
         <v-list-item-content>
           <v-list-item-title
             v-text="link.title"
-            class="capitalize"
+            class="capitalize condensed-font"
           ></v-list-item-title>
         </v-list-item-content>
       </v-list-item>
