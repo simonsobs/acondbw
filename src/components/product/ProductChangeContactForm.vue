@@ -1,9 +1,9 @@
 <template>
   <v-card>
-    <v-card-title
-      >Change the {{ attribute.name }} for the {{ node.type_.singular }}
-      {{ node.name }}</v-card-title
-    >
+    <v-card-title>
+      Change the {{ attribute.name }} for the {{ node.type_.singular }}
+      {{ node.name }}
+    </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       Current contact: {{ attribute.value }}
@@ -15,13 +15,12 @@
         @blur="$v.newContact.$touch()"
       ></v-text-field>
     </v-card-text>
-    <v-card-text> </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
-      <v-btn color="primary" :disabled="$v.$invalid" text @click="submit"
-        >Submit</v-btn
-      >
+      <v-btn color="primary" :disabled="$v.$invalid" text @click="submit">
+        Submit
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
