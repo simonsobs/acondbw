@@ -21,7 +21,7 @@
       <v-col class="text-h1 text-center">Not Found (404)</v-col>
     </v-row>
     <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
+      v-model="devtoolState"
     ></dev-tool-loading-state-overriding-menu>
   </v-container>
 </template>
