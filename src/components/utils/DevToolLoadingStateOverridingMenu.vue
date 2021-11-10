@@ -41,6 +41,7 @@ import State from "@/utils/LoadingState.js";
 
 export default {
   name: "DevToolLoadingStateOverridingMenu",
+  props: ["value"], // for v-model
   data() {
     return {
       state: "off",
@@ -51,12 +52,13 @@ export default {
   computed: {
     enabled() {
       return this.$store.state.webConfig.devtoolLoadingstate || false;
-    }
+    },
   },
   watch: {
     state: function () {
       const s = this.state == "off" ? null : this.state;
       this.$emit("state", s);
+      this.$emit("input", s); // for v-model
     },
   },
 };
