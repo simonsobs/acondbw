@@ -50,21 +50,12 @@ export default {
   }),
   computed: {
     state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
-
-      if (this.$apollo.queries.node.loading) {
-        return State.LOADING;
-      } else if (this.error) {
-        return State.ERROR;
-      } else if (this.node) {
-        return State.LOADED;
-      } else if (this.init) {
-        return State.INIT;
-      } else {
-        return State.NONE;
-      }
+      if (this.devtoolState) return this.devtoolState;
+      if (this.$apollo.queries.node.loading) return State.LOADING;
+      if (this.error) return State.ERROR;
+      if (this.node) return State.LOADED;
+      if (this.init) return State.INIT;
+      return State.NONE;
     },
     loading() {
       return this.state == State.LOADING;
