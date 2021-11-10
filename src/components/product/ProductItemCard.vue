@@ -8,9 +8,9 @@
         color="secondary"
       ></v-progress-circular>
     </v-card-text>
-    <v-alert v-else-if="error" outlined dense type="error" class="ma-2">{{
-      error
-    }}</v-alert>
+    <v-alert v-else-if="error" outlined dense type="error" class="ma-2">
+      {{ error }}
+    </v-alert>
     <v-container
       v-else-if="loaded"
       @click="$emit('expand')"
@@ -285,7 +285,7 @@
     </v-container>
     <v-card-text v-else-if="notFound">Not Found</v-card-text>
     <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
+      v-model="devtoolState"
     ></dev-tool-loading-state-overriding-menu>
   </v-card>
 </template>
@@ -342,21 +342,13 @@ export default {
   },
   computed: {
     state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
+      if (this.devtoolState) return this.devtoolState;
+      if (this.$apollo.queries.node.loading) return State.LOADING;
+      if (this.error) return State.ERROR;
+      if (this.node) return State.LOADED;
+      if (this.init) return State.INIT;
 
-      if (this.$apollo.queries.node.loading) {
-        return State.LOADING;
-      } else if (this.error) {
-        return State.ERROR;
-      } else if (this.node) {
-        return State.LOADED;
-      } else if (this.init) {
-        return State.INIT;
-      } else {
-        return State.NONE;
-      }
+      return State.NONE;
     },
     loading() {
       return this.state == State.LOADING;
@@ -518,9 +510,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.capitalize {
-  text-transform: capitalize;
-}
-</style>
