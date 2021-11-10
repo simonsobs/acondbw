@@ -4,20 +4,20 @@
     class="product-add-form mx-auto"
     style="border: 0; position: relative"
   >
-    <v-card-title v-if="loaded" class="text-h3 primary--text"
-      >Add {{ productType.indefArticle }}
-      {{ productType.singular }}</v-card-title
-    >
+    <v-card-title v-if="loaded" class="text-h3 primary--text">
+      Add {{ productType.indefArticle }}
+      {{ productType.singular }}
+    </v-card-title>
     <v-alert v-if="error" type="error">{{ error }}</v-alert>
     <v-stepper v-if="loaded" v-model="stepper">
       <v-stepper-header>
         <v-stepper-step :complete="stepper > 1" step="1">Start</v-stepper-step>
-        <v-stepper-step :complete="stepper > 2" step="2"
-          >Relations</v-stepper-step
-        >
-        <v-stepper-step :complete="stepper > 3" step="3"
-          >Preview</v-stepper-step
-        >
+        <v-stepper-step :complete="stepper > 2" step="2">
+          Relations
+        </v-stepper-step>
+        <v-stepper-step :complete="stepper > 3" step="3">
+          Preview
+        </v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
@@ -80,7 +80,7 @@
       </v-card-actions>
     </div>
     <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
+      v-model="devtoolState"
     ></dev-tool-loading-state-overriding-menu>
   </v-card>
 </template>
@@ -99,21 +99,21 @@ import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-const formRelationDefault = {
+const formRelationDefault = () => ({
   typeId: null,
   productTypeId: null,
   productId: null,
-};
+});
 
-const formDefault = {
+const formDefault = () => ({
   name: "",
   contact: "",
   dateProduced: new Date().toISOString().substr(0, 10),
   producedBy: "",
   paths: "",
-  relations: [{ ...formRelationDefault }, { ...formRelationDefault }],
+  relations: [{ ...formRelationDefault() }, { ...formRelationDefault() }],
   note: "",
-};
+});
 
 export default {
   name: "ProductAddForm",
@@ -135,7 +135,7 @@ export default {
       devtoolState: null,
       State: State,
       step: 1,
-      form: _.cloneDeep(formDefault),
+      form: formDefault(),
       formResetCount: 0,
       error: null,
       createProductInput: null,
@@ -143,21 +143,12 @@ export default {
   },
   computed: {
     state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
-
-      if (this.$apollo.queries.productType.loading) {
-        return State.LOADING;
-      } else if (this.queryError) {
-        return State.ERROR;
-      } else if (this.productType) {
-        return State.LOADED;
-      } else if (this.init) {
-        return State.INIT;
-      } else {
-        return State.NONE;
-      }
+      if (this.devtoolState) return this.devtoolState;
+      if (this.$apollo.queries.productType.loading) return State.LOADING;
+      if (this.queryError) return State.ERROR;
+      if (this.productType) return State.LOADED;
+      if (this.init) return State.INIT;
+      return State.NONE;
     },
     loading() {
       return this.state == State.LOADING;
@@ -194,9 +185,7 @@ export default {
       result(result) {
         this.init = false;
         this.queryError = result.error ? result.error : null;
-        if (this.queryError) {
-          return;
-        }
+        if (this.queryError) return;
 
         this.productType = result.data.productType;
       },
@@ -223,7 +212,7 @@ export default {
       // This line is commented out because it resets "form" to
       // the empty object {}.
       // Instead, the following two lines are used.
-      this.form = _.cloneDeep(formDefault);
+      this.form = formDefault();
       this.formResetCount++;
       this.error = null;
       this.stepper = 1;
