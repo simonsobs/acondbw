@@ -7,11 +7,7 @@
           <v-text-field
             label="Name*"
             required
-            :hint="
-              'Name of the ' +
-              productType.singular +
-              '. This field cannot be changed later.'
-            "
+            :hint="`Name of the ${productType.singular}. This field cannot be changed later.`"
             persistent-hint
             :error-messages="nameErrors"
             :value="$v.form.name.$model"
@@ -22,11 +18,7 @@
         <v-col order="3" cols="6" md="4">
           <v-text-field-with-date-picker
             label="Date produced (YYYY-MM-DD)*"
-            :hint="
-              'The date on which the ' +
-              productType.singular +
-              ' was produced, e.g., 2020-05-06. This field cannot be changed later.'
-            "
+            :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06. This field cannot be changed later.`"
             v-model="form.dateProduced"
             :error-messages="dateProducedErrors"
             @input="$v.form.dateProduced.$touch()"
@@ -37,11 +29,7 @@
           <v-text-field
             label="Produced by*"
             required
-            :hint="
-              'The person or group that produced the ' +
-              productType.singular +
-              ', e.g. pwg-xxx. This field cannot be changed later.'
-            "
+            :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx. This field cannot be changed later.`"
             persistent-hint
             v-model="form.producedBy"
             :error-messages="producedByErrors"
@@ -53,11 +41,7 @@
           <v-text-field
             label="Contact*"
             required
-            :hint="
-              'A person or group that can be contacted for questions or issues about the ' +
-              productType.singular +
-              '.'
-            "
+            :hint="`A person or group that can be contacted for questions or issues about the ${productType.singular}.`"
             persistent-hint
             v-model="form.contact"
             :error-messages="contactErrors"
@@ -117,9 +101,14 @@
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
       <v-btn color="secondary" text @click="reset">Reset</v-btn>
-      <v-btn color="primary" :disabled="$v.$invalid" text @click="$emit('next')"
-        >Next</v-btn
+      <v-btn
+        color="primary"
+        :disabled="$v.$invalid"
+        text
+        @click="$emit('next')"
       >
+        Next
+      </v-btn>
     </v-card-actions>
   </v-form>
 </template>
@@ -265,8 +254,8 @@ export default {
   },
   watch: {
     formResetCount() {
-        this.$v.$reset();
-    }
+      this.$v.$reset();
+    },
   },
   methods: {
     debounceInput: _.debounce(function (field, value) {
