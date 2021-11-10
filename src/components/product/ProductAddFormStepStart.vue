@@ -7,7 +7,7 @@
           <v-text-field
             label="Name*"
             required
-            :hint="`Name of the ${productType.singular}. This field cannot be changed later.`"
+            :hint="`Name of the ${productType.singular}.`"
             persistent-hint
             :error-messages="nameErrors"
             :value="$v.form.name.$model"
