@@ -41,7 +41,6 @@ export default {
     DevToolLoadingStateOverridingMenu,
   },
   data: () => ({
-    productTypeName: null,
     init: true,
     node: null,
     error: null,
@@ -66,15 +65,8 @@ export default {
     notFound() {
       return this.state == State.NONE;
     },
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    productTypeName() {
+      return this.$route.params.productTypeName;
     },
   },
   apollo: {
@@ -89,12 +81,19 @@ export default {
       },
       result(result) {
         this.init = false;
-        this.error = result.error ? result.error : null;
+        this.error = result.error || null;
       },
     },
   },
-  mounted() {
-    this.productTypeName = this.$route.params.productTypeName;
+  watch: {
+    devtoolState() {
+      if (this.devtoolState) {
+        this.init = this.devtoolState == State.INIT;
+      }
+
+      this.error =
+        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
   },
   methods: {
     finished() {
