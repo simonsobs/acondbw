@@ -86,7 +86,6 @@ export default {
   },
   data() {
     return {
-      productTypeName: null,
       init: true,
       node: null,
       name: null,
@@ -110,33 +109,16 @@ export default {
     "$store.state.nApolloMutations": function () {
       this.refresh();
     },
-    node: function () {
-      if (this.node && this.node.type_) {
-        this.productTypeName = this.node.type_.name;
-      }
-    },
   },
   computed: {
     state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
-
-      if (this.refreshing) {
-        return State.LOADING;
-      }
-
-      if (this.node) {
-        return State.LOADED;
-      } else if (this.$apollo.queries.node.loading) {
-        return State.LOADING;
-      } else if (this.error) {
-        return State.ERROR;
-      } else if (this.init) {
-        return State.INIT;
-      } else {
-        return State.NONE;
-      }
+      if (this.devtoolState) return this.devtoolState;
+      if (this.refreshing) return State.LOADING;
+      if (this.node) return State.LOADED;
+      if (this.$apollo.queries.node.loading) return State.LOADING;
+      if (this.error) return State.ERROR;
+      if (this.init) return State.INIT;
+      return State.NONE;
     },
     loading() {
       return this.state == State.LOADING;
@@ -147,6 +129,11 @@ export default {
     notFound() {
       return this.state == State.NONE;
     },
+    productTypeName() {
+      if (!this.node) return null;
+      if(!this.node.type_) return null;
+      return this.node.type_.name;
+    }
   },
   apollo: {
     node: {
@@ -180,7 +167,7 @@ export default {
       this.$router.push({
         name: "ProductItem",
         params: {
-          productTypeName: this.node.type_.name,
+          productTypeName: this.productTypeName,
           name: event,
         },
       });
