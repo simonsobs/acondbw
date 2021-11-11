@@ -366,7 +366,7 @@ export default {
   computed: {
     state() {
       if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.queries.node.loading) return State.LOADING;
+      if (this.$apollo.loading) return State.LOADING;
       if (this.error) return State.ERROR;
       if (this.node) return State.LOADED;
       if (this.init) return State.INIT;
@@ -460,7 +460,7 @@ export default {
       update: (data) => data.product,
       result(result) {
         this.init = false;
-        this.error = result.error ? result.error : null;
+        this.error = result.error || null;
       },
     },
   },

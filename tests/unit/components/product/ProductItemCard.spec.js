@@ -29,6 +29,7 @@ describe("ProductItemCard.vue", () => {
       vuetify,
       mocks: {
         $apollo: {
+          loading: loading,
           queries: {
             node: {
               loading: loading,
