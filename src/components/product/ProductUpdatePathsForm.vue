@@ -1,9 +1,8 @@
 <template>
   <v-card>
-    <v-card-title
-      >Update the paths of the {{ node.type_.singular }}
-      {{ node.name }}</v-card-title
-    >
+    <v-card-title>
+      Update the paths of the {{ node.type_.singular }} {{ node.name }}
+    </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <v-textarea
