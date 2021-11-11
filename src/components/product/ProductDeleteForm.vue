@@ -1,17 +1,15 @@
 <template>
   <v-card class="product-delete-form" style="position: relative">
-    <v-card-title v-if="loaded"
-      >Delete the {{ node.type_.singular }}</v-card-title
-    >
+    <v-card-title v-if="loaded">
+      Delete the {{ node.type_.singular }}
+    </v-card-title>
     <v-card-text v-if="error" class="py-2">
       <v-alert type="error" class="my-2">{{ error }}</v-alert>
     </v-card-text>
     <template v-if="loaded">
-      <v-card-text class="body-1 font-weight-medium error--text"
-        >Really, delete the {{ node.type_.singular }} "{{
-          node.name
-        }}"?</v-card-text
-      >
+      <v-card-text class="body-1 font-weight-medium error--text">
+        Really, delete the {{ node.type_.singular }} "{{ node.name }}"?
+      </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
@@ -30,15 +28,16 @@
       <v-card-text
         v-else-if="notFound"
         class="body-1 font-weight-medium text-center pa-4"
-        >Not Found</v-card-text
       >
+        Not Found
+      </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
       </v-card-actions>
     </template>
     <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
+      v-model="devtoolState"
     ></dev-tool-loading-state-overriding-menu>
   </v-card>
 </template>
@@ -58,32 +57,21 @@ export default {
   props: {
     productId: [String, Number], // product.productId not product.id
   },
-  data() {
-    return {
-      init: true,
-      node: null,
-      error: null,
-      devtoolState: null,
-      State: State,
-    };
-  },
+  data: () => ({
+    init: true,
+    node: null,
+    error: null,
+    devtoolState: null,
+    State: State,
+  }),
   computed: {
     state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
-
-      if (this.$apollo.queries.node.loading) {
-        return State.LOADING;
-      } else if (this.error) {
-        return State.ERROR;
-      } else if (this.node) {
-        return State.LOADED;
-      } else if (this.init) {
-        return State.INIT;
-      } else {
-        return State.NONE;
-      }
+      if (this.devtoolState) return this.devtoolState;
+      if (this.$apollo.queries.node.loading) return State.LOADING;
+      if (this.error) return State.ERROR;
+      if (this.node) return State.LOADED;
+      if (this.init) return State.INIT;
+      return State.NONE;
     },
     loading() {
       return this.state == State.LOADING;
@@ -96,7 +84,7 @@ export default {
     },
   },
   watch: {
-    devtoolState: function () {
+    devtoolState() {
       if (this.devtoolState) {
         this.init = this.devtoolState == State.INIT;
       }
@@ -115,7 +103,7 @@ export default {
       update: (data) => data.product,
       result(result) {
         this.init = false;
-        this.error = result.error ? result.error : null;
+        this.error = result.error || null;
       },
     },
   },
