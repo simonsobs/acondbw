@@ -77,6 +77,29 @@
                     </v-btn>
                   </template>
                   <v-list dense>
+                    <v-dialog v-model="changeNameDialog" max-width="600">
+                      <template v-slot:activator="{ on: changeNameDialog }">
+                        <v-list-item
+                          :disabled="disableEdit"
+                          v-on="{ ...changeNameDialog }"
+                        >
+                          <v-list-item-icon>
+                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              Change name
+                              </v-list-item-title
+                            >
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <product-change-name-form
+                        :node="node"
+                        @cancel="onChangeNameFormCancelled"
+                        @finished="onChangeNameFormFinished($event)"
+                      ></product-change-name-form>
+                    </v-dialog>
                     <v-dialog v-model="changeContactDialog" max-width="600">
                       <template v-slot:activator="{ on: changeContactDialog }">
                         <v-list-item
@@ -299,6 +322,7 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
 import PRODUCT from "@/graphql/queries/Product.gql";
 
+import ProductChangeNameForm from "@/components/product/ProductChangeNameForm.vue";
 import ProductChangeContactForm from "@/components/product/ProductChangeContactForm.vue";
 import ProductUpdatePathsForm from "@/components/product/ProductUpdatePathsForm.vue";
 import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
@@ -311,6 +335,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 export default {
   name: "ProductItemCard",
   components: {
+    ProductChangeNameForm,
     ProductChangeContactForm,
     ProductUpdatePathsForm,
     ProductUpdateRelationsForm,
@@ -328,6 +353,7 @@ export default {
   data() {
     return {
       menu: false,
+      changeNameDialog: false,
       changeContactDialog: false,
       updatePathsDialog: false,
       updateRelationsDialog: false,
@@ -454,6 +480,17 @@ export default {
         hour12: false,
       });
       return format.format(sinceEpoch);
+    },
+    onChangeNameFormCancelled() {
+      this.closeChangeNameForm();
+    },
+    onChangeNameFormFinished(event) {
+      this.closeChangeNameForm();
+      this.$emit("nameChanged", event);
+    },
+    closeChangeNameForm() {
+      this.changeNameDialog = false;
+      this.menu = false;
     },
     onChangeContactFormCancelled() {
       this.closeChangeContactForm();

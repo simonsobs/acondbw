@@ -49,6 +49,7 @@
           :productId="node.productId"
           :collapsible="false"
           @deleted="onDeleted"
+          @nameChanged="onNameChanged($event)"
           :disableEdit="disableEdit"
           :disableDelete="disableDelete"
         ></component>
@@ -173,6 +174,15 @@ export default {
       this.$router.push({
         name: "ProductList",
         params: { productTypeName: this.productTypeName },
+      });
+    },
+    onNameChanged(event) {
+      this.$router.push({
+        name: "ProductItem",
+        params: {
+          productTypeName: this.node.type_.name,
+          name: event,
+        },
       });
     },
     async refresh() {
