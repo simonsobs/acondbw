@@ -87,10 +87,7 @@
                             <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>
-                            <v-list-item-title>
-                              Change name
-                              </v-list-item-title
-                            >
+                            <v-list-item-title>Change name</v-list-item-title>
                           </v-list-item-content>
                         </v-list-item>
                       </template>
@@ -110,9 +107,9 @@
                             <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>
-                            <v-list-item-title
-                              >Change contact</v-list-item-title
-                            >
+                            <v-list-item-title>
+                              Change contact
+                            </v-list-item-title>
                           </v-list-item-content>
                         </v-list-item>
                       </template>
@@ -155,9 +152,9 @@
                             <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>
-                            <v-list-item-title
-                              >Update relations</v-list-item-title
-                            >
+                            <v-list-item-title>
+                              Update relations
+                            </v-list-item-title>
                           </v-list-item-content>
                         </v-list-item>
                       </template>
@@ -194,9 +191,9 @@
                           v-on="{ ...deleteDialog }"
                         >
                           <v-list-item-icon>
-                            <v-icon :disabled="disableDelete"
-                              >mdi-delete</v-icon
-                            >
+                            <v-icon :disabled="disableDelete">
+                              mdi-delete
+                            </v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>
                             <v-list-item-title>Delete</v-list-item-title>
