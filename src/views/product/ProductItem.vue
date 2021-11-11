@@ -48,7 +48,7 @@
           :is="productItemCard"
           :productId="node.productId"
           :collapsible="false"
-          v-on:deleted="onDeleted"
+          @deleted="onDeleted"
           :disableEdit="disableEdit"
           :disableDelete="disableDelete"
         ></component>
@@ -58,7 +58,7 @@
       </v-col>
     </v-row>
     <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
+      v-model="devtoolState"
     ></dev-tool-loading-state-overriding-menu>
   </v-container>
 </template>
