@@ -144,7 +144,7 @@ export default {
   computed: {
     state() {
       if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.queries.productType.loading) return State.LOADING;
+      if (this.$apollo.loading) return State.LOADING;
       if (this.queryError) return State.ERROR;
       if (this.productType) return State.LOADED;
       if (this.init) return State.INIT;
