@@ -17,7 +17,7 @@
         <v-list-item-content>
           <v-list-item-title
             v-text="edge.node.plural"
-            class="capitalize condensed-font"
+            class="capitalize condensed-font font-weight-medium"
           ></v-list-item-title>
         </v-list-item-content>
         <v-list-item-icon class="ml-2">
