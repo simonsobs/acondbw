@@ -99,6 +99,11 @@ export default {
   /* font-family: "Roboto Condensed", Roboto, sans-serif; */
   /* Google Fonts are imported in src/styles/variables.scss */
 }
+
+#app .v-card__title {
+  /* #app is to increase CSS specificity */
+  word-break: normal;
+}
 </style>
 
 <style scoped>
