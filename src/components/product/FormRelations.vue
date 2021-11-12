@@ -119,25 +119,13 @@ export default {
   },
   computed: {
     state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
-
-      if (this.refreshing) {
-        return State.LOADING;
-      }
-
-      if (this.$apollo.queries.allProductRelationTypes.loading) {
-        return State.LOADING;
-      } else if (this.queryError) {
-        return State.ERROR;
-      } else if (this.allProductRelationTypes) {
-        return State.LOADED;
-      } else if (this.init) {
-        return State.INIT;
-      } else {
-        return State.NONE;
-      }
+      if (this.devtoolState) return this.devtoolState;
+      if (this.refreshing) return State.LOADING;
+      if (this.$apollo.loading) return State.LOADING;
+      if (this.queryError) return State.ERROR;
+      if (this.allProductRelationTypes) return State.LOADED;
+      if (this.init) return State.INIT;
+      return State.NONE;
     },
     loading() {
       return this.state == State.LOADING;
@@ -164,10 +152,8 @@ export default {
       result(result) {
         this.init = false;
 
-        this.queryError = result.error ? result.error : null;
-        if (this.queryError) {
-          return;
-        }
+        this.queryError = result.error || null;
+        if (this.queryError) return;
 
         try {
           this.allProductRelationTypes = result.data.allProductRelationTypes;
