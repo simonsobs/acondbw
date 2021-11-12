@@ -48,7 +48,7 @@
       <v-icon>mdi-plus-thick</v-icon> -->
     </v-bottom-navigation>
     <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
+      v-model="devtoolState"
     ></dev-tool-loading-state-overriding-menu>
   </div>
 </template>
@@ -73,25 +73,15 @@ export default {
   }),
   computed: {
     state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
+      if (this.devtoolState) return this.devtoolState;
+      if (this.$apollo.loading) return State.LOADING;
+      if (this.error) return State.ERROR;
+      if (this.edges) {
+        if (this.edges.length) return State.LOADED;
+        return State.EMPTY;
       }
-
-      if (this.$apollo.queries.edges.loading) {
-        return State.LOADING;
-      } else if (this.error) {
-        return State.ERROR;
-      } else if (this.edges) {
-        if (this.edges.length) {
-          return State.LOADED;
-        } else {
-          return State.EMPTY;
-        }
-      } else if (this.init) {
-        return State.INIT;
-      } else {
-        return State.NONE;
-      }
+      if (this.init) return State.INIT;
+      return State.NONE;
     },
     loading() {
       return this.state == State.LOADING;
