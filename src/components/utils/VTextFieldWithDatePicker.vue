@@ -10,6 +10,7 @@
     <template v-slot:activator="{ on }">
       <v-text-field
         :label="label"
+        :outlined="outlined"
         required
         :hint="hint"
         persistent-hint
@@ -33,7 +34,7 @@
 <script>
 export default {
   name: "VTextFieldWithDatePicker",
-  props: ["value", "label", "hint", "rules", "errorMessages"],
+  props: ["value", "outlined", "label", "hint", "rules", "errorMessages"],
   data() {
     return {
       menu: false,
