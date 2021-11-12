@@ -95,7 +95,8 @@ export default {
 }
 
 .condensed-font {
-  font-family: "Roboto Condensed", Roboto, sans-serif;
+  font-family: "Barlow Condensed", "Barlow", sans-serif;
+  /* font-family: "Roboto Condensed", Roboto, sans-serif; */
   /* Google Fonts are imported in src/styles/variables.scss */
 }
 </style>

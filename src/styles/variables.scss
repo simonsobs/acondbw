@@ -1,5 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap');
+// Vuetify Doc, SASS variables: https://vuetifyjs.com/en/features/sass-variables/
+// stackoverflow, how to use Google Fonts: https://stackoverflow.com/a/61969663/7309855
+
+// Vuetify supports 100, 300, 400, 500, 700, 900 font weights and italicized text
+// https://vuetifyjs.com/en/styles/text-and-typography/#font-emphasis
+
+// Roboto condensed
+// https://fonts.google.com/specimen/Roboto+Condensed
+// @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap");
 // $body-font-family: 'Roboto Condensed', sans-serif;
-// https://vuetifyjs.com/en/features/sass-variables/
-// https://stackoverflow.com/a/61969663/7309855
-// https://fonts.google.com/specimen/Roboto+Condensed?query=roboto+condensed
+
+// Barlow and Barlow condensed
+// https://fonts.google.com/specimen/Barlow
+// https://fonts.google.com/specimen/Barlow+Condensed
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Barlow:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+$body-font-family:  'Barlow', sans-serif;
+// The condensed font is used in App.vue
