@@ -105,16 +105,13 @@ export default {
   props: ["relations"],
   data() {
     return {
-      allProductRelationTypes: null,
-      allProductTypes: null,
+      allProductRelationTypes: { edges: [] },
+      allProductTypes: { edges: [] },
       init: true,
       queryError: null,
       refreshing: false,
       devtoolState: null,
       State: State,
-      relationTypeItems: null,
-      productTypeMap: {},
-      productTypeItems: null,
     };
   },
   computed: {
@@ -136,6 +133,36 @@ export default {
     notFound() {
       return this.state == State.NONE;
     },
+    relationTypeItems() {
+      return this.allProductRelationTypes.edges.map(({ node }) => ({
+        text: node.singular,
+        value: node.typeId,
+      }));
+      // [{ text: relation type name (singular), value: relation type id }]
+      // e.g., [{ text: "parent", value: "1" }, { text: "child", value: "2" }];
+    },
+    productTypeItems() {
+      return this.allProductTypes.edges.map(({ node }) => ({
+        text: node.singular,
+        value: node.typeId,
+      }));
+      // [{ text: product type name (singular), value: product type id }]
+      // e.g., [{ text: "map", value: "1" }, { text: "beam", value: "2" }];
+    },
+    productTypeMap() {
+      return this.allProductTypes.edges.reduce(
+        (a, { node }) => ({
+          ...a,
+          [node.typeId]: node.products.edges.map(({ node }) => ({
+            text: node.name,
+            value: node.productId,
+          })),
+        }),
+        {}
+      );
+      // { product type id: [{ text: product name, value: product id }] }
+      // e.g., { 1: [{text: "lat20190213", value: "1001"}, ...], 2: [...], ... }
+    },
   },
   watch: {
     devtoolState: function () {
@@ -155,115 +182,8 @@ export default {
         this.queryError = result.error || null;
         if (this.queryError) return;
 
-        try {
-          this.allProductRelationTypes = result.data.allProductRelationTypes;
-          // e.g.,
-          // {
-          //   edges: [
-          //     {
-          //       node: {
-          //         id: "UHJvZHVjdFJlbGF0aW9uVHlwZTox",
-          //         typeId: "1",
-          //         singular: "parent",
-          //       },
-          //     },
-          //     {
-          //       node: {
-          //         id: "UHJvZHVjdFJlbGF0aW9uVHlwZToy",
-          //         typeId: "2",
-          //         singular: "child",
-          //       },
-          //     },
-          //   ],
-          // };
-
-          this.allProductTypes = result.data.allProductTypes;
-          // e.g.,
-          // {
-          //   edges: [
-          //     {
-          //       node: {
-          //         id: "UHJvZHVjdFR5cGU6MQ==",
-          //         typeId: "1",
-          //         singular: "map",
-          //         products: {
-          //           edges: [
-          //             {
-          //               node: {
-          //                 id: "UHJvZHVjdDoxMDAx",
-          //                 productId: "1001",
-          //                 name: "lat20190213",
-          //               },
-          //             },
-          //             ...
-          //           ],
-          //         },
-          //       },
-          //     },
-          //     ...
-          //   ],
-          // };
-
-          this.relationTypeItems = this.allProductRelationTypes.edges.map(
-            ({ node }) => ({
-              text: node.singular,
-              value: node.typeId,
-            })
-          );
-          // e.g.,
-          // [
-          //   {
-          //     text: "parent",
-          //     value: "1",
-          //   },
-          //   {
-          //     text: "child",
-          //     value: "2",
-          //   },
-          // ];
-
-          this.productTypeItems = this.allProductTypes.edges.map(
-            ({ node }) => ({
-              text: node.singular,
-              value: node.typeId,
-            })
-          );
-          // e.g.,
-          // [
-          //   {
-          //     text: "map",
-          //     value: "1",
-          //   },
-          //   {
-          //     text: "beam",
-          //     value: "2",
-          //   },
-          // ];
-
-          this.productTypeMap = this.allProductTypes.edges.reduce(
-            (a, { node }) => ({
-              ...a,
-              [node.typeId]: node.products.edges.map(({ node }) => ({
-                text: node.name,
-                value: node.productId,
-              })),
-            }),
-            {}
-          );
-          // e.g.,
-          // {
-          //   1: [
-          //     {
-          //       text: "lat20190213",
-          //       value: "1001",
-          //     },
-          //     ...
-          //   ],
-          //   2: [ ... ]
-          // };
-        } catch (error) {
-          this.queryError = error;
-        }
+        this.allProductRelationTypes = result.data.allProductRelationTypes;
+        this.allProductTypes = result.data.allProductTypes;
       },
     },
   },
