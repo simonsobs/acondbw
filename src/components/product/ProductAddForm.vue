@@ -1,6 +1,7 @@
 <template>
   <v-card
     outlined
+    max-width="960px"
     class="product-add-form mx-auto"
     style="border: 0; position: relative"
   >
