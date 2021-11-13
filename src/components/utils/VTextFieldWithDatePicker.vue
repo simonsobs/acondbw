@@ -9,9 +9,8 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        v-on:input="$emit('input', $event)"
-        v-on="on"
         v-bind="$attrs"
+        v-on="{ ...$listeners, ...on }"
       ></v-text-field>
     </template>
     <v-date-picker
