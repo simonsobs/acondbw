@@ -14,11 +14,13 @@
       ></v-text-field>
     </template>
     <v-date-picker
-      v-bind:value="$attrs.value"
-      v-on:input="$emit('input', $event)"
+      :value="$attrs.value"
+      @input="
+        $emit('input', $event);
+        menu = false;
+      "
       no-title
       scrollable
-      @input="menu = false"
     ></v-date-picker>
   </v-menu>
 </template>
