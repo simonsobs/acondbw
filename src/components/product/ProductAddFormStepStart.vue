@@ -17,8 +17,11 @@
         </v-col>
         <v-col order="3" cols="6" md="4">
           <v-text-field-with-date-picker
+            outlined
             label="Date produced (YYYY-MM-DD)*"
             :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06. This field cannot be changed later.`"
+            required
+            persistent-hint
             v-model="form.dateProduced"
             :error-messages="dateProducedErrors"
             @input="$v.form.dateProduced.$touch()"
