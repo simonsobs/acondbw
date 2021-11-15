@@ -221,9 +221,7 @@ export default {
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       !field.unique &&
-        errors.push(
-          `The name "${this.$v.form.name.$model.trim()}" is not available.`
-        );
+        errors.push(`The name "${field.$model.trim()}" is not available.`);
       return errors;
     },
     dateProducedErrors() {
@@ -232,9 +230,7 @@ export default {
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       !field.parsableAsDate &&
-        errors.push(
-          `"${this.$v.form.dateProduced.$model}" cannot be parsed as a date.`
-        );
+        errors.push(`"${field.$model}" cannot be parsed as a date.`);
       return errors;
     },
     producedByErrors() {
