@@ -23,10 +23,8 @@
             required
             :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06. In the current version of the product DB, this field cannot be changed once the ${productType.singular} is added. It will be possible to change in a future version.`"
             persistent-hint
-            v-model="form.dateProduced"
+            v-model="$v.form.dateProduced.$model"
             :error-messages="dateProducedErrors"
-            @input="$v.form.dateProduced.$touch()"
-            @blur="$v.form.dateProduced.$touch()"
           ></v-text-field-with-date-picker>
         </v-col>
         <v-col order="4" cols="12" md="10">
@@ -36,10 +34,8 @@
             required
             :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx. In the current version of the product DB, this field cannot be changed once the ${productType.singular} is added. It will be possible to change in a future version.`"
             persistent-hint
-            v-model="form.producedBy"
+            v-model="$v.form.producedBy.$model"
             :error-messages="producedByErrors"
-            @input="$v.form.producedBy.$touch()"
-            @blur="$v.form.producedBy.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="5" cols="12" md="10">
@@ -49,10 +45,8 @@
             required
             :hint="`A person or group that can be contacted for questions or issues about the ${productType.singular}.`"
             persistent-hint
-            v-model="form.contact"
+            v-model="$v.form.contact.$model"
             :error-messages="contactErrors"
-            @input="$v.form.contact.$touch()"
-            @blur="$v.form.contact.$touch()"
           ></v-text-field>
         </v-col>
       </v-row>
