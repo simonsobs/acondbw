@@ -185,10 +185,12 @@ export default {
       required: true,
     },
   },
-  data: () => ({
-    error: null,
-    tabNote: null,
-  }),
+  data() {
+    return {
+      error: null,
+      tabNote: null,
+    };
+  },
   validations: {
     form: {
       name: {
