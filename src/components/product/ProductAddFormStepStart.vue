@@ -2,9 +2,10 @@
   <v-form ref="form">
     <v-container fluid>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      <v-row>
-        <v-col order="1" cols="12" md="4">
+      <v-row justify="center">
+        <v-col order="1" cols="12" md="10">
           <v-text-field
+            outlined
             label="Name*"
             required
             :hint="`Name of the ${productType.singular}.`"
@@ -15,12 +16,12 @@
             @blur="$v.form.name.$touch()"
           ></v-text-field>
         </v-col>
-        <v-col order="3" cols="6" md="4">
+        <v-col order="3" cols="12" md="10">
           <v-text-field-with-date-picker
             outlined
             label="Date produced (YYYY-MM-DD)*"
-            :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06. This field cannot be changed later.`"
             required
+            :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06. In the current version of the product DB, this field cannot be changed once the ${productType.singular} is added. It will be possible to change in a future version.`"
             persistent-hint
             v-model="form.dateProduced"
             :error-messages="dateProducedErrors"
@@ -28,11 +29,12 @@
             @blur="$v.form.dateProduced.$touch()"
           ></v-text-field-with-date-picker>
         </v-col>
-        <v-col order="4" cols="6" md="4">
+        <v-col order="4" cols="12" md="10">
           <v-text-field
+            outlined
             label="Produced by*"
             required
-            :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx. This field cannot be changed later.`"
+            :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx. In the current version of the product DB, this field cannot be changed once the ${productType.singular} is added. It will be possible to change in a future version.`"
             persistent-hint
             v-model="form.producedBy"
             :error-messages="producedByErrors"
@@ -40,8 +42,9 @@
             @blur="$v.form.producedBy.$touch()"
           ></v-text-field>
         </v-col>
-        <v-col order="4" cols="6" offset-md="4" md="4">
+        <v-col order="5" cols="12" md="10">
           <v-text-field
+            outlined
             label="Contact*"
             required
             :hint="`A person or group that can be contacted for questions or issues about the ${productType.singular}.`"
@@ -53,19 +56,18 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12" md="8" offset-md="4">
+      <v-row justify="center">
+        <v-col cols="12" md="10">
           <v-textarea
+            outlined
             label="Paths"
             hint="A path per line. e.g., nersc:/go/to/my/product_v3"
-            rows="2"
+            rows="4"
             persistent-hint
             v-model="form.paths"
           ></v-textarea>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="8" offset-md="4" class="mt-4">
+        <v-col cols="12" md="10" class="mt-4">
           <label class="v-label theme--light">Note</label>
           <v-tabs v-model="tabNote" class="mb-1">
             <v-tab key="edit">Edit</v-tab>

@@ -1,15 +1,18 @@
 <template>
   <v-container style="position: relative">
-    <v-row justify="end">
-      <v-col style="flex: 0">
-        <v-tooltip bottom open-delay="800">
-          <template v-slot:activator="{ on }">
-            <v-btn icon @click="refetch()" v-on="on">
-              <v-icon>mdi-refresh</v-icon>
-            </v-btn>
-          </template>
-          <span>Refresh</span>
-        </v-tooltip>
+    <v-row>
+      <v-col>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-tooltip bottom open-delay="800">
+            <template v-slot:activator="{ on }">
+              <v-btn icon @click="refetch()" v-on="on">
+                <v-icon>mdi-refresh</v-icon>
+              </v-btn>
+            </template>
+            <span>Refresh</span>
+          </v-tooltip>
+        </v-card-actions>
       </v-col>
     </v-row>
     <v-progress-circular

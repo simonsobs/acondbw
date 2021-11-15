@@ -6,8 +6,12 @@
     style="border: 0; position: relative"
   >
     <v-card-title v-if="loaded" class="text-h3 primary--text">
-      Add {{ productType.indefArticle }}
-      {{ productType.singular }}
+      <span>
+        Add {{ productType.indefArticle }}
+        <span class="font-italic font-weight-light">
+          {{ productType.singular }}
+        </span>
+      </span>
     </v-card-title>
     <v-alert v-if="error" type="error">{{ error }}</v-alert>
     <v-stepper v-if="loaded" v-model="stepper">
