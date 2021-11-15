@@ -9,12 +9,13 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
+        :value="value"
         v-bind="$attrs"
         v-on="{ ...$listeners, ...on }"
       ></v-text-field>
     </template>
     <v-date-picker
-      :value="$attrs.value"
+      :value="value"
       @input="
         $emit('input', $event);
         menu = false;
@@ -31,6 +32,7 @@
 export default {
   name: "VTextFieldWithDatePicker",
   inheritAttrs: false,
+  props: ["value"],
   data() {
     return {
       menu: false,
