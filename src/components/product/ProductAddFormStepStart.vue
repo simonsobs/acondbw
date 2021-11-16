@@ -119,9 +119,6 @@ import gql from "graphql-tag";
 
 import { required, maxLength, email } from "vuelidate/lib/validators";
 
-import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
-
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
 async function isNameAvailable(name, productTypeId, apolloClient) {
@@ -162,7 +159,6 @@ export default {
   name: "ProductAddFormStepStart",
   components: {
     VTextFieldWithDatePicker,
-    DevToolLoadingStateOverridingMenu,
   },
   props: {
     formResetCount: Number,
