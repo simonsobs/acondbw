@@ -146,11 +146,7 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
     },
   });
 
-  if (data.product) {
-    // the name isn't available
-    return false;
-  }
-
+  if (data.product) return false;
   return true;
 }
 
