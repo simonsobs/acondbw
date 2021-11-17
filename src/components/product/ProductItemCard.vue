@@ -92,6 +92,7 @@
                         </v-list-item>
                       </template>
                       <product-change-name-form
+                        v-if="changeNameDialog"
                         :node="node"
                         @cancel="onChangeNameFormCancelled"
                         @finished="onChangeNameFormFinished($event)"
@@ -114,6 +115,7 @@
                         </v-list-item>
                       </template>
                       <product-change-contact-form
+                        v-if="changeContactDialog"
                         :node="node"
                         :attribute="attributes['contact']"
                         @cancel="onChangeContactFormCancelled"
@@ -135,6 +137,7 @@
                         </v-list-item>
                       </template>
                       <product-update-paths-form
+                        v-if="updatePathsDialog"
                         :node="node"
                         @cancel="onUpdatePathsFormCancelled"
                         @finished="onUpdatePathsFormFinished"
@@ -159,6 +162,7 @@
                         </v-list-item>
                       </template>
                       <product-update-relations-form
+                        v-if="updateRelationsDialog"
                         :node="node"
                         @cancel="onUpdatePathsFormCancelled"
                         @finished="onUpdatePathsFormFinished"
@@ -179,6 +183,7 @@
                         </v-list-item>
                       </template>
                       <product-edit-note-form
+                        v-if="editNoteDialog"
                         :node="node"
                         @cancel="onEditNoteFormCancelled"
                         @finished="onEditNoteFormFinished"
@@ -201,6 +206,7 @@
                         </v-list-item>
                       </template>
                       <product-delete-form
+                        v-if="deleteDialog"
                         :productId="node.productId"
                         @cancel="onDeleteFormCancelled"
                         @finished="onDeleteFormFinished"
