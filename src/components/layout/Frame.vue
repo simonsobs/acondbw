@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" app clipped>
       <navigation></navigation>
     </v-navigation-drawer>
-    <app-bar v-on:drawer="drawer = !drawer"></app-bar>
+    <app-bar @drawer="drawer = !drawer"></app-bar>
   </div>
 </template>
 
