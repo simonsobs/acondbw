@@ -7,7 +7,7 @@ exports[`App.vue match snapshot 1`] = `
     <router-link-stub to="/" tag="a" ariacurrentvalue="page" event="click" style="text-decoration: none;">Toolbar Title</router-link-stub>
   </v-toolbar-title-stub>
   <v-spacer-stub></v-spacer-stub>
-  <search-window-stub></search-window-stub>
+  <search-window-stub class="d-none d-sm-flex"></search-window-stub>
   <v-spacer-stub></v-spacer-stub>
   <user-menu-button-stub></user-menu-button-stub>
 </v-app-bar-stub>
