@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative" class="">
-    <v-card-actions class="py-0">
+    <!-- <v-card-actions class="py-0">
       <v-tooltip bottom open-delay="800">
         <template v-slot:activator="{ on }">
           <v-btn icon @click="refetch()" v-on="on">
@@ -9,7 +9,7 @@
         </template>
         <span>Refresh</span>
       </v-tooltip>
-    </v-card-actions>
+    </v-card-actions> -->
     <v-card-text>
       <v-progress-circular
         v-if="loading"
@@ -20,9 +20,16 @@
       <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
     </v-card-text>
     <div v-if="loaded" class="pb-5">
-      <div v-for="({ node }, i) in allProductRelationTypes.edges" :key="i">
-        <v-card-title class="capitalize">{{ node.plural }}</v-card-title>
-        <v-container class="">
+      <div
+        v-for="({ node }, i) in allProductRelationTypes.edges"
+        :key="i"
+        class="pb-4"
+      >
+        <v-divider></v-divider>
+        <v-card-title class="text-h5 capitalize">
+          {{ node.plural }}
+        </v-card-title>
+        <v-container>
           <v-row
             v-for="(e, i) in formMap[node.typeId]"
             :key="i"
