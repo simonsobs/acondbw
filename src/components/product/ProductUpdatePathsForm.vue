@@ -1,11 +1,15 @@
 <template>
   <v-card>
-    <v-card-title>
-      Update the paths of the {{ node.type_.singular }} {{ node.name }}
+    <v-card-title class="primary--text">
+      <span>
+        Update the paths of
+        <span class="font-italic">{{ node.name }} </span>
+      </span>
     </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <v-textarea
+        outlined
         label="Paths"
         hint="A path per line. e.g., nersc:/go/to/my/product_v3"
         rows="5"
@@ -16,7 +20,6 @@
         @blur="$v.model.$touch()"
       ></v-textarea>
     </v-card-text>
-    <v-card-text> </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="cancel">Cancel</v-btn>

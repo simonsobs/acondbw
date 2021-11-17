@@ -1,12 +1,15 @@
 <template>
   <v-card>
-    <v-card-title>
-      Change the name of the {{ node.type_.singular }}
+    <v-card-title class="primary--text">
+      Rename the {{ node.type_.singular }}
     </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       Current name: {{ node.name }}
+    </v-card-text>
+    <v-card-text>
       <v-text-field
+        outlined
         label="New name"
         v-model="newName"
         :error-messages="newNameErrors"

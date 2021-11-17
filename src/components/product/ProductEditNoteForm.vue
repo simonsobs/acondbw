@@ -1,42 +1,44 @@
 <template>
   <v-card>
-    <v-card-title
-      >Edit note for the {{ node.type_.singular }} {{ node.name }}</v-card-title
-    >
+    <v-card-title class="primary--text">
+      <span>
+        Edit the note for <span class="font-italic"> {{ node.name }} </span>
+      </span>
+    </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
-    <v-tabs v-model="tab" class="mb-1">
-      <v-tab key="edit">Edit</v-tab>
-      <v-tab key="preview">Preview</v-tab>
-    </v-tabs>
-    <v-tabs-items v-model="tab">
-      <v-tab-item
-        key="edit"
-        style="min-height: 180px"
-        :transition="false"
-        :reverse-transition="false"
-      >
-        <v-textarea
-          solo
-          outlined
-          label="Note will be parsed as Markdown"
-          rows="5"
-          v-model="model"
-          :error-messages="modelErrors"
-          @input="$v.model.$touch()"
-          @blur="$v.model.$touch()"
-        ></v-textarea>
-      </v-tab-item>
-      <v-tab-item
-        key="preview"
-        v-html="preview"
-        style="min-height: 180px"
-        :transition="false"
-        :reverse-transition="false"
-        class="markdown-body pt-3"
-      >
-      </v-tab-item>
-    </v-tabs-items>
+      <v-tabs v-model="tab" class="mb-1">
+        <v-tab key="edit">Edit</v-tab>
+        <v-tab key="preview">Preview</v-tab>
+      </v-tabs>
+      <v-tabs-items v-model="tab">
+        <v-tab-item
+          key="edit"
+          style="min-height: 180px"
+          :transition="false"
+          :reverse-transition="false"
+        >
+          <v-textarea
+            solo
+            outlined
+            label="Note will be parsed as Markdown"
+            rows="5"
+            v-model="model"
+            :error-messages="modelErrors"
+            @input="$v.model.$touch()"
+            @blur="$v.model.$touch()"
+          ></v-textarea>
+        </v-tab-item>
+        <v-tab-item
+          key="preview"
+          v-html="preview"
+          style="min-height: 180px"
+          :transition="false"
+          :reverse-transition="false"
+          class="markdown-body pt-3"
+        >
+        </v-tab-item>
+      </v-tabs-items>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>

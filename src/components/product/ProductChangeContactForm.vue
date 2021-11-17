@@ -1,13 +1,18 @@
 <template>
   <v-card>
-    <v-card-title>
-      Change the {{ attribute.name }} for the {{ node.type_.singular }}
-      {{ node.name }}
+    <v-card-title class="primary--text">
+      <span
+        >Change the {{ attribute.name }} of
+        <span class="font-italic">{{ node.name }}</span>
+      </span>
     </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       Current contact: {{ attribute.value }}
+    </v-card-text>
+    <v-card-text>
       <v-text-field
+        outlined
         label="New contact"
         v-model="newContact"
         :error-messages="newContactErrors"
