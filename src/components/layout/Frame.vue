@@ -17,8 +17,10 @@ export default {
     AppBar,
     Navigation,
   },
-  data: () => ({
-    drawer: true,
-  }),
+  data() {
+    return {
+      drawer: ['lg', 'xl'].includes(this.$vuetify.breakpoint.name),
+    };
+  },
 };
 </script>

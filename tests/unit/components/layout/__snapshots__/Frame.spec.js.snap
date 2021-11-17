@@ -2,7 +2,7 @@
 
 exports[`Frame.vue match snapshot 1`] = `
 <div>
-  <v-navigation-drawer-stub app="true" mobilebreakpoint="1264" clipped="true" height="100vh" minivariantwidth="56" src="" tag="nav" width="256" value="true">
+  <v-navigation-drawer-stub app="true" mobilebreakpoint="1264" clipped="true" height="100vh" minivariantwidth="56" src="" tag="nav" width="256">
     <navigation-stub></navigation-stub>
   </v-navigation-drawer-stub>
   <app-bar-stub></app-bar-stub>
