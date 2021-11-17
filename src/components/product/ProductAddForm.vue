@@ -200,7 +200,6 @@ export default {
           this.formStepRelation
         );
       } catch (error) {
-        console.error(error);
         this.error = error;
       } finally {
         this.stepper = 3;
