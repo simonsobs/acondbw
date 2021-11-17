@@ -2,9 +2,10 @@
   <v-form ref="form">
     <v-container fluid>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      <v-row>
-        <v-col order="1" cols="12" md="4">
+      <v-row justify="center">
+        <v-col order="1" cols="12" md="10">
           <v-text-field
+            outlined
             label="Name*"
             required
             :hint="`Name of the ${productType.singular}.`"
@@ -15,54 +16,52 @@
             @blur="$v.form.name.$touch()"
           ></v-text-field>
         </v-col>
-        <v-col order="3" cols="6" md="4">
+        <v-col order="3" cols="12" md="10">
           <v-text-field-with-date-picker
+            outlined
             label="Date produced (YYYY-MM-DD)*"
-            :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06. This field cannot be changed later.`"
-            v-model="form.dateProduced"
+            required
+            :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06. In the current version of the product DB, this field cannot be changed once the ${productType.singular} is added. It will be possible to change in a future version.`"
+            persistent-hint
+            v-model="$v.form.dateProduced.$model"
             :error-messages="dateProducedErrors"
-            @input="$v.form.dateProduced.$touch()"
-            @blur="$v.form.dateProduced.$touch()"
           ></v-text-field-with-date-picker>
         </v-col>
-        <v-col order="4" cols="6" md="4">
+        <v-col order="4" cols="12" md="10">
           <v-text-field
+            outlined
             label="Produced by*"
             required
-            :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx. This field cannot be changed later.`"
+            :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx. In the current version of the product DB, this field cannot be changed once the ${productType.singular} is added. It will be possible to change in a future version.`"
             persistent-hint
-            v-model="form.producedBy"
+            v-model="$v.form.producedBy.$model"
             :error-messages="producedByErrors"
-            @input="$v.form.producedBy.$touch()"
-            @blur="$v.form.producedBy.$touch()"
           ></v-text-field>
         </v-col>
-        <v-col order="4" cols="6" offset-md="4" md="4">
+        <v-col order="5" cols="12" md="10">
           <v-text-field
+            outlined
             label="Contact*"
             required
             :hint="`A person or group that can be contacted for questions or issues about the ${productType.singular}.`"
             persistent-hint
-            v-model="form.contact"
+            v-model="$v.form.contact.$model"
             :error-messages="contactErrors"
-            @input="$v.form.contact.$touch()"
-            @blur="$v.form.contact.$touch()"
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12" md="8" offset-md="4">
+      <v-row justify="center">
+        <v-col cols="12" md="10">
           <v-textarea
+            outlined
             label="Paths"
             hint="A path per line. e.g., nersc:/go/to/my/product_v3"
-            rows="2"
+            rows="4"
             persistent-hint
             v-model="form.paths"
           ></v-textarea>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="8" offset-md="4" class="mt-4">
+        <v-col cols="12" md="10" class="mt-4">
           <label class="v-label theme--light">Note</label>
           <v-tabs v-model="tabNote" class="mb-1">
             <v-tab key="edit">Edit</v-tab>
@@ -120,9 +119,6 @@ import gql from "graphql-tag";
 
 import { required, maxLength, email } from "vuelidate/lib/validators";
 
-import State from "@/utils/LoadingState.js";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
-
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
 async function isNameAvailable(name, productTypeId, apolloClient) {
@@ -147,45 +143,48 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
     },
   });
 
-  if (data.product) {
-    // the name isn't available
-    return false;
-  }
-
+  if (data.product) return false;
   return true;
 }
 
 function parsableAsDate(value) {
   // test format "YYYY-MM-DD"
   const reg = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}?$/;
-  if (!reg.test(value)) {
-    return false;
-  }
-
-  return !isNaN(new Date(value));
+  if (!reg.test(value)) return false;
+  if (isNaN(new Date(value))) return false;
+  return true;
 }
+
+const formDefault = () => ({
+  name: "",
+  dateProduced: new Date().toISOString().substr(0, 10),
+  producedBy: "",
+  contact: "",
+  paths: "",
+  note: "",
+});
 
 export default {
   name: "ProductAddFormStepStart",
   components: {
     VTextFieldWithDatePicker,
-    DevToolLoadingStateOverridingMenu,
   },
   props: {
-    formResetCount: Number,
-    form: {
-      type: Object,
-      required: true,
-    },
+    value: Object,
     productType: {
       type: Object,
       required: true,
     },
   },
-  data: () => ({
-    error: null,
-    tabNote: null,
-  }),
+  data() {
+    const formReset = { ...formDefault(), ...(this.value || {}) };
+    return {
+      formReset,
+      form: { ...formReset },
+      error: null,
+      tabNote: null,
+    };
+  },
   validations: {
     form: {
       name: {
@@ -216,9 +215,7 @@ export default {
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       !field.unique &&
-        errors.push(
-          `The name "${this.$v.form.name.$model.trim()}" is not available.`
-        );
+        errors.push(`The name "${field.$model.trim()}" is not available.`);
       return errors;
     },
     dateProducedErrors() {
@@ -227,9 +224,7 @@ export default {
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       !field.parsableAsDate &&
-        errors.push(
-          `"${this.$v.form.dateProduced.$model}" cannot be parsed as a date.`
-        );
+        errors.push(`"${field.$model}" cannot be parsed as a date.`);
       return errors;
     },
     producedByErrors() {
@@ -253,8 +248,20 @@ export default {
     },
   },
   watch: {
-    formResetCount() {
-      this.$v.$reset();
+    value: {
+      handler() {
+        if (JSON.stringify(this.value) === JSON.stringify(this.form)) return;
+        this.form = { ...this.formReset, ...(this.value || {}) };
+      },
+      deep: true,
+    },
+    form: {
+      handler() {
+        // if (this.$v.$invalid) return;
+        this.$emit("input", { ...this.form });
+      },
+      deep: true,
+      immediate: true,
     },
   },
   methods: {
@@ -265,17 +272,12 @@ export default {
     }, 500),
     cancel() {
       this.$emit("cancel");
-      setTimeout(() => {
-        this.error = null;
-        this.$v.$reset();
-        this.tabNote = null;
-      }, 500); // reset 0.5 sec after so that the reset form won't be shown.
     },
     reset() {
       this.error = null;
-      this.$v.$reset();
       this.tabNote = null;
-      this.$emit("reset");
+      this.form = { ...this.formReset };
+      this.$v.$reset();
     },
   },
 };

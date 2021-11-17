@@ -77,6 +77,7 @@ describe("App.vue", () => {
       router,
       mocks: {
         $apollo: {
+          loading: false,
           queries: {
             edges: {
               loading: false,

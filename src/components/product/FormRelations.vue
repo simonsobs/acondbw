@@ -1,88 +1,90 @@
 <template>
-  <v-container style="position: relative">
-    <v-row justify="end">
-      <v-col style="flex: 0">
-        <v-tooltip bottom open-delay="800">
-          <template v-slot:activator="{ on }">
-            <v-btn icon @click="refetch()" v-on="on">
-              <v-icon>mdi-refresh</v-icon>
-            </v-btn>
-          </template>
-          <span>Refresh</span>
-        </v-tooltip>
-      </v-col>
-    </v-row>
-    <v-progress-circular
-      v-if="loading"
-      indeterminate
-      :size="26"
-      color="secondary"
-    ></v-progress-circular>
-    <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
-    <template v-if="loaded">
-      <v-row v-for="(r, i) in relations" :key="i">
-        <v-col>
-          <v-card outlined>
-            <v-container>
-              <v-row>
-                <v-col cols="12" md="4">
-                  <v-autocomplete
-                    label="Relation type"
-                    :items="relationTypeItems"
-                    clearable
-                    v-model="r.typeId"
-                  ></v-autocomplete>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-autocomplete
-                    label="Product type"
-                    :items="productTypeItems"
-                    clearable
-                    v-model="r.productTypeId"
-                  ></v-autocomplete>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-autocomplete
-                    label="Product"
-                    :items="productTypeMap[r.productTypeId]"
-                    clearable
-                    hide-no-data
-                    v-model="r.productId"
-                  ></v-autocomplete>
-                </v-col>
-                <v-col align-self="center" cols="1">
-                  <v-container>
-                    <v-row justify="end">
-                      <v-col class="pa-0" style="flex: 0">
-                        <v-tooltip bottom open-delay="800">
-                          <template v-slot:activator="{ on }">
-                            <v-btn icon @click="deleteField(i)" v-on="on">
-                              <v-icon>mdi-delete</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>Delete the field</span>
-                        </v-tooltip>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-btn color="secondary" outlined text @click="addField()"
-            >Add a field</v-btn
+  <div style="position: relative" class="">
+    <!-- <v-card-actions class="py-0">
+      <v-tooltip bottom open-delay="800">
+        <template v-slot:activator="{ on }">
+          <v-btn icon @click="refetch()" v-on="on">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </template>
+        <span>Refresh</span>
+      </v-tooltip>
+    </v-card-actions> -->
+    <v-card-text>
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        :size="26"
+        color="secondary"
+      ></v-progress-circular>
+      <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
+    </v-card-text>
+    <div v-if="loaded" class="pb-5">
+      <div
+        v-for="({ node }, i) in allProductRelationTypes.edges"
+        :key="i"
+        class="pb-4"
+      >
+        <v-divider></v-divider>
+        <v-card-title class="text-h5 capitalize">
+          {{ node.plural }}
+        </v-card-title>
+        <v-container>
+          <v-row
+            v-for="(e, i) in formMap[node.typeId]"
+            :key="i"
+            class="flex-nowrap"
           >
-        </v-col>
-      </v-row>
-    </template>
+            <v-card-text>
+              <v-autocomplete
+                :label="node.singular"
+                :items="productItems"
+                outlined
+                clearable
+                hide-details
+                hide-no-data
+                v-model="e.productId"
+              ></v-autocomplete>
+            </v-card-text>
+            <v-card-actions>
+              <v-tooltip bottom open-delay="800">
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    icon
+                    @click="formMap[node.typeId].splice(i, 1)"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </template>
+                <span>Delete the field</span>
+              </v-tooltip>
+            </v-card-actions>
+          </v-row>
+        </v-container>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="secondary"
+            outlined
+            text
+            @click="formMap[node.typeId].push({ productId: null })"
+          >
+            Add a field</v-btn
+          >
+        </v-card-actions>
+      </div>
+    </div>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="secondary" :disabled="unchanged" text @click="reset">
+        Reset
+      </v-btn>
+    </v-card-actions>
     <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
+      v-model="devtoolState"
     ></dev-tool-loading-state-overriding-menu>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -91,53 +93,37 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import QueryForFormRelations from "@/graphql/queries/QueryForFormRelations.gql";
 
-const formRelationDefault = {
-  typeId: null,
-  productTypeId: null,
-  productId: null,
-};
-
 export default {
   name: "FormRelations",
   components: {
     DevToolLoadingStateOverridingMenu,
   },
-  props: ["relations"],
+  props: { value: Array },
   data() {
+    const initialValue = JSON.parse(JSON.stringify(this.value || []));
+    const reshapedValueReset = this.reshapeValue(initialValue);
     return {
-      allProductRelationTypes: null,
-      allProductTypes: null,
+      initialValue,
+      reshapedValueReset,
+      formMap: JSON.parse(JSON.stringify(reshapedValueReset)),
+      allProductRelationTypes: { edges: [] },
+      allProducts: { edges: [] },
       init: true,
       queryError: null,
       refreshing: false,
       devtoolState: null,
       State: State,
-      relationTypeItems: null,
-      productTypeMap: {},
-      productTypeItems: null,
     };
   },
   computed: {
     state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
-
-      if (this.refreshing) {
-        return State.LOADING;
-      }
-
-      if (this.$apollo.queries.allProductRelationTypes.loading) {
-        return State.LOADING;
-      } else if (this.queryError) {
-        return State.ERROR;
-      } else if (this.allProductRelationTypes) {
-        return State.LOADED;
-      } else if (this.init) {
-        return State.INIT;
-      } else {
-        return State.NONE;
-      }
+      if (this.devtoolState) return this.devtoolState;
+      if (this.refreshing) return State.LOADING;
+      if (this.$apollo.loading) return State.LOADING;
+      if (this.queryError) return State.ERROR;
+      if (this.allProductRelationTypes) return State.LOADED;
+      if (this.init) return State.INIT;
+      return State.NONE;
     },
     loading() {
       return this.state == State.LOADING;
@@ -148,6 +134,32 @@ export default {
     notFound() {
       return this.state == State.NONE;
     },
+    input() {
+      return Object.entries(this.formMap).reduce((a, e) => {
+        const typeId = e[0];
+        const l = e[1].filter((x) => x.productId !== null);
+        return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
+      }, []);
+    },
+    unchanged() {
+      return JSON.stringify(this.input) === JSON.stringify(this.initialValue);
+    },
+    relationTypeItems() {
+      return this.allProductRelationTypes.edges.map(({ node }) => ({
+        text: node.singular,
+        value: node.typeId,
+      }));
+      // [{ text: relation type name (singular), value: relation type id }]
+      // e.g., [{ text: "parent", value: "1" }, { text: "child", value: "2" }];
+    },
+    productItems() {
+      return this.allProducts.edges.map(({ node }) => ({
+        text: `${node.name} (${node.type_.singular})`,
+        value: node.productId,
+      }));
+      // [{ text: product name (product type name), value: product id }]
+      // e.g., [{ text: "Map-01 (map)", value: "1" }, ...];
+    },
   },
   watch: {
     devtoolState: function () {
@@ -157,6 +169,17 @@ export default {
       this.queryError =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
+    allProductRelationTypes(val) {
+      const reshapedValue = this.reshapeValue(this.value);
+      this.formMap = this.composeFormMap(val, reshapedValue);
+    },
+    input: {
+      handler(val) {
+        this.$emit("input", val);
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   apollo: {
     allProductRelationTypes: {
@@ -164,130 +187,15 @@ export default {
       result(result) {
         this.init = false;
 
-        this.queryError = result.error ? result.error : null;
-        if (this.queryError) {
-          return;
-        }
+        this.queryError = result.error || null;
+        if (this.queryError) return;
 
-        try {
-          this.allProductRelationTypes = result.data.allProductRelationTypes;
-          // e.g.,
-          // {
-          //   edges: [
-          //     {
-          //       node: {
-          //         id: "UHJvZHVjdFJlbGF0aW9uVHlwZTox",
-          //         typeId: "1",
-          //         singular: "parent",
-          //       },
-          //     },
-          //     {
-          //       node: {
-          //         id: "UHJvZHVjdFJlbGF0aW9uVHlwZToy",
-          //         typeId: "2",
-          //         singular: "child",
-          //       },
-          //     },
-          //   ],
-          // };
-
-          this.allProductTypes = result.data.allProductTypes;
-          // e.g.,
-          // {
-          //   edges: [
-          //     {
-          //       node: {
-          //         id: "UHJvZHVjdFR5cGU6MQ==",
-          //         typeId: "1",
-          //         singular: "map",
-          //         products: {
-          //           edges: [
-          //             {
-          //               node: {
-          //                 id: "UHJvZHVjdDoxMDAx",
-          //                 productId: "1001",
-          //                 name: "lat20190213",
-          //               },
-          //             },
-          //             ...
-          //           ],
-          //         },
-          //       },
-          //     },
-          //     ...
-          //   ],
-          // };
-
-          this.relationTypeItems = this.allProductRelationTypes.edges.map(
-            ({ node }) => ({
-              text: node.singular,
-              value: node.typeId,
-            })
-          );
-          // e.g.,
-          // [
-          //   {
-          //     text: "parent",
-          //     value: "1",
-          //   },
-          //   {
-          //     text: "child",
-          //     value: "2",
-          //   },
-          // ];
-
-          this.productTypeItems = this.allProductTypes.edges.map(
-            ({ node }) => ({
-              text: node.singular,
-              value: node.typeId,
-            })
-          );
-          // e.g.,
-          // [
-          //   {
-          //     text: "map",
-          //     value: "1",
-          //   },
-          //   {
-          //     text: "beam",
-          //     value: "2",
-          //   },
-          // ];
-
-          this.productTypeMap = this.allProductTypes.edges.reduce(
-            (a, { node }) => ({
-              ...a,
-              [node.typeId]: node.products.edges.map(({ node }) => ({
-                text: node.name,
-                value: node.productId,
-              })),
-            }),
-            {}
-          );
-          // e.g.,
-          // {
-          //   1: [
-          //     {
-          //       text: "lat20190213",
-          //       value: "1001",
-          //     },
-          //     ...
-          //   ],
-          //   2: [ ... ]
-          // };
-        } catch (error) {
-          this.queryError = error;
-        }
+        this.allProductRelationTypes = result.data.allProductRelationTypes;
+        this.allProducts = result.data.allProducts;
       },
     },
   },
   methods: {
-    addField() {
-      this.relations.push({ ...formRelationDefault });
-    },
-    deleteField(i) {
-      this.relations.splice(i, 1);
-    },
     async refetch() {
       this.refreshing = true;
       const wait = new Promise((resolve) => setTimeout(resolve, 500));
@@ -296,6 +204,35 @@ export default {
       // because the progress circular is too flickering if
       // the refetch finishes too quickly
       this.refreshing = false;
+    },
+    reshapeValue(val) {
+      if (!val) return {};
+      return val.reduce((a, o) => {
+        if (o.typeId in a) {
+          a[o.typeId].push({ productId: o.productId });
+          return a;
+        } else {
+          return { ...a, [o.typeId]: [{ productId: o.productId }] };
+        }
+      }, {});
+    },
+    composeFormMap(allProductRelationTypes, reshapedValue) {
+      return allProductRelationTypes.edges.reduce(
+        (a, { node }) => ({
+          ...a,
+          [node.typeId]: [
+            ...(reshapedValue[node.typeId] || []),
+            { productId: null },
+          ],
+        }),
+        {}
+      );
+    },
+    reset() {
+      this.formMap = this.composeFormMap(
+        this.allProductRelationTypes,
+        this.reshapedValueReset
+      );
     },
   },
 };

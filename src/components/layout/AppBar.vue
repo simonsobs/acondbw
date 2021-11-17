@@ -20,7 +20,7 @@
       ></router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <search-window></search-window>
+    <search-window class="d-none d-sm-flex"></search-window>
     <v-spacer></v-spacer>
     <user-menu-button></user-menu-button>
     <!-- <v-spacer></v-spacer>

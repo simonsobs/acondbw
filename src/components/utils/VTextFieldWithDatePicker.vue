@@ -9,31 +9,30 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        :label="label"
-        required
-        :hint="hint"
-        persistent-hint
-        v-bind:value="value"
-        v-on:input="$emit('input', $event)"
-        :rules="rules"
-        :error-messages="errorMessages"
-        v-on="on"
+        :value="value"
+        v-bind="$attrs"
+        v-on="{ ...$listeners, ...on }"
       ></v-text-field>
     </template>
     <v-date-picker
-      v-bind:value="value"
-      v-on:input="$emit('input', $event)"
+      :value="value"
+      @input="
+        $emit('input', $event);
+        menu = false;
+      "
       no-title
       scrollable
-      @input="menu = false"
     ></v-date-picker>
   </v-menu>
 </template>
 
 <script>
+// https://forum.vuejs.org/t/passing-non-prop-attributes-to-component-sub-elements/16476
+// https://github.com/vuejs/vue/releases/tag/v2.4.0
 export default {
   name: "VTextFieldWithDatePicker",
-  props: ["value", "label", "hint", "rules", "errorMessages"],
+  inheritAttrs: false,
+  props: ["value"],
   data() {
     return {
       menu: false,

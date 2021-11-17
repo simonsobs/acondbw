@@ -1,13 +1,18 @@
 <template>
   <v-card>
-    <v-card-title>
-      Change the {{ attribute.name }} for the {{ node.type_.singular }}
-      {{ node.name }}
+    <v-card-title class="primary--text">
+      <span
+        >Change the {{ attribute.name }} of
+        <span class="font-italic">{{ node.name }}</span>
+      </span>
     </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       Current contact: {{ attribute.value }}
+    </v-card-text>
+    <v-card-text>
       <v-text-field
+        outlined
         label="New contact"
         v-model="newContact"
         :error-messages="newContactErrors"
@@ -17,7 +22,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
+      <v-btn color="secondary" text @click="$emit('cancel')"> Cancel </v-btn>
       <v-btn color="primary" :disabled="$v.$invalid" text @click="submit">
         Submit
       </v-btn>
@@ -53,21 +58,6 @@ export default {
     },
   },
   methods: {
-    cancel() {
-      this.$emit("cancel");
-      this.delayedReset();
-    },
-    delayedReset() {
-      // reset 0.5 sec after so that the reset form won't be shown.
-      setTimeout(() => {
-        this.reset();
-      }, 500);
-    },
-    reset() {
-      this.newContact = "";
-      this.$v.$reset();
-      this.error = null;
-    },
     async submit() {
       try {
         const updateProductInput = {
@@ -89,7 +79,6 @@ export default {
         this.$store.dispatch("apolloMutationCalled");
         this.$store.dispatch("snackbarMessage", "Changed");
         this.$emit("finished");
-        this.delayedReset();
       } catch (error) {
         this.error = error;
       }

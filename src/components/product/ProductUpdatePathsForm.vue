@@ -1,11 +1,15 @@
 <template>
   <v-card>
-    <v-card-title>
-      Update the paths of the {{ node.type_.singular }} {{ node.name }}
+    <v-card-title class="primary--text">
+      <span>
+        Update the paths of
+        <span class="font-italic">{{ node.name }} </span>
+      </span>
     </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
       <v-textarea
+        outlined
         label="Paths"
         hint="A path per line. e.g., nersc:/go/to/my/product_v3"
         rows="5"
@@ -16,21 +20,20 @@
         @blur="$v.model.$touch()"
       ></v-textarea>
     </v-card-text>
-    <v-card-text> </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
-      <v-btn color="secondary" text @click="reset">Reset</v-btn>
-      <v-btn color="primary" :disabled="unchanged" text @click="submit"
-        >Submit</v-btn
-      >
+      <v-btn color="secondary" text @click="$emit('cancel')"> Cancel</v-btn>
+      <v-btn color="secondary" :disabled="unchanged" text @click="reset">
+        Reset
+      </v-btn>
+      <v-btn color="primary" :disabled="unchanged" text @click="submit">
+        Submit
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
-
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 
 function composeInitialModel(node) {
@@ -72,16 +75,6 @@ export default {
     },
   },
   methods: {
-    cancel() {
-      this.$emit("cancel");
-      this.delayedReset();
-    },
-    delayedReset() {
-      // reset 0.5 sec after so that the reset form won't be shown.
-      setTimeout(() => {
-        this.reset();
-      }, 500);
-    },
     reset() {
       this.model = this.initialModel;
       this.$v.$reset();
@@ -101,7 +94,6 @@ export default {
         this.$store.dispatch("apolloMutationCalled");
         this.$store.dispatch("snackbarMessage", "Changed");
         this.$emit("finished");
-        this.delayedReset();
       } catch (error) {
         this.error = error;
       }

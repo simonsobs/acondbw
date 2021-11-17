@@ -1,14 +1,18 @@
 <template>
   <div>
     <v-card-text>
-      <div class="caption grey--text">New {{ productType.singular }} name</div>
-      <div class="grey--text text--darken-2" v-text="name"></div>
+      <div class="text-caption grey--text">New {{ productType.singular }} name</div>
+      <div class="grey--text text--darken-3" v-text="name"></div>
     </v-card-text>
-    <v-divider></v-divider>
-    <v-card-title class="primary--text"
-      >Add relations to other products</v-card-title
-    >
-    <form-relations :relations="relations"></form-relations>
+    <v-card-title class="text-h4 primary--text">
+      <span>
+        Add <span class="font-italic">relations</span> to other products
+      </span>
+    </v-card-title>
+    <form-relations
+      :value="value"
+      @input="$emit('input', $event)"
+    ></form-relations>
     <v-divider></v-divider>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -28,9 +32,9 @@ export default {
     FormRelations,
   },
   props: {
+    value: Array,
     productType: Object,
     name: String,
-    relations: Array,
   },
 };
 </script>
