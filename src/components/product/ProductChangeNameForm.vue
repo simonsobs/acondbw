@@ -19,7 +19,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
+      <v-btn color="secondary" text @click="$emit('cancel')"> Cancel </v-btn>
       <v-btn color="primary" :disabled="$v.$invalid" text @click="submit">
         Submit
       </v-btn>
@@ -57,11 +57,7 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
     fetchPolicy: "network-only",
   });
 
-  if (data.product) {
-    // the name isn't available
-    return false;
-  }
-
+  if (data.product) return false;
   return true;
 }
 
@@ -70,10 +66,12 @@ export default {
   props: {
     node: Object,
   },
-  data: () => ({
-    newName: "",
-    error: null,
-  }),
+  data() {
+    return {
+      newName: "",
+      error: null,
+    };
+  },
   validations: {
     newName: {
       required,
@@ -104,21 +102,6 @@ export default {
     },
   },
   methods: {
-    cancel() {
-      this.$emit("cancel");
-      this.delayedReset();
-    },
-    delayedReset() {
-      // reset 0.5 sec after so that the reset form won't be shown.
-      setTimeout(() => {
-        this.reset();
-      }, 500);
-    },
-    reset() {
-      this.newName = "";
-      this.$v.$reset();
-      this.error = null;
-    },
     async submit() {
       try {
         const updateProductInput = {
@@ -135,7 +118,6 @@ export default {
         this.$store.dispatch("apolloMutationCalled");
         this.$store.dispatch("snackbarMessage", "Changed");
         this.$emit("finished", this.newName);
-        this.delayedReset();
       } catch (error) {
         this.error = error;
       }
