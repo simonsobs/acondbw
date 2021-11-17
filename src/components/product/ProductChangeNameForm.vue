@@ -54,6 +54,7 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
       typeId: productTypeId,
       name: name,
     },
+    fetchPolicy: "network-only",
   });
 
   if (data.product) {
