@@ -188,9 +188,9 @@ export default {
       loadingMore: false,
       sortItem: 0,
       sortItems: [
+        { text: "Recently posted", value: "TIME_POSTED_DESC" },
+        { text: "Recently updated", value: "TIME_UPDATED_DESC" },
         { text: "Recently produced", value: "DATE_PRODUCED_DESC" },
-        { text: "Recently posted", value: "DATE_POSTED_DESC" },
-        { text: "Recently updated", value: "DATE_UPDATED_DESC" },
         { text: "Name", value: "NAME_ASC" },
       ],
       nItemsInitialLoad: 10,
