@@ -77,7 +77,9 @@
     </div>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="reset">Reset</v-btn>
+      <v-btn color="secondary" :disabled="unchanged" text @click="reset">
+        Reset
+      </v-btn>
     </v-card-actions>
     <dev-tool-loading-state-overriding-menu
       v-model="devtoolState"
@@ -98,8 +100,10 @@ export default {
   },
   props: { value: Array },
   data() {
-    const reshapedValueReset = this.reshapeValue(this.value);
+    const initialValue = JSON.parse(JSON.stringify(this.value || []));
+    const reshapedValueReset = this.reshapeValue(initialValue);
     return {
+      initialValue,
       reshapedValueReset,
       formMap: JSON.parse(JSON.stringify(reshapedValueReset)),
       allProductRelationTypes: { edges: [] },
@@ -130,6 +134,16 @@ export default {
     notFound() {
       return this.state == State.NONE;
     },
+    input() {
+      return Object.entries(this.formMap).reduce((a, e) => {
+        const typeId = e[0];
+        const l = e[1].filter((x) => x.productId !== null);
+        return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
+      }, []);
+    },
+    unchanged() {
+      return JSON.stringify(this.input) === JSON.stringify(this.initialValue);
+    },
     relationTypeItems() {
       return this.allProductRelationTypes.edges.map(({ node }) => ({
         text: node.singular,
@@ -159,14 +173,9 @@ export default {
       const reshapedValue = this.reshapeValue(this.value);
       this.formMap = this.composeFormMap(val, reshapedValue);
     },
-    formMap: {
+    input: {
       handler(val) {
-        const r = Object.entries(val).reduce((a, e) => {
-          const typeId = e[0];
-          const l = e[1].filter((x) => x.productId !== null);
-          return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
-        }, []);
-        this.$emit("input", r);
+        this.$emit("input", val);
       },
       deep: true,
       immediate: true,
