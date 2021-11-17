@@ -5,23 +5,18 @@ query QueryForFormRelations {
         id
         typeId
         singular
+        plural
       }
     }
   }
-  allProductTypes {
+  allProducts(sort: NAME_ASC) {
     edges {
       node {
-        id
-        typeId
-        singular
-        products {
-          edges {
-            node {
-              id
-              productId
-              name
-            }
-          }
+        productId
+        name
+        type_ {
+          typeId
+          singular
         }
       }
     }

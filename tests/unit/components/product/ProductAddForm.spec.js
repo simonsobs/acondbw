@@ -125,10 +125,8 @@ describe("ProductAddForm.vue", () => {
     const wrapper = createWrapper();
     wrapper.setData({ productType: productType });
     await Vue.nextTick();
-    wrapper.vm.$refs.form = {};
-    wrapper.vm.$refs.form.resetValidation = jest.fn();
 
-    const form = {
+    const formStepStart = {
       name: "new-map-name",
       contact: "contact-contact",
       dateProduced: "2020-01-11",
@@ -136,10 +134,9 @@ describe("ProductAddForm.vue", () => {
       note: "note",
       paths: "/a/b/c\n\n \n/x/y/z \n/a/b/c",
     };
+    const formStepRelation = []
 
-    const blankForm = { ...wrapper.vm.form };
-
-    wrapper.setData({ form: form });
+    wrapper.setData({ formStepStart, formStepRelation });
     await Vue.nextTick();
     wrapper.vm.preview();
     await wrapper.vm.submit();
@@ -182,7 +179,6 @@ describe("ProductAddForm.vue", () => {
 
     expect(actions.apolloMutationCalled).toHaveBeenCalled();
     expect(actions.snackbarMessage).toHaveBeenCalled();
-    expect(wrapper.vm.form).toEqual(blankForm); // # resetForm() is called
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
 });

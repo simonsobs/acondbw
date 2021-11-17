@@ -155,24 +155,32 @@ function parsableAsDate(value) {
   return true;
 }
 
+const formDefault = () => ({
+  name: "",
+  dateProduced: new Date().toISOString().substr(0, 10),
+  producedBy: "",
+  contact: "",
+  paths: "",
+  note: "",
+});
+
 export default {
   name: "ProductAddFormStepStart",
   components: {
     VTextFieldWithDatePicker,
   },
   props: {
-    formResetCount: Number,
-    form: {
-      type: Object,
-      required: true,
-    },
+    value: Object,
     productType: {
       type: Object,
       required: true,
     },
   },
   data() {
+    const formReset = { ...formDefault(), ...(this.value || {}) };
     return {
+      formReset,
+      form: { ...formReset },
       error: null,
       tabNote: null,
     };
@@ -240,8 +248,20 @@ export default {
     },
   },
   watch: {
-    formResetCount() {
-      this.$v.$reset();
+    value: {
+      handler() {
+        if (JSON.stringify(this.value) === JSON.stringify(this.form)) return;
+        this.form = { ...this.formReset, ...(this.value || {}) };
+      },
+      deep: true,
+    },
+    form: {
+      handler() {
+        // if (this.$v.$invalid) return;
+        this.$emit("input", { ...this.form });
+      },
+      deep: true,
+      immediate: true,
     },
   },
   methods: {
@@ -252,17 +272,12 @@ export default {
     }, 500),
     cancel() {
       this.$emit("cancel");
-      setTimeout(() => {
-        this.error = null;
-        this.$v.$reset();
-        this.tabNote = null;
-      }, 500); // reset 0.5 sec after so that the reset form won't be shown.
     },
     reset() {
       this.error = null;
-      this.$v.$reset();
       this.tabNote = null;
-      this.$emit("reset");
+      this.form = { ...this.formReset };
+      this.$v.$reset();
     },
   },
 };

@@ -27,11 +27,9 @@
       <v-stepper-items>
         <v-stepper-content step="1">
           <product-add-form-step-start
-            :form="form"
-            :form-reset-count="formResetCount"
+            v-model="formStepStart"
             :productType="productType"
             @cancel="close()"
-            @reset="resetForm()"
             @next="stepper = 2"
           ></product-add-form-step-start>
         </v-stepper-content>
@@ -39,8 +37,8 @@
       <v-stepper-items>
         <v-stepper-content step="2">
           <product-add-form-step-relations
-            :name="form.name"
-            :relations="form.relations"
+            v-model="formStepRelation"
+            :name="formStepStart && formStepStart.name"
             :productType="productType"
             @cancel="close()"
             @back="stepper = 1"
@@ -75,8 +73,9 @@
           dense
           type="error"
           class="ma-2"
-          >{{ queryError }}</v-alert
         >
+          {{ queryError }}
+        </v-alert>
         <v-card-text v-else-if="notFound">Not Found</v-card-text>
       </v-card>
       <v-card-actions>
@@ -104,22 +103,6 @@ import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-const formRelationDefault = () => ({
-  typeId: null,
-  productTypeId: null,
-  productId: null,
-});
-
-const formDefault = () => ({
-  name: "",
-  contact: "",
-  dateProduced: new Date().toISOString().substr(0, 10),
-  producedBy: "",
-  paths: "",
-  relations: [{ ...formRelationDefault() }, { ...formRelationDefault() }],
-  note: "",
-});
-
 export default {
   name: "ProductAddForm",
   components: {
@@ -140,8 +123,8 @@ export default {
       devtoolState: null,
       State: State,
       step: 1,
-      form: formDefault(),
-      formResetCount: 0,
+      formStepStart: null,
+      formStepRelation: null,
       error: null,
       createProductInput: null,
     };
@@ -208,31 +191,20 @@ export default {
   methods: {
     close() {
       this.$emit("finished");
-      setTimeout(() => {
-        this.resetForm();
-      }, 500); // reset 0.5 sec after so that the reset form won't be shown.
     },
-    resetForm() {
-      // this.$refs.form.reset();
-      // This line is commented out because it resets "form" to
-      // the empty object {}.
-      // Instead, the following two lines are used.
-      this.form = formDefault();
-      this.formResetCount++;
-      this.error = null;
-      this.stepper = 1;
-    },
-    async preview() {
+    preview() {
       try {
         this.createProductInput = this.composeCreateProductInput(
           this.productTypeId,
-          this.form
+          this.formStepStart,
+          this.formStepRelation
         );
-        this.stepper = 3;
       } catch (error) {
+        console.error(error);
         this.error = error;
+      } finally {
+        this.stepper = 3;
       }
-      this.stepper = 3;
     },
     async submit() {
       try {
@@ -244,11 +216,10 @@ export default {
       }
       this.$store.dispatch("apolloMutationCalled");
       this.$store.dispatch("snackbarMessage", "Added");
-      this.resetForm();
       this.close();
     },
-    composeCreateProductInput(productTypeId, form) {
-      const ret = _.pick(form, [
+    composeCreateProductInput(productTypeId, formStepStart, formStepRelation) {
+      const ret = _.pick(formStepStart, [
         "name",
         "contact",
         "dateProduced",
@@ -258,7 +229,7 @@ export default {
 
       ret.typeId = productTypeId;
 
-      const paths = form.paths
+      const paths = formStepStart.paths
         .split("\n")
         .map((x) => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
         .filter(Boolean) // remove empty strings
@@ -266,16 +237,9 @@ export default {
 
       ret.paths = paths;
 
-      ret.relations = _.filter(
-        _.map(form.relations, (x) =>
-          _.pickBy(_.pick(x, ["typeId", "productId"]), _.identity)
-        ),
-        (x) => _.size(x) == 2
-      );
-
       // unique https://medium.com/coding-at-dawn/how-to-use-set-to-filter-unique-items-in-javascript-es6-196c55ce924b
       ret.relations = [
-        ...new Set(ret.relations.map((o) => JSON.stringify(o))),
+        ...new Set(formStepRelation.map((o) => JSON.stringify(o))),
       ].map((s) => JSON.parse(s));
 
       const keys = ["contact", "dateProduced", "producedBy"].filter(

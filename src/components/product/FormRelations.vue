@@ -1,91 +1,81 @@
 <template>
-  <v-container style="position: relative">
-    <v-row>
-      <v-col>
+  <div style="position: relative" class="">
+    <v-card-actions class="py-0">
+      <v-tooltip bottom open-delay="800">
+        <template v-slot:activator="{ on }">
+          <v-btn icon @click="refetch()" v-on="on">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </template>
+        <span>Refresh</span>
+      </v-tooltip>
+    </v-card-actions>
+    <v-card-text>
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        :size="26"
+        color="secondary"
+      ></v-progress-circular>
+      <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
+    </v-card-text>
+    <div v-if="loaded" class="pb-5">
+      <div v-for="({ node }, i) in allProductRelationTypes.edges" :key="i">
+        <v-card-title class="capitalize">{{ node.plural }}</v-card-title>
+        <v-container class="">
+          <v-row
+            v-for="(e, i) in formMap[node.typeId]"
+            :key="i"
+            class="flex-nowrap"
+          >
+            <v-card-text>
+              <v-autocomplete
+                :label="node.singular"
+                :items="productItems"
+                outlined
+                clearable
+                hide-details
+                hide-no-data
+                v-model="e.productId"
+              ></v-autocomplete>
+            </v-card-text>
+            <v-card-actions>
+              <v-tooltip bottom open-delay="800">
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    icon
+                    @click="formMap[node.typeId].splice(i, 1)"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </template>
+                <span>Delete the field</span>
+              </v-tooltip>
+            </v-card-actions>
+          </v-row>
+        </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn icon @click="refetch()" v-on="on">
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
-            </template>
-            <span>Refresh</span>
-          </v-tooltip>
-        </v-card-actions>
-      </v-col>
-    </v-row>
-    <v-progress-circular
-      v-if="loading"
-      indeterminate
-      :size="26"
-      color="secondary"
-    ></v-progress-circular>
-    <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
-    <template v-if="loaded">
-      <v-row v-for="(r, i) in relations" :key="i">
-        <v-col>
-          <v-card outlined>
-            <v-container>
-              <v-row>
-                <v-col cols="12" md="4">
-                  <v-autocomplete
-                    label="Relation type"
-                    :items="relationTypeItems"
-                    clearable
-                    v-model="r.typeId"
-                  ></v-autocomplete>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-autocomplete
-                    label="Product type"
-                    :items="productTypeItems"
-                    clearable
-                    v-model="r.productTypeId"
-                  ></v-autocomplete>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-autocomplete
-                    label="Product"
-                    :items="productTypeMap[r.productTypeId]"
-                    clearable
-                    hide-no-data
-                    v-model="r.productId"
-                  ></v-autocomplete>
-                </v-col>
-                <v-col align-self="center" cols="1">
-                  <v-container>
-                    <v-row justify="end">
-                      <v-col class="pa-0" style="flex: 0">
-                        <v-tooltip bottom open-delay="800">
-                          <template v-slot:activator="{ on }">
-                            <v-btn icon @click="deleteField(i)" v-on="on">
-                              <v-icon>mdi-delete</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>Delete the field</span>
-                        </v-tooltip>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-btn color="secondary" outlined text @click="addField()"
-            >Add a field</v-btn
+          <v-btn
+            color="secondary"
+            outlined
+            text
+            @click="formMap[node.typeId].push({ productId: null })"
           >
-        </v-col>
-      </v-row>
-    </template>
+            Add a field</v-btn
+          >
+        </v-card-actions>
+      </div>
+    </div>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="secondary" text @click="reset">Reset</v-btn>
+    </v-card-actions>
     <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
+      v-model="devtoolState"
     ></dev-tool-loading-state-overriding-menu>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -94,22 +84,19 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import QueryForFormRelations from "@/graphql/queries/QueryForFormRelations.gql";
 
-const formRelationDefault = {
-  typeId: null,
-  productTypeId: null,
-  productId: null,
-};
-
 export default {
   name: "FormRelations",
   components: {
     DevToolLoadingStateOverridingMenu,
   },
-  props: ["relations"],
+  props: { value: Array },
   data() {
+    const reshapedValueReset = this.reshapeValue(this.value);
     return {
+      reshapedValueReset,
+      formMap: JSON.parse(JSON.stringify(reshapedValueReset)),
       allProductRelationTypes: { edges: [] },
-      allProductTypes: { edges: [] },
+      allProducts: { edges: [] },
       init: true,
       queryError: null,
       refreshing: false,
@@ -144,27 +131,13 @@ export default {
       // [{ text: relation type name (singular), value: relation type id }]
       // e.g., [{ text: "parent", value: "1" }, { text: "child", value: "2" }];
     },
-    productTypeItems() {
-      return this.allProductTypes.edges.map(({ node }) => ({
-        text: node.singular,
-        value: node.typeId,
+    productItems() {
+      return this.allProducts.edges.map(({ node }) => ({
+        text: `${node.name} (${node.type_.singular})`,
+        value: node.productId,
       }));
-      // [{ text: product type name (singular), value: product type id }]
-      // e.g., [{ text: "map", value: "1" }, { text: "beam", value: "2" }];
-    },
-    productTypeMap() {
-      return this.allProductTypes.edges.reduce(
-        (a, { node }) => ({
-          ...a,
-          [node.typeId]: node.products.edges.map(({ node }) => ({
-            text: node.name,
-            value: node.productId,
-          })),
-        }),
-        {}
-      );
-      // { product type id: [{ text: product name, value: product id }] }
-      // e.g., { 1: [{text: "lat20190213", value: "1001"}, ...], 2: [...], ... }
+      // [{ text: product name (product type name), value: product id }]
+      // e.g., [{ text: "Map-01 (map)", value: "1" }, ...];
     },
   },
   watch: {
@@ -174,6 +147,22 @@ export default {
       }
       this.queryError =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
+    },
+    allProductRelationTypes(val) {
+      const reshapedValue = this.reshapeValue(this.value);
+      this.formMap = this.composeFormMap(val, reshapedValue);
+    },
+    formMap: {
+      handler(val) {
+        const r = Object.entries(val).reduce((a, e) => {
+          const typeId = e[0];
+          const l = e[1].filter((x) => x.productId !== null);
+          return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
+        }, []);
+        this.$emit("input", r);
+      },
+      deep: true,
+      immediate: true,
     },
   },
   apollo: {
@@ -186,17 +175,11 @@ export default {
         if (this.queryError) return;
 
         this.allProductRelationTypes = result.data.allProductRelationTypes;
-        this.allProductTypes = result.data.allProductTypes;
+        this.allProducts = result.data.allProducts;
       },
     },
   },
   methods: {
-    addField() {
-      this.relations.push({ ...formRelationDefault });
-    },
-    deleteField(i) {
-      this.relations.splice(i, 1);
-    },
     async refetch() {
       this.refreshing = true;
       const wait = new Promise((resolve) => setTimeout(resolve, 500));
@@ -205,6 +188,35 @@ export default {
       // because the progress circular is too flickering if
       // the refetch finishes too quickly
       this.refreshing = false;
+    },
+    reshapeValue(val) {
+      if (!val) return {};
+      return val.reduce((a, o) => {
+        if (o.typeId in a) {
+          a[o.typeId].push({ productId: o.productId });
+          return a;
+        } else {
+          return { ...a, [o.typeId]: [{ productId: o.productId }] };
+        }
+      }, {});
+    },
+    composeFormMap(allProductRelationTypes, reshapedValue) {
+      return allProductRelationTypes.edges.reduce(
+        (a, { node }) => ({
+          ...a,
+          [node.typeId]: [
+            ...(reshapedValue[node.typeId] || []),
+            { productId: null },
+          ],
+        }),
+        {}
+      );
+    },
+    reset() {
+      this.formMap = this.composeFormMap(
+        this.allProductRelationTypes,
+        this.reshapedValueReset
+      );
     },
   },
 };

@@ -9,7 +9,10 @@
         Add <span class="font-italic">relations</span> to other products
       </span>
     </v-card-title>
-    <form-relations :relations="relations"></form-relations>
+    <form-relations
+      :value="value"
+      @input="$emit('input', $event)"
+    ></form-relations>
     <v-divider></v-divider>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -29,9 +32,9 @@ export default {
     FormRelations,
   },
   props: {
+    value: Array,
     productType: Object,
     name: String,
-    relations: Array,
   },
 };
 </script>

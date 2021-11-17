@@ -13,7 +13,7 @@
     ></v-progress-circular>
     <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
     <product-add-form
-      v-else-if="loaded"
+      v-else-if="on && loaded"
       :productTypeId="node ? node.typeId : null"
       @finished="finished"
     ></product-add-form>
@@ -41,6 +41,7 @@ export default {
     DevToolLoadingStateOverridingMenu,
   },
   data: () => ({
+    on: true,
     init: true,
     node: null,
     error: null,
@@ -102,6 +103,24 @@ export default {
         params: { productTypeName: this.productTypeName },
       });
     },
+    onEntered() {
+      if (this.init) return;
+      Object.values(this.$apollo.queries).forEach((query) => query.refetch());
+      this.recreateForm();
+    },
+    recreateForm() {
+      // A component will be reinstantiated
+      // when v-if becomes once false and then true.
+      this.on = false;
+      this.$nextTick(() => {
+        this.on = true;
+      });
+    },
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.onEntered();
+    });
   },
 };
 </script>
