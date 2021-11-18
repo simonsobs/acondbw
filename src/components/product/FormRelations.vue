@@ -31,7 +31,7 @@
         </v-card-title>
         <v-container>
           <v-row
-            v-for="(e, i) in formMap[node.typeId]"
+            v-for="(e, i) in form[node.typeId]"
             :key="i"
             class="flex-nowrap"
           >
@@ -51,7 +51,7 @@
                 <template v-slot:activator="{ on }">
                   <v-btn
                     icon
-                    @click="formMap[node.typeId].splice(i, 1)"
+                    @click="form[node.typeId].splice(i, 1)"
                     v-on="on"
                   >
                     <v-icon>mdi-delete</v-icon>
@@ -68,7 +68,7 @@
             color="secondary"
             outlined
             text
-            @click="formMap[node.typeId].push({ productId: null })"
+            @click="form[node.typeId].push({ productId: null })"
           >
             Add a field</v-btn
           >
@@ -107,7 +107,7 @@ export default {
     return {
       initialValue,
       reshapedValueReset,
-      formMap: JSON.parse(JSON.stringify(reshapedValueReset)),
+      form: JSON.parse(JSON.stringify(reshapedValueReset)),
       allProductRelationTypes: { edges: [] },
       allProducts: { edges: [] },
       init: true,
@@ -137,7 +137,7 @@ export default {
       return this.state == State.NONE;
     },
     input() {
-      return Object.entries(this.formMap).reduce((a, e) => {
+      return Object.entries(this.form).reduce((a, e) => {
         const typeId = e[0];
         const l = e[1].filter((x) => x.productId !== null);
         return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
@@ -173,7 +173,7 @@ export default {
     },
     allProductRelationTypes(val) {
       const reshapedValue = this.reshapeValue(this.value);
-      this.formMap = this.composeFormMap(val, reshapedValue);
+      this.form = this.composeForm(val, reshapedValue);
     },
     input: {
       handler(val) {
@@ -218,7 +218,7 @@ export default {
         }
       }, {});
     },
-    composeFormMap(allProductRelationTypes, reshapedValue) {
+    composeForm(allProductRelationTypes, reshapedValue) {
       return allProductRelationTypes.edges.reduce(
         (a, { node }) => ({
           ...a,
@@ -231,7 +231,7 @@ export default {
       );
     },
     reset() {
-      this.formMap = this.composeFormMap(
+      this.form = this.composeForm(
         this.allProductRelationTypes,
         this.reshapedValueReset
       );
