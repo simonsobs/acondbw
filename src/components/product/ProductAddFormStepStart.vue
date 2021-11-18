@@ -58,7 +58,7 @@
             hint="A path per line. e.g., nersc:/go/to/my/product_v3"
             rows="4"
             persistent-hint
-            v-model="form.paths"
+            v-model="$v.form.paths.$model"
           ></v-textarea>
         </v-col>
         <v-col cols="12" md="10" class="mt-4">
@@ -79,7 +79,7 @@
                 outlined
                 label="Note will be parsed as Markdown"
                 rows="5"
-                v-model="form.note"
+                v-model="$v.form.note.$model"
               ></v-textarea>
             </v-tab-item>
             <v-tab-item
@@ -98,8 +98,15 @@
     <v-divider></v-divider>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
-      <v-btn color="secondary" text @click="reset">Reset</v-btn>
+      <v-btn color="secondary" text @click="cancel"> Cancel </v-btn>
+      <v-btn
+        color="secondary"
+        :disabled="!$v.form.$anyDirty"
+        text
+        @click="reset"
+      >
+        Reset
+      </v-btn>
       <v-btn
         color="primary"
         :disabled="$v.$invalid"
@@ -206,6 +213,8 @@ export default {
       producedBy: { required },
       dateProduced: { required, parsableAsDate },
       contact: { required },
+      paths: {},
+      note: {},
     },
   },
   computed: {
