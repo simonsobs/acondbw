@@ -16,7 +16,9 @@
     <v-alert v-if="error" type="error">{{ error }}</v-alert>
     <v-stepper v-if="loaded" v-model="stepper">
       <v-stepper-header>
-        <v-stepper-step :complete="stepper > 1" step="1">Start</v-stepper-step>
+        <v-stepper-step :complete="stepper > 1" step="1">
+          Start
+        </v-stepper-step>
         <v-stepper-step :complete="stepper > 2" step="2">
           Relations
         </v-stepper-step>
@@ -76,11 +78,11 @@
         >
           {{ queryError }}
         </v-alert>
-        <v-card-text v-else-if="notFound">Not Found</v-card-text>
+        <v-card-text v-else-if="notFound"> Not Found </v-card-text>
       </v-card>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="secondary" text @click="close()">Close</v-btn>
+        <v-btn color="secondary" text @click="close()"> Close </v-btn>
       </v-card-actions>
     </div>
     <dev-tool-loading-state-overriding-menu
