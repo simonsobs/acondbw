@@ -101,7 +101,9 @@ export default {
   props: { value: Array },
   data() {
     const initialValue = JSON.parse(JSON.stringify(this.value || []));
+    // e.g., [{ productId: "1120", typeId: "1" }, ... ]
     const reshapedValueReset = this.reshapeValue(initialValue);
+    // e.g./ { 1: [{ productId: "1120" }, ... ], ... };
     return {
       initialValue,
       reshapedValueReset,
