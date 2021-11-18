@@ -5,12 +5,12 @@
         <v-card flat>
           <v-card-title class="text-h4">Versions</v-card-title>
           <v-card-text v-if="versions">
-            <span class="font-weight-medium">App version:</span
-            >{{ $store.getters.appVersion }}<br />
-            <span class="font-weight-medium">Server version:</span
-            >{{ versions.version }}<br />
-            <span class="font-weight-medium">Alembic migration version:</span
-            >{{ versions.alembicVersion }}
+            <span class="font-weight-medium"> App version: </span>
+            {{ $store.getters.appVersion }} <br />
+            <span class="font-weight-medium"> Server version: </span>
+            {{ versions.version }} <br />
+            <span class="font-weight-medium"> Alembic migration version: </span>
+            {{ versions.alembicVersion }}
           </v-card-text>
         </v-card>
       </v-col>
