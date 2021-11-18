@@ -29,6 +29,17 @@
         <v-card-title class="text-h5 capitalize">
           {{ node.plural }}
         </v-card-title>
+        <v-card-text class="grey--text">
+          <span>
+            <span class="font-italic capitalize">
+              {{ node.plural }}
+            </span>
+            of <span class="font-italic"> {{ name }}. </span>
+            <span class="font-italic"> {{ name }} </span>
+            will be {{ node.reverse.indefArticle }}
+            <span class="font-italic"> {{ node.reverse.singular }}. </span>
+          </span>
+        </v-card-text>
         <v-container>
           <v-row
             v-for="(e, i) in form[node.typeId]"
@@ -94,7 +105,7 @@ export default {
   components: {
     DevToolLoadingStateOverridingMenu,
   },
-  props: { value: Array },
+  props: { value: Array, name: String },
   data() {
     return {
       form: this.reshapeValue(this.value || []),

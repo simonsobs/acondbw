@@ -10,7 +10,7 @@
       <v-alert v-if="error" type="error"> {{ error }} </v-alert>
     </v-card-text>
     <v-card flat class="px-6">
-      <form-relations v-model="relations"></form-relations>
+      <form-relations v-model="relations" :name="node.name"></form-relations>
       <v-divider></v-divider>
     </v-card>
     <v-card-actions>

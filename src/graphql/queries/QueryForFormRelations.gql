@@ -4,8 +4,15 @@ query QueryForFormRelations {
       node {
         id
         typeId
+        indefArticle
         singular
         plural
+        reverse {
+          id
+          typeId
+          indefArticle
+          singular
+        }
       }
     }
   }

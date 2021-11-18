@@ -11,6 +11,7 @@
     </v-card-title>
     <form-relations
       :value="value"
+      :name="name"
       @input="$emit('input', $event)"
     ></form-relations>
     <v-divider></v-divider>
