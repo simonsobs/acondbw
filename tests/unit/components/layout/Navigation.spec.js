@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Vuex from "vuex";
 import Vuetify from "vuetify";
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 
@@ -19,6 +20,7 @@ describe("App.vue", () => {
   let localVue;
   let vuetify;
   let wrapper;
+  let store_;
 
   const edges = [
     {
@@ -70,10 +72,17 @@ describe("App.vue", () => {
 
   beforeEach(() => {
     localVue = createLocalVue();
+    localVue.use(Vuex);
     vuetify = new Vuetify();
+    store_ = new Vuex.Store({
+      getters: {
+        appVersion: () => "0.1.1",
+      },
+    });
     wrapper = shallowMount(Navigation, {
       localVue,
       vuetify,
+      store: store_,
       router,
       mocks: {
         $apollo: {
