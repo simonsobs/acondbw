@@ -49,11 +49,7 @@
             <v-card-actions>
               <v-tooltip bottom open-delay="800">
                 <template v-slot:activator="{ on }">
-                  <v-btn
-                    icon
-                    @click="form[node.typeId].splice(i, 1)"
-                    v-on="on"
-                  >
+                  <v-btn icon @click="form[node.typeId].splice(i, 1)" v-on="on">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </template>
@@ -100,14 +96,9 @@ export default {
   },
   props: { value: Array },
   data() {
-    const initialValue = JSON.parse(JSON.stringify(this.value || []));
-    // e.g., [{ productId: "1120", typeId: "1" }, ... ]
-    const reshapedValueReset = this.reshapeValue(initialValue);
-    // e.g./ { 1: [{ productId: "1120" }, ... ], ... };
     return {
-      initialValue,
-      reshapedValueReset,
-      form: JSON.parse(JSON.stringify(reshapedValueReset)),
+      form: this.reshapeValue(this.value || []),
+      formReset: null,
       allProductRelationTypes: { edges: [] },
       allProducts: { edges: [] },
       init: true,
@@ -144,7 +135,8 @@ export default {
       }, []);
     },
     unchanged() {
-      return JSON.stringify(this.input) === JSON.stringify(this.initialValue);
+      if (!this.formReset) return false;
+      return JSON.stringify(this.form) === JSON.stringify(this.formReset);
     },
     relationTypeItems() {
       return this.allProductRelationTypes.edges.map(({ node }) => ({
@@ -174,6 +166,9 @@ export default {
     allProductRelationTypes(val) {
       const reshapedValue = this.reshapeValue(this.value);
       this.form = this.composeForm(val, reshapedValue);
+      if (!this.formReset) {
+        this.formReset = JSON.parse(JSON.stringify(this.form));
+      }
     },
     input: {
       handler(val) {
@@ -231,10 +226,7 @@ export default {
       );
     },
     reset() {
-      this.form = this.composeForm(
-        this.allProductRelationTypes,
-        this.reshapedValueReset
-      );
+      this.form = JSON.parse(JSON.stringify(this.formReset));
     },
   },
 };
