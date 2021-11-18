@@ -162,15 +162,6 @@ function parsableAsDate(value) {
   return true;
 }
 
-const formDefault = () => ({
-  name: "",
-  dateProduced: new Date().toISOString().substr(0, 10),
-  producedBy: "",
-  contact: "",
-  paths: "",
-  note: "",
-});
-
 export default {
   name: "ProductAddFormStepStart",
   components: {
@@ -184,7 +175,15 @@ export default {
     },
   },
   data() {
-    const formReset = { ...formDefault(), ...(this.value || {}) };
+    const formDefault = {
+      name: "",
+      dateProduced: new Date().toISOString().substr(0, 10), // "YYYY-MM-DD"
+      producedBy: "",
+      contact: "",
+      paths: "",
+      note: "",
+    };
+    const formReset = { ...formDefault, ...(this.value || {}) };
     return {
       formReset,
       form: { ...formReset },
