@@ -120,7 +120,7 @@ import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicke
 
 async function isNameAvailable(name, productTypeId, apolloClient) {
   const QUERY = gql`
-    query QueryProductNameInProductAddFormStepStart(
+    query QueryProductNameInFormStart(
       $typeId: Int!
       $name: String!
     ) {
