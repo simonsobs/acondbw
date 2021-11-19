@@ -92,11 +92,17 @@ export default {
           $productId: Int!
         ) {
           productRelationType(typeId: $productRelationTypeId) {
+            id
+            typeId
             singular
           }
           product(productId: $productId) {
+            id
+            productId
             name
             type_ {
+              id
+              typeId
               singular
             }
           }

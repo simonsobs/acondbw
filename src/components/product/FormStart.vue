@@ -125,6 +125,7 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
       $name: String!
     ) {
       product(typeId: $typeId, name: $name) {
+        id
         productId
         typeId
         name
