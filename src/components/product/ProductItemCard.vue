@@ -166,8 +166,8 @@
                       <product-update-relations-form
                         v-if="updateRelationsDialog"
                         :node="node"
-                        @cancel="onUpdatePathsFormCancelled"
-                        @finished="onUpdatePathsFormFinished"
+                        @cancel="onUpdateRelationsFormCancelled"
+                        @finished="onUpdateRelationsFormFinished"
                       ></product-update-relations-form>
                     </v-dialog>
                     <v-dialog v-model="editNoteDialog" max-width="800">
