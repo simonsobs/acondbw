@@ -77,71 +77,27 @@
                     </v-btn>
                   </template>
                   <v-list dense>
-                    <v-dialog v-model="changeNameDialog" max-width="600">
-                      <template v-slot:activator="{ on: changeNameDialog }">
+                    <v-dialog v-model="editDialog" max-width="800">
+                      <template v-slot:activator="{ on: editDialog }">
                         <v-list-item
                           :disabled="disableEdit"
-                          v-on="{ ...changeNameDialog }"
+                          v-on="{ ...editDialog }"
                         >
                           <v-list-item-icon>
                             <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
                           </v-list-item-icon>
                           <v-list-item-content>
-                            <v-list-item-title>Change name</v-list-item-title>
+                            <v-list-item-title>Edit</v-list-item-title>
                           </v-list-item-content>
                         </v-list-item>
                       </template>
-                      <product-change-name-form
-                        v-if="changeNameDialog"
+                      <product-edit-form
+                        v-if="editDialog"
                         :node="node"
-                        @cancel="onChangeNameFormCancelled"
-                        @finished="onChangeNameFormFinished($event)"
-                      ></product-change-name-form>
-                    </v-dialog>
-                    <v-dialog v-model="changeContactDialog" max-width="600">
-                      <template v-slot:activator="{ on: changeContactDialog }">
-                        <v-list-item
-                          :disabled="disableEdit"
-                          v-on="{ ...changeContactDialog }"
-                        >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              Change contact
-                            </v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                      <product-change-contact-form
-                        v-if="changeContactDialog"
-                        :node="node"
-                        :attribute="attributes['contact']"
-                        @cancel="onChangeContactFormCancelled"
-                        @finished="onChangeContactFormFinished"
-                      ></product-change-contact-form>
-                    </v-dialog>
-                    <v-dialog v-model="updatePathsDialog" max-width="800">
-                      <template v-slot:activator="{ on: updatePathsDialog }">
-                        <v-list-item
-                          :disabled="disableEdit"
-                          v-on="{ ...updatePathsDialog }"
-                        >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Update paths</v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                      <product-update-paths-form
-                        v-if="updatePathsDialog"
-                        :node="node"
-                        @cancel="onUpdatePathsFormCancelled"
-                        @finished="onUpdatePathsFormFinished"
-                      ></product-update-paths-form>
+                        :attributes="attributes"
+                        @cancel="onEditFormCancelled"
+                        @finished="onEditFormFinished($event)"
+                      ></product-edit-form>
                     </v-dialog>
                     <v-dialog v-model="updateRelationsDialog" max-width="800">
                       <template
@@ -169,27 +125,6 @@
                         @cancel="onUpdateRelationsFormCancelled"
                         @finished="onUpdateRelationsFormFinished"
                       ></product-update-relations-form>
-                    </v-dialog>
-                    <v-dialog v-model="editNoteDialog" max-width="800">
-                      <template v-slot:activator="{ on: editNoteDialog }">
-                        <v-list-item
-                          :disabled="disableEdit"
-                          v-on="{ ...editNoteDialog }"
-                        >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Edit note</v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                      <product-edit-note-form
-                        v-if="editNoteDialog"
-                        :node="node"
-                        @cancel="onEditNoteFormCancelled"
-                        @finished="onEditNoteFormFinished"
-                      ></product-edit-note-form>
                     </v-dialog>
                     <v-dialog v-model="deleteDialog" max-width="600">
                       <template v-slot:activator="{ on: deleteDialog }">
@@ -327,11 +262,8 @@ import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
 import PRODUCT from "@/graphql/queries/Product.gql";
 
-import ProductChangeNameForm from "@/components/product/ProductChangeNameForm.vue";
-import ProductChangeContactForm from "@/components/product/ProductChangeContactForm.vue";
-import ProductUpdatePathsForm from "@/components/product/ProductUpdatePathsForm.vue";
+import ProductEditForm from "@/components/product/ProductEditForm.vue";
 import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
-import ProductEditNoteForm from "@/components/product/ProductEditNoteForm.vue";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 
 import State from "@/utils/LoadingState.js";
@@ -340,11 +272,8 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 export default {
   name: "ProductItemCard",
   components: {
-    ProductChangeNameForm,
-    ProductChangeContactForm,
-    ProductUpdatePathsForm,
+    ProductEditForm,
     ProductUpdateRelationsForm,
-    ProductEditNoteForm,
     ProductDeleteForm,
     DevToolLoadingStateOverridingMenu,
   },
@@ -358,11 +287,8 @@ export default {
   data() {
     return {
       menu: false,
-      changeNameDialog: false,
-      changeContactDialog: false,
-      updatePathsDialog: false,
+      editDialog: false,
       updateRelationsDialog: false,
-      editNoteDialog: false,
       deleteDialog: false,
       init: true,
       node: null,
@@ -486,35 +412,15 @@ export default {
       });
       return format.format(sinceEpoch);
     },
-    onChangeNameFormCancelled() {
-      this.closeChangeNameForm();
+    onEditFormCancelled() {
+      this.closeEditForm();
     },
-    onChangeNameFormFinished(event) {
-      this.closeChangeNameForm();
-      this.$emit("nameChanged", event);
+    onEditFormFinished(event) {
+      this.closeEditForm();
+      if (event) this.$emit("nameChanged", event);
     },
-    closeChangeNameForm() {
-      this.changeNameDialog = false;
-      this.menu = false;
-    },
-    onChangeContactFormCancelled() {
-      this.closeChangeContactForm();
-    },
-    onChangeContactFormFinished() {
-      this.closeChangeContactForm();
-    },
-    closeChangeContactForm() {
-      this.changeContactDialog = false;
-      this.menu = false;
-    },
-    onUpdatePathsFormCancelled() {
-      this.closeUpdatePathsForm();
-    },
-    onUpdatePathsFormFinished() {
-      this.closeUpdatePathsForm();
-    },
-    closeUpdatePathsForm() {
-      this.updatePathsDialog = false;
+    closeEditForm() {
+      this.EditDialog = false;
       this.menu = false;
     },
     onUpdateRelationsFormCancelled() {
@@ -525,16 +431,6 @@ export default {
     },
     closeUpdateRelationsForm() {
       this.updateRelationsDialog = false;
-      this.menu = false;
-    },
-    onEditNoteFormCancelled() {
-      this.closeEditNoteForm();
-    },
-    onEditNoteFormFinished() {
-      this.closeEditNoteForm();
-    },
-    closeEditNoteForm() {
-      this.editNoteDialog = false;
       this.menu = false;
     },
     onDeleteFormCancelled() {
