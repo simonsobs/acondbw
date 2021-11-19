@@ -3,7 +3,7 @@
 
 query QueryForProductList(
   $typeId: Int
-  $sort: [ProductSortEnum] = [DATE_PRODUCED_DESC]
+  $sort: [ProductSortEnum] = [TIME_POSTED_DESC]
   $first: Int = 10
   $after: String = ""
 ) {

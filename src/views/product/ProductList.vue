@@ -190,7 +190,7 @@ export default {
       sortItems: [
         { text: "Recently posted", value: "TIME_POSTED_DESC" },
         { text: "Recently updated", value: "TIME_UPDATED_DESC" },
-        { text: "Recently produced", value: "DATE_PRODUCED_DESC" },
+        // { text: "Recently produced", value: "DATE_PRODUCED_DESC" },
         { text: "Name", value: "NAME_ASC" },
       ],
       nItemsInitialLoad: 10,
