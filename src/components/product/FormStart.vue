@@ -21,7 +21,7 @@
             outlined
             label="Date produced (YYYY-MM-DD)*"
             required
-            :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06. In the current version of the product DB, this field cannot be changed once the ${productType.singular} is added. It will be possible to change in a future version.`"
+            :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06.`"
             persistent-hint
             v-model="$v.form.dateProduced.$model"
             :error-messages="dateProducedErrors"
@@ -32,7 +32,7 @@
             outlined
             label="Produced by*"
             required
-            :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx. In the current version of the product DB, this field cannot be changed once the ${productType.singular} is added. It will be possible to change in a future version.`"
+            :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx.`"
             persistent-hint
             v-model="$v.form.producedBy.$model"
             :error-messages="producedByErrors"
