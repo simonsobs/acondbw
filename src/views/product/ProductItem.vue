@@ -131,9 +131,9 @@ export default {
     },
     productTypeName() {
       if (!this.node) return null;
-      if(!this.node.type_) return null;
+      if (!this.node.type_) return null;
       return this.node.type_.name;
-    }
+    },
   },
   apollo: {
     node: {
@@ -152,7 +152,7 @@ export default {
       },
       result(result) {
         this.init = false;
-        this.error = result.error ? result.error : null;
+        this.error = result.error || null;
       },
     },
   },
