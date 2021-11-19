@@ -8,16 +8,11 @@ fragment productFragment on Product {
     ...productTypeFragment
   }
   name
-  contact
-  dateProduced
-  producedBy
   timePosted
-  postedBy
   postingGitHubUser {
     login
   }
   timeUpdated
-  updatedBy
   updatingGitHubUser {
     login
   }

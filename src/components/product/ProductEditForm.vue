@@ -90,7 +90,6 @@ export default {
     composeUpdateProductInput(value, initialValue) {
       const ret = {};
       if (value.name != initialValue.name) ret.name = value.name;
-      if (value.contact != initialValue.contact) ret.contact = value.contact;
       if (value.note != initialValue.note) ret.note = value.note;
 
       if (value.paths != initialValue.paths)

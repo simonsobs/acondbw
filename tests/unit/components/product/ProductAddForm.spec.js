@@ -147,9 +147,6 @@ describe("ProductAddForm.vue", () => {
     const expectedCreateProductInput = {
       name: "new-map-name",
       typeId: 1,
-      contact: "contact-contact",
-      dateProduced: "2020-01-11",
-      producedBy: "map-map",
       note: "note",
       paths: ["/a/b/c", "/x/y/z"],
       relations: [],

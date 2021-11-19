@@ -220,23 +220,18 @@ export default {
       this.close();
     },
     composeCreateProductInput(productTypeId, formStepStart, formStepRelation) {
-      const ret = _.pick(formStepStart, [
-        "name",
-        "contact",
-        "dateProduced",
-        "producedBy",
-        "note",
-      ]);
+      const ret = {
+        name: formStepStart.name,
+        note: formStepStart.note,
+      }
 
       ret.typeId = productTypeId;
 
-      const paths = formStepStart.paths
+      ret.paths = formStepStart.paths
         .split("\n")
         .map((x) => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
         .filter(Boolean) // remove empty strings
         .filter((v, i, a) => a.indexOf(v) === i); // unique
-
-      ret.paths = paths;
 
       // unique https://medium.com/coding-at-dawn/how-to-use-set-to-filter-unique-items-in-javascript-es6-196c55ce924b
       ret.relations = [
@@ -249,7 +244,7 @@ export default {
       ret.attributes = keys.reduce((a, k) => {
         const typeName = camelCase(this.fields[k].field.type_);
         a[typeName] = a[typeName] ? a[typeName] : [];
-        a[typeName].push({ fieldId: this.fields[k].fieldId, value: ret[k] });
+        a[typeName].push({ fieldId: this.fields[k].fieldId, value: formStepStart[k] });
         return a;
       }, {});
 
