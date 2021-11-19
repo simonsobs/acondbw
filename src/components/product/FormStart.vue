@@ -244,6 +244,9 @@ export default {
         ? marked(this.form.note)
         : "<em>Nothing to preview</em>";
     },
+    valid() {
+      return !this.$v.$invalid;
+    },
   },
   watch: {
     value: {
@@ -261,10 +264,8 @@ export default {
       deep: true,
       immediate: true,
     },
-    "$v.$invalid": {
-      handler(val) {
-        this.$emit("valid", !val);
-      },
+    valid(val) {
+      this.$emit("valid", val);
     },
   },
   methods: {
