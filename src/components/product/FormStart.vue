@@ -187,6 +187,7 @@ export default {
         required,
         async unique(value) {
           if (value === "") return true;
+          if (value === this.formReset.name) return true;
           try {
             return await isNameAvailable(
               value.trim(),
