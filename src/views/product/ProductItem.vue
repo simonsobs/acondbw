@@ -115,7 +115,7 @@ export default {
       if (this.devtoolState) return this.devtoolState;
       if (this.refreshing) return State.LOADING;
       if (this.node) return State.LOADED;
-      if (this.$apollo.queries.node.loading) return State.LOADING;
+      if (this.$apollo.loading) return State.LOADING;
       if (this.error) return State.ERROR;
       if (this.init) return State.INIT;
       return State.NONE;

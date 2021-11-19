@@ -28,6 +28,7 @@ describe("ProductItem.vue", () => {
       router,
       mocks: {
         $apollo: {
+          loading: loading,
           queries: {
             node: {
               loading: loading,
