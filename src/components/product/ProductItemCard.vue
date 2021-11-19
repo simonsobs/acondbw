@@ -152,7 +152,9 @@
                           v-on="{ ...updateRelationsDialog }"
                         >
                           <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
+                            <v-icon :disabled="disableEdit"
+                              >mdi-relation-many-to-many</v-icon
+                            >
                           </v-list-item-icon>
                           <v-list-item-content>
                             <v-list-item-title>
