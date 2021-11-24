@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
+import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
@@ -113,7 +113,7 @@ export default {
   },
   apollo: {
     edges: {
-      query: ALL_PRODUCTS_TYPES,
+      query: ALL_PRODUCT_TYPES,
       update: (data) =>
         data.allProductTypes ? data.allProductTypes.edges : null,
       result(result) {
