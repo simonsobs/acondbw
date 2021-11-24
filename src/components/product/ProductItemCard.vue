@@ -420,7 +420,7 @@ export default {
       if (event) this.$emit("nameChanged", event);
     },
     closeEditForm() {
-      this.EditDialog = false;
+      this.editDialog = false;
       this.menu = false;
     },
     onUpdateRelationsFormCancelled() {
