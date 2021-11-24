@@ -1,0 +1,10 @@
+#import "../fragments/ProductFragment.gql"
+
+mutation ConvertProductType($productId: Int!, $typeId: Int!) {
+  convertProductType(productId: $productId, typeId: $typeId) {
+    ok
+    product {
+      ...productFragment
+    }
+  }
+}

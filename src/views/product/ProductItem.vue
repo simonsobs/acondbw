@@ -50,6 +50,7 @@
           :collapsible="false"
           @deleted="onDeleted"
           @nameChanged="onNameChanged($event)"
+          @typeChanged="onTypeChanged($event)"
           :disableEdit="disableEdit"
           :disableDelete="disableDelete"
         ></component>
@@ -169,6 +170,15 @@ export default {
         params: {
           productTypeName: this.productTypeName,
           name: event,
+        },
+      });
+    },
+    onTypeChanged(event) {
+      this.$router.push({
+        name: "ProductItem",
+        params: {
+          productTypeName: event,
+          name: this.name,
         },
       });
     },

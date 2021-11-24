@@ -126,6 +126,28 @@
                         @finished="onUpdateRelationsFormFinished"
                       ></product-update-relations-form>
                     </v-dialog>
+                    <v-dialog v-model="convertTypeDialog" max-width="800">
+                      <template v-slot:activator="{ on: convertTypeDialog }">
+                        <v-list-item
+                          :disabled="disableEdit"
+                          v-on="{ ...convertTypeDialog }"
+                        >
+                          <v-list-item-icon>
+                            <v-icon :disabled="disableEdit">mdi-drawing</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <v-list-item-title>Convert type</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <product-convert-type-form
+                        v-if="convertTypeDialog"
+                        :node="node"
+                        :attributes="attributes"
+                        @cancel="onConvertTypeFormCancelled"
+                        @finished="onConvertTypeFormFinished($event)"
+                      ></product-convert-type-form>
+                    </v-dialog>
                     <v-dialog v-model="deleteDialog" max-width="600">
                       <template v-slot:activator="{ on: deleteDialog }">
                         <v-list-item
@@ -264,6 +286,7 @@ import PRODUCT from "@/graphql/queries/Product.gql";
 
 import ProductEditForm from "@/components/product/ProductEditForm.vue";
 import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
+import ProductConvertTypeForm from "@/components/product/ProductConvertTypeForm.vue";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 
 import State from "@/utils/LoadingState.js";
@@ -274,6 +297,7 @@ export default {
   components: {
     ProductEditForm,
     ProductUpdateRelationsForm,
+    ProductConvertTypeForm,
     ProductDeleteForm,
     DevToolLoadingStateOverridingMenu,
   },
@@ -288,6 +312,7 @@ export default {
     return {
       menu: false,
       editDialog: false,
+      convertTypeDialog: false,
       updateRelationsDialog: false,
       deleteDialog: false,
       init: true,
@@ -431,6 +456,17 @@ export default {
     },
     closeUpdateRelationsForm() {
       this.updateRelationsDialog = false;
+      this.menu = false;
+    },
+    onConvertTypeFormCancelled() {
+      this.closeConvertTypeForm();
+    },
+    onConvertTypeFormFinished(event) {
+      this.closeConvertTypeForm();
+      if (event) this.$emit("typeChanged", event);
+    },
+    closeConvertTypeForm() {
+      this.convertTypeDialog = false;
       this.menu = false;
     },
     onDeleteFormCancelled() {
