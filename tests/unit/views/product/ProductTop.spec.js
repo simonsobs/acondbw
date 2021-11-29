@@ -39,6 +39,7 @@ describe("ProductTop.vue", () => {
           },
         },
         $apollo: {
+          loading: loading,
           queries: {
             node: {
               loading: loading,
