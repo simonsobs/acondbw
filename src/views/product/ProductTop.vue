@@ -18,20 +18,47 @@
         ></v-progress-circular>
         <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
         <v-card flat v-if="loaded">
-          <v-card-title class="text-h4 primary--text">
-            <v-icon large class="me-3" v-text="node.icon"></v-icon>
-            <router-link
-              :to="{
-                name: 'ProductList',
-                params: { productTypeName: node.name },
-              }"
-              v-text="node.plural"
-              class="capitalize"
-              style="text-decoration: none; color: inherit"
-            ></router-link>
-            <span v-if="itemName">
-              <v-icon large color="primary">mdi-chevron-right</v-icon>
-              {{ itemName }}
+          <v-card-title class="text-h4 primary--text justify-space-between">
+            <span>
+              <v-icon large class="me-3" v-text="node.icon"></v-icon>
+              <router-link
+                :to="{
+                  name: 'ProductList',
+                  params: { productTypeName: node.name },
+                }"
+                v-text="node.plural"
+                class="capitalize"
+                style="text-decoration: none; color: inherit"
+              ></router-link>
+              <span v-if="itemName">
+                <v-icon large color="primary">mdi-chevron-right</v-icon>
+                {{ itemName }}
+              </span>
+            </span>
+            <span v-if="!itemName">
+              <v-tooltip left open-delay="800">
+                <template v-slot:activator="{ on: tooltip }">
+                  <v-dialog persistent v-model="editDialog" max-width="800">
+                    <template v-slot:activator="{ on: editDialog }">
+                      <v-btn icon v-on="{ ...tooltip, ...editDialog }">
+                        <v-icon small>mdi-cog</v-icon>
+                      </v-btn>
+                    </template>
+                    <product-type-edit-form
+                      v-if="editDialog"
+                      :node="node"
+                      @cancel="onEditFormCancelled"
+                      @finished="onEditFormFinished($event)"
+                    ></product-type-edit-form>
+                  </v-dialog>
+                </template>
+                <span>
+                  Settings:
+                  <span class="capitalize font-italic">
+                    {{ node.plural }}
+                  </span>
+                </span>
+              </v-tooltip>
             </span>
           </v-card-title>
           <transition :name="transitionName" :mode="transitionMode">
@@ -60,17 +87,22 @@ import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
+import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
+
 export default {
   name: "ProductTop",
   components: {
     DevToolLoadingStateOverridingMenu,
+    ProductTypeEditForm,
   },
   data: () => ({
     productTypeName: null,
     itemName: null,
     init: true,
-    node: null,
+    node: {},
     error: null,
+    refreshing: false,
+    editDialog: false,
     devtoolState: null,
     State: State,
     transitionName: "fade-product-top-leave",
@@ -83,6 +115,7 @@ export default {
   computed: {
     state() {
       if (this.devtoolState) return this.devtoolState;
+      if (this.refreshing) return State.LOADING;
       if (this.$apollo.loading) return State.LOADING;
       if (this.error) return State.ERROR;
       if (this.node) return State.LOADED;
@@ -117,6 +150,9 @@ export default {
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
+    "$store.state.nApolloMutations": function () {
+      this.refresh();
+    },
   },
   apollo: {
     node: {
@@ -132,6 +168,39 @@ export default {
         this.init = false;
         this.error = result.error || null;
       },
+    },
+  },
+  methods: {
+    onEditFormCancelled() {
+      this.closeEditForm();
+    },
+    onEditFormFinished(event) {
+      this.closeEditForm();
+      if (event) this.onNameChanged(event);
+    },
+    closeEditForm() {
+      this.editDialog = false;
+    },
+    onNameChanged(event) {
+      this.$router.push({
+        name: "ProductList",
+        params: {
+          productTypeName: event,
+        },
+      });
+    },
+    async refresh() {
+      this.refreshing = true;
+      const wait = new Promise((resolve) => setTimeout(resolve, 500));
+      await Promise.all(
+        Object.values(this.$apollo.queries).map(async (query) => {
+          await query.refetch();
+        })
+      );
+      await wait; // wait until 0.5 sec passes since starting refetch
+      // because the progress circular is too flickering if
+      // the refetch finishes too quickly
+      this.refreshing = false;
     },
   },
   beforeRouteUpdate(to, from, next) {
