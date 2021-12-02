@@ -1,0 +1,10 @@
+#import "../fragments/ProductTypeFragment.gql"
+
+mutation UpdateProductType($typeId: Int!, $input: UpdateProductTypeInput!) {
+  updateProductType(typeId: $typeId, input: $input) {
+    ok
+    productType {
+      ...productTypeFragment
+    }
+  }
+}
