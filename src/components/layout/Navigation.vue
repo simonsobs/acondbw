@@ -1,48 +1,72 @@
 <template>
   <div class="navigation">
-    <v-list v-if="loaded" shaped>
-      <v-list-item
-        link
-        router
-        v-for="edge in edges"
-        :key="edge.node.typeId"
-        :to="{
-          name: 'ProductList',
-          params: { productTypeName: edge.node.name },
-        }"
-      >
-        <v-list-item-action class="mr-5">
-          <v-icon v-text="edge.node.icon"></v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title
-            v-text="edge.node.plural"
-            class="capitalize condensed-font font-weight-medium"
-          ></v-list-item-title>
-        </v-list-item-content>
-        <v-list-item-icon class="ml-2">
-          <v-chip
-            small
-            v-if="!!edge.node.products.totalCount"
-            v-text="edge.node.products.totalCount"
-          ></v-chip>
-        </v-list-item-icon>
-      </v-list-item>
-    </v-list>
-    <v-alert v-else-if="empty" outlined dense type="info" class="ma-2">
-      No product types are defined.
-    </v-alert>
-    <v-progress-circular
-      v-else-if="loading"
-      indeterminate
-      :size="18"
-      :width="3"
-      color="secondary"
-      class="mx-5 mt-5"
-    ></v-progress-circular>
-    <v-alert v-else-if="error" outlined dense type="error" class="ma-2">
-      {{ error }}
-    </v-alert>
+    <v-card flat>
+      <v-list v-if="loaded" shaped>
+        <v-list-item
+          link
+          router
+          v-for="edge in edges"
+          :key="edge.node.typeId"
+          :to="{
+            name: 'ProductList',
+            params: { productTypeName: edge.node.name },
+          }"
+        >
+          <v-list-item-action class="mr-5">
+            <v-icon v-text="edge.node.icon"></v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title
+              v-text="edge.node.plural"
+              class="capitalize condensed-font font-weight-medium"
+            ></v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-icon class="ml-2">
+            <v-chip
+              small
+              v-if="!!edge.node.products.totalCount"
+              v-text="edge.node.products.totalCount"
+            ></v-chip>
+          </v-list-item-icon>
+        </v-list-item>
+      </v-list>
+      <v-card-text v-if="empty" outlined dense type="info" class="ma-2">
+        No product types are defined.
+      </v-card-text>
+      <v-card-actions v-if="loaded || empty" class="px-5 py-0">
+        <v-spacer></v-spacer>
+        <v-tooltip left open-delay="800">
+          <template v-slot:activator="{ on: tooltip }">
+            <v-dialog persistent v-model="addDialog" max-width="800">
+              <template v-slot:activator="{ on: addDialog }">
+                <v-btn icon v-on="{ ...tooltip, ...addDialog }">
+                  <v-icon x-small>mdi-plus-thick</v-icon>
+                </v-btn>
+              </template>
+              <product-type-add-form
+                v-if="addDialog"
+                @cancel="onAddFormCancelled"
+                @finished="onAddFormFinished"
+              ></product-type-add-form>
+            </v-dialog>
+          </template>
+          <span>
+            Add a product type
+          </span>
+        </v-tooltip>
+      </v-card-actions>
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        :size="18"
+        :width="3"
+        color="secondary"
+        class="mx-5 mt-5"
+      ></v-progress-circular>
+      <v-alert v-if="error" outlined dense type="error" class="ma-2">
+        {{ error }}
+      </v-alert>
+    </v-card>
     <v-bottom-navigation absolute class="px-3 justify-start align-center">
       <span class="grey--text text-caption">
         v{{ $store.getters.appVersion }}
@@ -62,15 +86,19 @@ import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
+import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
+
 export default {
   name: "Navigation",
   components: {
     DevToolLoadingStateOverridingMenu,
+    ProductTypeAddForm,
   },
   data: () => ({
     init: true,
-    edges: null,
+    edges: [],
     error: null,
+    addDialog: false,
     devtoolState: null,
     State: State,
   }),
@@ -120,6 +148,17 @@ export default {
         this.init = false;
         this.error = result.error || null;
       },
+    },
+  },
+  methods: {
+    onAddFormCancelled() {
+      this.closeAddForm();
+    },
+    onAddFormFinished() {
+      this.closeAddForm();
+    },
+    closeAddForm() {
+      this.addDialog = false;
     },
   },
 };
