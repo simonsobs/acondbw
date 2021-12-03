@@ -74,7 +74,7 @@ export default {
         });
         this.$apollo.provider.defaultClient.cache.data.data = {};
         this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Updated");
+        this.$store.dispatch("snackbarMessage", "Added");
         this.$emit("finished", this.input.name);
       } catch (error) {
         this.error = error;
