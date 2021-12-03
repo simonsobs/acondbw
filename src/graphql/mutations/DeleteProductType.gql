@@ -1,0 +1,5 @@
+mutation DeleteProductType($typeId: Int!) {
+  deleteProductType(typeId: $typeId) {
+    ok
+  }
+}
