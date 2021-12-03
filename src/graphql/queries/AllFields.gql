@@ -1,0 +1,12 @@
+query AllFields {
+  allFields {
+    edges {
+      node {
+        id
+        fieldId
+        name
+        type_
+      }
+    }
+  }
+}
