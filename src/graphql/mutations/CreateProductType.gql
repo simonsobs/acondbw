@@ -1,0 +1,10 @@
+#import "../fragments/ProductTypeFragment.gql"
+
+mutation CreateProductType($input: CreateProductTypeInput!) {
+  createProductType(input: $input) {
+    ok
+    productType {
+      ...productTypeFragment
+    }
+  }
+}
