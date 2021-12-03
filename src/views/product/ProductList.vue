@@ -143,6 +143,40 @@
         <v-card-text>
           Empty. No {{ productType.plural }} are found.
         </v-card-text>
+        <v-card-actions>
+          <v-btn
+            depressed
+            color="primary"
+            :to="{
+              name: 'ProductAdd',
+              params: { productTypeName: productType.name },
+            }"
+          >
+            <v-icon left> mdi-plus-thick </v-icon> Add the first entry
+          </v-btn>
+        </v-card-actions>
+        <v-card-actions>
+          <v-dialog v-model="deleteDialog" max-width="600">
+            <template v-slot:activator="{ on: deleteDialog }">
+              <v-btn
+                outlined
+                color="secondary"
+                text
+                :disabled="disableDelete"
+                v-on="{ ...deleteDialog }"
+              >
+                <v-icon left> mdi-delete </v-icon>
+                Delete the product type
+              </v-btn>
+            </template>
+            <product-type-delete-form
+              v-if="deleteDialog"
+              :node="productType"
+              @cancel="onDeleteFormCancelled"
+              @finished="onDeleteFormFinished"
+            ></product-type-delete-form>
+          </v-dialog>
+        </v-card-actions>
       </v-col>
       <v-col v-else-if="error">
         <v-alert v-if="error" type="error">{{ error }}</v-alert>
@@ -164,12 +198,14 @@ import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
+import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
 
 export default {
   name: "ProductList",
   components: {
     ProductItemCard,
     DevToolLoadingStateOverridingMenu,
+    ProductTypeDeleteForm,
   },
   props: {
     productTypeId: { required: true },
@@ -197,6 +233,7 @@ export default {
       nEtraItemsAutomaticLoad: 2,
       nItemsPerLoad: 20,
       isCardCollapsed: {},
+      deleteDialog: false,
       devtoolState: null,
       State: State,
     };
@@ -322,6 +359,19 @@ export default {
           // this.isCardCollapsed[id] = true;
         }
       }
+    },
+    onDeleteFormCancelled() {
+      this.closeDeleteForm();
+    },
+    onDeleteFormFinished() {
+      this.closeDeleteForm();
+      this.onDeleted();
+    },
+    closeDeleteForm() {
+      this.deleteDialog = false;
+    },
+    onDeleted() {
+      this.$router.push({ name: "Dashboard" });
     },
     loadAllFewRemainingItems() {
       if (this.edges == undefined) {
