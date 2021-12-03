@@ -3,7 +3,7 @@
     <v-card-title class="primary--text">
       <span>
         Add a
-        <span class="capitalize font-italic"> product type </span>
+        <span class="font-italic"> product type </span>
       </span>
     </v-card-title>
     <v-card flat class="px-3">
