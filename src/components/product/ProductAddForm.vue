@@ -52,6 +52,7 @@
         <v-stepper-content step="3">
           <product-add-form-step-preview
             :createProductInput="createProductInput"
+            :productType="productType"
             @cancel="close()"
             @back="stepper = 2"
             @submit="submit"

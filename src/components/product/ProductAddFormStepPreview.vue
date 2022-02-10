@@ -4,12 +4,10 @@
     <v-card-text v-if="createProductInput">
       <div class="caption grey--text">Name</div>
       <div class="font-weight-bold">{{ createProductInput.name }}</div>
-      <div class="caption grey--text">Date produced</div>
-      <div v-text="createProductInput.dateProduced"></div>
-      <div class="caption grey--text">Produced by</div>
-      <div v-text="createProductInput.producedBy"></div>
-      <div class="caption grey--text">Contact</div>
-      <div v-text="createProductInput.contact"></div>
+      <div v-for="(a, index) in attributePreview" :key="index">
+        <div class="caption grey--text text-capitalize">{{ a.field }}</div>
+        <div v-text="a.value"></div>
+      </div>
       <div class="caption grey--text">Paths</div>
       <ul
         v-if="createProductInput.paths && createProductInput.paths.length > 0"
@@ -52,10 +50,12 @@ export default {
   name: "ProductAddFormStepPreview",
   props: {
     createProductInput: Object,
+    productType: Object,
   },
   data() {
     return {
       error: null,
+      attributePreview: null,
       relationPreview: null,
       notePreview: null,
     };
@@ -63,6 +63,7 @@ export default {
   watch: {
     async createProductInput() {
       this.error = null;
+      this.attributePreview = null;
       this.relationPreview = null;
       this.notePreview = null;
 
@@ -71,6 +72,24 @@ export default {
       }
 
       try {
+        const filedMap = this.productType.fields.edges.reduce((a, { node }) => {
+          return Object.assign(a, {
+            [node.fieldId]: node.field.name.replaceAll("_", " "),
+          });
+        }, {});
+
+        const attributes = this.createProductInput.attributes;
+        if (attributes) {
+          this.attributePreview = Object.values(attributes).reduce((l, t) => {
+            l.push(
+              ...t.map((p) => {
+                return { field: filedMap[p.fieldId], value: p.value };
+              })
+            );
+            return l;
+          }, []);
+        }
+
         this.relationPreview = await this.composeRelationPreview(
           this.createProductInput.relations
         );
@@ -78,7 +97,6 @@ export default {
         this.notePreview = this.createProductInput.note
           ? marked(this.createProductInput.note)
           : null;
-
       } catch (error) {
         this.error = error;
       }
