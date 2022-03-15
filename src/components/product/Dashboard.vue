@@ -4,6 +4,7 @@
       v-if="items"
       :headers="headers"
       :items="items"
+      :items-per-page="items.length"
       :loading="state == State.LOADING"
       disable-sort
       hide-default-footer
@@ -77,11 +78,11 @@ export default {
     },
     items() {
       if (this.state == State.NONE) {
-        return null;
+        return [];
       } else if (this.state == State.EMPTY) {
         return [];
       } else {
-        return this.edges ? this.edges.map(edge => edge.node) : null;
+        return this.edges ? this.edges.map(edge => edge.node) : [];
       }
     }
   },
