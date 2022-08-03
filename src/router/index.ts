@@ -1,5 +1,5 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
+import VueRouter, { RouteConfig } from "vue-router";
 import VueMeta from "vue-meta";
 
 import store from "@/store";
@@ -24,7 +24,6 @@ import ProductAdd from "@/views/product/ProductAdd.vue";
 
 import ProductType from "@/views/admin/ProductType.vue";
 
-
 const About = () => import("@/views/framework/About.vue");
 const NotFound = () => import("@/views/framework/NotFound.vue");
 const AccessDenied = () => import("@/views/framework/AccessDenied.vue");
@@ -35,7 +34,7 @@ const Version = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Version.vue");
 const Log = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Log.vue");
-  const Config = () =>
+const Config = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Config.vue");
 const Theme = () =>
   import(/* webpackChunkName: "admin" */ "@/views/admin/Theme.vue");
@@ -57,7 +56,7 @@ const AdminAppTokenError = () =>
 Vue.use(VueRouter);
 Vue.use(VueMeta);
 
-const routes = [
+const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Entry",
@@ -66,7 +65,8 @@ const routes = [
       frame: NullFrame,
     },
     beforeEnter: (to, from, next) => {
-      const signedIn = store.state.auth.isSignedIn;
+      const state: any = store.state;
+      const signedIn = state.auth.isSignedIn as boolean;
       if (signedIn) {
         next({ name: "Dashboard" });
       } else {
@@ -83,7 +83,8 @@ const routes = [
     },
     // meta: { requiresAuth: true },
     beforeEnter: (to, from, next) => {
-      const signedIn = store.state.auth.isSignedIn;
+      const state: any = store.state;
+      const signedIn = state.auth.isSignedIn as boolean;
       if (signedIn) {
         next();
       } else {
@@ -213,14 +214,15 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const adminRequired = to.matched.some((record) => record.meta.requiresAdmin);
-  const isAdmin = store.state.auth.isAdmin;
+  const state: any = store.state;
+  const isAdmin = state.auth.isAdmin as boolean;
   if (adminRequired && !isAdmin) {
     next({ name: "AccessDenied" });
     return;
   }
 
   const authRequired = to.matched.some((record) => record.meta.requiresAuth);
-  const isSignedIn = store.state.auth.isSignedIn;
+  const isSignedIn = state.auth.isSignedIn as boolean;
   if (authRequired && !isSignedIn) {
     next({ name: "AccessDenied" });
     return;
@@ -232,7 +234,8 @@ function checkAuthForCurrentRoute() {
   const authRequired = router.currentRoute.matched.some(
     (record) => record.meta.requiresAuth
   );
-  const signedIn = store.state.auth.isSignedIn;
+  const state: any = store.state;
+  const signedIn = state.auth.isSignedIn as boolean;
   if (authRequired && !signedIn) {
     router.push("/");
   }

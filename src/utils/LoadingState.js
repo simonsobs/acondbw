@@ -4,7 +4,7 @@ export default {
   ERROR: 2,
   LOADED: 3,
   EMPTY: 4, // e.g., empty list
-  NONE: 5 // i.e., not found
+  NONE: 5, // i.e., not found
 };
 
 // INIT -+-> LOADING -+-> ERROR  -+

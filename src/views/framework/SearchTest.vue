@@ -2,7 +2,9 @@
   <v-container>
     <ais-instant-search :search-client="searchClient" index-name="products">
       <ais-search-box>
-        <template v-slot:default="{ currentRefinement, isSearchStalled, refine }">
+        <template
+          v-slot:default="{ currentRefinement, isSearchStalled, refine }"
+        >
           <v-text-field
             outlined
             rounded
@@ -18,12 +20,18 @@
       </ais-search-box>
       <ais-hits>
         <template v-slot:item="{ item }">
-        <v-card outlined>
-          <v-card-title v-html="item._highlightResult.name.value"></v-card-title>
-          <v-card-text v-html="item._highlightResult.type.value"></v-card-text>
-          <v-card-text v-html="item._highlightResult.note.value"></v-card-text>
-          <!-- <pre>{{ item }}</pre> -->
-        </v-card>
+          <v-card outlined>
+            <v-card-title
+              v-html="item._highlightResult.name.value"
+            ></v-card-title>
+            <v-card-text
+              v-html="item._highlightResult.type.value"
+            ></v-card-text>
+            <v-card-text
+              v-html="item._highlightResult.note.value"
+            ></v-card-text>
+            <!-- <pre>{{ item }}</pre> -->
+          </v-card>
         </template>
       </ais-hits>
     </ais-instant-search>

@@ -6,7 +6,7 @@ exports[`ProductTop.vue match snapshot item 1`] = `
     <v-col-stub tag="div">
       <!---->
       <v-card-stub loaderheight="4" tag="div" flat="true">
-        <v-card-title-stub class="text-h4 primary--text justify-space-between"><span><v-icon-stub large="" class="me-3">mdi-map</v-icon-stub> <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub> <!----></span> <span><v-tooltip-stub opendelay="800" closedelay="0" left="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
+        <v-card-title-stub tag="div" class="text-h4 primary--text justify-space-between"><span><v-icon-stub large="" class="me-3">mdi-map</v-icon-stub> <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub> <!----></span> <span><v-tooltip-stub opendelay="800" closedelay="0" left="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
                 Settings:
                 <span class="capitalize font-italic">
                   maps
@@ -29,7 +29,7 @@ exports[`ProductTop.vue match snapshot list 1`] = `
     <v-col-stub tag="div">
       <!---->
       <v-card-stub loaderheight="4" tag="div" flat="true">
-        <v-card-title-stub class="text-h4 primary--text justify-space-between"><span><v-icon-stub large="" class="me-3">mdi-map</v-icon-stub> <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub> <!----></span> <span><v-tooltip-stub opendelay="800" closedelay="0" left="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
+        <v-card-title-stub tag="div" class="text-h4 primary--text justify-space-between"><span><v-icon-stub large="" class="me-3">mdi-map</v-icon-stub> <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub> <!----></span> <span><v-tooltip-stub opendelay="800" closedelay="0" left="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
                 Settings:
                 <span class="capitalize font-italic">
                   maps

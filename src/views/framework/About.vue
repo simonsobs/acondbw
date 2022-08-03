@@ -18,11 +18,11 @@ import VERSION from "@/graphql/queries/Version.gql";
 export default {
   data() {
     return {
-      version: null
+      version: null,
     };
   },
   apollo: {
-    version: VERSION
-  }
+    version: VERSION,
+  },
 };
 </script>

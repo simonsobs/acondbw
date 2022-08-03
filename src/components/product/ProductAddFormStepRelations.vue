@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-card-text>
-      <div class="text-caption grey--text">New {{ productType.singular }} name</div>
+      <div class="text-caption grey--text">
+        New {{ productType.singular }} name
+      </div>
       <div class="grey--text text--darken-3" v-text="name"></div>
     </v-card-text>
     <v-card-title class="text-h4 primary--text">

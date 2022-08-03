@@ -7,7 +7,7 @@
     flat
     hide-details
     solo
-    prepend-inner-icon="search"
+    prepend-inner-icon="mdi-magnify"
     placeholder="Type a product name"
     :items="items"
     v-model="value"
@@ -25,34 +25,33 @@ import QueryForSearchWindow from "@/graphql/queries/QueryForSearchWindow.gql";
 export default {
   name: "SearchWindow",
   components: {
-    DevToolLoadingStateOverridingMenu
+    DevToolLoadingStateOverridingMenu,
   },
   data: () => ({
     s: 0,
     value: null,
     edges: null,
     devtoolState: null,
-    State: State
+    State: State,
   }),
   apollo: {
     edges: {
       query: QueryForSearchWindow,
-      update: function(data) {
+      update: function (data) {
         return data.allProducts.edges;
       },
-      result(result) {
-      }
-    }
+      result(result) {},
+    },
   },
   computed: {
     items() {
       return this.edges
-        ? this.edges.map(edge => ({
+        ? this.edges.map((edge) => ({
             text: edge.node.name + " (" + edge.node.type_.singular + ")",
-            value: edge.node
+            value: edge.node,
           }))
         : [];
-    }
+    },
   },
   methods: {
     focus() {
@@ -64,13 +63,12 @@ export default {
       }
       this.$router.push({
         name: "ProductItem",
-        params: { productTypeName: value.type_.name, name: value.name }
+        params: { productTypeName: value.type_.name, name: value.name },
       });
       this.$nextTick(() => {
         this.value = null;
       });
-    }
-  }
+    },
+  },
 };
 </script>
-

@@ -12,7 +12,7 @@ import AdminAppTokenCard from "@/components/admin-token/AdminAppTokenCard.vue";
 export default {
   name: "AdminAppToken",
   components: {
-    AdminAppTokenCard
+    AdminAppTokenCard,
   },
   data: () => ({}),
 };

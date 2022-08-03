@@ -12,18 +12,20 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { MetaInfo } from "vue-meta";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
-export default {
+export default Vue.extend({
   name: "App",
   components: {
     Snackbar,
   },
-  metaInfo() {
+  metaInfo(): MetaInfo {
     return {
       title: this.title || "loading...",
-      titleTemplate: null,
+      titleTemplate: "",
     };
   },
   data: () => ({
@@ -83,7 +85,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <!-- https://github.com/sindresorhus/github-markdown-css -->

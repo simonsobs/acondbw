@@ -32,7 +32,7 @@ export default {
   computed: {
     title() {
       return this.$store.state.webConfig.toolbarTitle || "";
-    }
+    },
   },
 };
 </script>

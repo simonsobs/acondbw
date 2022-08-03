@@ -1,11 +1,8 @@
 module.exports = {
-  preset: "@vue/cli-plugin-unit-jest",
+  preset: "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
   transform: {
     "\\.(gql|graphql)$": "./node_modules/jest-transform-graphql",
     /* ... */
-  },
-  moduleNameMapper: {
-    "\\.(css|less)$": "jest-transform-stub",
   },
   collectCoverage: true,
   collectCoverageFrom: [
@@ -18,5 +15,4 @@ module.exports = {
     "!**/**/MapItemWithApolloQuery.vue",
   ],
   coverageReporters: ["lcov", "text-summary"],
-  setupFiles: ["jest-localstorage-mock"]
 };

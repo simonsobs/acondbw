@@ -50,9 +50,7 @@
               ></product-type-add-form>
             </v-dialog>
           </template>
-          <span>
-            Add a product type
-          </span>
+          <span> Add a product type </span>
         </v-tooltip>
       </v-card-actions>
       <v-progress-circular

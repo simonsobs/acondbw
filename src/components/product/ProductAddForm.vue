@@ -91,7 +91,7 @@
     ></dev-tool-loading-state-overriding-menu>
   </v-card>
 </template>
-  
+
 <script>
 import _ from "lodash";
 import { camelCase } from "camel-case";
@@ -224,7 +224,7 @@ export default {
       const ret = {
         name: formStepStart.name,
         note: formStepStart.note,
-      }
+      };
 
       ret.typeId = productTypeId;
 
@@ -245,7 +245,10 @@ export default {
       ret.attributes = keys.reduce((a, k) => {
         const typeName = camelCase(this.fields[k].field.type_);
         a[typeName] = a[typeName] ? a[typeName] : [];
-        a[typeName].push({ fieldId: this.fields[k].fieldId, value: formStepStart[k] });
+        a[typeName].push({
+          fieldId: this.fields[k].fieldId,
+          value: formStepStart[k],
+        });
         return a;
       }, {});
 

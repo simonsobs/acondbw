@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard" style="position: relative;">
+  <div class="dashboard" style="position: relative">
     <v-data-table
       v-if="items"
       :headers="headers"
@@ -12,13 +12,19 @@
       class="elevation-1"
     >
       <template v-slot:[`item.plural`]="{ item }">
-        <router-link :to="{ name: 'ProductList', params: { productTypeName: item.name } }">
-          <span class="capitalize font-weight-bold primary--text">{{ item.plural }}</span>
+        <router-link
+          :to="{ name: 'ProductList', params: { productTypeName: item.name } }"
+        >
+          <span class="capitalize font-weight-bold primary--text">{{
+            item.plural
+          }}</span>
         </router-link>
       </template>
     </v-data-table>
-    <v-alert v-if="error" type="error" style="width: 100%;">{{ error }}</v-alert>
-    <dev-tool-loading-state-overriding-menu @state="devtoolState = $event"></dev-tool-loading-state-overriding-menu>
+    <v-alert v-if="error" type="error" style="width: 100%">{{ error }}</v-alert>
+    <dev-tool-loading-state-overriding-menu
+      @state="devtoolState = $event"
+    ></dev-tool-loading-state-overriding-menu>
   </div>
 </template>
 
@@ -31,27 +37,31 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 export default {
   name: "Dashboard",
   components: {
-    DevToolLoadingStateOverridingMenu
+    DevToolLoadingStateOverridingMenu,
   },
   data: () => ({
     edges: null,
     headers: [
       { text: "Product type", value: "plural" },
-      { text: "Number of products", align: "end", value: "products.totalCount" }
+      {
+        text: "Number of products",
+        align: "end",
+        value: "products.totalCount",
+      },
     ],
     error: null,
     devtoolState: null,
-    State: State
+    State: State,
   }),
   apollo: {
     edges: {
       query: ALL_PRODUCTS_TYPES,
-      update: data =>
+      update: (data) =>
         data.allProductTypes ? data.allProductTypes.edges : null,
       result(result) {
         this.error = result.error ? result.error : null;
-      }
-    }
+      },
+    },
   },
   computed: {
     state() {
@@ -82,24 +92,24 @@ export default {
       } else if (this.state == State.EMPTY) {
         return [];
       } else {
-        return this.edges ? this.edges.map(edge => edge.node) : [];
+        return this.edges ? this.edges.map((edge) => edge.node) : [];
       }
-    }
+    },
   },
   methods: {
     clickRow(item) {
       this.$router.push({
         name: "ProductList",
-        params: { productTypeName: item.name }
+        params: { productTypeName: item.name },
       });
-    }
+    },
   },
   watch: {
-    devtoolState: function() {
+    devtoolState: function () {
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    }
-  }
+    },
+  },
 };
 </script>
 

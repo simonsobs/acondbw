@@ -7,48 +7,48 @@ exports[`App.vue match snapshot 1`] = `
       <v-list-item-action-stub>
         <v-icon-stub>mdi-scatter-plot-outline</v-icon-stub>
       </v-list-item-action-stub>
-      <v-list-item-content-stub>
-        <v-list-item-title-stub class="capitalize condensed-font">versions</v-list-item-title-stub>
+      <v-list-item-content-stub tag="div">
+        <v-list-item-title-stub tag="div" class="capitalize condensed-font">versions</v-list-item-title-stub>
       </v-list-item-content-stub>
     </v-list-item-stub>
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
       <v-list-item-action-stub>
         <v-icon-stub>mdi-exclamation-thick</v-icon-stub>
       </v-list-item-action-stub>
-      <v-list-item-content-stub>
-        <v-list-item-title-stub class="capitalize condensed-font">log</v-list-item-title-stub>
+      <v-list-item-content-stub tag="div">
+        <v-list-item-title-stub tag="div" class="capitalize condensed-font">log</v-list-item-title-stub>
       </v-list-item-content-stub>
     </v-list-item-stub>
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
       <v-list-item-action-stub>
         <v-icon-stub>mdi-cog</v-icon-stub>
       </v-list-item-action-stub>
-      <v-list-item-content-stub>
-        <v-list-item-title-stub class="capitalize condensed-font">config</v-list-item-title-stub>
+      <v-list-item-content-stub tag="div">
+        <v-list-item-title-stub tag="div" class="capitalize condensed-font">config</v-list-item-title-stub>
       </v-list-item-content-stub>
     </v-list-item-stub>
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
       <v-list-item-action-stub>
         <v-icon-stub>mdi-format-color-fill</v-icon-stub>
       </v-list-item-action-stub>
-      <v-list-item-content-stub>
-        <v-list-item-title-stub class="capitalize condensed-font">theme</v-list-item-title-stub>
+      <v-list-item-content-stub tag="div">
+        <v-list-item-title-stub tag="div" class="capitalize condensed-font">theme</v-list-item-title-stub>
       </v-list-item-content-stub>
     </v-list-item-stub>
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
       <v-list-item-action-stub>
         <v-icon-stub>mdi-account-multiple</v-icon-stub>
       </v-list-item-action-stub>
-      <v-list-item-content-stub>
-        <v-list-item-title-stub class="capitalize condensed-font">users</v-list-item-title-stub>
+      <v-list-item-content-stub tag="div">
+        <v-list-item-title-stub tag="div" class="capitalize condensed-font">users</v-list-item-title-stub>
       </v-list-item-content-stub>
     </v-list-item-stub>
     <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
       <v-list-item-action-stub>
         <v-icon-stub>mdi-shape</v-icon-stub>
       </v-list-item-action-stub>
-      <v-list-item-content-stub>
-        <v-list-item-title-stub class="capitalize condensed-font">product types</v-list-item-title-stub>
+      <v-list-item-content-stub tag="div">
+        <v-list-item-title-stub tag="div" class="capitalize condensed-font">product types</v-list-item-title-stub>
       </v-list-item-content-stub>
     </v-list-item-stub>
   </v-list-stub>
