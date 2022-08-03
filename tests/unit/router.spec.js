@@ -1,5 +1,5 @@
 import moxios from "moxios";
-import router from "@/router/index.js";
+import router from "@/router/index.ts";
 
 import store from "@/store";
 jest.mock("@/store");

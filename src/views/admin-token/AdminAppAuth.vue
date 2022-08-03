@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { storeAdminAppToken } from "@/utils/admin-token.js"
+import { storeAdminAppToken } from "@/utils/admin-token.js";
 
 export default {
   name: "AdminAppAuth",

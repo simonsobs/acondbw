@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      drawer: ['lg', 'xl'].includes(this.$vuetify.breakpoint.name),
+      drawer: ["lg", "xl"].includes(this.$vuetify.breakpoint.name),
     };
   },
 };

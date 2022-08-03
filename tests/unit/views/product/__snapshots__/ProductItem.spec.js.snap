@@ -4,10 +4,10 @@ exports[`ProductItem.vue match snapshot 1`] = `
 <v-container-stub tag="div" class="product-item" style="position: relative;">
   <v-row-stub tag="div">
     <v-col-stub tag="div" class="pb-0">
-      <v-card-actions-stub class="align-end" style="height: 56px;">
-        <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Back to the list</span></v-tooltip-stub>
-        <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonhover="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
-        <v-spacer-stub></v-spacer-stub>
+      <v-card-actions-stub tag="div" class="align-end" style="height: 56px;">
+        <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Back to the list</span></v-tooltip-stub>
+        <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
+        <v-spacer-stub tag="div"></v-spacer-stub>
       </v-card-actions-stub>
     </v-col-stub>
   </v-row-stub>

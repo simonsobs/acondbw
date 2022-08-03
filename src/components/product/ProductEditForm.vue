@@ -102,7 +102,7 @@ export default {
       const keys = ["contact", "dateProduced", "producedBy"].filter(
         (k) => value[k] != initialValue[k] && k in this.fields
       );
-      if (!!keys.length)
+      if (keys.length)
         ret.attributes = keys.reduce((a, k) => {
           const typeName = camelCase(this.fields[k].field.type_);
           a[typeName] = a[typeName] ? a[typeName] : [];

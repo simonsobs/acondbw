@@ -2,10 +2,10 @@ import Vue from "vue";
 import VueApollo from "vue-apollo";
 import {
   createApolloClient,
-  restartWebsockets
+  restartWebsockets,
 } from "vue-cli-plugin-apollo/graphql-client";
 
-require('regenerator-runtime/runtime');
+require("regenerator-runtime/runtime");
 // https://github.com/facebook/jest/issues/3126#issuecomment-521616378
 
 // Install the vue plugin
@@ -17,6 +17,7 @@ export const AUTH_TOKEN = "apollo-token";
 // Http endpoint
 const httpEndpoint =
   process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4000/graphql";
+
 // Files URL root
 export const filesRoot =
   process.env.VUE_APP_FILES_ROOT ||
@@ -40,7 +41,7 @@ const options = {
   // You need to pass a `wsEndpoint` for this to work
   websocketsOnly: false,
   // Is being rendered on the server?
-  ssr: false
+  ssr: false,
 
   // Override default apollo link
   // note: don't override httpLink here, specify httpLink options in the

@@ -156,7 +156,7 @@ export default {
       if (!val) {
         this.error = null;
       }
-    }
-  }
+    },
+  },
 };
 </script>
