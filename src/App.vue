@@ -135,7 +135,7 @@ export default Vue.extend({
 <!-- The leave active for ".fade-app-across" is set to zero because
 sometimes the fade away starts from a wrong image.
 
-For .fade-app-within, the oparicty is set to one and the duration is
-set to zero for both enter and leave, which is effectivly diabling the
+For .fade-app-within, the opacity is set to one and the duration is
+set to zero for both enter and leave, which is effectively disabling the
 transition effects, letting the nested routes handle the transition
 effects. -->
