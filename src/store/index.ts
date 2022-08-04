@@ -123,10 +123,10 @@ const modules = {
 };
 
 export const storeConfig = {
-  state,
-  getters,
-  mutations,
-  actions,
+  // state,
+  // getters,
+  // mutations,
+  // actions,
   modules,
 };
 

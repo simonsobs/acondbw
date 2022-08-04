@@ -3,7 +3,7 @@ import {
   signOut,
   restoreFromLocalStorage,
   isSignedIn,
-} from "@/utils/auth.js";
+} from "@/utils/auth";
 
 function createInitialState() {
   try {
