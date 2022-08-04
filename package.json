@@ -11,6 +11,7 @@
   "dependencies": {
     "@meilisearch/instant-meilisearch": "^0.5.6",
     "@types/vuelidate": "^0.7.15",
+    "@vue/composition-api": "^1.7.0",
     "axios": "^0.27.2",
     "cache-loader": "^4.1.0",
     "core-js": "^3.21.1",
@@ -20,6 +21,7 @@
     "lodash": "^4.17.21",
     "marked": "^3.0.8",
     "material-design-icons-iconfont": "^6.1.0",
+    "pinia": "^2.0.17",
     "querystring-es3": "^0.2.1",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.4",
