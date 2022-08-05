@@ -15,16 +15,17 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import DELETE_GITHUB_ORG from "@/graphql/mutations/DeleteGitHubOrg.gql";
 
-export default {
+export default Vue.extend({
   name: "GitHubOrgRemoveForm",
   props: {
     login: String,
   },
   data: () => ({
-    error: null,
+    error: null as any,
   }),
   methods: {
     cancel() {
@@ -55,5 +56,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

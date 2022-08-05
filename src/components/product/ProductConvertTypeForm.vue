@@ -32,12 +32,13 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import CONVERT_PRODUCT_TYPE from "@/graphql/mutations/ConvertProductType.gql";
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import PRODUCT_TYPE from "@/graphql/queries/ProductType.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductConvertTypeForm",
   props: {
     node: Object,
@@ -103,5 +104,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

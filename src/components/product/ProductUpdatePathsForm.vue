@@ -33,7 +33,8 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 
 function composeInitialModel(node) {
@@ -48,7 +49,7 @@ function composeInputPaths(text) {
     .filter((v, i, a) => a.indexOf(v) === i); // unique
 }
 
-export default {
+export default Vue.extend({
   name: "ProductUpdatePathsForm",
   props: {
     node: Object,
@@ -99,5 +100,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

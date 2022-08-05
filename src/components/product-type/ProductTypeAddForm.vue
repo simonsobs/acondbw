@@ -39,7 +39,8 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import CREATE_PRODUCT_TYPE from "@/graphql/mutations/CreateProductType.gql";
 import ALL_FIELDS from "@/graphql/queries/AllFields.gql";
 
@@ -48,7 +49,7 @@ import FormProductType from "./FormProductType.vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductTypeAddForm",
   components: {
     FormProductType,
@@ -135,5 +136,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

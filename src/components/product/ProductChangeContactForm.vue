@@ -30,12 +30,13 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import { required } from "vuelidate/lib/validators";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductChangeContactForm",
   props: {
     node: Object,
@@ -44,13 +45,13 @@ export default {
   data() {
     return {
       newContact: "",
-      error: null,
+      error: null as any,
     };
   },
   validations: { newContact: { required } },
   computed: {
     newContactErrors() {
-      const errors = [];
+      const errors: string[] = [];
       const field = this.$v.newContact;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
@@ -84,5 +85,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

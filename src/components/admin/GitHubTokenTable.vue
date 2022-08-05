@@ -69,16 +69,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // The implementation based on the example
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
+import Vue from "vue";
 import { redirectToGitHubAuthURL } from "@/utils/auth";
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
 import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
 
-export default {
+export default Vue.extend({
   name: "GitHubTokenTable",
   data: () => ({
     allGitHubTokens: null,
@@ -94,7 +95,7 @@ export default {
     dialogDelete: false,
     deleteTokenId: null,
     alert: false,
-    error: null,
+    error: null as any,
   }),
   apollo: {
     allGitHubTokens: {
@@ -158,5 +159,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

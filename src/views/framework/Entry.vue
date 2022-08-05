@@ -19,11 +19,12 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import SignInCard from "@/components/auth/SignInCard.vue";
 import Dashboard from "@/components/product/Dashboard.vue";
 
-export default {
+export default Vue.extend({
   name: "Home",
   components: {
     SignInCard,
@@ -34,5 +35,5 @@ export default {
       return this.$store.state.webConfig.toolbarTitle || "";
     },
   },
-};
+});
 </script>

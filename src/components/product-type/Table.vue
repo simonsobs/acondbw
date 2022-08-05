@@ -44,13 +44,14 @@
   </v-card-text>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductTypeTable",
   components: {
     DevToolLoadingStateOverridingMenu,
@@ -143,5 +144,5 @@ export default {
       // console.log(item);
     },
   },
-};
+});
 </script>

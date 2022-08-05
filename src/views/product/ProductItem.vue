@@ -65,7 +65,8 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/queries/ProductByTypeIdAndName.gql";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
@@ -73,7 +74,7 @@ import ProductItemCard from "@/components/product/ProductItemCard.vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductItem",
   components: {
     ProductItemCard,
@@ -192,5 +193,5 @@ export default {
       this.refreshing = false;
     },
   },
-};
+});
 </script>

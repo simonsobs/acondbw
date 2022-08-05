@@ -33,13 +33,14 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import { camelCase } from "camel-case";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 import FormStart from "./FormStart.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductEditForm",
   components: {
     FormStart,
@@ -133,5 +134,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

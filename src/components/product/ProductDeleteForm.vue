@@ -42,14 +42,15 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import PRODUCT from "@/graphql/queries/Product.gql";
 import DELETE_PRODUCT from "@/graphql/mutations/DeleteProduct.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductDeleteForm",
   components: {
     DevToolLoadingStateOverridingMenu,
@@ -162,5 +163,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

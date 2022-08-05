@@ -57,11 +57,12 @@
   </v-app-bar>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import SearchWindow from "@/components/utils/SearchWindow.vue";
 import UserMenuButton from "@/components/auth/UserMenuButton.vue";
 
-export default {
+export default Vue.extend({
   name: "AppBar",
   components: {
     SearchWindow,
@@ -79,5 +80,5 @@ export default {
   created() {
     this.$vuetify.theme.dark = false;
   },
-};
+});
 </script>

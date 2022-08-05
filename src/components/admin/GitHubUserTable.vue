@@ -30,15 +30,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // The implementation based on the example
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
+import Vue from "vue";
 import ALL_GIT_HUB_USERS from "@/graphql/queries/AllGitHubUsers.gql";
 import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/mutations/UpdateGitHubOrgMemberLists.gql";
 
-export default {
+export default Vue.extend({
   name: "GitHubUserTable",
   data: () => ({
     allGitHubUsers: null,
@@ -48,7 +49,7 @@ export default {
       { text: "Name", value: "node.name" },
     ],
     alert: false,
-    error: null,
+    error: null as any,
   }),
   apollo: {
     allGitHubUsers: {
@@ -80,5 +81,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

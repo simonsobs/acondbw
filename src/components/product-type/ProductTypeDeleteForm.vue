@@ -17,10 +17,11 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import DELETE_PRODUCT_TYPE from "@/graphql/mutations/DeleteProductType.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductTypeDeleteForm",
   props: {
     node: Object,
@@ -46,5 +47,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

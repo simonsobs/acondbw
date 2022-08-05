@@ -27,12 +27,13 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import UPDATE_PRODUCT_TYPE from "@/graphql/mutations/UpdateProductType.gql";
 
 import FormProductType from "./FormProductType.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductTypeEditForm",
   components: { FormProductType },
   props: {
@@ -93,5 +94,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

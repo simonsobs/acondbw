@@ -92,7 +92,8 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import _ from "lodash";
 import { camelCase } from "camel-case";
 
@@ -106,7 +107,7 @@ import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductAddForm",
   components: {
     ProductAddFormStepStart,
@@ -286,5 +287,5 @@ export default {
       });
     },
   },
-};
+});
 </script>

@@ -11,10 +11,11 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import { storeAdminAppToken } from "@/utils/admin-token.js";
 
-export default {
+export default Vue.extend({
   name: "AdminAppAuth",
   data: () => ({}),
   methods: {
@@ -45,5 +46,5 @@ export default {
   mounted: async function () {
     this.main();
   },
-};
+});
 </script>

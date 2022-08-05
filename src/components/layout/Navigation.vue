@@ -78,7 +78,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -86,7 +87,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
-export default {
+export default Vue.extend({
   name: "Navigation",
   components: {
     DevToolLoadingStateOverridingMenu,
@@ -159,5 +160,5 @@ export default {
       this.addDialog = false;
     },
   },
-};
+});
 </script>

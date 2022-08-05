@@ -53,12 +53,13 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import marked from "marked";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductEditNoteForm",
   props: {
     node: Object,
@@ -118,5 +119,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

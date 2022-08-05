@@ -36,10 +36,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import State from "@/utils/LoadingState.js";
 
-export default {
+export default Vue.extend({
   name: "DevToolLoadingStateOverridingMenu",
   props: ["value"], // for v-model
   data() {
@@ -61,5 +62,5 @@ export default {
       this.$emit("input", s); // for v-model
     },
   },
-};
+});
 </script>

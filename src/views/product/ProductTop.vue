@@ -81,7 +81,8 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -89,7 +90,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductTop",
   components: {
     DevToolLoadingStateOverridingMenu,
@@ -213,7 +214,7 @@ export default {
     this.transitionMode = "out-in";
     next();
   },
-};
+});
 </script>
 
 <style scoped>

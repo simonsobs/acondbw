@@ -23,13 +23,14 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import _ from "lodash";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 import FormRelations from "./FormRelations.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductUpdateRelationsForm",
   components: {
     FormRelations,
@@ -87,5 +88,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

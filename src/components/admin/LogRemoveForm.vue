@@ -15,16 +15,17 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import DELETE_LOG from "@/graphql/mutations/DeleteLog.gql";
 
-export default {
+export default Vue.extend({
   name: "LogRemoveForm",
   props: {
     id_: Number,
   },
   data: () => ({
-    error: null,
+    error: null as any,
   }),
   methods: {
     cancel() {
@@ -55,5 +56,5 @@ export default {
       }
     },
   },
-};
+});
 </script>
