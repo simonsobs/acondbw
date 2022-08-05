@@ -43,7 +43,6 @@ export const useStore = defineStore("main", {
   },
   actions: {
     async loadWebConfig(apolloClient) {
-		console.log("loadWebConfig");
       try {
         const { data } = await apolloClient.query({ query: QUERY_WEB_CONFIG });
         const base = Object.fromEntries(
