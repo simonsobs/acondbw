@@ -10,8 +10,8 @@ import router from "@/router";
 import store from "@/store";
 jest.mock("@/store");
 
-import { redirectToGitHubAuthURL } from "@/utils/auth.js";
-jest.mock("@/utils/auth.js");
+import { redirectToGitHubAuthURL } from "@/utils/auth";
+jest.mock("@/utils/auth");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

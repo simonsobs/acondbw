@@ -10,8 +10,8 @@ import router from "@/router";
 import store from "@/store";
 jest.mock("@/store");
 
-import { validateState } from "@/utils/auth.js";
-jest.mock("@/utils/auth.js");
+import { validateState } from "@/utils/auth";
+jest.mock("@/utils/auth");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

@@ -1,4 +1,4 @@
-import { AUTH_STATE, validateState } from "@/utils/auth.js";
+import { AUTH_STATE, validateState } from "@/utils/auth";
 
 // using jest-localstorage-mock (https://www.npmjs.com/package/jest-localstorage-mock)
 // to mock localStorage

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { redirectToGitHubAuthURL } from "@/utils/auth.js";
+import { redirectToGitHubAuthURL } from "@/utils/auth";
 
 export default {
   name: "SignInCard",
