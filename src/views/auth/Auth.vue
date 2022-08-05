@@ -15,6 +15,7 @@
 import Vue from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
+import { useAuthStore } from "@/stores/auth";
 
 import { validateState } from "@/utils/auth";
 
@@ -30,7 +31,7 @@ export default Vue.extend({
       }
 
       if (this.$route.query.error) {
-        this.$store.dispatch("setRequestAuthError", this.$route.query);
+        this.setRequestAuthError(this.$route.query);
         this.$router.push({ name: "SignInError" });
         return;
       }
@@ -42,7 +43,7 @@ export default Vue.extend({
       }
 
       try {
-        await this.$store.dispatch("signIn", {
+        await this.signIn({
           code,
           state,
           apolloClient: this.$apollo,
@@ -55,6 +56,7 @@ export default Vue.extend({
       this.$router.push({ name: "Dashboard" });
     },
     ...mapActions(useStore, ["setSnackbarMessage"]),
+    ...mapActions(useAuthStore, ["setRequestAuthError", "signIn"]),
   },
   mounted: async function () {
     this.main();

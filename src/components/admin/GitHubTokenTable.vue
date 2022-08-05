@@ -77,6 +77,7 @@
 import Vue from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
+import { useAuthStore } from "@/stores/auth";
 
 import { redirectToGitHubAuthURL } from "@/utils/auth";
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
@@ -112,7 +113,7 @@ export default Vue.extend({
     async requestAuth() {
       this.loading = true;
       try {
-        this.$store.dispatch("clearAuthError");
+        this.clearAuthError();
         const callbackRoute = { name: "AdminAppAuth" };
         const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         await redirectToGitHubAuthURL(
@@ -152,6 +153,7 @@ export default Vue.extend({
       });
     },
     ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
+    ...mapActions(useAuthStore, ["clearAuthError"]),
   },
   watch: {
     error: function (val, oldVal) {

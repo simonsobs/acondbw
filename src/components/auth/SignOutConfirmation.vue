@@ -8,7 +8,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-        <v-btn color="primary" @click="signOut">Sign Out</v-btn>
+        <v-btn color="primary" @click="callSignOut">Sign Out</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -18,12 +18,13 @@
 import Vue from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
+import { useAuthStore } from "@/stores/auth";
 
 export default Vue.extend({
   name: "SignOutConfirmation",
   methods: {
-    async signOut() {
-      await this.$store.dispatch("signOut", this.$apollo);
+    async callSignOut() {
+      await this.signOut(this.$apollo);
       this.$emit("finished");
       this.setSnackbarMessage("Signed out");
 
@@ -35,6 +36,7 @@ export default Vue.extend({
       this.$router.push(to);
     },
     ...mapActions(useStore, ["setSnackbarMessage"]),
+    ...mapActions(useAuthStore, ["signOut"]),
   },
 });
 </script>

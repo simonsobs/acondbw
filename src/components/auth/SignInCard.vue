@@ -16,10 +16,14 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
 import { redirectToGitHubAuthURL } from "@/utils/auth";
 
-export default {
+export default Vue.extend({
   name: "SignInCard",
   data: () => ({
     loading: false,
@@ -28,7 +32,7 @@ export default {
     async signIn() {
       this.loading = true;
       try {
-        this.$store.dispatch("clearAuthError");
+        this.clearAuthError()
         const callbackRoute = { name: "Auth" };
         const scope = ""; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         await redirectToGitHubAuthURL(
@@ -42,6 +46,7 @@ export default {
         this.loading = false;
       }
     },
+    ...mapActions(useAuthStore, ["clearAuthError"]),
   },
-};
+});
 </script>
