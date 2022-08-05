@@ -75,6 +75,9 @@
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import { redirectToGitHubAuthURL } from "@/utils/auth";
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
 import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
@@ -135,8 +138,8 @@ export default Vue.extend({
           variables: { tokenId: this.deleteTokenId },
         });
         this.$apollo.queries.allGitHubTokens.refetch();
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Deleted");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Deleted");
       } catch (error) {
         this.error = error;
       }
@@ -148,6 +151,7 @@ export default Vue.extend({
         this.deleteTokenId = null;
       });
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
   watch: {
     error: function (val, oldVal) {

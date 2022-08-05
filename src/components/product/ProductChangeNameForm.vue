@@ -29,6 +29,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import gql from "graphql-tag";
 
 import { required } from "vuelidate/lib/validators";
@@ -116,13 +119,14 @@ export default Vue.extend({
           },
         });
 
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Changed");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Changed");
         this.$emit("finished", this.newName);
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
 });
 </script>

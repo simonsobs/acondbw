@@ -36,6 +36,9 @@
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import ALL_GIT_HUB_USERS from "@/graphql/queries/AllGitHubUsers.gql";
 import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/mutations/UpdateGitHubOrgMemberLists.gql";
 
@@ -64,12 +67,13 @@ export default Vue.extend({
           mutation: UPDATE_GITHUB_ORG_MEMBER_LIST,
         });
         this.$apollo.queries.allGitHubUsers.refetch();
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Updated");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Updated");
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
   watch: {
     error: function (val, oldVal) {

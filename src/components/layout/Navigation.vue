@@ -67,7 +67,7 @@
     </v-card>
     <v-bottom-navigation absolute class="px-3 justify-start align-center">
       <span class="grey--text text-caption">
-        v{{ $store.getters.appVersion }}
+        v{{ appVersion }}
       </span>
       <!-- <v-spacer></v-spacer>
       <v-icon>mdi-plus-thick</v-icon> -->
@@ -80,6 +80,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -125,6 +128,7 @@ export default Vue.extend({
     notFound() {
       return this.state == State.NONE;
     },
+    ...mapState(useStore, ["nApolloMutations", "appVersion"]),
   },
   watch: {
     devtoolState: function () {
@@ -134,7 +138,7 @@ export default Vue.extend({
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function () {
+    nApolloMutations: function () {
       this.$apollo.queries.edges.refetch();
     },
   },

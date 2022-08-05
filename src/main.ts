@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { createPinia, PiniaVuePlugin } from "pinia";
+import { createPinia, PiniaVuePlugin, mapStores, mapActions } from "pinia";
 import App from "./App.vue";
 import { router, checkAuthForCurrentRoute } from "./router";
 import store from "./store";
@@ -7,6 +7,7 @@ import vuetify from "./plugins/vuetify";
 import { apolloProvider } from "./vue-apollo";
 import Vuelidate from "vuelidate";
 // import InstantSearch from "vue-instantsearch";
+import { useStore } from "@/stores/main";
 
 Vue.use(PiniaVuePlugin);
 Vue.use(Vuelidate);
@@ -23,12 +24,14 @@ new Vue({
   store,
   apolloProvider,
   created() {
-    this.$store.dispatch("initWithAsyncActions", this.$apollo);
+    this.loadWebConfig(this.$apollo);
+    this.$store.dispatch("checkIfSignedIn", this.$apollo);
   },
   computed: {
     isSignedIn() {
       return this.$store.state.auth.isSignedIn;
     },
+    // ...mapStores(useStore),
   },
   watch: {
     isSignedIn: {
@@ -39,6 +42,9 @@ new Vue({
         }
       },
     },
+  },
+  methods: {
+    ...mapActions(useStore, ["loadWebConfig"]),
   },
   render: (h) => h(App),
 }).$mount("#app");

@@ -38,6 +38,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import State from "@/utils/LoadingState.js";
 
 export default Vue.extend({
@@ -52,8 +55,9 @@ export default Vue.extend({
   },
   computed: {
     enabled() {
-      return this.$store.state.webConfig.devtoolLoadingstate || false;
+      return this.webConfig.devtoolLoadingstate || false;
     },
+    ...mapState(useStore, ["webConfig"]),
   },
   watch: {
     state: function () {

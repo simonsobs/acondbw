@@ -41,6 +41,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import CREATE_PRODUCT_TYPE from "@/graphql/mutations/CreateProductType.gql";
 import ALL_FIELDS from "@/graphql/queries/AllFields.gql";
 
@@ -128,13 +131,14 @@ export default Vue.extend({
           },
         });
         this.$apollo.provider.defaultClient.cache.data.data = {};
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Added");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Added");
         this.$emit("finished", this.input.name);
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
 });
 </script>

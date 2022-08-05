@@ -30,6 +30,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import { required } from "vuelidate/lib/validators";
 
 import ADD_GITHUB_ORG from "@/graphql/mutations/AddGitHubOrg.gql";
@@ -72,14 +75,15 @@ export default Vue.extend({
           mutation: ADD_GITHUB_ORG,
           variables: { login: this.login },
         });
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Added");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Added");
         this.$emit("finished");
         this.delayedReset();
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
 });
 </script>

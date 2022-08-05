@@ -11,10 +11,14 @@
   </v-container>
 </template>
 
-<script>
-import { validateState } from "@/utils/auth.js";
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
 
-export default {
+import { validateState } from "@/utils/auth";
+
+export default Vue.extend({
   name: "Auth",
   data: () => ({}),
   methods: {
@@ -47,12 +51,13 @@ export default {
         this.$router.push({ name: "SignInError" });
         return;
       }
-      this.$store.dispatch("snackbarMessage", "Signed in");
+      this.setSnackbarMessage("Signed in");
       this.$router.push({ name: "Dashboard" });
     },
+    ...mapActions(useStore, ["setSnackbarMessage"]),
   },
   mounted: async function () {
     this.main();
   },
-};
+});
 </script>

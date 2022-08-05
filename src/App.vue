@@ -15,6 +15,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { MetaInfo } from "vue-meta";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
 export default Vue.extend({
@@ -35,11 +37,12 @@ export default Vue.extend({
   }),
   computed: {
     title() {
-      return this.$store.state.webConfig.headTitle || "";
+      return this.webConfig.headTitle || "";
     },
+    ...mapState(useStore, ["webConfig"]),
   },
   watch: {
-    "$store.state.webConfig": {
+    webConfig: {
       immediate: true,
       handler(webConfig) {
         try {

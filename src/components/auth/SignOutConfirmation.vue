@@ -14,14 +14,18 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
+export default Vue.extend({
   name: "SignOutConfirmation",
   methods: {
     async signOut() {
       await this.$store.dispatch("signOut", this.$apollo);
       this.$emit("finished");
-      this.$store.dispatch("snackbarMessage", "Signed out");
+      this.setSnackbarMessage("Signed out");
 
       const to = { name: "Entry" };
       if (this.$route.path == this.$router.resolve(to).route.path) {
@@ -30,6 +34,7 @@ export default {
       }
       this.$router.push(to);
     },
+    ...mapActions(useStore, ["setSnackbarMessage"]),
   },
-};
+});
 </script>

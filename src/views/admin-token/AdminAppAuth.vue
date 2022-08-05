@@ -13,6 +13,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import { storeAdminAppToken } from "@/utils/admin-token.js";
 
 export default Vue.extend({
@@ -39,9 +42,10 @@ export default Vue.extend({
         this.$router.push({ name: "AdminAppTokenError" });
         return;
       }
-      this.$store.dispatch("snackbarMessage", "Admin App Token stored");
+      this.setSnackbarMessage("Admin App Token stored");
       this.$router.push({ name: "AdminScratch" });
     },
+    ...mapActions(useStore, ["setSnackbarMessage"]),
   },
   mounted: async function () {
     this.main();

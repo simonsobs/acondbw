@@ -94,6 +94,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import _ from "lodash";
 import { camelCase } from "camel-case";
 
@@ -217,8 +220,8 @@ export default Vue.extend({
         this.stepper = 1;
         return;
       }
-      this.$store.dispatch("apolloMutationCalled");
-      this.$store.dispatch("snackbarMessage", "Added");
+      this.apolloMutationCalled();
+      this.setSnackbarMessage("Added");
       this.close();
     },
     composeCreateProductInput(productTypeId, formStepStart, formStepRelation) {
@@ -286,6 +289,7 @@ export default Vue.extend({
         },
       });
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
 });
 </script>

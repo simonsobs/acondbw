@@ -83,6 +83,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -133,14 +136,15 @@ export default Vue.extend({
       return this.state == State.NONE;
     },
     disableAdd() {
-      return !this.$store.state.webConfig.productCreationDialog;
+      return !this.webConfig.productCreationDialog;
     },
     disableEdit() {
-      return !this.$store.state.webConfig.productUpdateDialog;
+      return !this.webConfig.productUpdateDialog;
     },
     disableDelete() {
-      return !this.$store.state.webConfig.productDeletionDialog;
+      return !this.webConfig.productDeletionDialog;
     },
+    ...mapState(useStore, ["webConfig", "nApolloMutations"]),
   },
   watch: {
     devtoolState: function () {
@@ -151,7 +155,7 @@ export default Vue.extend({
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function () {
+    nApolloMutations: function () {
       this.refresh();
     },
   },

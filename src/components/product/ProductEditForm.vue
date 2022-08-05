@@ -35,6 +35,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import { camelCase } from "camel-case";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
@@ -126,13 +129,14 @@ export default Vue.extend({
           },
         });
         this.$apollo.provider.defaultClient.cache.data.data = {};
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Updated");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Updated");
         this.$emit("finished", this.input.name);
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
 });
 </script>

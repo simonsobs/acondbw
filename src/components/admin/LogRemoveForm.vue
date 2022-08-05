@@ -17,6 +17,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import DELETE_LOG from "@/graphql/mutations/DeleteLog.gql";
 
 export default Vue.extend({
@@ -47,14 +50,15 @@ export default Vue.extend({
           mutation: DELETE_LOG,
           variables: { id_: this.id_ },
         });
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Removed");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Removed");
         this.$emit("finished");
         this.delayedReset();
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
 });
 </script>

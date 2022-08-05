@@ -67,6 +67,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/queries/ProductByTypeIdAndName.gql";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
@@ -108,7 +111,7 @@ export default Vue.extend({
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function () {
+    nApolloMutations: function () {
       this.refresh();
     },
   },
@@ -136,6 +139,7 @@ export default Vue.extend({
       if (!this.node.type_) return null;
       return this.node.type_.name;
     },
+    ...mapState(useStore, ["nApolloMutations"]),
   },
   apollo: {
     node: {
