@@ -1,10 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Vuex from "vuex";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import ProductAddForm from "@/components/product/ProductAddForm.vue";
+import { useStore } from "@/stores/main";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -12,15 +14,13 @@ Vue.use(VueRouter);
 describe("ProductAddForm.vue", () => {
   let localVue;
   let vuetify;
-  let actions;
-  let store;
 
   function createWrapper({ loading = false } = {}) {
     const mutate = jest.fn();
     let wrapper = mount(ProductAddForm, {
       localVue,
       vuetify,
-      store,
+      pinia: createTestingPinia(),
       propsData: {
         productTypeId: 1,
       },
@@ -94,20 +94,8 @@ describe("ProductAddForm.vue", () => {
 
   beforeEach(function () {
     localVue = createLocalVue();
-    localVue.use(Vuex);
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
-
-    actions = {
-      apolloMutationCalled: jest.fn(),
-      snackbarMessage: jest.fn(),
-    };
-    store = new Vuex.Store({
-      actions,
-      state: {
-        snackbar: false,
-        snackbarMessage: null,
-      },
-    });
   });
 
   it("instantiate", async () => {
@@ -119,11 +107,12 @@ describe("ProductAddForm.vue", () => {
   it("submit", async () => {
     // to suppress the warning "[Vuetify] Unable to locate target [data-app]""
     const app = document.createElement("div");
-    app.setAttribute("data-app", true);
+    app.setAttribute("data-app", "true");
     document.body.append(app);
 
-    const wrapper = createWrapper();
+    const wrapper: any = createWrapper();
     wrapper.setData({ productType: productType });
+    const store = useStore();
     await Vue.nextTick();
 
     const formStepStart = {
@@ -134,7 +123,7 @@ describe("ProductAddForm.vue", () => {
       note: "note",
       paths: "/a/b/c\n\n \n/x/y/z \n/a/b/c",
     };
-    const formStepRelation = []
+    const formStepRelation = [];
 
     wrapper.setData({ formStepStart, formStepRelation });
     await Vue.nextTick();
@@ -174,8 +163,8 @@ describe("ProductAddForm.vue", () => {
       input: expectedCreateProductInput,
     });
 
-    expect(actions.apolloMutationCalled).toHaveBeenCalled();
-    expect(actions.snackbarMessage).toHaveBeenCalled();
+    expect(store.apolloMutationCalled).toHaveBeenCalled();
+    expect(store.setSnackbarMessage).toHaveBeenCalled();
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
 });

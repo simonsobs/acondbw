@@ -5,14 +5,7 @@ exports[`SignInError.vue match snapshot with error 1`] = `
   <v-row-stub tag="div" align="center" justify="center">
     <v-card-stub loaderheight="4" tag="div" minwidth="250px" flat="true">
       <v-card-title-stub tag="div">Sign In Unsuccessful</v-card-title-stub>
-      <v-card-text-stub tag="div">
-        <v-alert-stub outlined="true" tag="div" value="true" closelabel="$vuetify.close" closeicon="$cancel" icon="" type="error"><strong>access denied:</strong> <span>
-            The user has denied your application access.</span>
-          <v-btn-stub color="error" tag="button" activeclass="" href="https://docs.github.com/apps/managing-oauth-apps/troubleshooting-authorization-request-errors/#access-denied" target="_blank" small="true" icon="true" type="button">
-            <v-icon-stub small="">mdi-open-in-new</v-icon-stub>
-          </v-btn-stub>
-        </v-alert-stub>
-      </v-card-text-stub>
+      <!---->
       <v-card-actions-stub tag="div">
         <v-spacer-stub tag="div"></v-spacer-stub>
         <v-btn-stub outlined="true" tag="button" activeclass="" to="/" type="button">Go back</v-btn-stub>

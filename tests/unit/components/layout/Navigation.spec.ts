@@ -1,11 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Vuex from "vuex";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
-import Navigation from "@/components/layout/Navigation";
+import Navigation from "@/components/layout/Navigation.vue";
 import router from "@/router";
+import { useStore } from "@/stores/main";
 
 jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
@@ -20,7 +22,7 @@ describe("App.vue", () => {
   let localVue;
   let vuetify;
   let wrapper;
-  let store_;
+  let store;
 
   const edges = [
     {
@@ -72,17 +74,13 @@ describe("App.vue", () => {
 
   beforeEach(() => {
     localVue = createLocalVue();
-    localVue.use(Vuex);
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
-    store_ = new Vuex.Store({
-      getters: {
-        appVersion: () => "0.1.1",
-      },
-    });
+    const pinia = createTestingPinia();
     wrapper = shallowMount(Navigation, {
       localVue,
       vuetify,
-      store: store_,
+      pinia,
       router,
       mocks: {
         $apollo: {
@@ -98,6 +96,8 @@ describe("App.vue", () => {
     wrapper.setData({
       edges: edges,
     });
+    store = useStore(pinia);
+    store.packageVersion = "0.1.1";
   });
 
   it("match snapshot", () => {

@@ -1,9 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu";
+import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 import State from "@/utils/LoadingState.js";
 
 Vue.use(Vuetify);
@@ -15,6 +17,7 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
 
   beforeEach(function () {
     localVue = createLocalVue();
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
   });
 
@@ -22,6 +25,7 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
     let wrapper = mount(DevToolLoadingStateOverridingMenu, {
       localVue,
       vuetify,
+      pinia: createTestingPinia(),
       mocks: {
         $store: {
           state: {
@@ -37,7 +41,7 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
   }
 
   it("emit a state", async () => {
-    const wrapper = createWrapper();
+    const wrapper: any = createWrapper();
     await Vue.nextTick();
     wrapper.setData({
       state: State.LOADING,
@@ -48,7 +52,7 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
   });
 
   it("off - emit null", async () => {
-    const wrapper = createWrapper();
+    const wrapper: any = createWrapper();
     await Vue.nextTick();
     wrapper.setData({
       state: State.LOADING,

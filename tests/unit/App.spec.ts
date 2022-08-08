@@ -1,14 +1,15 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Vuex from "vuex";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
-
-import store from "@/store";
-jest.mock("@/store");
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import App from "@/App.vue";
 import router from "@/router";
+
+import { useStore } from "@/stores/main";
+import { useAuthStore } from "@/stores/auth";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -16,37 +17,28 @@ Vue.use(VueRouter);
 describe("App.vue", () => {
   let localVue;
   let vuetify;
-  let actions;
-  let store_;
   let wrapper;
 
   beforeEach(() => {
     localVue = createLocalVue();
-    localVue.use(Vuex);
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
-
-    store.state = { auth: { isSignedIn: true } };
-    // set isSignedIn here because the router is
-    // directly importing the store in @/router/index.js
-
-    actions = {};
-    store_ = new Vuex.Store({
-      actions,
-      state: {
-        snackbar: false,
-        snackbarMessage: null,
-        webConfig: {
-          headTitle: "Head Title",
-        },
-      },
-    });
+    const pinia = createTestingPinia();
     wrapper = shallowMount(App, {
       localVue,
       vuetify,
+      pinia,
       router,
-      store: store_,
       stubs: ["router-link", "router-view"],
     });
+    const store = useStore(pinia);
+    const authStore = useAuthStore(pinia);
+    store.snackbar = false;
+    store.snackbarMessage = null;
+    store.webConfig = {
+      headTitle: "Head Title",
+    };
+    authStore.isSignedIn = true;
   });
 
   it("match snapshot", () => {
