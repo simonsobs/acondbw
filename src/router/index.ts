@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import VueMeta from "vue-meta";
 
-import pinia from "@/stores";
+import { default as defaultPinia } from "@/stores";
 import { useAuthStore } from "@/stores/auth";
 
 import Frame from "@/components/layout/Frame.vue";
@@ -56,6 +56,17 @@ const AdminAppTokenError = () =>
 
 Vue.use(VueRouter);
 Vue.use(VueMeta);
+
+let pinia = defaultPinia;
+
+function setPinia(val) {
+  // because not sure how to monkey patch pinia for tests
+  pinia = val;
+}
+
+function setDefaultPinia() {
+  setPinia(defaultPinia);
+}
 
 const routes: Array<RouteConfig> = [
   {
@@ -242,4 +253,10 @@ function checkAuthForCurrentRoute() {
   }
 }
 
-export { router as default, router, checkAuthForCurrentRoute };
+export {
+  router as default,
+  router,
+  checkAuthForCurrentRoute,
+  setPinia,
+  setDefaultPinia,
+};
