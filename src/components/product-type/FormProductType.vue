@@ -113,7 +113,7 @@
 <script>
 import { required, integer } from "vuelidate/lib/validators";
 
-import { mdIcons } from "@/utils/md-icons.js";
+import { mdIcons } from "@/utils/md-icons";
 
 const iconItems = mdIcons.map(({ name }) => `mdi-${name}`);
 
