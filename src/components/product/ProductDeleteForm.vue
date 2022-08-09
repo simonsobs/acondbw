@@ -50,7 +50,7 @@ import { useStore } from "@/stores/main";
 import PRODUCT from "@/graphql/queries/Product.gql";
 import DELETE_PRODUCT from "@/graphql/mutations/DeleteProduct.gql";
 
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 export default Vue.extend({

@@ -49,7 +49,7 @@ import Vue from "vue";
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";

@@ -6,7 +6,7 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

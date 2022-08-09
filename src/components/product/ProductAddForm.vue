@@ -107,7 +107,7 @@ import ProductAddFormStepStart from "./ProductAddFormStepStart.vue";
 import ProductAddFormStepRelations from "./ProductAddFormStepRelations.vue";
 import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 export default Vue.extend({

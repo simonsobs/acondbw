@@ -31,7 +31,7 @@
 <script>
 import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 export default {

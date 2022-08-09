@@ -49,7 +49,7 @@ import ALL_FIELDS from "@/graphql/queries/AllFields.gql";
 
 import FormProductType from "./FormProductType.vue";
 
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 export default Vue.extend({

@@ -88,7 +88,7 @@ import { useStore } from "@/stores/main";
 
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";

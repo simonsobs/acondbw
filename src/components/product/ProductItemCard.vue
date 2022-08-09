@@ -289,7 +289,7 @@ import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelati
 import ProductConvertTypeForm from "@/components/product/ProductConvertTypeForm.vue";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 export default {

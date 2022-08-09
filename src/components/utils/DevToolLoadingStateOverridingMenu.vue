@@ -41,7 +41,7 @@ import Vue from "vue";
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
-import State from "@/utils/LoadingState.js";
+import State from "@/utils/LoadingState";
 
 export default Vue.extend({
   name: "DevToolLoadingStateOverridingMenu",
