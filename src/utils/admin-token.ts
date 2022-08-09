@@ -7,7 +7,8 @@ const AUTH_ADMIN_STATE = "auth-state";
 
 export async function storeAdminAppToken(code, state, apolloClient) {
   try {
-    const authState = JSON.parse(localStorage.getItem(AUTH_ADMIN_STATE));
+    const authStateJson = localStorage.getItem(AUTH_ADMIN_STATE);
+    const authState = authStateJson && JSON.parse(authStateJson);
     if (!authState) {
       throw new Error("A state was not stored.");
     }

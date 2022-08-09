@@ -16,7 +16,7 @@ import Vue from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
-import { storeAdminAppToken } from "@/utils/admin-token.js";
+import { storeAdminAppToken } from "@/utils/admin-token";
 
 export default Vue.extend({
   name: "AdminAppAuth",
