@@ -13,16 +13,16 @@ describe("Main Store", () => {
   it("dispatch loadExample", () => {
     const store = useStore();
     expect(store.example).toBe("abc");
-	store.loadExample();
+    store.loadExample();
     expect(store.example).toBe("123");
   });
 
   it("dispatch apolloMutationCalled", () => {
     const store = useStore();
     expect(store.nApolloMutations).toBe(0);
-	store.apolloMutationCalled();
+    store.apolloMutationCalled();
     expect(store.nApolloMutations).toBe(1);
-	store.apolloMutationCalled();
+    store.apolloMutationCalled();
     expect(store.nApolloMutations).toBe(2);
   });
 });
