@@ -28,21 +28,25 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import { required } from "vuelidate/lib/validators";
 
 import ADD_GITHUB_ORG from "@/graphql/mutations/AddGitHubOrg.gql";
 
-export default {
+export default Vue.extend({
   name: "GitHubOrgAddForm",
   data: () => ({
     login: "",
-    error: null,
+    error: null as any,
   }),
   validations: { login: { required } },
   computed: {
     loginErrors() {
-      const errors = [];
+      const errors: string[] = [];
       const field = this.$v.login;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
@@ -71,14 +75,15 @@ export default {
           mutation: ADD_GITHUB_ORG,
           variables: { login: this.login },
         });
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Added");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Added");
         this.$emit("finished");
         this.delayedReset();
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

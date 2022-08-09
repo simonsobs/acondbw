@@ -69,16 +69,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // The implementation based on the example
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
-import { redirectToGitHubAuthURL } from "@/utils/auth.js";
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+import { useAuthStore } from "@/stores/auth";
+
+import { redirectToGitHubAuthURL } from "@/utils/auth";
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
 import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
 
-export default {
+export default Vue.extend({
   name: "GitHubTokenTable",
   data: () => ({
     allGitHubTokens: null,
@@ -94,7 +99,7 @@ export default {
     dialogDelete: false,
     deleteTokenId: null,
     alert: false,
-    error: null,
+    error: null as any,
   }),
   apollo: {
     allGitHubTokens: {
@@ -108,7 +113,7 @@ export default {
     async requestAuth() {
       this.loading = true;
       try {
-        this.$store.dispatch("clearAuthError");
+        this.clearAuthError();
         const callbackRoute = { name: "AdminAppAuth" };
         const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         await redirectToGitHubAuthURL(
@@ -134,8 +139,8 @@ export default {
           variables: { tokenId: this.deleteTokenId },
         });
         this.$apollo.queries.allGitHubTokens.refetch();
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Deleted");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Deleted");
       } catch (error) {
         this.error = error;
       }
@@ -147,6 +152,8 @@ export default {
         this.deleteTokenId = null;
       });
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
+    ...mapActions(useAuthStore, ["clearAuthError"]),
   },
   watch: {
     error: function (val, oldVal) {
@@ -158,5 +165,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

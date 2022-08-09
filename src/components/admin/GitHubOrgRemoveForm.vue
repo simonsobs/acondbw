@@ -15,16 +15,20 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import DELETE_GITHUB_ORG from "@/graphql/mutations/DeleteGitHubOrg.gql";
 
-export default {
+export default Vue.extend({
   name: "GitHubOrgRemoveForm",
   props: {
     login: String,
   },
   data: () => ({
-    error: null,
+    error: null as any,
   }),
   methods: {
     cancel() {
@@ -46,14 +50,15 @@ export default {
           mutation: DELETE_GITHUB_ORG,
           variables: { login: this.login },
         });
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Removed");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Removed");
         this.$emit("finished");
         this.delayedReset();
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

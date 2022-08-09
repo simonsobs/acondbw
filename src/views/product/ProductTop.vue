@@ -81,7 +81,11 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -89,7 +93,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductTop",
   components: {
     DevToolLoadingStateOverridingMenu,
@@ -132,14 +136,15 @@ export default {
       return this.state == State.NONE;
     },
     disableAdd() {
-      return !this.$store.state.webConfig.productCreationDialog;
+      return !this.webConfig.productCreationDialog;
     },
     disableEdit() {
-      return !this.$store.state.webConfig.productUpdateDialog;
+      return !this.webConfig.productUpdateDialog;
     },
     disableDelete() {
-      return !this.$store.state.webConfig.productDeletionDialog;
+      return !this.webConfig.productDeletionDialog;
     },
+    ...mapState(useStore, ["webConfig", "nApolloMutations"]),
   },
   watch: {
     devtoolState: function () {
@@ -150,7 +155,7 @@ export default {
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function () {
+    nApolloMutations: function () {
       this.refresh();
     },
   },
@@ -213,7 +218,7 @@ export default {
     this.transitionMode = "out-in";
     next();
   },
-};
+});
 </script>
 
 <style scoped>

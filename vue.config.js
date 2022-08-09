@@ -1,4 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const fs = require("fs");
 var webpack = require("webpack");
 const packageJson = fs.readFileSync("./package.json");
@@ -6,14 +7,8 @@ const version = JSON.parse(packageJson).version || 0;
 module.exports = defineConfig({
   lintOnSave: "warning",
   configureWebpack: {
-    resolve: {
-      fallback: {
-        querystring: require.resolve("querystring-es3"),
-        crypto: require.resolve("crypto-browserify"),
-        stream: require.resolve("stream-browserify"),
-      },
-    },
     plugins: [
+      new NodePolyfillPlugin(),
       new webpack.DefinePlugin({
         "process.env": {
           PACKAGE_VERSION: '"' + version + '"',

@@ -23,13 +23,17 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import _ from "lodash";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 import FormRelations from "./FormRelations.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductUpdateRelationsForm",
   components: {
     FormRelations,
@@ -79,13 +83,14 @@ export default {
           },
         });
 
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Updated");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Updated");
         this.$emit("finished");
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

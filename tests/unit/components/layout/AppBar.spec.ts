@@ -1,9 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
-import AppBar from "@/components/layout/AppBar";
+import AppBar from "@/components/layout/AppBar.vue";
 import router from "@/router";
 
 jest.mock("vue-apollo");
@@ -26,6 +28,7 @@ describe("App.vue", () => {
       localVue,
       vuetify,
       router,
+      pinia: createTestingPinia(),
       mocks: {
         $store: {
           state: {
@@ -41,6 +44,7 @@ describe("App.vue", () => {
   beforeEach(() => {
     process.env.VUE_APP_GRAPHQL_HTTP = "http://graphql.api:5000/graphql";
     localVue = createLocalVue();
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
   });
 

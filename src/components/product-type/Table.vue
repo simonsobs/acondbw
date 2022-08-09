@@ -44,13 +44,17 @@
   </v-card-text>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductTypeTable",
   components: {
     DevToolLoadingStateOverridingMenu,
@@ -110,6 +114,7 @@ export default {
       if (this.empty) return [];
       return this.edges;
     },
+    ...mapState(useStore, ["nApolloMutations"]),
   },
   watch: {
     devtoolState: function () {
@@ -119,7 +124,7 @@ export default {
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function () {
+    nApolloMutations: function () {
       this.refresh();
     },
     error: function (val, oldVal) {
@@ -143,5 +148,5 @@ export default {
       // console.log(item);
     },
   },
-};
+});
 </script>

@@ -39,7 +39,11 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import CREATE_PRODUCT_TYPE from "@/graphql/mutations/CreateProductType.gql";
 import ALL_FIELDS from "@/graphql/queries/AllFields.gql";
 
@@ -48,7 +52,7 @@ import FormProductType from "./FormProductType.vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductTypeAddForm",
   components: {
     FormProductType,
@@ -127,13 +131,14 @@ export default {
           },
         });
         this.$apollo.provider.defaultClient.cache.data.data = {};
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Added");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Added");
         this.$emit("finished", this.input.name);
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

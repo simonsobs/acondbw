@@ -32,12 +32,16 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import CONVERT_PRODUCT_TYPE from "@/graphql/mutations/ConvertProductType.gql";
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import PRODUCT_TYPE from "@/graphql/queries/ProductType.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductConvertTypeForm",
   props: {
     node: Object,
@@ -95,13 +99,14 @@ export default {
           },
         });
         this.$apollo.provider.defaultClient.cache.data.data = {};
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Converted");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Converted");
         this.$emit("finished", this.newTypeName);
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

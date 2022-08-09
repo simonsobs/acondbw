@@ -77,8 +77,12 @@
   </v-container>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+import { mapState, mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
+export default Vue.extend({
   name: "Config",
   data() {
     return {
@@ -96,7 +100,7 @@ export default {
   },
   computed: {
     itemsInStore() {
-      return this.reshapeWebConfigToItems(this.$store.state.webConfig);
+      return this.reshapeWebConfigToItems(this.webConfig);
     },
     changed() {
       return !(
@@ -106,15 +110,16 @@ export default {
     slotName() {
       return "item.key";
     },
+    ...mapState(useStore, ["webConfig", "webConfigLoaded"]),
   },
   watch: {
-    "$store.state.webConfigLoaded": {
+    webConfigLoaded: {
       immediate: true,
       handler(newValue) {
         if (!newValue) return;
         if (!this.first) return;
         this.copyOriginal();
-        // this.webConfigOriginal = this.nestedCopy(this.$store.state.webConfig);
+        // this.webConfigOriginal = this.nestedCopy(this.webConfig);
         // this.itemsOriginal = this.reshapeWebConfigToItems(
         //   this.webConfigOriginal
         // );
@@ -125,7 +130,7 @@ export default {
   },
   methods: {
     copyOriginal() {
-      this.webConfigOriginal = this.nestedCopy(this.$store.state.webConfig);
+      this.webConfigOriginal = this.nestedCopy(this.webConfig);
       this.itemsOriginal = this.reshapeWebConfigToItems(this.webConfigOriginal);
       this.items = this.nestedCopy(this.itemsOriginal);
     },
@@ -151,11 +156,11 @@ export default {
     },
     reset() {
       this.items = this.nestedCopy(this.itemsOriginal);
-      this.$store.dispatch("setWebConfig", this.webConfigOriginal);
+      this.setWebConfig(this.webConfigOriginal);
       this.error = null;
     },
     saveToServer() {
-      this.$store.dispatch("uploadWebConfig", this.$apollo);
+      this.uploadWebConfig(this.$apollo);
       this.copyOriginal();
     },
     save(item) {
@@ -179,11 +184,12 @@ export default {
 
       if (this.error) return;
 
-      this.$store.dispatch("setWebConfig", webConfig);
+      this.setWebConfig(webConfig);
     },
     cancel() {},
     open() {},
     close() {},
+    ...mapActions(useStore, ["setWebConfig", "uploadWebConfig"]),
   },
-};
+});
 </script>

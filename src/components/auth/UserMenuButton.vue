@@ -59,10 +59,14 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
 import SignOutConfirmation from "./SignOutConfirmation.vue";
 
-export default {
+export default Vue.extend({
   name: "UserMenuButton",
   components: { SignOutConfirmation },
   data: () => ({
@@ -70,18 +74,13 @@ export default {
     dialog: false,
   }),
   computed: {
-    user() {
-      return this.$store.state.auth.gitHubViewer;
-    },
-    isAdmin() {
-      return this.$store.state.auth.isAdmin;
-    },
     pathToSignIn() {
       return this.$router.resolve({ name: "SignIn" }).route.path;
       // i.e., "/signin"
     },
+    ...mapState(useAuthStore, { user: "gitHubViewer", isAdmin: "isAdmin" }),
   },
-};
+});
 </script>
 
 <style scoped>

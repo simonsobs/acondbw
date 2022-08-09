@@ -92,7 +92,11 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import _ from "lodash";
 import { camelCase } from "camel-case";
 
@@ -106,7 +110,7 @@ import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductAddForm",
   components: {
     ProductAddFormStepStart,
@@ -216,8 +220,8 @@ export default {
         this.stepper = 1;
         return;
       }
-      this.$store.dispatch("apolloMutationCalled");
-      this.$store.dispatch("snackbarMessage", "Added");
+      this.apolloMutationCalled();
+      this.setSnackbarMessage("Added");
       this.close();
     },
     composeCreateProductInput(productTypeId, formStepStart, formStepRelation) {
@@ -285,6 +289,7 @@ export default {
         },
       });
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

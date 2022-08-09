@@ -19,11 +19,15 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import SignInCard from "@/components/auth/SignInCard.vue";
 import Dashboard from "@/components/product/Dashboard.vue";
 
-export default {
+export default Vue.extend({
   name: "Home",
   components: {
     SignInCard,
@@ -31,8 +35,9 @@ export default {
   },
   computed: {
     title() {
-      return this.$store.state.webConfig.toolbarTitle || "";
+      return this.webConfig.toolbarTitle || "";
     },
+    ...mapState(useStore, ["webConfig"]),
   },
-};
+});
 </script>

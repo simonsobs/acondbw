@@ -1,16 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import ProductItem from "@/views/product/ProductItem.vue";
 
-import store from "@/store";
-jest.mock("@/store")
-
 import router from "@/router";
 
-jest.mock('vue-apollo');
+import { useAuthStore } from "@/stores/auth";
+
+jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
 // property $apollo, this is usually caused by a plugin that has added
 // the property as a read-only value"
@@ -21,10 +22,12 @@ Vue.use(VueRouter);
 
 describe("ProductItem.vue", () => {
   let localVue;
+  let pinia;
 
   function createWrapper(loading = false) {
     return shallowMount(ProductItem, {
       localVue,
+      pinia,
       router,
       mocks: {
         $apollo: {
@@ -48,7 +51,10 @@ describe("ProductItem.vue", () => {
 
   beforeEach(function () {
     localVue = createLocalVue();
-    store.state = { auth : { isSignedIn : true } };
+    localVue.use(PiniaVuePlugin);
+    pinia = createTestingPinia();
+    const authStore = useAuthStore(pinia);
+    authStore.isSignedIn = true;
   });
 
   it("match snapshot", async () => {
@@ -99,10 +105,14 @@ describe("ProductItem.vue", () => {
     });
     const wrapper = createWrapper();
     await Vue.nextTick();
+
+    // @ts-ignore
     expect(wrapper.vm.name).toBe("map001");
 
     await router.push("/about");
     await Vue.nextTick();
+
+    // @ts-ignore
     expect(wrapper.vm.name).toBe("map001"); // still "map001"
 
     await router.push({
@@ -110,6 +120,8 @@ describe("ProductItem.vue", () => {
       params: { productTypeName: "map", name: "map002" },
     });
     await Vue.nextTick();
+
+    // @ts-ignore
     expect(wrapper.vm.name).toBe("map001"); // still "map001". The name is set only once.
     // New instance should be created for a different name.
   });

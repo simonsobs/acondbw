@@ -15,6 +15,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { MetaInfo } from "vue-meta";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
 export default Vue.extend({
@@ -35,11 +37,12 @@ export default Vue.extend({
   }),
   computed: {
     title() {
-      return this.$store.state.webConfig.headTitle || "";
+      return this.webConfig.headTitle || "";
     },
+    ...mapState(useStore, ["webConfig"]),
   },
   watch: {
-    "$store.state.webConfig": {
+    webConfig: {
       immediate: true,
       handler(webConfig) {
         try {
@@ -135,7 +138,7 @@ export default Vue.extend({
 <!-- The leave active for ".fade-app-across" is set to zero because
 sometimes the fade away starts from a wrong image.
 
-For .fade-app-within, the oparicty is set to one and the duration is
-set to zero for both enter and leave, which is effectivly diabling the
+For .fade-app-within, the opacity is set to one and the duration is
+set to zero for both enter and leave, which is effectively disabling the
 transition effects, letting the nested routes handle the transition
 effects. -->

@@ -57,11 +57,15 @@
   </v-app-bar>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import SearchWindow from "@/components/utils/SearchWindow.vue";
 import UserMenuButton from "@/components/auth/UserMenuButton.vue";
 
-export default {
+export default Vue.extend({
   name: "AppBar",
   components: {
     SearchWindow,
@@ -73,11 +77,12 @@ export default {
   }),
   computed: {
     title() {
-      return this.$store.state.webConfig.toolbarTitle || "";
+      return this.webConfig.toolbarTitle || "";
     },
+    ...mapState(useStore, ["webConfig"]),
   },
   created() {
     this.$vuetify.theme.dark = false;
   },
-};
+});
 </script>

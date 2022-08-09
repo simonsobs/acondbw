@@ -30,15 +30,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // The implementation based on the example
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import ALL_GIT_HUB_USERS from "@/graphql/queries/AllGitHubUsers.gql";
 import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/mutations/UpdateGitHubOrgMemberLists.gql";
 
-export default {
+export default Vue.extend({
   name: "GitHubUserTable",
   data: () => ({
     allGitHubUsers: null,
@@ -48,7 +52,7 @@ export default {
       { text: "Name", value: "node.name" },
     ],
     alert: false,
-    error: null,
+    error: null as any,
   }),
   apollo: {
     allGitHubUsers: {
@@ -63,12 +67,13 @@ export default {
           mutation: UPDATE_GITHUB_ORG_MEMBER_LIST,
         });
         this.$apollo.queries.allGitHubUsers.refetch();
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Updated");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Updated");
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
   watch: {
     error: function (val, oldVal) {
@@ -80,5 +85,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

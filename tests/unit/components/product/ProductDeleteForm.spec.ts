@@ -1,13 +1,15 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Vuex from "vuex";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing"
 
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 import router from "@/router";
+import { useStore } from "@/stores/main";
 
-jest.mock('vue-apollo');
+jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
 // property $apollo, this is usually caused by a plugin that has added
 // the property as a read-only value"
@@ -19,16 +21,14 @@ Vue.use(VueRouter);
 describe("ProductDeleteForm.vue", () => {
   let localVue;
   let vuetify;
-  let actions;
-  let store;
 
-  function createWrapper({ loading = false, propsData } = {}) {
+  function createWrapper({ loading = false, propsData = {} } = {}) {
     const mutate = jest.fn();
     let wrapper = mount(ProductDeleteForm, {
       localVue,
       router,
       vuetify,
-      store,
+      pinia: createTestingPinia(),
       mocks: {
         $apollo: {
           queries: {
@@ -61,20 +61,8 @@ describe("ProductDeleteForm.vue", () => {
 
   beforeEach(function () {
     localVue = createLocalVue();
-    localVue.use(Vuex);
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
-
-    actions = {
-      apolloMutationCalled: jest.fn(),
-      snackbarMessage: jest.fn(),
-    };
-    store = new Vuex.Store({
-      actions,
-      state: {
-        snackbar: false,
-        snackbarMessage: null,
-      },
-    });
   });
 
   it("loading", async () => {
@@ -105,17 +93,18 @@ describe("ProductDeleteForm.vue", () => {
   it("delete", async () => {
     // to suppress the warning "[Vuetify] Unable to locate target [data-app]""
     const app = document.createElement("div");
-    app.setAttribute("data-app", true);
+    app.setAttribute("data-app", "true");
     document.body.append(app);
 
-    const wrapper = createWrapper();
+    const wrapper: any = createWrapper();
     wrapper.setData({
       node: node,
     });
+    const store = useStore();
     await wrapper.vm.remove();
     expect(wrapper.vm.$apollo.mutate).toBeCalled();
-    expect(actions.apolloMutationCalled).toHaveBeenCalled();
-    expect(actions.snackbarMessage).toHaveBeenCalled();
+    expect(store.apolloMutationCalled).toHaveBeenCalled();
+    expect(store.setSnackbarMessage).toHaveBeenCalled();
     expect(wrapper.emitted("finished")).toBeTruthy();
   });
 });

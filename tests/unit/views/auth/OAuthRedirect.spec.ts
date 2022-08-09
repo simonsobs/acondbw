@@ -1,17 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Vuex from "vuex";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import OAuthRedirect from "@/views/auth/OAuthRedirect.vue";
 import router from "@/router";
 
-import store from "@/store";
-jest.mock("@/store");
+import { useAuthStore } from "@/stores/auth";
 
-import { validateState } from "@/utils/auth.js";
-jest.mock("@/utils/auth.js");
+import { validateState } from "@/utils/auth";
+jest.mock("@/utils/auth");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -19,8 +19,8 @@ Vue.use(VueRouter);
 describe("OAuthRedirect.vue", () => {
   let localVue;
   let vuetify;
-  let actions;
-  let store_;
+  let pinia;
+  let authStore;
 
   const callbackRoute = { name: "Auth" };
   const state = btoa(
@@ -35,25 +35,23 @@ describe("OAuthRedirect.vue", () => {
     let wrapper = mount(OAuthRedirect, {
       localVue,
       router,
+      pinia,
       vuetify,
-      store: store_,
     });
     return wrapper;
   }
 
   beforeEach(function () {
-    validateState.mockClear();
+    (validateState as jest.Mock).mockClear();
     localVue = createLocalVue();
-    localVue.use(Vuex);
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
-    actions = {};
-    store_ = new Vuex.Store({
-      actions,
-    });
+    pinia = createTestingPinia();
+    authStore = useAuthStore(pinia);
 
-    store.state = { auth: { token: null } }; // mock store in "@/src/router/index.js"
+    authStore.token = null;
 
-    validateState.mockImplementation(() => {
+    (validateState as jest.Mock).mockImplementation(() => {
       return true;
     });
   });
@@ -69,7 +67,11 @@ describe("OAuthRedirect.vue", () => {
     await router.push({ name: "OAuthRedirect", query: query });
     const wrapper = createWrapper();
     await Vue.nextTick();
+
+    // @ts-ignore
     expect(router.history.current.name).toBe("Auth");
+
+    // @ts-ignore
     expect(router.history.current.query).toEqual(query);
   });
 
@@ -77,16 +79,20 @@ describe("OAuthRedirect.vue", () => {
     await router.push({ name: "OAuthRedirect", query: {} });
     const wrapper = createWrapper();
     await Vue.nextTick();
+
+    // @ts-ignore
     expect(router.history.current.path).toBe("/");
   });
 
   it("error invalid state", async () => {
     await router.push({ name: "OAuthRedirect", query: query });
-    validateState.mockImplementation(() => {
+    (validateState as jest.Mock).mockImplementation(() => {
       return false;
     });
     const wrapper = createWrapper();
     await Vue.nextTick();
+
+    // @ts-ignore
     expect(router.history.current.path).toBe("/");
   });
 });

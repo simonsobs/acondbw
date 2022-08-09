@@ -1,17 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Vuex from "vuex";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import SignInCard from "@/components/auth/SignInCard.vue";
 import router from "@/router";
 
-import store from "@/store";
-jest.mock("@/store");
+import { redirectToGitHubAuthURL } from "@/utils/auth";
+jest.mock("@/utils/auth");
 
-import { redirectToGitHubAuthURL } from "@/utils/auth.js";
-jest.mock("@/utils/auth.js");
+import { useAuthStore } from "@/stores/auth";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -19,68 +19,56 @@ Vue.use(VueRouter);
 describe("SignInCard.vue", () => {
   let localVue;
   let vuetify;
-  let actions;
-  let store_;
+  let wrapper;
+  let storeAuth;
 
-  function createWrapper() {
-    let wrapper = mount(SignInCard, {
+  beforeEach(function () {
+    (redirectToGitHubAuthURL as jest.Mock).mockClear();
+    localVue = createLocalVue();
+    localVue.use(PiniaVuePlugin);
+    vuetify = new Vuetify();
+    wrapper = mount(SignInCard, {
       localVue,
       router,
       vuetify,
-      store: store_,
+      pinia: createTestingPinia(),
     });
-    return wrapper;
-  }
-
-  beforeEach(function () {
-    redirectToGitHubAuthURL.mockClear();
-    localVue = createLocalVue();
-    localVue.use(Vuex);
-    vuetify = new Vuetify();
-    actions = {
-      clearAuthError: jest.fn(),
-    };
-    store_ = new Vuex.Store({
-      actions,
-    });
-
-    store.state = { auth : { token : "XXXXXXXXXX" } }; // mock store in "@/src/router/index.js"
+    storeAuth = useAuthStore();
+    storeAuth.token = "XXXXXXXXXX"; // mock store in "@/src/router/index.ts"
   });
 
   it("match snapshot", async () => {
-    const wrapper = createWrapper();
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("match snapshot loading", async () => {
-    const wrapper = createWrapper();
     wrapper.setData({ loading: true });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("signIn success", async () => {
-    const wrapper = createWrapper();
     await Vue.nextTick();
     wrapper.vm.signIn();
-    expect(actions.clearAuthError.mock.calls.length).toBe(1);
-    expect(redirectToGitHubAuthURL.mock.calls.length).toBe(1);
+    expect(storeAuth.clearAuthError.mock.calls.length).toBe(1);
+    expect((redirectToGitHubAuthURL as jest.Mock).mock.calls.length).toBe(1);
     expect(wrapper.vm.loading).toBeTruthy();
   });
 
   it("signIn error", async () => {
-    const wrapper = createWrapper();
     await Vue.nextTick();
-    redirectToGitHubAuthURL.mockImplementation(() => {
+    (redirectToGitHubAuthURL as jest.Mock).mockImplementation(() => {
       throw new Error();
     });
     wrapper.vm.signIn();
     await Vue.nextTick();
     await Vue.nextTick();
-    expect(actions.clearAuthError.mock.calls.length).toBe(1);
-    expect(redirectToGitHubAuthURL.mock.calls.length).toBe(1);
+    expect(storeAuth.clearAuthError.mock.calls.length).toBe(1);
+    expect((redirectToGitHubAuthURL as jest.Mock).mock.calls.length).toBe(1);
     expect(wrapper.vm.loading).toBeFalsy();
+
+    // @ts-ignore
     expect(router.history.current.name).toBe("SignInError");
   });
 });

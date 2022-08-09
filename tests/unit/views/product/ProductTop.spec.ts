@@ -1,14 +1,16 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import ProductTop from "@/views/product/ProductTop.vue";
 
-import store from "@/store";
-jest.mock("@/store");
-
 import router from "@/router";
+
+import { useStore } from "@/stores/main";
+import { useAuthStore } from "@/stores/auth";
 
 jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
@@ -22,27 +24,24 @@ Vue.use(VueRouter);
 describe("ProductTop.vue", () => {
   let localVue;
   let vuetify;
+  let wrapper;
 
-  function createWrapper(loading = false) {
-    return shallowMount(ProductTop, {
+  beforeEach(function () {
+    localVue = createLocalVue();
+    localVue.use(PiniaVuePlugin);
+    vuetify = new Vuetify();
+    const pinia = createTestingPinia();
+    wrapper = shallowMount(ProductTop, {
       localVue,
       vuetify,
+      pinia,
       router,
       mocks: {
-        $store: {
-          state: {
-            webConfig: {
-              productCreationDialog: true,
-              productUpdateDialog: true,
-              productDeletionDialog: true,
-            },
-          },
-        },
         $apollo: {
-          loading: loading,
+          loading: false,
           queries: {
             node: {
-              loading: loading,
+              loading: false,
             },
           },
         },
@@ -50,16 +49,17 @@ describe("ProductTop.vue", () => {
       propsData: {},
       stubs: ["router-link", "router-view"],
     });
-  }
-
-  beforeEach(function () {
-    localVue = createLocalVue();
-    vuetify = new Vuetify();
-    store.state = { auth: { isSignedIn: true } };
+    const store = useStore(pinia);
+    const authStore = useAuthStore(pinia);
+    store.webConfig = {
+      productCreationDialog: true,
+      productUpdateDialog: true,
+      productDeletionDialog: true,
+    };
+    authStore.isSignedIn = true;
   });
 
   it("match snapshot list", async () => {
-    const wrapper = createWrapper();
     await router.push({
       name: "ProductList",
       params: { productTypeName: "map" },
@@ -82,7 +82,6 @@ describe("ProductTop.vue", () => {
   });
 
   it("match snapshot item", async () => {
-    const wrapper = createWrapper();
     await router.push({
       name: "ProductItem",
       params: { productTypeName: "map", name: "map001" },
@@ -114,7 +113,6 @@ describe("ProductTop.vue", () => {
   });
 
   it("transition update", async () => {
-    const wrapper = createWrapper();
     await router.push({
       name: "ProductList",
       params: { productTypeName: "map" },
@@ -134,7 +132,6 @@ describe("ProductTop.vue", () => {
   });
 
   it("transition leave", async () => {
-    const wrapper = createWrapper();
     await router.push({ name: "ProductList" });
     await router.push("/about");
 

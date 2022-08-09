@@ -30,12 +30,16 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import { required } from "vuelidate/lib/validators";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductChangeContactForm",
   props: {
     node: Object,
@@ -44,13 +48,13 @@ export default {
   data() {
     return {
       newContact: "",
-      error: null,
+      error: null as any,
     };
   },
   validations: { newContact: { required } },
   computed: {
     newContactErrors() {
-      const errors = [];
+      const errors: string[] = [];
       const field = this.$v.newContact;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
@@ -76,13 +80,14 @@ export default {
           },
         });
 
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Changed");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Changed");
         this.$emit("finished");
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

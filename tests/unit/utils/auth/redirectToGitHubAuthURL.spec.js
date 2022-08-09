@@ -1,7 +1,7 @@
 const cryptoRandomString = require("crypto-random-string");
 jest.mock("crypto-random-string");
 
-import { AUTH_STATE, redirectToGitHubAuthURL } from "@/utils/auth.js";
+import { AUTH_STATE, redirectToGitHubAuthURL } from "@/utils/auth";
 
 // using jest-localstorage-mock (https://www.npmjs.com/package/jest-localstorage-mock)
 // to mock localStorage

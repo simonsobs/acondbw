@@ -60,7 +60,8 @@ export function validateState(state) {
   if (!state) {
     return false;
   }
-  const authState = JSON.parse(localStorage.getItem(AUTH_STATE));
+  const authStateJson = localStorage.getItem(AUTH_STATE);
+  const authState = authStateJson && JSON.parse(authStateJson);
   if (!authState) {
     return false;
   }
@@ -72,8 +73,10 @@ export function validateState(state) {
 
 export function restoreFromLocalStorage() {
   try {
-    const token = JSON.parse(localStorage.getItem(AUTH_TOKEN));
-    const signInInfo = JSON.parse(localStorage.getItem("sign-in-info"));
+    const tokenJson = localStorage.getItem(AUTH_TOKEN);
+    const signInInfoJson = localStorage.getItem("sign-in-info");
+    const token = tokenJson && JSON.parse(tokenJson);
+    const signInInfo = signInInfoJson && JSON.parse(signInInfoJson);
 
     if (token && signInInfo) {
       return { token, signInInfo };

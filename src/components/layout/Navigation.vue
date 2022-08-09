@@ -67,7 +67,7 @@
     </v-card>
     <v-bottom-navigation absolute class="px-3 justify-start align-center">
       <span class="grey--text text-caption">
-        v{{ $store.getters.appVersion }}
+        v{{ appVersion }}
       </span>
       <!-- <v-spacer></v-spacer>
       <v-icon>mdi-plus-thick</v-icon> -->
@@ -78,7 +78,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
 import State from "@/utils/LoadingState.js";
@@ -86,7 +90,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
-export default {
+export default Vue.extend({
   name: "Navigation",
   components: {
     DevToolLoadingStateOverridingMenu,
@@ -124,6 +128,7 @@ export default {
     notFound() {
       return this.state == State.NONE;
     },
+    ...mapState(useStore, ["nApolloMutations", "appVersion"]),
   },
   watch: {
     devtoolState: function () {
@@ -133,7 +138,7 @@ export default {
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function () {
+    nApolloMutations: function () {
       this.$apollo.queries.edges.refetch();
     },
   },
@@ -159,5 +164,5 @@ export default {
       this.addDialog = false;
     },
   },
-};
+});
 </script>

@@ -6,7 +6,7 @@
           <v-card-title class="text-h4">Versions</v-card-title>
           <v-card-text v-if="versions">
             <span class="font-weight-medium"> App version: </span>
-            {{ $store.getters.appVersion }} <br />
+            {{ appVersion }} <br />
             <span class="font-weight-medium"> Server version: </span>
             {{ versions.version }} <br />
             <span class="font-weight-medium"> Alembic migration version: </span>
@@ -18,14 +18,20 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
 import VERSIONS from "@/graphql/queries/Versions.gql";
 
-export default {
+export default Vue.extend({
   data() {
     return {
       versions: null,
     };
+  },
+  computed: {
+    ...mapState(useStore, ["appVersion"]),
   },
   apollo: {
     versions: {
@@ -33,5 +39,5 @@ export default {
       update: (data) => data,
     },
   },
-};
+});
 </script>

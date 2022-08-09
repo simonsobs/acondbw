@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { validateState } from "@/utils/auth.js";
+import { validateState } from "@/utils/auth";
 
 export default {
   name: "OAuthRedirect",

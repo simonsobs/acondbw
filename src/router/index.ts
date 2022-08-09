@@ -2,7 +2,8 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import VueMeta from "vue-meta";
 
-import store from "@/store";
+import { default as defaultPinia } from "@/stores";
+import { useAuthStore } from "@/stores/auth";
 
 import Frame from "@/components/layout/Frame.vue";
 import NullFrame from "@/components/layout/NullFrame.vue";
@@ -56,6 +57,17 @@ const AdminAppTokenError = () =>
 Vue.use(VueRouter);
 Vue.use(VueMeta);
 
+let pinia = defaultPinia;
+
+function setPinia(val) {
+  // because not sure how to monkey patch pinia for tests
+  pinia = val;
+}
+
+function setDefaultPinia() {
+  setPinia(defaultPinia);
+}
+
 const routes: Array<RouteConfig> = [
   {
     path: "/",
@@ -65,8 +77,8 @@ const routes: Array<RouteConfig> = [
       frame: NullFrame,
     },
     beforeEnter: (to, from, next) => {
-      const state: any = store.state;
-      const signedIn = state.auth.isSignedIn as boolean;
+      const auth = useAuthStore(pinia);
+      const signedIn = auth.isSignedIn;
       if (signedIn) {
         next({ name: "Dashboard" });
       } else {
@@ -83,8 +95,8 @@ const routes: Array<RouteConfig> = [
     },
     // meta: { requiresAuth: true },
     beforeEnter: (to, from, next) => {
-      const state: any = store.state;
-      const signedIn = state.auth.isSignedIn as boolean;
+      const auth = useAuthStore(pinia);
+      const signedIn = auth.isSignedIn;
       if (signedIn) {
         next();
       } else {
@@ -214,15 +226,15 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const adminRequired = to.matched.some((record) => record.meta.requiresAdmin);
-  const state: any = store.state;
-  const isAdmin = state.auth.isAdmin as boolean;
+  const auth = useAuthStore(pinia);
+  const isAdmin = auth.isAdmin;
   if (adminRequired && !isAdmin) {
     next({ name: "AccessDenied" });
     return;
   }
 
   const authRequired = to.matched.some((record) => record.meta.requiresAuth);
-  const isSignedIn = state.auth.isSignedIn as boolean;
+  const isSignedIn = auth.isSignedIn as boolean;
   if (authRequired && !isSignedIn) {
     next({ name: "AccessDenied" });
     return;
@@ -234,11 +246,17 @@ function checkAuthForCurrentRoute() {
   const authRequired = router.currentRoute.matched.some(
     (record) => record.meta.requiresAuth
   );
-  const state: any = store.state;
-  const signedIn = state.auth.isSignedIn as boolean;
+  const auth = useAuthStore(pinia);
+  const signedIn = auth.isSignedIn as boolean;
   if (authRequired && !signedIn) {
     router.push("/");
   }
 }
 
-export { router as default, router, checkAuthForCurrentRoute };
+export {
+  router as default,
+  router,
+  checkAuthForCurrentRoute,
+  setPinia,
+  setDefaultPinia,
+};

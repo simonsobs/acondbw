@@ -27,7 +27,11 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import gql from "graphql-tag";
 
 import { required } from "vuelidate/lib/validators";
@@ -61,7 +65,7 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
   return true;
 }
 
-export default {
+export default Vue.extend({
   name: "ProductChangeNameForm",
   props: {
     node: Object,
@@ -69,7 +73,7 @@ export default {
   data() {
     return {
       newName: "",
-      error: null,
+      error: null as any,
     };
   },
   validations: {
@@ -92,7 +96,7 @@ export default {
   },
   computed: {
     newNameErrors() {
-      const errors = [];
+      const errors: string[] = [];
       const field = this.$v.newName;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
@@ -115,13 +119,14 @@ export default {
           },
         });
 
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Changed");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Changed");
         this.$emit("finished", this.newName);
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

@@ -191,7 +191,11 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
 import State from "@/utils/LoadingState.js";
@@ -200,7 +204,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
 import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductList",
   components: {
     ProductItemCard,
@@ -332,13 +336,14 @@ export default {
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function () {
+    nApolloMutations: function () {
       this.refresh();
     },
     edges: function () {
       this.collapseCards();
       this.loadAllFewRemainingItems();
     },
+    ...mapState(useStore, ["nApolloMutations"]),
   },
   methods: {
     collapseCards() {
@@ -432,5 +437,5 @@ export default {
       this.loadingMore = false;
     },
   },
-};
+});
 </script>

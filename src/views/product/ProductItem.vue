@@ -65,7 +65,11 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useStore } from "@/stores/main";
+
 import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/queries/ProductByTypeIdAndName.gql";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
@@ -73,7 +77,7 @@ import ProductItemCard from "@/components/product/ProductItemCard.vue";
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductItem",
   components: {
     ProductItemCard,
@@ -107,7 +111,7 @@ export default {
       this.error =
         this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
     },
-    "$store.state.nApolloMutations": function () {
+    nApolloMutations: function () {
       this.refresh();
     },
   },
@@ -135,6 +139,7 @@ export default {
       if (!this.node.type_) return null;
       return this.node.type_.name;
     },
+    ...mapState(useStore, ["nApolloMutations"]),
   },
   apollo: {
     node: {
@@ -192,5 +197,5 @@ export default {
       this.refreshing = false;
     },
   },
-};
+});
 </script>

@@ -42,14 +42,18 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import PRODUCT from "@/graphql/queries/Product.gql";
 import DELETE_PRODUCT from "@/graphql/mutations/DeleteProduct.gql";
 
 import State from "@/utils/LoadingState.js";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default Vue.extend({
   name: "ProductDeleteForm",
   components: {
     DevToolLoadingStateOverridingMenu,
@@ -153,14 +157,15 @@ export default {
             } catch (error) {}
           },
         });
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Deleted");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Deleted");
         this.$emit("finished");
         this.delayedReset();
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>

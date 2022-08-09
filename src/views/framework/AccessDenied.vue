@@ -14,16 +14,18 @@
   </v-container>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
+export default Vue.extend({
   name: "AccessDenied",
   data() {
     return {};
   },
   computed: {
-    isSignedIn() {
-      return this.$store.state.auth.isSignedIn;
-    },
+    ...mapState(useAuthStore, ["isSignedIn"]),
   },
-};
+});
 </script>

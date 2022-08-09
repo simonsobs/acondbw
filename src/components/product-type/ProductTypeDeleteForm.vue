@@ -17,10 +17,14 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { mapActions } from "pinia";
+import { useStore } from "@/stores/main";
+
 import DELETE_PRODUCT_TYPE from "@/graphql/mutations/DeleteProductType.gql";
 
-export default {
+export default Vue.extend({
   name: "ProductTypeDeleteForm",
   props: {
     node: Object,
@@ -38,13 +42,14 @@ export default {
           },
         });
         this.$apollo.provider.defaultClient.cache.data.data = {};
-        this.$store.dispatch("apolloMutationCalled");
-        this.$store.dispatch("snackbarMessage", "Deleted");
+        this.apolloMutationCalled();
+        this.setSnackbarMessage("Deleted");
         this.$emit("finished");
       } catch (error) {
         this.error = error;
       }
     },
+    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
-};
+});
 </script>
