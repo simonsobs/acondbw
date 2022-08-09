@@ -2,7 +2,6 @@ import Vue from "vue";
 import { PiniaVuePlugin, mapState, mapActions } from "pinia";
 import App from "./App.vue";
 import { router, checkAuthForCurrentRoute } from "./router";
-import store from "./store";
 import vuetify from "./plugins/vuetify";
 import { apolloProvider } from "./vue-apollo";
 import Vuelidate from "vuelidate";
@@ -21,7 +20,6 @@ new Vue({
   router,
   vuetify,
   pinia,
-  store,
   apolloProvider,
   created() {
     this.loadWebConfig(this.$apollo);
