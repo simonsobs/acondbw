@@ -7,30 +7,49 @@ import {
   isSignedIn,
 } from "@/utils/auth";
 
-function createInitialState() {
-  try {
-    const { token, signInInfo } = restoreFromLocalStorage();
-    return {
-      token,
-      ...signInInfo,
-    };
-  } catch (error) {
-    return {
+interface GitHubViewer {
+  login: string;
+  name?: string;
+  avatar_url?: string;
+}
+
+interface SignInInfo {
+  gitHubViewer: GitHubViewer | null;
+  isSignedIn: boolean;
+  isAdmin: boolean;
+}
+
+// https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
+interface OAuthError {
+  error: string;
+  error_description: string;
+  error_uri: string;
+}
+
+interface AuthStoreState extends SignInInfo {
+  token: string | null;
+  lastError: OAuthError | null;
+}
+
+export const useAuthStore = defineStore("auth", {
+  state: (): AuthStoreState => {
+    const initialState: AuthStoreState = {
       token: null,
       gitHubViewer: null,
       isSignedIn: false,
       isAdmin: false,
-    };
-  }
-}
-
-export const useAuthStore = defineStore("auth", {
-  state: () => {
-    const initialState = createInitialState();
-    return {
-      ...initialState,
       lastError: null,
     };
+    try {
+      const { token, signInInfo } = restoreFromLocalStorage();
+      return {
+        ...initialState,
+        token,
+        ...signInInfo,
+      };
+    } catch (error) {
+      return initialState;
+    }
   },
   actions: {
     setSignInInfo(info) {
@@ -70,7 +89,7 @@ export const useAuthStore = defineStore("auth", {
       }
     },
     setRequestAuthError(query) {
-      const error = (({ error, error_description, error_uri }) => ({
+      const error: OAuthError = (({ error, error_description, error_uri }) => ({
         error,
         error_description,
         error_uri,
