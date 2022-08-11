@@ -3,28 +3,31 @@ import { defineStore } from "pinia";
 import QUERY_WEB_CONFIG from "@/graphql/queries/WebConfig.gql";
 import MUTATION_SAVE_WEB_CONFIG from "@/graphql/mutations/SaveWebConfig.gql";
 
-const WEB_CONFIG_FIELDS = [
-  "headTitle",
-  "toolbarTitle",
-  "devtoolLoadingstate",
-  "productCreationDialog",
-  "productUpdateDialog",
-  "productDeletionDialog",
-  "primary",
-  "on-primary",
-  "secondary",
-  "on-secondary",
-  "accent",
-  "on-accent",
-  "error",
-  "on-error",
-  "info",
-  "on-info",
-  "success",
-  "on-success",
-  "warning",
-  "on-warning",
-];
+export interface VuetifyTheme {
+  primary?: string;
+  "on-primary"?: string;
+  secondary?: string;
+  "on-secondary"?: string;
+  accent?: string;
+  "on-accent"?: string;
+  error?: string;
+  "on-error"?: string;
+  info?: string;
+  "on-info"?: string;
+  success?: string;
+  "on-success"?: string;
+  warning?: string;
+  "on-warning"?: string;
+}
+
+export interface WebConfig extends VuetifyTheme {
+  headTitle?: string;
+  toolbarTitle?: string;
+  devtoolLoadingstate?: boolean;
+  productCreationDialog?: boolean;
+  productUpdateDialog?: boolean;
+  productDeletionDialog?: boolean;
+}
 
 export const useStore = defineStore("main", {
   state: () => {
@@ -33,30 +36,43 @@ export const useStore = defineStore("main", {
       snackbar: false,
       snackbarMessage: null,
       nApolloMutations: 0,
-      packageVersion: process.env.PACKAGE_VERSION || "0",
-      webConfig: {},
+      packageVersion: (process.env.PACKAGE_VERSION as string) || "vx.x.x",
+      webConfig: {} as WebConfig,
       webConfigLoaded: false,
     };
   },
   getters: {
     appVersion: (state) => state.packageVersion,
+    vuetifyTheme: (state) => {
+      const theme_fields_base = [
+        "primary",
+        "secondary",
+        "accent",
+        "error",
+        "info",
+        "success",
+        "warning",
+      ];
+      const theme_fields = [
+        ...theme_fields_base,
+        ...theme_fields_base.map((k) => `on-${k}`),
+      ];
+      return theme_fields
+        .filter((e) => e in state.webConfig && state.webConfig[e])
+        .reduce((a, e) => ({ ...a, ...{ [e]: state.webConfig[e] } }), {});
+    },
   },
   actions: {
     async loadWebConfig(apolloClient) {
       try {
         const { data } = await apolloClient.query({ query: QUERY_WEB_CONFIG });
-        const base = Object.fromEntries(
-          WEB_CONFIG_FIELDS.map((e) => [e, null])
-        );
-        const saved = JSON.parse(data.webConfig.json);
-        const webConfig = { ...base, ...saved };
-        this.webConfig = webConfig;
+        this.webConfig = JSON.parse(data.webConfig.json);
         this.webConfigLoaded = true;
       } catch (error) {
         // console.error(error);
       }
     },
-    setWebConfig(webConfig) {
+    setWebConfig(webConfig: WebConfig) {
       this.webConfig = webConfig;
     },
     async uploadWebConfig(apolloClient) {

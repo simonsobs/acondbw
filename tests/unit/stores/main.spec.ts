@@ -1,23 +1,52 @@
 import { setActivePinia, createPinia } from "pinia";
-import { useStore } from "@/stores/main";
+import { useStore, VuetifyTheme, WebConfig } from "@/stores/main";
 
 describe("Main Store", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
 
-  it("should be defined", () => {
-    expect(useStore).toBeDefined();
+  const sampleVuetifyTheme: VuetifyTheme = {
+    primary: "#009688",
+    secondary: "#558B2F",
+    "on-primary": "#FFFFFF",
+    "on-secondary": "#FFFFFF",
+  };
+
+  const sampleWebConfig: WebConfig = {
+    headTitle: "Product DB (localhost)",
+    toolbarTitle: "Product DB (localhost)",
+    devtoolLoadingstate: true,
+    productCreationDialog: true,
+    productUpdateDialog: true,
+    productDeletionDialog: true,
+    ...sampleVuetifyTheme,
+  };
+
+  const mockApolloClient = {
+    query: jest.fn().mockResolvedValue({
+      data: { webConfig: { json: JSON.stringify(sampleWebConfig) } },
+    }),
+  };
+
+  it("loadWebConfig()", async () => {
+    const store = useStore();
+    expect(store.webConfigLoaded).toBe(false);
+    expect(store.vuetifyTheme).toEqual({});
+    await store.loadWebConfig(mockApolloClient);
+    expect(store.webConfigLoaded).toBe(true);
+    expect(store.webConfig).toEqual(sampleWebConfig);
+    expect(store.vuetifyTheme).toEqual(sampleVuetifyTheme);
   });
 
-  it("dispatch loadExample", () => {
+  it("loadExample()", () => {
     const store = useStore();
     expect(store.example).toBe("abc");
     store.loadExample();
     expect(store.example).toBe("123");
   });
 
-  it("dispatch apolloMutationCalled", () => {
+  it("apolloMutationCalled()", () => {
     const store = useStore();
     expect(store.nApolloMutations).toBe(0);
     store.apolloMutationCalled();
