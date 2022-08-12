@@ -1,4 +1,4 @@
-const cryptoRandomString = require("crypto-random-string");
+import cryptoRandomString from "crypto-random-string";
 jest.mock("crypto-random-string");
 
 import { AUTH_STATE, redirectToGitHubAuthURL } from "@/utils/auth";
@@ -11,6 +11,7 @@ describe("redirectToGitHubAuthURL", () => {
     authorizeUrl: "https://github.com/login/oauth/authorize",
   };
   const scope = "read:org";
+  // @ts-ignore
   cryptoRandomString.mockImplementation(() => "abcde");
   let window;
   let apolloClient;
@@ -26,7 +27,7 @@ describe("redirectToGitHubAuthURL", () => {
     apolloClient.query.mockResolvedValue({ data: { gitHubOAuthAppInfo } });
     await redirectToGitHubAuthURL(window, apolloClient, callbackRoute, scope);
     const url = window.location.href.split("?")[0];
-    const query = getJsonFromUrl(window.location.href);
+    const query: any = getJsonFromUrl(window.location.href);
     expect(url).toBe("https://github.com/login/oauth/authorize");
     expect(query).toMatchSnapshot();
     expect(JSON.parse(localStorage[AUTH_STATE])).toEqual(query.state);
