@@ -3,7 +3,7 @@ import { useAuthStore } from "@/stores/auth";
 
 import { AUTH_TOKEN } from "@/vue-apollo";
 
-describe("Main Store", () => {
+describe("Auth Store", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });

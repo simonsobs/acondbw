@@ -3,9 +3,6 @@ jest.mock("crypto-random-string");
 
 import { AUTH_STATE, redirectToGitHubAuthURL } from "@/utils/auth";
 
-// using jest-localstorage-mock (https://www.npmjs.com/package/jest-localstorage-mock)
-// to mock localStorage
-
 describe("redirectToGitHubAuthURL", () => {
   const callbackRoute = { name: "Auth" };
   const gitHubOAuthAppInfo = {

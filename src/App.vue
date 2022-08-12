@@ -39,38 +39,14 @@ export default Vue.extend({
     title() {
       return this.webConfig.headTitle || "";
     },
-    ...mapState(useStore, ["webConfig"]),
+    ...mapState(useStore, ["webConfig", "vuetifyTheme"]),
   },
   watch: {
-    webConfig: {
-      immediate: true,
-      handler(webConfig) {
-        try {
-          if (Object.entries(webConfig).length === 0) return; // empty
-          const theme_fields_base = [
-            "primary",
-            "secondary",
-            "accent",
-            "error",
-            "info",
-            "success",
-            "warning",
-          ];
-          const theme_fields = [
-            ...theme_fields_base,
-            ...theme_fields_base.map((k) => `on-${k}`),
-          ];
-          const theme_config = theme_fields
-            .filter((e) => e in webConfig && webConfig[e])
-            .reduce((a, e) => ({ ...a, ...{ [e]: webConfig[e] } }), {});
-          this.$vuetify.theme.themes.light = {
-            ...this.$vuetify.theme.themes.light,
-            ...theme_config,
-          };
-        } catch (e) {
-          // console.error(e);
-        }
-      },
+    vuetifyTheme(newTheme) {
+      this.$vuetify.theme.themes.light = {
+        ...this.$vuetify.theme.themes.light,
+        ...newTheme,
+      };
     },
     $route(to, from) {
       // update the transition effect dynamically
