@@ -1,4 +1,3 @@
-const querystring = require("querystring");
 const cryptoRandomString = require("crypto-random-string");
 import _ from "lodash";
 
@@ -40,7 +39,7 @@ export async function redirectToGitHubAuthURL(
       scope: scope,
       state: state,
     };
-    let queryString = querystring.stringify(params);
+    const queryString = new URLSearchParams(params).toString();
     const uri = gitHubOAuthAppInfo.authorizeUrl + "?" + queryString;
     localStorage.setItem(AUTH_STATE, JSON.stringify(state));
     window.location.href = uri;
