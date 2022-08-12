@@ -32,7 +32,7 @@ export default Vue.extend({
     async signIn() {
       this.loading = true;
       try {
-        this.clearAuthError()
+        this.clearAuthError();
         const callbackRoute = { name: "Auth" };
         const scope = ""; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         await redirectToGitHubAuthURL(

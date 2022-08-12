@@ -7,7 +7,6 @@ export const AUTH_STATE = "auth-state";
 
 import GitHubOAuthAppInfo from "@/graphql/queries/GitHubOAuthAppInfo.gql";
 import AuthenticateWithGitHub from "@/graphql/mutations/AuthenticateWithGitHub.gql";
-import GitHubViewer from "@/graphql/queries/GitHubViewer.gql";
 import SignInInfo from "@/graphql/queries/SignInInfo.gql";
 import IsSignedIn from "@/graphql/queries/IsSignedIn.gql";
 

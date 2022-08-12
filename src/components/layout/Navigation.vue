@@ -66,9 +66,7 @@
       </v-alert>
     </v-card>
     <v-bottom-navigation absolute class="px-3 justify-start align-center">
-      <span class="grey--text text-caption">
-        v{{ appVersion }}
-      </span>
+      <span class="grey--text text-caption"> v{{ appVersion }} </span>
       <!-- <v-spacer></v-spacer>
       <v-icon>mdi-plus-thick</v-icon> -->
     </v-bottom-navigation>

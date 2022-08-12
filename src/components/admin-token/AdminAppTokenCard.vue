@@ -32,7 +32,7 @@ export default Vue.extend({
     async requestAuth() {
       this.loading = true;
       try {
-        this.clearAuthError()
+        this.clearAuthError();
         const callbackRoute = { name: "AdminAppAuth" };
         const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         await redirectToGitHubAuthURL(
