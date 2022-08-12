@@ -145,7 +145,7 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
 
 function parsableAsDate(value) {
   // test format "YYYY-MM-DD"
-  const reg = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}?$/;
+  const reg = /^[0-9]{4}-[0-9]{2}-[0-9]{2}?$/;
   if (!reg.test(value)) return false;
   if (isNaN(new Date(value))) return false;
   return true;
