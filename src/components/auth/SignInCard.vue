@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { Location } from "vue-router";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
@@ -33,7 +34,7 @@ export default Vue.extend({
       this.loading = true;
       try {
         this.clearAuthError();
-        const callbackRoute = { name: "Auth" };
+        const callbackRoute: Location = { name: "Auth" };
         const scope = ""; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         await redirectToGitHubAuthURL(
           window,
