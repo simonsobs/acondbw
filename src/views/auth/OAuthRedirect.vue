@@ -11,33 +11,39 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+
 import { validateState } from "@/utils/auth";
 
-export default {
+export default Vue.extend({
   name: "OAuthRedirect",
-  data: () => ({}),
   methods: {
     async main() {
-      let state = this.$route.query.state;
-      if (!state) {
+      const state = this.$route.query.state;
+
+      if (!(typeof state === "string" && this.isValid(state))) {
         this.$router.push({ path: "/" });
         return;
       }
 
-      if (!validateState(state)) {
-        this.$router.push({ path: "/" });
-        return;
-      }
-
-      state = JSON.parse(atob(state));
+      this.redirect(state);
+    },
+    isValid(state: string) {
+      if (!state) return false;
+      if (!validateState(state)) return false;
+      return true;
+    },
+    redirect(state: string) {
+      const jsonString = atob(state);
+      const parsed = JSON.parse(jsonString);
       // e.g.,
-      //   state = {
+      //   parsed = {
       //     redirect: { name: "Auth" },
       //     code: "XXXXXXXX",
       //   };
 
-      const redirect = { ...state.redirect, query: this.$route.query };
+      const redirect = { ...parsed.redirect, query: this.$route.query };
       // e.g.,
       //   redirect = {
       //     name: "Auth",
@@ -48,11 +54,10 @@ export default {
       //   }
 
       this.$router.push(redirect);
-      return;
     },
   },
   mounted: async function () {
     this.main();
   },
-};
+});
 </script>
