@@ -1,3 +1,5 @@
+import { Location } from "vue-router";
+import { DollarApollo } from "vue-apollo/types/vue-apollo";
 import cryptoRandomString from "crypto-random-string";
 import _ from "lodash";
 
@@ -17,10 +19,10 @@ import IsSignedIn from "@/graphql/queries/IsSignedIn.gql";
  * @param scope - scopes as described in https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
  */
 export async function redirectToGitHubAuthURL(
-  window,
-  apolloClient,
-  callbackRoute,
-  scope
+  window: Window,
+  apolloClient: DollarApollo<any>,
+  callbackRoute: Location,
+  scope: string
 ) {
   try {
     const { data } = await apolloClient.query({ query: GitHubOAuthAppInfo });
