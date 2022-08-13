@@ -46,7 +46,7 @@ export default Vue.extend({
         this.loading = false;
       }
     },
-    ...mapActions(useAuthStore, ["clearAuthError"]),
+    ...mapActions(useAuthStore, { clearAuthError: "clearAuthError" }),
   },
 });
 </script>
