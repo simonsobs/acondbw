@@ -11,10 +11,10 @@ import IsSignedIn from "@/graphql/queries/IsSignedIn.gql";
 
 /**
  *
- * @param {object} window - the window object
- * @param {object} apolloClient - an apollo client
- * @param {object} callbackRoute - a route to be redirected from the registered callback route
- * @param {string} scope - scopes as described in https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
+ * @param window - the window object
+ * @param apolloClient - an apollo client
+ * @param callbackRoute - a route to be redirected from the registered callback route
+ * @param scope - scopes as described in https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
  */
 export async function redirectToGitHubAuthURL(
   window,
@@ -51,8 +51,8 @@ export async function redirectToGitHubAuthURL(
 
 /**
  * Validate the state by comparing the one stored in localStorage
- * @param {string} state - the state returned from the auth server
- * @returns {boolean} true if validated
+ * @param state - the state returned from the auth server
+ * @returns true if validated
  */
 export function validateState(state) {
   if (!state) {
