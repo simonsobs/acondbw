@@ -56,18 +56,12 @@ export async function redirectToGitHubAuthURL(
  * @param state - the state returned from the auth server
  * @returns true if validated
  */
-export function validateState(state) {
-  if (!state) {
-    return false;
-  }
+export function validateState(state: string) {
+  if (!state) return false;
   const authStateJson = localStorage.getItem(AUTH_STATE);
   const authState = authStateJson && JSON.parse(authStateJson);
-  if (!authState) {
-    return false;
-  }
-  if (!(authState == state)) {
-    return false;
-  }
+  if (!authState) return false;
+  if (!(authState === state)) return false;
   return true;
 }
 
