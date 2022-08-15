@@ -88,7 +88,7 @@ export function restoreFromLocalStorage() {
   };
 }
 
-export async function isSignedIn(apolloClient) {
+export async function isSignedIn(apolloClient: DollarApollo<any>) {
   try {
     const { data } = await apolloClient.query({ query: IsSignedIn });
     if (data.isSignedIn) {
@@ -101,12 +101,16 @@ export async function isSignedIn(apolloClient) {
   return false;
 }
 
-export async function signOut(apolloClient) {
+export async function signOut(apolloClient: DollarApollo<any>) {
   await onLogout(apolloClient);
   localStorage.clear();
 }
 
-export async function signIn(code, state, apolloClient) {
+export async function signIn(
+  code: string,
+  state: string,
+  apolloClient: DollarApollo<any>
+) {
   try {
     const token = await exchangeCodeForToken(code, state, apolloClient);
     await onLogin(apolloClient, token);
@@ -119,7 +123,11 @@ export async function signIn(code, state, apolloClient) {
   }
 }
 
-export async function exchangeCodeForToken(code, state, apolloClient) {
+export async function exchangeCodeForToken(
+  code: string,
+  state: string,
+  apolloClient: DollarApollo<any>
+) {
   if (!validateState(state)) {
     throw new Error("The state was invalid.");
   }
