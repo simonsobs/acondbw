@@ -17,7 +17,7 @@
     "core-js": "^3.21.1",
     "github-markdown-css": "^5.1.0",
     "lodash": "^4.17.21",
-    "marked": "^3.0.8",
+    "marked": "^4.0.10",
     "material-design-icons-iconfont": "^6.1.0",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "pinia": "^2.0.17",
