@@ -17,7 +17,6 @@
     "cache-loader": "^4.1.0",
     "camel-case": "^4.1.2",
     "core-js": "^3.21.1",
-    "crypto-random-string": "^3.3.1",
     "github-markdown-css": "^5.1.0",
     "lodash": "^4.17.21",
     "marked": "^3.0.8",
