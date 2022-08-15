@@ -13,13 +13,11 @@ import IsSignedIn from "@/graphql/queries/IsSignedIn.gql";
 
 /**
  *
- * @param window - the window object
  * @param apolloClient - an apollo client
  * @param callbackRoute - a route to be redirected from the registered callback route
  * @param scope - scopes as described in https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
  */
 export async function redirectToGitHubAuthURL(
-  window: Window,
   apolloClient: DollarApollo<any>,
   callbackRoute: Location,
   scope: string

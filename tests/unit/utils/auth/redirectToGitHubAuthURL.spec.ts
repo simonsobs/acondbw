@@ -33,7 +33,7 @@ describe("redirectToGitHubAuthURL", () => {
 
   it("success", async () => {
     apolloClient.query.mockResolvedValue({ data: { gitHubOAuthAppInfo } });
-    await redirectToGitHubAuthURL(window, apolloClient, callbackRoute, scope);
+    await redirectToGitHubAuthURL(apolloClient, callbackRoute, scope);
     expect(window.location.assign).toHaveBeenCalled();
     const lastCall = (window.location.assign as jest.Mock).mock.lastCall;
     const href = lastCall[0];
@@ -48,7 +48,7 @@ describe("redirectToGitHubAuthURL", () => {
     localStorage.setItem(AUTH_STATE, JSON.stringify("old state"));
     apolloClient.query.mockRejectedValue(new Error("error"));
     await expect(
-      redirectToGitHubAuthURL(window, apolloClient, callbackRoute, scope)
+      redirectToGitHubAuthURL(apolloClient, callbackRoute, scope)
     ).rejects.toThrow();
     expect(localStorage[AUTH_STATE]).toBeUndefined();
   });

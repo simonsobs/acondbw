@@ -35,12 +35,7 @@ export default Vue.extend({
         this.clearAuthError();
         const callbackRoute = { name: "AdminAppAuth" };
         const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-        await redirectToGitHubAuthURL(
-          window,
-          this.$apollo,
-          callbackRoute,
-          scope
-        );
+        await redirectToGitHubAuthURL(this.$apollo, callbackRoute, scope);
       } catch (error) {
         this.$router.push({ name: "AdminAppTokenError" });
         this.loading = false;

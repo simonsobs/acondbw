@@ -36,12 +36,7 @@ export default Vue.extend({
         this.clearAuthError();
         const callbackRoute: Location = { name: "Auth" };
         const scope = ""; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-        await redirectToGitHubAuthURL(
-          window,
-          this.$apollo,
-          callbackRoute,
-          scope
-        );
+        await redirectToGitHubAuthURL(this.$apollo, callbackRoute, scope);
       } catch (error) {
         this.$router.push({ name: "SignInError" });
         this.loading = false;
