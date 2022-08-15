@@ -1,5 +1,5 @@
-import cryptoRandomString from "crypto-random-string";
-jest.mock("crypto-random-string");
+import { v4 as uuidv4 } from "uuid";
+jest.mock("uuid");
 
 import { AUTH_STATE, redirectToGitHubAuthURL } from "@/utils/auth";
 
@@ -13,7 +13,7 @@ describe("redirectToGitHubAuthURL", () => {
   const scope = "read:org";
   // @ts-ignore
 
-  cryptoRandomString.mockImplementation(() => "abcde");
+  uuidv4.mockImplementation(() => "01234567-abcd-efgh-ijkl-mnopqrstuvwx");
 
   // https://stackoverflow.com/a/60697570/7309855
   const locationOrg = window.location;

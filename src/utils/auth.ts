@@ -1,6 +1,6 @@
 import { Location } from "vue-router";
 import { DollarApollo } from "vue-apollo/types/vue-apollo";
-import cryptoRandomString from "crypto-random-string";
+import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 
 import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
@@ -25,7 +25,7 @@ export async function redirectToGitHubAuthURL(
   try {
     const { data } = await apolloClient.query({ query: GitHubOAuthAppInfo });
     const gitHubOAuthAppInfo = data.gitHubOAuthAppInfo;
-    const code = cryptoRandomString({ length: 8, type: "url-safe" });
+    const code = uuidv4();
     const state = btoa(
       JSON.stringify({
         redirect: callbackRoute,
