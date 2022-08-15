@@ -44,7 +44,7 @@ export async function redirectToGitHubAuthURL(
     const queryString = new URLSearchParams(params).toString();
     const uri = gitHubOAuthAppInfo.authorizeUrl + "?" + queryString;
     localStorage.setItem(AUTH_STATE, JSON.stringify(state));
-    window.location.href = uri;
+    window.location.assign(uri);
   } catch (error) {
     localStorage.removeItem(AUTH_STATE);
     throw error;

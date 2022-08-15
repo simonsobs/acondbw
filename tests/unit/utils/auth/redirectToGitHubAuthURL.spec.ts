@@ -12,22 +12,33 @@ describe("redirectToGitHubAuthURL", () => {
   };
   const scope = "read:org";
   // @ts-ignore
+
   cryptoRandomString.mockImplementation(() => "abcde");
-  let window;
+
+  // https://stackoverflow.com/a/60697570/7309855
+  const locationOrg = window.location;
+  // @ts-ignore
+  delete window.location;
+
   let apolloClient;
+
   beforeEach(() => {
-    window = { location: { href: null } };
+    window.location = { ...locationOrg, assign: jest.fn() };
     apolloClient = { query: jest.fn() };
   });
   afterEach(() => {
     localStorage.removeItem(AUTH_STATE);
+    window.location = locationOrg;
   });
 
   it("success", async () => {
     apolloClient.query.mockResolvedValue({ data: { gitHubOAuthAppInfo } });
     await redirectToGitHubAuthURL(window, apolloClient, callbackRoute, scope);
-    const url = window.location.href.split("?")[0];
-    const query: any = getJsonFromUrl(window.location.href);
+    expect(window.location.assign).toHaveBeenCalled();
+    const lastCall = (window.location.assign as jest.Mock).mock.lastCall;
+    const href = lastCall[0];
+    const url = href.split("?")[0];
+    const query: any = getJsonFromUrl(href);
     expect(url).toBe("https://github.com/login/oauth/authorize");
     expect(query).toMatchSnapshot();
     expect(JSON.parse(localStorage[AUTH_STATE])).toEqual(query.state);
