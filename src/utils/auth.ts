@@ -81,8 +81,9 @@ export function restoreFromLocalStorage() {
   try {
     const tokenJson = localStorage.getItem(AUTH_TOKEN);
     const signInInfoJson = localStorage.getItem("sign-in-info");
-    const token = tokenJson && JSON.parse(tokenJson);
-    const signInInfo = signInInfoJson && JSON.parse(signInInfoJson);
+    const token = tokenJson && (JSON.parse(tokenJson) as string);
+    const signInInfo =
+      signInInfoJson && (JSON.parse(signInInfoJson) as SignInInfo);
 
     if (token && signInInfo) {
       return { token, signInInfo };
@@ -97,8 +98,12 @@ export function restoreFromLocalStorage() {
   // AUTH_STATE when redirected from the auth server
 
   return {
-    token: null,
-    signInInfo: { gitHubViewer: null, isSignedIn: false, isAdmin: false },
+    token: null as string | null,
+    signInInfo: {
+      gitHubViewer: null,
+      isSignedIn: false,
+      isAdmin: false,
+    } as SignInInfo,
   };
 }
 
