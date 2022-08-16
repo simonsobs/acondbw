@@ -33,6 +33,11 @@ type RequestParams = {
   state?: string;
 };
 
+interface UnencodedState {
+  redirect: Location;
+  code: string;
+}
+
 /**
  *
  * @param apolloClient - an apollo client
@@ -50,12 +55,11 @@ export async function redirectToGitHubAuthURL(
     });
     const gitHubOAuthAppInfo = data.gitHubOAuthAppInfo;
     const code = uuidv4();
-    const state = btoa(
-      JSON.stringify({
-        redirect: callbackRoute,
-        code: code,
-      })
-    );
+    const rawState: UnencodedState = {
+      redirect: callbackRoute,
+      code: code,
+    };
+    const state = btoa(JSON.stringify(rawState));
     const params: RequestParams = {
       response_type: "code",
       client_id: gitHubOAuthAppInfo.clientId,
