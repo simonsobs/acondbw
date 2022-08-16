@@ -6,10 +6,10 @@ import _ from "lodash";
 import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
 export const AUTH_STATE = "auth-state";
 
-import GitHubOAuthAppInfo from "@/graphql/queries/GitHubOAuthAppInfo.gql";
-import AuthenticateWithGitHub from "@/graphql/mutations/AuthenticateWithGitHub.gql";
-import SignInInfo from "@/graphql/queries/SignInInfo.gql";
-import IsSignedIn from "@/graphql/queries/IsSignedIn.gql";
+import QUERY_GIT_HUB_O_AUTH_APP_INFO from "@/graphql/queries/GitHubOAuthAppInfo.gql";
+import MUTATE_AUTHENTICATE_WITH_GIT_HUB from "@/graphql/mutations/AuthenticateWithGitHub.gql";
+import QUERY_SIGN_IN_INFO from "@/graphql/queries/SignInInfo.gql";
+import QUERY_IS_SIGNED_IN from "@/graphql/queries/IsSignedIn.gql";
 
 /**
  *
@@ -23,7 +23,9 @@ export async function redirectToGitHubAuthURL(
   scope: string
 ) {
   try {
-    const { data } = await apolloClient.query({ query: GitHubOAuthAppInfo });
+    const { data } = await apolloClient.query({
+      query: QUERY_GIT_HUB_O_AUTH_APP_INFO,
+    });
     const gitHubOAuthAppInfo = data.gitHubOAuthAppInfo;
     const code = uuidv4();
     const state = btoa(
@@ -90,7 +92,7 @@ export function restoreFromLocalStorage() {
 
 export async function isSignedIn(apolloClient: DollarApollo<any>) {
   try {
-    const { data } = await apolloClient.query({ query: IsSignedIn });
+    const { data } = await apolloClient.query({ query: QUERY_IS_SIGNED_IN });
     if (data.isSignedIn) {
       const signInInfo = await getSignInInfo();
       localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
@@ -132,7 +134,7 @@ export async function exchangeCodeForToken(
     throw new Error("The state was invalid.");
   }
   const { data } = await apolloClient.mutate({
-    mutation: AuthenticateWithGitHub,
+    mutation: MUTATE_AUTHENTICATE_WITH_GIT_HUB,
     variables: { code: code },
   });
   const authPayload = data.authenticateWithGitHub.authPayload;
@@ -141,6 +143,6 @@ export async function exchangeCodeForToken(
 }
 
 export async function getSignInInfo() {
-  const { data } = await apolloClient.query({ query: SignInInfo });
+  const { data } = await apolloClient.query({ query: QUERY_SIGN_IN_INFO });
   return _.pick(data, ["isSignedIn", "isAdmin", "gitHubViewer"]);
 }
