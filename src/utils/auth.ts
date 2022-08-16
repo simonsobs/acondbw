@@ -1,4 +1,4 @@
-import { Location } from "vue-router";
+import VueRouter, { Route, RawLocation, Location } from "vue-router";
 import { DollarApollo } from "vue-apollo/types/vue-apollo";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -33,7 +33,7 @@ type RequestParams = {
   state?: string;
 };
 
-interface UnencodedState {
+export interface UnencodedState {
   redirect: Location;
   code: string;
 }
@@ -75,6 +75,39 @@ export async function redirectToGitHubAuthURL(
     localStorage.removeItem(AUTH_STATE);
     throw error;
   }
+}
+
+export async function onRedirectedBack(
+  route: Route,
+  router: VueRouter,
+  locationOnError: RawLocation
+) {
+  const state = route.query.state;
+
+  if (!(typeof state === "string" && state && validateState(state))) {
+    await router.push(locationOnError);
+    return;
+  }
+
+  const jsonString = atob(state);
+  const parsed = JSON.parse(jsonString);
+  // e.g.,
+  //   parsed = {
+  //     redirect: { name: "Auth" },
+  //     code: "XXXXXXXX",
+  //   };
+
+  const redirect = { ...parsed.redirect, query: route.query };
+  // e.g.,
+  //   redirect = {
+  //     name: "Auth",
+  //     query: {
+  //       code: "XXXXXXXX",
+  //       state: "XXXXXXXXXXXXXXXX"
+  //     }
+  //   }
+
+  await router.push(redirect);
 }
 
 /**

@@ -13,51 +13,15 @@
 
 <script lang="ts">
 import Vue from "vue";
-import VueRouter, { Route, RawLocation } from "vue-router";
-
-import { validateState } from "@/utils/auth";
+import { onRedirectedBack } from "@/utils/auth";
 
 export default Vue.extend({
   name: "OAuthRedirect",
-  methods: {
-    onRedirectedBack(
-      route: Route,
-      router: VueRouter,
-      locationOnError: RawLocation
-    ) {
-      const state = route.query.state;
-
-      if (!(typeof state === "string" && state && validateState(state))) {
-        router.push(locationOnError);
-        return;
-      }
-
-      const jsonString = atob(state);
-      const parsed = JSON.parse(jsonString);
-      // e.g.,
-      //   parsed = {
-      //     redirect: { name: "Auth" },
-      //     code: "XXXXXXXX",
-      //   };
-
-      const redirect = { ...parsed.redirect, query: route.query };
-      // e.g.,
-      //   redirect = {
-      //     name: "Auth",
-      //     query: {
-      //       code: "XXXXXXXX",
-      //       state: "XXXXXXXXXXXXXXXX"
-      //     }
-      //   }
-
-      router.push(redirect);
-    },
-  },
-  mounted() {
+  async mounted() {
     const route = this.$route;
     const router = this.$router;
     const locationOnError = { path: "/" };
-    this.onRedirectedBack(route, router, locationOnError);
+    await onRedirectedBack(route, router, locationOnError);
   },
 });
 </script>
