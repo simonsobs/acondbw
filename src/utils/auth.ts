@@ -84,7 +84,7 @@ export async function onRedirectedBack(
 ) {
   const state = route.query.state;
 
-  if (!(typeof state === "string" && state && validateState(state))) {
+  if (!(typeof state === "string" && validateState(state))) {
     await router.push(locationOnError);
     return;
   }
@@ -117,10 +117,8 @@ export async function onRedirectedBack(
  */
 export function validateState(state: string) {
   if (!state) return false;
-  const authStateJson = localStorage.getItem(AUTH_STATE);
-  const authState = authStateJson && JSON.parse(authStateJson);
-  if (!authState) return false;
-  if (!(authState === state)) return false;
+  const stored = localStorage.getItem(AUTH_STATE);
+  if (!(stored === JSON.stringify(state))) return false;
   return true;
 }
 
