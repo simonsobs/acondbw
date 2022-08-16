@@ -23,6 +23,16 @@ export interface SignInInfo {
   isAdmin: boolean;
 }
 
+// OAuth2 authorization request parameters
+// https://www.oauth.com/oauth2-servers/authorization/the-authorization-request/
+type RequestParams = {
+  response_type: "code";
+  client_id: string;
+  redirect_uri?: string;
+  scope?: string;
+  state?: string;
+};
+
 /**
  *
  * @param apolloClient - an apollo client
@@ -46,7 +56,7 @@ export async function redirectToGitHubAuthURL(
         code: code,
       })
     );
-    const params = {
+    const params: RequestParams = {
       response_type: "code",
       client_id: gitHubOAuthAppInfo.clientId,
       redirect_uri: gitHubOAuthAppInfo.redirectUri,
