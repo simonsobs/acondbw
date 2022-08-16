@@ -13,17 +13,22 @@
 
 <script lang="ts">
 import Vue from "vue";
+import VueRouter, { Route, RawLocation } from "vue-router";
 
 import { validateState } from "@/utils/auth";
 
 export default Vue.extend({
   name: "OAuthRedirect",
   methods: {
-    async main() {
-      const state = this.$route.query.state;
+    onRedirectedBack(
+      route: Route,
+      router: VueRouter,
+      locationOnError: RawLocation
+    ) {
+      const state = route.query.state;
 
       if (!(typeof state === "string" && this.isValid(state))) {
-        this.$router.push({ path: "/" });
+        router.push(locationOnError);
         return;
       }
 
@@ -56,8 +61,11 @@ export default Vue.extend({
       this.$router.push(redirect);
     },
   },
-  mounted: async function () {
-    this.main();
+  mounted() {
+    const route = this.$route;
+    const router = this.$router;
+    const locationOnError = { path: "/" };
+    this.onRedirectedBack(route, router, locationOnError);
   },
 });
 </script>
