@@ -90,14 +90,14 @@ export async function onRedirectedBack(
   }
 
   const jsonString = atob(state);
-  const parsed = JSON.parse(jsonString);
+  const rawState: UnencodedState = JSON.parse(jsonString);
   // e.g.,
   //   parsed = {
   //     redirect: { name: "Auth" },
   //     code: "XXXXXXXX",
   //   };
 
-  const redirect = { ...parsed.redirect, query: route.query };
+  const redirect = { ...rawState.redirect, query: route.query };
   // e.g.,
   //   redirect = {
   //     name: "Auth",
