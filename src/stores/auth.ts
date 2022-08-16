@@ -1,23 +1,12 @@
 import { defineStore } from "pinia";
 
 import {
+  SignInInfo,
   signIn,
   signOut,
   restoreFromLocalStorage,
   isSignedIn,
 } from "@/utils/auth";
-
-interface GitHubViewer {
-  login: string;
-  name?: string;
-  avatar_url?: string;
-}
-
-interface SignInInfo {
-  gitHubViewer: GitHubViewer | null;
-  isSignedIn: boolean;
-  isAdmin: boolean;
-}
 
 // https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
 interface OAuthError {

@@ -11,6 +11,18 @@ import MUTATE_AUTHENTICATE_WITH_GIT_HUB from "@/graphql/mutations/AuthenticateWi
 import QUERY_SIGN_IN_INFO from "@/graphql/queries/SignInInfo.gql";
 import QUERY_IS_SIGNED_IN from "@/graphql/queries/IsSignedIn.gql";
 
+export interface GitHubViewer {
+  login: string;
+  name?: string;
+  avatar_url?: string;
+}
+
+export interface SignInInfo {
+  gitHubViewer: GitHubViewer | null;
+  isSignedIn: boolean;
+  isAdmin: boolean;
+}
+
 /**
  *
  * @param apolloClient - an apollo client
