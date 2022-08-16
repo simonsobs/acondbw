@@ -27,19 +27,11 @@ export default Vue.extend({
     ) {
       const state = route.query.state;
 
-      if (!(typeof state === "string" && this.isValid(state))) {
+      if (!(typeof state === "string" && state && validateState(state))) {
         router.push(locationOnError);
         return;
       }
 
-      this.redirect(state);
-    },
-    isValid(state: string) {
-      if (!state) return false;
-      if (!validateState(state)) return false;
-      return true;
-    },
-    redirect(state: string) {
       const jsonString = atob(state);
       const parsed = JSON.parse(jsonString);
       // e.g.,
@@ -48,7 +40,7 @@ export default Vue.extend({
       //     code: "XXXXXXXX",
       //   };
 
-      const redirect = { ...parsed.redirect, query: this.$route.query };
+      const redirect = { ...parsed.redirect, query: route.query };
       // e.g.,
       //   redirect = {
       //     name: "Auth",
@@ -58,7 +50,7 @@ export default Vue.extend({
       //     }
       //   }
 
-      this.$router.push(redirect);
+      router.push(redirect);
     },
   },
   mounted() {
