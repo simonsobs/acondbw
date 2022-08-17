@@ -28,12 +28,13 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import GitHubTokenTable from "@/components/admin/GitHubTokenTable.vue";
 import GitHubOrgTable from "@/components/admin/GitHubOrgTable.vue";
 import GitHubUserTable from "@/components/admin/GitHubUserTable.vue";
 
-export default {
+export default Vue.extend({
   name: "User",
   components: {
     GitHubTokenTable,
@@ -41,5 +42,5 @@ export default {
     GitHubUserTable,
   },
   data: () => ({}),
-};
+});
 </script>
