@@ -6,7 +6,7 @@ describe("onRedirectedBack", () => {
 
   const rawState: UnencodedState = {
     redirect: callbackRoute,
-    code: "01234567-abcd-efgh-ijkl-mnopqrstuvwx",
+    randomString: "01234567-abcd-efgh-ijkl-mnopqrstuvwx",
   };
 
   const state = btoa(JSON.stringify(rawState));

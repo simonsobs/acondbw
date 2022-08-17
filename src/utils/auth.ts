@@ -35,7 +35,7 @@ type RequestParams = {
 
 export interface UnencodedState {
   redirect: Location;
-  code: string;
+  randomString: string;
 }
 
 /**
@@ -49,17 +49,16 @@ export async function redirectToGitHubAuthURL(
   callbackRoute: Location,
   scope: string
 ) {
+  const rawState: UnencodedState = {
+    redirect: callbackRoute,
+    randomString: uuidv4(),
+  };
+  const state = encodeState(rawState);
   try {
     const { data } = await apolloClient.query({
       query: QUERY_GIT_HUB_O_AUTH_APP_INFO,
     });
     const gitHubOAuthAppInfo = data.gitHubOAuthAppInfo;
-    const code = uuidv4();
-    const rawState: UnencodedState = {
-      redirect: callbackRoute,
-      code: code,
-    };
-    const state = encodeState(rawState);
     const params: RequestParams = {
       response_type: "code",
       client_id: gitHubOAuthAppInfo.clientId,

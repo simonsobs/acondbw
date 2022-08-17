@@ -6,6 +6,6 @@ Object {
   "redirect_uri": "http://localhost:8081/oauth-redirect",
   "response_type": "code",
   "scope": "read:org",
-  "state": "eyJyZWRpcmVjdCI6eyJuYW1lIjoiQXV0aCJ9LCJjb2RlIjoiMDEyMzQ1NjctYWJjZC1lZmdoLWlqa2wtbW5vcHFyc3R1dnd4In0=",
+  "state": "eyJyZWRpcmVjdCI6eyJuYW1lIjoiQXV0aCJ9LCJyYW5kb21TdHJpbmciOiIwMTIzNDU2Ny1hYmNkLWVmZ2gtaWprbC1tbm9wcXJzdHV2d3gifQ==",
 }
 `;
