@@ -75,7 +75,7 @@ export async function redirectToGitHubAuthURL(
   }
 }
 
-function encodeAndStoreState(rawState: UnencodedState) {
+export function encodeAndStoreState(rawState: UnencodedState) {
   const state = encodeState(rawState);
   storeState(state);
   return state;
@@ -87,7 +87,7 @@ export function validateAndDecodeState(state: any) {
   return decodeState(state);
 }
 
-function clearState() {
+export function clearState() {
   localStorage.removeItem(AUTH_STATE);
 }
 
@@ -102,7 +102,7 @@ function decodeState(state: string) {
   return rawState;
 }
 
-function storeState(state: string) {
+export function storeState(state: string) {
   localStorage.setItem(AUTH_STATE, JSON.stringify(state));
 }
 
