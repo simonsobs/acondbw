@@ -4,7 +4,7 @@ import { Location } from "vue-router";
 import QUERY_GIT_HUB_O_AUTH_APP_INFO from "@/graphql/queries/GitHubOAuthAppInfo.gql";
 import MUTATE_AUTHENTICATE_WITH_GIT_HUB from "@/graphql/mutations/AuthenticateWithGitHub.gql";
 
-export const AUTH_STATE = "auth-state";
+const AUTH_STATE = "auth-state";
 
 export interface UnencodedState {
   redirect: Location;
