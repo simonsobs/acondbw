@@ -76,43 +76,12 @@ export async function redirectToGitHubAuthURL(
   }
 }
 
-export async function onRedirectedBack(
-  route: Route,
-  router: VueRouter,
-  locationOnError: RawLocation
-) {
-  const state = route.query.state;
-
-  let rawState: ReturnType<typeof validateAndDecodeState>;
-  if (!(rawState = validateAndDecodeState(state))) {
-    await router.push(locationOnError);
-    return;
-  }
-  // e.g.,
-  //   rawState = {
-  //     redirect: { name: "Auth" },
-  //     code: "XXXXXXXX",
-  //   };
-
-  const redirect = { ...rawState.redirect, query: route.query };
-  // e.g.,
-  //   redirect = {
-  //     name: "Auth",
-  //     query: {
-  //       code: "XXXXXXXX",
-  //       state: "XXXXXXXXXXXXXXXX"
-  //     }
-  //   }
-
-  await router.push(redirect);
-}
-
 function encodeState(rawState: UnencodedState) {
   const jsonString = JSON.stringify(rawState);
   return btoa(jsonString);
 }
 
-function validateAndDecodeState(state: any) {
+export function validateAndDecodeState(state: any) {
   if (typeof state !== "string") return null;
   if (!validateState(state)) return null;
   return decodeState(state);

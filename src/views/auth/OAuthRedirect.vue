@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { onRedirectedBack } from "@/utils/auth";
+import { validateAndDecodeState } from "@/utils/auth";
 
 export default Vue.extend({
   name: "OAuthRedirect",
@@ -21,7 +21,31 @@ export default Vue.extend({
     const route = this.$route;
     const router = this.$router;
     const locationOnError = { path: "/" };
-    await onRedirectedBack(route, router, locationOnError);
+
+    const state = route.query.state;
+
+    let rawState: ReturnType<typeof validateAndDecodeState>;
+    if (!(rawState = validateAndDecodeState(state))) {
+      await router.push(locationOnError);
+      return;
+    }
+    // e.g.,
+    //   rawState = {
+    //     redirect: { name: "Auth" },
+    //     randomString: "XXXXXXXX",
+    //   };
+
+    const redirect = { ...rawState.redirect, query: route.query };
+    // e.g.,
+    //   redirect = {
+    //     name: "Auth",
+    //     query: {
+    //       code: "XXXXXXXX",
+    //       state: "XXXXXXXXXXXXXXXX"
+    //     }
+    //   }
+
+    await router.push(redirect);
   },
 });
 </script>
