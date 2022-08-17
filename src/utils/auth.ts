@@ -68,7 +68,7 @@ export async function redirectToGitHubAuthURL(
     };
     const queryString = new URLSearchParams(params).toString();
     const uri = gitHubOAuthAppInfo.authorizeUrl + "?" + queryString;
-    localStorage.setItem(AUTH_STATE, JSON.stringify(state));
+    storeState(state);
     window.location.assign(uri);
   } catch (error) {
     localStorage.removeItem(AUTH_STATE);
@@ -91,6 +91,10 @@ function decodeState(state: string) {
   const jsonString = atob(state);
   const rawState: UnencodedState = JSON.parse(jsonString);
   return rawState;
+}
+
+function storeState(state: string) {
+  localStorage.setItem(AUTH_STATE, JSON.stringify(state));
 }
 
 /**
