@@ -1,19 +1,19 @@
-import { AUTH_STATE, validateState } from "@/utils/auth";
+import { clearState, storeState, validateState } from "@/utils/auth";
 
 describe("validateState", () => {
   afterEach(() => {
-    localStorage.removeItem(AUTH_STATE);
+    clearState();
   });
 
   it("success", () => {
     const state = "abc";
-    localStorage.setItem(AUTH_STATE, JSON.stringify(state));
+    storeState(state);
     const result = validateState(state);
     expect(result).toBeTruthy();
   });
 
   it.each([null, ""])("fail empty %p", (state) => {
-    localStorage.setItem(AUTH_STATE, JSON.stringify("abc"));
+    storeState(state);
     const result = validateState(state);
     expect(result).toBeFalsy();
   });
@@ -26,7 +26,7 @@ describe("validateState", () => {
 
   it("fail doesn't match", () => {
     const state = "abc";
-    localStorage.setItem(AUTH_STATE, JSON.stringify("xyz"));
+    storeState("xyz");
     const result = validateState(state);
     expect(result).toBeFalsy();
   });
