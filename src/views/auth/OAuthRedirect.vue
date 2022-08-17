@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { validateAndDecodeState } from "@/utils/auth";
+import { validateAndDecodeState } from "@/utils/auth/oauth";
 
 export default Vue.extend({
   name: "OAuthRedirect",

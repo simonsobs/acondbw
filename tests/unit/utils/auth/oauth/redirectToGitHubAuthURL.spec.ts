@@ -1,4 +1,4 @@
-import { AUTH_STATE, redirectToGitHubAuthURL } from "@/utils/auth";
+import { redirectToGitHubAuthURL } from "@/utils/auth/oauth";
 
 describe("redirectToGitHubAuthURL", () => {
   const gitHubOAuthAppInfo = {

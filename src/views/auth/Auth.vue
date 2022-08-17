@@ -17,7 +17,7 @@ import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 
-import { validateState } from "@/utils/auth";
+import { validateState } from "@/utils/auth/oauth";
 
 export default Vue.extend({
   name: "Auth",

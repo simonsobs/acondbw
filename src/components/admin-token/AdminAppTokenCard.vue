@@ -27,7 +27,7 @@ import {
   encodeAndStoreState,
   clearState,
   UnencodedState,
-} from "@/utils/auth";
+} from "@/utils/auth/oauth";
 
 export default Vue.extend({
   name: "AdminAppTokenCard",

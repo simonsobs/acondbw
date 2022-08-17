@@ -8,8 +8,8 @@ import { createTestingPinia } from "@pinia/testing";
 import OAuthRedirect from "@/views/auth/OAuthRedirect.vue";
 import router from "@/router";
 
-import { validateAndDecodeState, UnencodedState } from "@/utils/auth";
-jest.mock("@/utils/auth");
+import { validateAndDecodeState, UnencodedState } from "@/utils/auth/oauth";
+jest.mock("@/utils/auth/oauth");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

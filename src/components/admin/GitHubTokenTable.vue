@@ -85,7 +85,8 @@ import {
   encodeAndStoreState,
   clearState,
   UnencodedState,
-} from "@/utils/auth";
+} from "@/utils/auth/oauth";
+
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
 import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
 

@@ -8,8 +8,8 @@ import { createTestingPinia } from "@pinia/testing";
 import AdminAppTokenCard from "@/components/admin-token/AdminAppTokenCard.vue";
 import router from "@/router";
 
-import { redirectToGitHubAuthURL } from "@/utils/auth";
-jest.mock("@/utils/auth");
+import { redirectToGitHubAuthURL } from "@/utils/auth/oauth";
+jest.mock("@/utils/auth/oauth");
 
 import { useAuthStore } from "@/stores/auth";
 

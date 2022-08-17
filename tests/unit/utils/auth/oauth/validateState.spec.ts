@@ -1,4 +1,4 @@
-import { clearState, storeState, validateState } from "@/utils/auth";
+import { clearState, storeState, validateState } from "@/utils/auth/oauth";
 
 describe("validateState", () => {
   afterEach(() => {
@@ -12,7 +12,8 @@ describe("validateState", () => {
     expect(result).toBeTruthy();
   });
 
-  it.each([null, ""])("fail empty %p", (state) => {
+  it("empty", () => {
+    const state = "";
     storeState(state);
     const result = validateState(state);
     expect(result).toBeFalsy();
