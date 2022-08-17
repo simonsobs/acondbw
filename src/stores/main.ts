@@ -34,7 +34,7 @@ export const useStore = defineStore("main", {
     return {
       example: "abc",
       snackbar: false,
-      snackbarMessage: null,
+      snackbarMessage: null as string | null,
       nApolloMutations: 0,
       packageVersion: (process.env.PACKAGE_VERSION as string) || "vx.x.x",
       webConfig: {} as WebConfig,
@@ -89,7 +89,7 @@ export const useStore = defineStore("main", {
       const example = "123";
       this.example = example;
     },
-    setSnackbarMessage(message) {
+    setSnackbarMessage(message: string) {
       this.snackbarMessage = message;
       this.snackbar = true;
     },
