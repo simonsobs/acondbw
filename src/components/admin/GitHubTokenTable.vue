@@ -92,7 +92,7 @@ import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
 export default Vue.extend({
   name: "GitHubTokenTable",
   data: () => ({
-    allGitHubTokens: null,
+    allGitHubTokens: null as null | any,
     allGitHubTokensHeaders: [
       { text: "", value: "node.user.avatarUrl", align: "start" },
       { text: "User", value: "node.user.login" },
@@ -117,7 +117,6 @@ export default Vue.extend({
       this.dialogAdd = false;
     },
     async requestAuth() {
-      this.loading = true;
       try {
         this.clearAuthError();
         const callbackRoute = { name: "AdminAppAuth" };
@@ -135,6 +134,7 @@ export default Vue.extend({
       }
     },
     deleteToken(item) {
+      if (!this.allGitHubTokens) return;
       const index = this.allGitHubTokens.edges.indexOf(item);
       this.deleteTokenId = this.allGitHubTokens.edges[index].node.tokenId;
       this.dialogDelete = true;
