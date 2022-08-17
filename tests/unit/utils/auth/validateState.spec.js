@@ -18,7 +18,7 @@ describe("validateState", () => {
     expect(result).toBeFalsy();
   });
 
-  it("fail no state in localStorate", () => {
+  it("fail no state in localStorage", () => {
     const state = "abc";
     const result = validateState(state);
     expect(result).toBeFalsy();
