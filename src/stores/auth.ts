@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { DollarApollo } from "vue-apollo/types/vue-apollo";
 
 import {
   SignInInfo,
@@ -66,7 +67,7 @@ export const useAuthStore = defineStore("auth", {
       this.token = null;
       await signOut(apolloClient);
     },
-    async signIn({ code, state, apolloClient }) {
+    async signIn(code: string, state: string, apolloClient: DollarApollo<any>) {
       this.lastError = null;
       try {
         const { token, signInInfo } = await signIn(code, state, apolloClient);
