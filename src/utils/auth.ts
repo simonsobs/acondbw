@@ -41,38 +41,28 @@ export interface UnencodedState {
 /**
  *
  * @param apolloClient - an apollo client
- * @param callbackRoute - a route to be redirected from the registered callback route
  * @param scope - scopes as described in https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
+ * @param state - the state parameter of OAuth2 authorization request
  */
 export async function redirectToGitHubAuthURL(
   apolloClient: DollarApollo<any>,
-  callbackRoute: Location,
-  scope: string
+  scope: string,
+  state: string
 ) {
-  const rawState: UnencodedState = {
-    redirect: callbackRoute,
-    randomString: uuidv4(),
+  const { data } = await apolloClient.query({
+    query: QUERY_GIT_HUB_O_AUTH_APP_INFO,
+  });
+  const gitHubOAuthAppInfo = data.gitHubOAuthAppInfo;
+  const params: RequestParams = {
+    response_type: "code",
+    client_id: gitHubOAuthAppInfo.clientId,
+    redirect_uri: gitHubOAuthAppInfo.redirectUri,
+    scope: scope,
+    state: state,
   };
-  const state = encodeAndStoreState(rawState);
-  try {
-    const { data } = await apolloClient.query({
-      query: QUERY_GIT_HUB_O_AUTH_APP_INFO,
-    });
-    const gitHubOAuthAppInfo = data.gitHubOAuthAppInfo;
-    const params: RequestParams = {
-      response_type: "code",
-      client_id: gitHubOAuthAppInfo.clientId,
-      redirect_uri: gitHubOAuthAppInfo.redirectUri,
-      scope: scope,
-      state: state,
-    };
-    const queryString = new URLSearchParams(params).toString();
-    const uri = gitHubOAuthAppInfo.authorizeUrl + "?" + queryString;
-    window.location.assign(uri);
-  } catch (error) {
-    clearState();
-    throw error;
-  }
+  const queryString = new URLSearchParams(params).toString();
+  const uri = gitHubOAuthAppInfo.authorizeUrl + "?" + queryString;
+  window.location.assign(uri);
 }
 
 export function encodeAndStoreState(rawState: UnencodedState) {

@@ -1,19 +1,13 @@
-import { v4 as uuidv4 } from "uuid";
-jest.mock("uuid");
-
 import { AUTH_STATE, redirectToGitHubAuthURL } from "@/utils/auth";
 
 describe("redirectToGitHubAuthURL", () => {
-  const callbackRoute = { name: "Auth" };
   const gitHubOAuthAppInfo = {
     clientId: "012345",
     redirectUri: "http://localhost:8081/oauth-redirect",
     authorizeUrl: "https://github.com/login/oauth/authorize",
   };
   const scope = "read:org";
-  // @ts-ignore
-
-  uuidv4.mockImplementation(() => "01234567-abcd-efgh-ijkl-mnopqrstuvwx");
+  const state = "state-string";
 
   // https://stackoverflow.com/a/60697570/7309855
   const locationOrg = window.location;
@@ -27,30 +21,26 @@ describe("redirectToGitHubAuthURL", () => {
     apolloClient = { query: jest.fn() };
   });
   afterEach(() => {
-    localStorage.removeItem(AUTH_STATE);
     window.location = locationOrg;
   });
 
   it("success", async () => {
     apolloClient.query.mockResolvedValue({ data: { gitHubOAuthAppInfo } });
-    await redirectToGitHubAuthURL(apolloClient, callbackRoute, scope);
+    await redirectToGitHubAuthURL(apolloClient, scope, state);
     expect(window.location.assign).toHaveBeenCalled();
     const lastCall = (window.location.assign as jest.Mock).mock.lastCall;
     const href = lastCall[0];
     const url = href.split("?")[0];
     const query: any = getJsonFromUrl(href);
     expect(url).toBe("https://github.com/login/oauth/authorize");
-    expect(query).toMatchSnapshot();
-    expect(JSON.parse(localStorage[AUTH_STATE])).toEqual(query.state);
-  });
-
-  it("error apollo query", async () => {
-    localStorage.setItem(AUTH_STATE, JSON.stringify("old state"));
-    apolloClient.query.mockRejectedValue(new Error("error"));
-    await expect(
-      redirectToGitHubAuthURL(apolloClient, callbackRoute, scope)
-    ).rejects.toThrow();
-    expect(localStorage[AUTH_STATE]).toBeUndefined();
+    const expected = {
+      client_id: "012345",
+      redirect_uri: "http://localhost:8081/oauth-redirect",
+      response_type: "code",
+      scope: "read:org",
+      state: "state-string",
+    };
+    expect(query).toEqual(expected);
   });
 });
 

@@ -75,11 +75,17 @@
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
 import Vue from "vue";
+import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 
-import { redirectToGitHubAuthURL } from "@/utils/auth";
+import {
+  redirectToGitHubAuthURL,
+  encodeAndStoreState,
+  clearState,
+  UnencodedState,
+} from "@/utils/auth";
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
 import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
 
@@ -116,8 +122,14 @@ export default Vue.extend({
         this.clearAuthError();
         const callbackRoute = { name: "AdminAppAuth" };
         const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-        await redirectToGitHubAuthURL(this.$apollo, callbackRoute, scope);
+        const rawState: UnencodedState = {
+          redirect: callbackRoute,
+          randomString: uuidv4(),
+        };
+        const state = encodeAndStoreState(rawState);
+        await redirectToGitHubAuthURL(this.$apollo, scope, state);
       } catch (error) {
+        clearState();
         this.$router.push({ name: "AdminAppTokenError" });
         this.closeAdd();
       }
