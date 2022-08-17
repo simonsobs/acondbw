@@ -70,7 +70,7 @@ export async function redirectToGitHubAuthURL(
     const uri = gitHubOAuthAppInfo.authorizeUrl + "?" + queryString;
     window.location.assign(uri);
   } catch (error) {
-    localStorage.removeItem(AUTH_STATE);
+    clearState();
     throw error;
   }
 }
@@ -85,6 +85,10 @@ export function validateAndDecodeState(state: any) {
   if (typeof state !== "string") return null;
   if (!validateState(state)) return null;
   return decodeState(state);
+}
+
+function clearState() {
+  localStorage.removeItem(AUTH_STATE);
 }
 
 function encodeState(rawState: UnencodedState) {
