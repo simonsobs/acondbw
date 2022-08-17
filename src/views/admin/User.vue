@@ -11,7 +11,7 @@
             </v-card-text>
           </v-card>
           <v-card class="my-2">
-            <v-card-title>Orgnizations</v-card-title>
+            <v-card-title>Organizations</v-card-title>
             <v-card-text>
               <git-hub-org-table></git-hub-org-table>
             </v-card-text>
