@@ -1,6 +1,5 @@
-import VueRouter, { Route, RawLocation, Location } from "vue-router";
+import { Location } from "vue-router";
 import { DollarApollo } from "vue-apollo/types/vue-apollo";
-import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 
 import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
