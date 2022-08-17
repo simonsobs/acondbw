@@ -53,7 +53,7 @@ export async function redirectToGitHubAuthURL(
     redirect: callbackRoute,
     randomString: uuidv4(),
   };
-  const state = encodeState(rawState);
+  const state = encodeAndStoreState(rawState);
   try {
     const { data } = await apolloClient.query({
       query: QUERY_GIT_HUB_O_AUTH_APP_INFO,
@@ -68,7 +68,6 @@ export async function redirectToGitHubAuthURL(
     };
     const queryString = new URLSearchParams(params).toString();
     const uri = gitHubOAuthAppInfo.authorizeUrl + "?" + queryString;
-    storeState(state);
     window.location.assign(uri);
   } catch (error) {
     localStorage.removeItem(AUTH_STATE);
@@ -76,15 +75,21 @@ export async function redirectToGitHubAuthURL(
   }
 }
 
-function encodeState(rawState: UnencodedState) {
-  const jsonString = JSON.stringify(rawState);
-  return btoa(jsonString);
+function encodeAndStoreState(rawState: UnencodedState) {
+  const state = encodeState(rawState);
+  storeState(state);
+  return state;
 }
 
 export function validateAndDecodeState(state: any) {
   if (typeof state !== "string") return null;
   if (!validateState(state)) return null;
   return decodeState(state);
+}
+
+function encodeState(rawState: UnencodedState) {
+  const jsonString = JSON.stringify(rawState);
+  return btoa(jsonString);
 }
 
 function decodeState(state: string) {
