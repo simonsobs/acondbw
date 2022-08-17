@@ -59,7 +59,7 @@ export async function redirectToGitHubAuthURL(
       redirect: callbackRoute,
       code: code,
     };
-    const state = btoa(JSON.stringify(rawState));
+    const state = encodeState(rawState);
     const params: RequestParams = {
       response_type: "code",
       client_id: gitHubOAuthAppInfo.clientId,
@@ -89,8 +89,7 @@ export async function onRedirectedBack(
     return;
   }
 
-  const jsonString = atob(state);
-  const rawState: UnencodedState = JSON.parse(jsonString);
+  const rawState = decodeState(state);
   // e.g.,
   //   parsed = {
   //     redirect: { name: "Auth" },
@@ -108,6 +107,17 @@ export async function onRedirectedBack(
   //   }
 
   await router.push(redirect);
+}
+
+function encodeState(rawState: UnencodedState) {
+  const jsonString = JSON.stringify(rawState);
+  return btoa(jsonString);
+}
+
+function decodeState(state: string) {
+  const jsonString = atob(state);
+  const rawState: UnencodedState = JSON.parse(jsonString);
+  return rawState;
 }
 
 /**
