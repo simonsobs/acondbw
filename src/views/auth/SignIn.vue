@@ -6,14 +6,15 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import SignInCard from "@/components/auth/SignInCard.vue";
 
-export default {
+export default Vue.extend({
   name: "SignIn",
   components: {
     SignInCard,
   },
   data: () => ({}),
-};
+});
 </script>
