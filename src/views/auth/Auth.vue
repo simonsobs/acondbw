@@ -25,7 +25,7 @@ export default Vue.extend({
   methods: {
     async main() {
       const state = this.$route.query.state;
-      if (!validateState(state)) {
+      if (!(typeof state === "string" && validateState(state))) {
         this.$router.push({ path: "/" });
         return;
       }
@@ -37,17 +37,13 @@ export default Vue.extend({
       }
 
       const code = this.$route.query.code;
-      if (!code) {
+      if (!(typeof code === "string" && code)) {
         this.$router.push({ path: "/" });
         return;
       }
 
       try {
-        await this.signIn({
-          code,
-          state,
-          apolloClient: this.$apollo,
-        });
+        await this.signIn(code, state, this.$apollo);
       } catch (error) {
         this.$router.push({ name: "SignInError" });
         return;
