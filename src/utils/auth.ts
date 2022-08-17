@@ -84,14 +84,13 @@ export async function onRedirectedBack(
 ) {
   const state = route.query.state;
 
-  if (!(typeof state === "string" && validateState(state))) {
+  let rawState: ReturnType<typeof validateAndDecodeState>;
+  if (!(rawState = validateAndDecodeState(state))) {
     await router.push(locationOnError);
     return;
   }
-
-  const rawState = decodeState(state);
   // e.g.,
-  //   parsed = {
+  //   rawState = {
   //     redirect: { name: "Auth" },
   //     code: "XXXXXXXX",
   //   };
@@ -112,6 +111,12 @@ export async function onRedirectedBack(
 function encodeState(rawState: UnencodedState) {
   const jsonString = JSON.stringify(rawState);
   return btoa(jsonString);
+}
+
+function validateAndDecodeState(state: any) {
+  if (typeof state !== "string") return null;
+  if (!validateState(state)) return null;
+  return decodeState(state);
 }
 
 function decodeState(state: string) {
