@@ -43,7 +43,7 @@ export default Vue.extend({
         return;
       }
       this.setSnackbarMessage("Admin App Token stored");
-      this.$router.push({ name: "AdminScratch" });
+      this.$router.push({ name: "AdminUser" });
     },
     ...mapActions(useStore, ["setSnackbarMessage"]),
   },
