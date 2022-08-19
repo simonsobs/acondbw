@@ -6,7 +6,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import AppBar from "@/components/layout/AppBar.vue";
-import router from "@/router";
+import { createRouter } from "@/router";
 
 jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
@@ -20,8 +20,9 @@ Vue.use(VueRouter);
 describe("App.vue", () => {
   const ENV_ORG = process.env;
 
-  let localVue;
-  let vuetify;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
 
   function createWrapper(loading = false) {
     return shallowMount(AppBar, {
@@ -46,6 +47,7 @@ describe("App.vue", () => {
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
+    router = createRouter();
   });
 
   afterEach(() => {

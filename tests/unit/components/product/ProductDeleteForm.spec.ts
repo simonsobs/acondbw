@@ -3,10 +3,10 @@ import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
-import { createTestingPinia } from "@pinia/testing"
+import { createTestingPinia } from "@pinia/testing";
 
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
-import router from "@/router";
+import { createRouter } from "@/router";
 import { useStore } from "@/stores/main";
 
 jest.mock("vue-apollo");
@@ -19,8 +19,9 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("ProductDeleteForm.vue", () => {
-  let localVue;
-  let vuetify;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
 
   function createWrapper({ loading = false, propsData = {} } = {}) {
     const mutate = jest.fn();
@@ -63,6 +64,7 @@ describe("ProductDeleteForm.vue", () => {
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
+    router = createRouter();
   });
 
   it("loading", async () => {

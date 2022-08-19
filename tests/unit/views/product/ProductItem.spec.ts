@@ -6,8 +6,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import ProductItem from "@/views/product/ProductItem.vue";
-
-import router from "@/router";
+import { createRouter } from "@/router";
 
 import { useAuthStore } from "@/stores/auth";
 
@@ -21,8 +20,9 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("ProductItem.vue", () => {
-  let localVue;
-  let pinia;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let router: ReturnType<typeof createRouter>;
+  let pinia: ReturnType<typeof createTestingPinia>;
 
   function createWrapper(loading = false) {
     return shallowMount(ProductItem, {
@@ -52,6 +52,7 @@ describe("ProductItem.vue", () => {
   beforeEach(function () {
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
+    router = createRouter();
     pinia = createTestingPinia();
     const authStore = useAuthStore(pinia);
     authStore.isSignedIn = true;

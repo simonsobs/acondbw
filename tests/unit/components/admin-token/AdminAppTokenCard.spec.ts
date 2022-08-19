@@ -6,7 +6,7 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import AdminAppTokenCard from "@/components/admin-token/AdminAppTokenCard.vue";
-import router from "@/router";
+import { createRouter } from "@/router";
 
 import { redirectToGitHubAuthURL } from "@/utils/auth/oauth";
 jest.mock("@/utils/auth/oauth");
@@ -17,16 +17,18 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("AdminAppTokenCard.vue", () => {
-  let localVue;
-  let vuetify;
-  let wrapper;
-  let storeAuth;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
+  let wrapper: ReturnType<typeof mount>;
+  let storeAuth: ReturnType<typeof useAuthStore>;
 
   beforeEach(function () {
     (redirectToGitHubAuthURL as jest.Mock).mockClear();
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
+    router = createRouter();
     wrapper = mount(AdminAppTokenCard, {
       localVue,
       router,
@@ -53,7 +55,7 @@ describe("AdminAppTokenCard.vue", () => {
   it("requestAuth success", async () => {
     await Vue.nextTick();
     wrapper.vm.requestAuth();
-    expect(storeAuth.clearAuthError.mock.calls.length).toBe(1);
+    expect((storeAuth.clearAuthError as jest.Mock).mock.calls.length).toBe(1);
     expect((redirectToGitHubAuthURL as jest.Mock).mock.calls.length).toBe(1);
     expect(wrapper.vm.loading).toBeTruthy();
   });
@@ -66,7 +68,7 @@ describe("AdminAppTokenCard.vue", () => {
     wrapper.vm.requestAuth();
     await Vue.nextTick();
     await Vue.nextTick();
-    expect(storeAuth.clearAuthError.mock.calls.length).toBe(1);
+    expect((storeAuth.clearAuthError as jest.Mock).mock.calls.length).toBe(1);
     expect((redirectToGitHubAuthURL as jest.Mock).mock.calls.length).toBe(1);
     expect(wrapper.vm.loading).toBeFalsy();
 

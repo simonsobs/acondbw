@@ -6,7 +6,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import Navigation from "@/components/layout/Navigation.vue";
-import router from "@/router";
+import { createRouter } from "@/router";
 import { useStore } from "@/stores/main";
 
 jest.mock("vue-apollo");
@@ -19,10 +19,11 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("App.vue", () => {
-  let localVue;
-  let vuetify;
-  let wrapper;
-  let store;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
+  let wrapper: ReturnType<typeof shallowMount>;
+  let store: ReturnType<typeof useStore>;
 
   const edges = [
     {
@@ -76,6 +77,7 @@ describe("App.vue", () => {
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
+    router = createRouter();
     const pinia = createTestingPinia();
     wrapper = shallowMount(Navigation, {
       localVue,

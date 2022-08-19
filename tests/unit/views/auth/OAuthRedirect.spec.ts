@@ -6,7 +6,7 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import OAuthRedirect from "@/views/auth/OAuthRedirect.vue";
-import router from "@/router";
+import { createRouter } from "@/router";
 
 import { validateAndDecodeState, UnencodedState } from "@/utils/auth/oauth";
 jest.mock("@/utils/auth/oauth");
@@ -17,6 +17,7 @@ Vue.use(VueRouter);
 describe("OAuthRedirect.vue", () => {
   let localVue: ReturnType<typeof createLocalVue>;
   let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
   let pinia: ReturnType<typeof createTestingPinia>;
 
   const callbackRoute = { name: "Auth" };
@@ -42,6 +43,7 @@ describe("OAuthRedirect.vue", () => {
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
+    router = createRouter();
     pinia = createTestingPinia();
   });
 

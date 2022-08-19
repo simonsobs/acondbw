@@ -6,8 +6,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import ProductTop from "@/views/product/ProductTop.vue";
-
-import router from "@/router";
+import { createRouter } from "@/router";
 
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
@@ -22,14 +21,16 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("ProductTop.vue", () => {
-  let localVue;
-  let vuetify;
-  let wrapper;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
+  let wrapper: ReturnType<typeof shallowMount>;
 
   beforeEach(function () {
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
+    router = createRouter();
     const pinia = createTestingPinia();
     wrapper = shallowMount(ProductTop, {
       localVue,
@@ -132,7 +133,10 @@ describe("ProductTop.vue", () => {
   });
 
   it("transition leave", async () => {
-    await router.push({ name: "ProductList" });
+    await router.push({
+      name: "ProductList",
+      params: { productTypeName: "map" },
+    });
     await router.push("/about");
 
     // Not clear how to test

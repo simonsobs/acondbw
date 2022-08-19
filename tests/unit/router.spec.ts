@@ -1,16 +1,12 @@
-import moxios from "moxios";
-import { router, setPinia, setDefaultPinia } from "@/router/index";
 import { setActivePinia, createPinia } from "pinia";
+import moxios from "moxios";
 
+import { createRouter, setPinia, setDefaultPinia } from "@/router";
 import { useAuthStore } from "@/stores/auth";
 
 describe("router", () => {
   let authStore: ReturnType<typeof useAuthStore>;
-
-  const ENV_ORG = process.env;
-
-  // @ts-ignore
-  const ROUTER_HISTORY_CURRENT_ORG = router.history.current;
+  let router: ReturnType<typeof createRouter>;
 
   beforeEach(() => {
     const pinia = createPinia();
@@ -19,29 +15,15 @@ describe("router", () => {
     moxios.install();
 
     authStore = useAuthStore();
-
-    // Ideally, VueRouter should be instantiated for each test.
-    // But instead here, only the current and pending are set.
-
-    // @ts-ignore
-    router.history.current = { ...ROUTER_HISTORY_CURRENT_ORG };
-
-    // @ts-ignore
-    router.history.pending = null;
-
     authStore.isSignedIn = false;
     authStore.isAdmin = false;
+
+    router = createRouter();
   });
 
   afterEach(() => {
     setDefaultPinia();
     moxios.uninstall();
-
-    // @ts-ignore
-    router.history.current = ROUTER_HISTORY_CURRENT_ORG;
-
-    // @ts-ignore
-    router.history.pending = null;
   });
 
   it("test /", async () => {

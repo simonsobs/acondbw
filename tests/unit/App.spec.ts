@@ -6,7 +6,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import App from "@/App.vue";
-import router from "@/router";
+import { createRouter } from "@/router";
 
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
@@ -15,14 +15,16 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("App.vue", () => {
-  let localVue;
-  let vuetify;
-  let wrapper;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
+  let wrapper: ReturnType<typeof shallowMount>;
 
   beforeEach(() => {
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
+    router = createRouter();
     const pinia = createTestingPinia();
     wrapper = shallowMount(App, {
       localVue,
