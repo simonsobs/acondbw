@@ -225,8 +225,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const adminRequired = to.matched.some((record) => record.meta.requiresAdmin);
   const auth = useAuthStore(pinia);
+
+  const adminRequired = to.matched.some((record) => record.meta.requiresAdmin);
   const isAdmin = auth.isAdmin;
   if (adminRequired && !isAdmin) {
     next({ name: "AccessDenied" });
