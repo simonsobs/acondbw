@@ -6,7 +6,7 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import "@testing-library/jest-dom";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
-import router from "@/router";
+import { createRouter } from "@/router";
 
 jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
@@ -18,10 +18,11 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("ProductItemCard.vue", () => {
-  let localVue;
-  let vuetify;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
 
-  function createWrapper({ loading = false, propsData } = {}) {
+  function createWrapper({ loading = false, propsData = {} } = {}) {
     const mutate = jest.fn();
     let wrapper = mount(ProductItemCard, {
       localVue,
@@ -162,6 +163,7 @@ describe("ProductItemCard.vue", () => {
   beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
+    router = createRouter();
   });
 
   it("loading", async () => {

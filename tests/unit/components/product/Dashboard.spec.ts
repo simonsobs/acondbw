@@ -1,12 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify";
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { mount, createLocalVue } from "@vue/test-utils";
 
-import Dashboard from "@/components/product/Dashboard";
-import router from "@/router";
+import Dashboard from "@/components/product/Dashboard.vue";
+import { createRouter } from "@/router";
 
-jest.mock('vue-apollo');
+jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
 // property $apollo, this is usually caused by a plugin that has added
 // the property as a read-only value"
@@ -16,9 +16,10 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("App.vue", () => {
-  let localVue;
-  let vuetify;
-  let wrapper;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let router: ReturnType<typeof createRouter>;
+  let wrapper: ReturnType<typeof mount>;
 
   const edges = [
     {
@@ -71,6 +72,7 @@ describe("App.vue", () => {
   beforeEach(() => {
     localVue = createLocalVue();
     vuetify = new Vuetify();
+    router = createRouter();
     wrapper = mount(Dashboard, {
       localVue,
       vuetify,
