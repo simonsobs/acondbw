@@ -31,10 +31,9 @@ new Vue({
   watch: {
     isSignedIn: {
       immediate: true,
-      handler: function (val) {
-        if (!val) {
-          checkAuthForCurrentRoute();
-        }
+      handler: function (val: boolean) {
+        if (val) return;
+        checkAuthForCurrentRoute();
       },
     },
   },
