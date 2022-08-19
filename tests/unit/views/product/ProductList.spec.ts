@@ -1,28 +1,23 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
 import Vuetify from "vuetify";
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
 
 import ProductList from "@/views/product/ProductList.vue";
 
-import router from "@/router";
-
-jest.mock('vue-apollo');
+jest.mock("vue-apollo");
 // To prevent the error: "[vue-test-utils]: could not overwrite
 // property $apollo, this is usually caused by a plugin that has added
 // the property as a read-only value"
 // https://github.com/vuejs/vue-apollo/issues/798
 
 Vue.use(Vuetify);
-Vue.use(VueRouter);
 
 describe("ProductList.vue", () => {
-  let localVue;
+  let localVue: ReturnType<typeof createLocalVue>;
 
   function createWrapper(loading = false) {
     return shallowMount(ProductList, {
       localVue,
-      router,
       mocks: {
         $apollo: {
           queries: {

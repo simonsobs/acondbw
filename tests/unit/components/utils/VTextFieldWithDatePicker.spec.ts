@@ -2,15 +2,15 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
-import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker";
+import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
 Vue.use(Vuetify);
 
 describe("VTextFieldWithDatePicker.vue", () => {
-  let localVue;
-  let vuetify;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
 
-  beforeEach(function() {
+  beforeEach(function () {
     localVue = createLocalVue();
     vuetify = new Vuetify();
   });
@@ -31,7 +31,7 @@ describe("VTextFieldWithDatePicker.vue", () => {
   it("match snapshot", async () => {
     // to suppress the warning "[Vuetify] Unable to locate target [data-app]""
     const app = document.createElement("div");
-    app.setAttribute("data-app", true);
+    app.setAttribute("data-app", "true");
     document.body.append(app);
 
     const wrapper = createWrapper();

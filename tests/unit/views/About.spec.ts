@@ -1,24 +1,22 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 
 import About from "@/views/framework/About.vue";
 
 Vue.use(Vuetify);
-Vue.use(VueRouter);
 
 describe("About.vue", () => {
-  let localVue;
-  let wrapper;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let wrapper: ReturnType<typeof mount>;
 
   beforeEach(() => {
     localVue = createLocalVue();
     wrapper = mount(About, {
-      localVue
+      localVue,
     });
     wrapper.setData({
-      version: "0.0.1.test"
+      version: "0.0.1.test",
     });
   });
 

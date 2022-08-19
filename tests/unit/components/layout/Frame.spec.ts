@@ -1,15 +1,15 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
 
-import Frame from "@/components/layout/Frame";
+import Frame from "@/components/layout/Frame.vue";
 
 Vue.use(Vuetify);
 
 describe("Frame.vue", () => {
-  let localVue;
-  let vuetify;
-  let wrapper;
+  let localVue: ReturnType<typeof createLocalVue>;
+  let vuetify: Vuetify;
+  let wrapper: ReturnType<typeof shallowMount>;
 
   beforeEach(() => {
     localVue = createLocalVue();
