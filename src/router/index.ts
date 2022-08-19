@@ -218,30 +218,38 @@ const routes: Array<RouteConfig> = [
   },
 ];
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes,
-});
+function createRouter() {
+  const router = new VueRouter({
+    mode: "history",
+    base: process.env.BASE_URL,
+    routes,
+  });
 
-router.beforeEach((to, from, next) => {
-  const auth = useAuthStore(pinia);
+  router.beforeEach((to, from, next) => {
+    const auth = useAuthStore(pinia);
 
-  const adminRequired = to.matched.some((record) => record.meta.requiresAdmin);
-  const isAdmin = auth.isAdmin;
-  if (adminRequired && !isAdmin) {
-    next({ name: "AccessDenied" });
-    return;
-  }
+    const adminRequired = to.matched.some(
+      (record) => record.meta.requiresAdmin
+    );
+    const isAdmin = auth.isAdmin;
+    if (adminRequired && !isAdmin) {
+      next({ name: "AccessDenied" });
+      return;
+    }
 
-  const authRequired = to.matched.some((record) => record.meta.requiresAuth);
-  const isSignedIn = auth.isSignedIn as boolean;
-  if (authRequired && !isSignedIn) {
-    next({ name: "AccessDenied" });
-    return;
-  }
-  next();
-});
+    const authRequired = to.matched.some((record) => record.meta.requiresAuth);
+    const isSignedIn = auth.isSignedIn as boolean;
+    if (authRequired && !isSignedIn) {
+      next({ name: "AccessDenied" });
+      return;
+    }
+    next();
+  });
+
+  return router;
+}
+
+const router = createRouter();
 
 function checkAuthForCurrentRoute() {
   const authRequired = router.currentRoute.matched.some(
@@ -257,6 +265,7 @@ function checkAuthForCurrentRoute() {
 export {
   router as default,
   router,
+  createRouter,
   checkAuthForCurrentRoute,
   setPinia,
   setDefaultPinia,
