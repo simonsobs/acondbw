@@ -5,7 +5,7 @@ import { setActivePinia, createPinia } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
 describe("router", () => {
-  let authStore;
+  let authStore: ReturnType<typeof useAuthStore>;
 
   const ENV_ORG = process.env;
 
@@ -29,7 +29,6 @@ describe("router", () => {
     // @ts-ignore
     router.history.pending = null;
 
-    // store.state = { auth: { isSignedIn: false, isAdmin: false } };
     authStore.isSignedIn = false;
     authStore.isAdmin = false;
   });
@@ -54,9 +53,7 @@ describe("router", () => {
       // https://stackoverflow.com/questions/62223195/vue-router-uncaught-in-promise-error-redirected-from-login-to-via-a
     }
 
-    // @ts-ignore
-    const current = router.history.current;
-
+    const current = router.currentRoute;
     expect(current.name).toBe("Dashboard");
     expect(current.path).toBe("/dashboard");
   });
@@ -64,8 +61,7 @@ describe("router", () => {
   it("test / not signed in", async () => {
     await router.push("/");
 
-    // @ts-ignore
-    const current = router.history.current;
+    const current = router.currentRoute;
     expect(current.name).toBe("Entry");
     expect(current.path).toBe("/");
   });
@@ -74,9 +70,7 @@ describe("router", () => {
     authStore.isSignedIn = true;
     await router.push("/dashboard");
 
-    // @ts-ignore
-    const current = router.history.current;
-
+    const current = router.currentRoute;
     expect(current.name).toBe("Dashboard");
     expect(current.path).toBe("/dashboard");
   });
@@ -86,9 +80,7 @@ describe("router", () => {
       await router.push("/dashboard");
     } catch (err) {}
 
-    // @ts-ignore
-    const current = router.history.current;
-
+    const current = router.currentRoute;
     expect(current.name).toBe("Entry");
     expect(current.path).toBe("/");
   });
@@ -97,13 +89,13 @@ describe("router", () => {
     try {
       await router.push("/product/map");
     } catch (err) {}
-    // not sure how to await for pending to become current
 
-    // @ts-ignore
-    const pending = router.history.pending;
+    // sleep so pending to become current
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
-    expect(pending.name).toBe("AccessDenied");
-    expect(pending.path).toBe("/access-denied");
+    const current = router.currentRoute;
+    expect(current.name).toBe("AccessDenied");
+    expect(current.path).toBe("/access-denied");
   });
 
   it("test requiresAdmin", async () => {
@@ -112,9 +104,7 @@ describe("router", () => {
       await router.push("/admin/log");
     } catch (err) {}
 
-    // @ts-ignore
-    const current = router.history.current;
-
+    const current = router.currentRoute;
     expect(current.name).toBe("AccessDenied");
     expect(current.path).toBe("/access-denied");
   });
@@ -122,9 +112,7 @@ describe("router", () => {
   it("test /about", async () => {
     await router.push("/about");
 
-    // @ts-ignore
-    const current = router.history.current;
-
+    const current = router.currentRoute;
     expect(current.name).toBe("About");
     expect(current.path).toBe("/about");
     expect(current.params).toEqual({});
@@ -134,9 +122,7 @@ describe("router", () => {
     authStore.isSignedIn = true;
     await router.push("/no-such-path");
 
-    // @ts-ignore
-    const current = router.history.current;
-
+    const current = router.currentRoute;
     expect(current.name).toBe("NotFound");
     expect(current.path).toBe("/no-such-path");
     expect(current.params).toEqual({ pathMatch: "/no-such-path" });
@@ -146,9 +132,7 @@ describe("router", () => {
     authStore.isSignedIn = true;
     await router.push("/product/map/map001");
 
-    // @ts-ignore
-    const current = router.history.current;
-
+    const current = router.currentRoute;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("ProductItem");
     expect(current.path).toBe("/product/map/map001");
@@ -163,9 +147,7 @@ describe("router", () => {
     authStore.isSignedIn = true;
     await router.push("/product/map");
 
-    // @ts-ignore
-    const current = router.history.current;
-    0;
+    const current = router.currentRoute;
     expect(current.matched.length).toBe(2);
     expect(current.name).toBe("ProductList");
     expect(current.path).toBe("/product/map");
