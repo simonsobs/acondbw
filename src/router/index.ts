@@ -262,11 +262,4 @@ function checkAuthForCurrentRoute() {
   }
 }
 
-export {
-  router as default,
-  router,
-  createRouter,
-  checkAuthForCurrentRoute,
-  setPinia,
-  setDefaultPinia,
-};
+export { createRouter, checkAuthForCurrentRoute, setPinia, setDefaultPinia };

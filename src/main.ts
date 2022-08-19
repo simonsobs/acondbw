@@ -1,7 +1,7 @@
 import Vue from "vue";
 import { PiniaVuePlugin, mapState, mapActions } from "pinia";
 import App from "./App.vue";
-import { router, checkAuthForCurrentRoute } from "./router";
+import { createRouter, checkAuthForCurrentRoute } from "./router";
 import vuetify from "./plugins/vuetify";
 import { apolloProvider } from "./vue-apollo";
 import Vuelidate from "vuelidate";
@@ -17,7 +17,7 @@ Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
 new Vue({
-  router,
+  router: createRouter(),
   vuetify,
   pinia,
   apolloProvider,
