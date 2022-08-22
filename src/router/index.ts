@@ -59,7 +59,7 @@ Vue.use(VueMeta);
 
 let pinia = defaultPinia;
 
-function setPinia(val) {
+function setPinia(val: typeof pinia) {
   // because not sure how to monkey patch pinia for tests
   pinia = val;
 }
