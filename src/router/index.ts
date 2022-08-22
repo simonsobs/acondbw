@@ -233,6 +233,8 @@ function createRouter() {
   });
 
   router.beforeEach((to, from, next) => {
+    // This will be called before beforeEnter() in each route.
+    // https://v3.router.vuejs.org/guide/advanced/navigation-guards.html#in-component-guards
     const adminRequired = to.matched.some((r) => r.meta.requiresAdmin);
     const authRequired =
       adminRequired || to.matched.some((r) => r.meta.requiresAuth);
