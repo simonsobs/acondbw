@@ -3,12 +3,7 @@
     <v-row align="center" justify="center">
       <v-col class="text-h3 text-center">
         <div>Access Denied</div>
-        <v-btn v-if="isSignedIn" class="mt-5" outlined to="/">
-          Go to the entry page
-        </v-btn>
-        <v-btn v-else class="mt-5" outlined :to="{ name: 'SignIn' }">
-          Go to the sign-in page
-        </v-btn>
+        <v-btn class="mt-5" outlined to="/"> Go to the entry page </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -16,16 +11,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState } from "pinia";
-import { useAuthStore } from "@/stores/auth";
 
 export default Vue.extend({
   name: "AccessDenied",
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapState(useAuthStore, ["isSignedIn"]),
-  },
 });
 </script>
