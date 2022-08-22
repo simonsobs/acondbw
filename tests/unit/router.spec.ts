@@ -28,12 +28,9 @@ describe("router", () => {
 
   it("Entry - signed in", async () => {
     authStore.isSignedIn = true;
-    try {
-      await router.push("/");
-    } catch (err) {
-      // Error: Redirected when going from "/" to "/" via a navigation guard.
-      // https://stackoverflow.com/questions/62223195/vue-router-uncaught-in-promise-error-redirected-from-login-to-via-a
-    }
+
+    // https://stackoverflow.com/q/62223195/7309855
+    await expect(router.push("/")).rejects.toThrow();
 
     const current = router.currentRoute;
     expect(current.name).toBe("Dashboard");
@@ -58,9 +55,8 @@ describe("router", () => {
   });
 
   it("Dashboard - not signed in", async () => {
-    try {
-      await router.push("/dashboard");
-    } catch (err) {}
+    // https://stackoverflow.com/q/62223195/7309855
+    await expect(router.push("/dashboard")).rejects.toThrow();
 
     const current = router.currentRoute;
     expect(current.name).toBe("Entry");
@@ -79,9 +75,8 @@ describe("router", () => {
   });
 
   it("requiresAuth - not signed in", async () => {
-    try {
-      await router.push("/product/map");
-    } catch (err) {}
+    // https://stackoverflow.com/q/62223195/7309855
+    await expect(router.push("/product/map")).rejects.toThrow();
 
     // sleep so pending to become current
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -92,9 +87,8 @@ describe("router", () => {
   });
 
   it("requiresAdmin - not signed in", async () => {
-    try {
-      await router.push("/admin/log");
-    } catch (err) {}
+    // https://stackoverflow.com/q/62223195/7309855
+    await expect(router.push("/admin/log")).rejects.toThrow();
 
     const current = router.currentRoute;
     expect(current.name).toBe("SignInRequired");
@@ -103,9 +97,8 @@ describe("router", () => {
 
   it("requiresAdmin - signed in - not admin", async () => {
     authStore.isSignedIn = true;
-    try {
-      await router.push("/admin/log");
-    } catch (err) {}
+    // https://stackoverflow.com/q/62223195/7309855
+    await expect(router.push("/admin/log")).rejects.toThrow();
 
     // sleep so pending to become current
     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -125,9 +118,8 @@ describe("router", () => {
   });
 
   it("AccessDenied - not signed in", async () => {
-    try {
-      await router.push({ name: "AccessDenied" });
-    } catch (err) {}
+    // https://stackoverflow.com/q/62223195/7309855
+    await expect(router.push({ name: "AccessDenied" })).rejects.toThrow();
 
     const current = router.currentRoute;
     expect(current.name).toBe("SignInRequired");
