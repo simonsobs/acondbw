@@ -270,9 +270,8 @@ function checkAuthForCurrentRoute() {
   );
   const auth = useAuthStore(pinia);
   const signedIn = auth.isSignedIn;
-  console.log(router.currentRoute);
   if (authRequired && !signedIn) {
-    router.push({ name: "SignIn" });
+    router.push("/");
   }
 }
 
