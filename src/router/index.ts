@@ -27,6 +27,7 @@ import ProductType from "@/views/admin/ProductType.vue";
 
 const About = () => import("@/views/framework/About.vue");
 const NotFound = () => import("@/views/framework/NotFound.vue");
+const SignInRequired = () => import("@/views/auth/SignInRequired.vue");
 const AccessDenied = () => import("@/views/framework/AccessDenied.vue");
 
 const FrameAdmin = () =>
@@ -207,9 +208,15 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
+    path: "/sign-in-required",
+    name: "SignInRequired",
+    components: { default: SignInRequired, frame: NullFrame },
+  },
+  {
     path: "/access-denied",
     name: "AccessDenied",
     components: { default: AccessDenied, frame: NullFrame },
+    meta: { requiresAuth: true },
   },
   {
     path: "*",
@@ -226,23 +233,29 @@ function createRouter() {
   });
 
   router.beforeEach((to, from, next) => {
+    const adminRequired = to.matched.some((r) => r.meta.requiresAdmin);
+    const authRequired =
+      adminRequired || to.matched.some((r) => r.meta.requiresAuth);
+
+    if (!(authRequired || adminRequired)) {
+      next();
+      return;
+    }
+
     const auth = useAuthStore(pinia);
 
-    const adminRequired = to.matched.some(
-      (record) => record.meta.requiresAdmin
-    );
+    const isSignedIn = auth.isSignedIn;
+    if (authRequired && !isSignedIn) {
+      next({ name: "SignInRequired" });
+      return;
+    }
+
     const isAdmin = auth.isAdmin;
     if (adminRequired && !isAdmin) {
       next({ name: "AccessDenied" });
       return;
     }
 
-    const authRequired = to.matched.some((record) => record.meta.requiresAuth);
-    const isSignedIn = auth.isSignedIn as boolean;
-    if (authRequired && !isSignedIn) {
-      next({ name: "AccessDenied" });
-      return;
-    }
     next();
   });
 
@@ -256,9 +269,10 @@ function checkAuthForCurrentRoute() {
     (record) => record.meta.requiresAuth
   );
   const auth = useAuthStore(pinia);
-  const signedIn = auth.isSignedIn as boolean;
+  const signedIn = auth.isSignedIn;
+  console.log(router.currentRoute);
   if (authRequired && !signedIn) {
-    router.push("/");
+    router.push({ name: "SignIn" });
   }
 }
 

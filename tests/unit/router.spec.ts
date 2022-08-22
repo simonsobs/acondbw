@@ -67,9 +67,44 @@ describe("router", () => {
     expect(current.path).toBe("/");
   });
 
-  it("requiresAuth", async () => {
+  it("requiresAuth - signed in", async () => {
+    authStore.isSignedIn = true;
+    await router.push("/product/map");
+
+    // sleep so pending to become current
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    const current = router.currentRoute;
+    expect(current.path).toBe("/product/map");
+  });
+
+  it("requiresAuth - not signed in", async () => {
     try {
       await router.push("/product/map");
+    } catch (err) {}
+
+    // sleep so pending to become current
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    const current = router.currentRoute;
+    expect(current.name).toBe("SignInRequired");
+    expect(current.path).toBe("/sign-in-required");
+  });
+
+  it("requiresAdmin - not signed in", async () => {
+    try {
+      await router.push("/admin/log");
+    } catch (err) {}
+
+    const current = router.currentRoute;
+    expect(current.name).toBe("SignInRequired");
+    expect(current.path).toBe("/sign-in-required");
+  });
+
+  it("requiresAdmin - signed in - not admin", async () => {
+    authStore.isSignedIn = true;
+    try {
+      await router.push("/admin/log");
     } catch (err) {}
 
     // sleep so pending to become current
@@ -80,11 +115,28 @@ describe("router", () => {
     expect(current.path).toBe("/access-denied");
   });
 
-  it("requiresAdmin", async () => {
+  it("requiresAdmin - signed in - admin", async () => {
     authStore.isSignedIn = true;
+    authStore.isAdmin = true;
+    await router.push("/admin/log");
+
+    const current = router.currentRoute;
+    expect(current.path).toBe("/admin/log");
+  });
+
+  it("AccessDenied - not signed in", async () => {
     try {
-      await router.push("/admin/log");
+      await router.push({ name: "AccessDenied" });
     } catch (err) {}
+
+    const current = router.currentRoute;
+    expect(current.name).toBe("SignInRequired");
+    expect(current.path).toBe("/sign-in-required");
+  });
+
+  it("AccessDenied - signed in", async () => {
+    authStore.isSignedIn = true;
+    await router.push({ name: "AccessDenied" });
 
     const current = router.currentRoute;
     expect(current.name).toBe("AccessDenied");
