@@ -26,7 +26,7 @@ describe("router", () => {
     moxios.uninstall();
   });
 
-  it("test /", async () => {
+  it("Entry - signed in", async () => {
     authStore.isSignedIn = true;
     try {
       await router.push("/");
@@ -40,7 +40,7 @@ describe("router", () => {
     expect(current.path).toBe("/dashboard");
   });
 
-  it("test / not signed in", async () => {
+  it("Entry - not signed in", async () => {
     await router.push("/");
 
     const current = router.currentRoute;
@@ -48,7 +48,7 @@ describe("router", () => {
     expect(current.path).toBe("/");
   });
 
-  it("test /dashboard", async () => {
+  it("Dashboard - signed in", async () => {
     authStore.isSignedIn = true;
     await router.push("/dashboard");
 
@@ -57,7 +57,7 @@ describe("router", () => {
     expect(current.path).toBe("/dashboard");
   });
 
-  it("test /dashboard not signed in", async () => {
+  it("Dashboard - not signed in", async () => {
     try {
       await router.push("/dashboard");
     } catch (err) {}
@@ -67,7 +67,7 @@ describe("router", () => {
     expect(current.path).toBe("/");
   });
 
-  it("test requiresAuth", async () => {
+  it("requiresAuth", async () => {
     try {
       await router.push("/product/map");
     } catch (err) {}
@@ -80,7 +80,7 @@ describe("router", () => {
     expect(current.path).toBe("/access-denied");
   });
 
-  it("test requiresAdmin", async () => {
+  it("requiresAdmin", async () => {
     authStore.isSignedIn = true;
     try {
       await router.push("/admin/log");
@@ -91,7 +91,7 @@ describe("router", () => {
     expect(current.path).toBe("/access-denied");
   });
 
-  it("test /about", async () => {
+  it("About", async () => {
     await router.push("/about");
 
     const current = router.currentRoute;
@@ -100,7 +100,7 @@ describe("router", () => {
     expect(current.params).toEqual({});
   });
 
-  it("test 404", async () => {
+  it("404", async () => {
     authStore.isSignedIn = true;
     await router.push("/no-such-path");
 
@@ -110,7 +110,7 @@ describe("router", () => {
     expect(current.params).toEqual({ pathMatch: "/no-such-path" });
   });
 
-  it("test /product/map/:name", async () => {
+  it("ProductItem", async () => {
     authStore.isSignedIn = true;
     await router.push("/product/map/map001");
 
@@ -125,7 +125,7 @@ describe("router", () => {
     expect(current.matched[0].props).toEqual({});
   });
 
-  it("test /product/map", async () => {
+  it("ProductList", async () => {
     authStore.isSignedIn = true;
     await router.push("/product/map");
 
