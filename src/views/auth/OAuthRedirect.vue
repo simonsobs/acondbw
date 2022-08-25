@@ -1,14 +1,12 @@
 <template>
-  <v-container fill-height fluid>
-    <v-row align="center" justify="center">
-      <v-progress-circular
-        indeterminate
-        :size="18"
-        :width="3"
-        color="secondary"
-      ></v-progress-circular>
-    </v-row>
-  </v-container>
+  <div class="g-container">
+    <v-progress-circular
+      indeterminate
+      :size="18"
+      :width="3"
+      color="secondary"
+    ></v-progress-circular>
+  </div>
 </template>
 
 <script lang="ts">
@@ -49,3 +47,11 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.g-container {
+  display: grid;
+  height: 100%;
+  place-items: center;
+}
+</style>

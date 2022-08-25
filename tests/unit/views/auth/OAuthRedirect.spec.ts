@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
-import { mount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import OAuthRedirect from "@/views/auth/OAuthRedirect.vue";
@@ -29,7 +29,7 @@ describe("OAuthRedirect.vue", () => {
   const query = { state: state };
 
   function createWrapper() {
-    let wrapper = mount(OAuthRedirect, {
+    let wrapper = shallowMount(OAuthRedirect, {
       localVue,
       router,
       pinia,
