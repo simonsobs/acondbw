@@ -17,28 +17,22 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 
 describe("SignInCard.vue", () => {
-  let localVue: ReturnType<typeof createLocalVue>;
-  let pinia: ReturnType<typeof createTestingPinia>;
-  let vuetify: Vuetify;
-  let router: ReturnType<typeof createRouter>;
   let storeAuth: ReturnType<typeof useAuthStore>;
 
   beforeEach(function () {
     (redirectToGitHubAuthURL as jest.Mock).mockClear();
-    localVue = createLocalVue();
-    localVue.use(PiniaVuePlugin);
-    pinia = createTestingPinia();
-    vuetify = new Vuetify();
-    router = createRouter();
-    storeAuth = useAuthStore();
-    storeAuth.token = "XXXXXXXXXX"; // mock store in "@/src/router/index.ts"
   });
 
   function createWrapper() {
+    const localVue = createLocalVue();
+    localVue.use(PiniaVuePlugin);
+    const pinia = createTestingPinia();
+    storeAuth = useAuthStore();
+    storeAuth.token = "XXXXXXXXXX"; // mock store in "@/src/router/index.ts"
     return mount(SignInCard, {
       localVue,
-      router,
-      vuetify,
+      router: createRouter(),
+      vuetify: new Vuetify(),
       pinia,
     });
   }
@@ -77,8 +71,6 @@ describe("SignInCard.vue", () => {
     expect((storeAuth.clearAuthError as jest.Mock).mock.calls.length).toBe(1);
     expect((redirectToGitHubAuthURL as jest.Mock).mock.calls.length).toBe(1);
     expect(wrapper.vm.loading).toBeFalsy();
-
-    // @ts-ignore
-    expect(router.history.current.name).toBe("SignInError");
+    expect(wrapper.vm.$router.currentRoute.name).toBe("SignInError");
   });
 });
