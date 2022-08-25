@@ -18,39 +18,46 @@ Vue.use(VueRouter);
 
 describe("SignInCard.vue", () => {
   let localVue: ReturnType<typeof createLocalVue>;
+  let pinia: ReturnType<typeof createTestingPinia>;
   let vuetify: Vuetify;
   let router: ReturnType<typeof createRouter>;
-  let wrapper: ReturnType<typeof mount>;
   let storeAuth: ReturnType<typeof useAuthStore>;
 
   beforeEach(function () {
     (redirectToGitHubAuthURL as jest.Mock).mockClear();
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
+    pinia = createTestingPinia();
     vuetify = new Vuetify();
     router = createRouter();
-    wrapper = mount(SignInCard, {
-      localVue,
-      router,
-      vuetify,
-      pinia: createTestingPinia(),
-    });
     storeAuth = useAuthStore();
     storeAuth.token = "XXXXXXXXXX"; // mock store in "@/src/router/index.ts"
   });
 
+  function createWrapper() {
+    return mount(SignInCard, {
+      localVue,
+      router,
+      vuetify,
+      pinia,
+    });
+  }
+
   it("match snapshot", async () => {
+    const wrapper = createWrapper();
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("match snapshot loading", async () => {
+    const wrapper = createWrapper();
     wrapper.setData({ loading: true });
     await Vue.nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("signIn success", async () => {
+    const wrapper = createWrapper();
     await Vue.nextTick();
     wrapper.vm.signIn();
     expect((storeAuth.clearAuthError as jest.Mock).mock.calls.length).toBe(1);
@@ -59,6 +66,7 @@ describe("SignInCard.vue", () => {
   });
 
   it("signIn error", async () => {
+    const wrapper = createWrapper();
     await Vue.nextTick();
     (redirectToGitHubAuthURL as jest.Mock).mockImplementation(() => {
       throw new Error();
