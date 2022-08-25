@@ -7,7 +7,7 @@
     color="secondary"
   ></v-progress-circular>
   <v-card flat v-else>
-    <v-card-title>Sign In</v-card-title>
+    <slot name="title"> <v-card-title>Sign In</v-card-title> </slot>
     <v-card-actions>
       <v-btn block outlined @click="signIn">
         <v-icon left>mdi-github</v-icon>Sign In with GitHub
@@ -17,9 +17,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { v4 as uuidv4 } from "uuid";
-import { Location } from "vue-router";
+import Vue, { PropType } from "vue";
+import { Location, RawLocation } from "vue-router";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
@@ -32,22 +31,40 @@ import {
 
 export default Vue.extend({
   name: "SignInCard",
-  data: () => ({
-    loading: false,
-  }),
+  props: {
+    path: {
+      type: [String, Object] as PropType<RawLocation>,
+      default: () => ({ name: "Dashboard" } as RawLocation),
+    },
+  },
+  data() {
+    return {
+      loading: false,
+      redirect: { name: "Auth" } as Location,
+      scope: "", // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
+    };
+  },
+  computed: {
+    option(): string {
+      // https://stackoverflow.com/a/8084248/7309855
+      const randomString = (Math.random() + 1).toString(36).substring(7);
+      const rawOption = { path: this.path, randomString };
+      return JSON.stringify(rawOption);
+    },
+    rawState(): UnencodedState {
+      return {
+        redirect: this.redirect,
+        option: this.option,
+      };
+    },
+  },
   methods: {
     async signIn() {
       this.loading = true;
       try {
         this.clearAuthError();
-        const callbackRoute: Location = { name: "Auth" };
-        const scope = ""; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-        const rawState: UnencodedState = {
-          redirect: callbackRoute,
-          option: uuidv4(),
-        };
-        const state = encodeAndStoreState(rawState);
-        await redirectToGitHubAuthURL(this.$apollo, scope, state);
+        const state = encodeAndStoreState(this.rawState);
+        await redirectToGitHubAuthURL(this.$apollo, this.scope, state);
       } catch (error) {
         clearState();
         this.$router.push({ name: "SignInError" });
