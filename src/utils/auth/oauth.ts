@@ -8,7 +8,7 @@ const AUTH_STATE = "auth-state";
 
 export interface UnencodedState {
   redirect: Location;
-  randomString: string;
+  option: string;
 }
 
 export function encodeAndStoreState(rawState: UnencodedState) {

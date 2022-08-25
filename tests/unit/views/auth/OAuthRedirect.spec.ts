@@ -23,7 +23,7 @@ describe("OAuthRedirect.vue", () => {
   const callbackRoute = { name: "Auth" };
   const rawState: UnencodedState = {
     redirect: callbackRoute,
-    randomString: "01234567-abcd-efgh-ijkl-mnopqrstuvwx",
+    option: "01234567-abcd-efgh-ijkl-mnopqrstuvwx",
   };
   const state = btoa(JSON.stringify(rawState));
   const query = { state: state };

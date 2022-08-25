@@ -44,7 +44,7 @@ export default Vue.extend({
         const scope = ""; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         const rawState: UnencodedState = {
           redirect: callbackRoute,
-          randomString: uuidv4(),
+          option: uuidv4(),
         };
         const state = encodeAndStoreState(rawState);
         await redirectToGitHubAuthURL(this.$apollo, scope, state);

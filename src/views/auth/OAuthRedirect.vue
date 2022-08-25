@@ -32,7 +32,7 @@ export default Vue.extend({
     // e.g.,
     //   rawState = {
     //     redirect: { name: "Auth" },
-    //     randomString: "XXXXXXXX",
+    //     option: "XXXXXXXX",
     //   };
 
     const redirect = { ...rawState.redirect, query: route.query };
