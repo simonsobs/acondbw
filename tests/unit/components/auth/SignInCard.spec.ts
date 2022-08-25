@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
-import { mount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import SignInCard from "@/components/auth/SignInCard.vue";
@@ -29,7 +29,7 @@ describe("SignInCard.vue", () => {
     const pinia = createTestingPinia();
     storeAuth = useAuthStore();
     storeAuth.token = "XXXXXXXXXX"; // mock store in "@/src/router/index.ts"
-    return mount(SignInCard, {
+    return shallowMount(SignInCard, {
       localVue,
       router: createRouter(),
       vuetify: new Vuetify(),
