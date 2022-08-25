@@ -85,6 +85,18 @@ export default Vue.extend({
   /* #app is to increase CSS specificity */
   word-break: normal;
 }
+
+html,
+body,
+.v-application,
+.v-application--wrap,
+.v-main__wrap {
+  height: 100%;
+}
+
+.v-main {
+  height: calc(100% - 48px); /* 48px: the height of the app bar */
+}
 </style>
 
 <style scoped>
