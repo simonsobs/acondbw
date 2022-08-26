@@ -53,7 +53,7 @@ export default Vue.extend({
     ...mapActions(useAuthStore, ["setRequestAuthError", "signIn"]),
   },
   mounted: async function () {
-    this.main();
+    await this.main();
   },
 });
 </script>
