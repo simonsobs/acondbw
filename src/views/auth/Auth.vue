@@ -15,7 +15,7 @@ import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 
-import { validateState } from "@/utils/auth/oauth";
+import { validateState, decodeState } from "@/utils/auth/oauth";
 
 export default Vue.extend({
   name: "Auth",
@@ -46,8 +46,10 @@ export default Vue.extend({
         this.$router.push({ name: "SignInError" });
         return;
       }
+      const rawState = decodeState(state);
+      const { path } = JSON.parse(rawState.option);
       this.setSnackbarMessage("Signed in");
-      this.$router.push({ name: "Dashboard" });
+      this.$router.push(path);
     },
     ...mapActions(useStore, ["setSnackbarMessage"]),
     ...mapActions(useAuthStore, ["setRequestAuthError", "signIn"]),

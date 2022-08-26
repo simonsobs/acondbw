@@ -32,7 +32,7 @@ function encodeState(rawState: UnencodedState) {
   return btoa(jsonString);
 }
 
-function decodeState(state: string) {
+export function decodeState(state: string) {
   const jsonString = atob(state);
   const rawState: UnencodedState = JSON.parse(jsonString);
   return rawState;
