@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^6.3.95",
-    "@pinia/testing": "^0.0.13",
+    "@pinia/testing": "^0.0.14",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/jest": "^28.1.8",
     "@types/lodash": "^4.14.184",
@@ -54,7 +54,7 @@
     "eslint": "^8.22.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.0.3",
+    "eslint-plugin-vue": "^9.4.0",
     "graphql-tag": "^2.12.6",
     "jest": "^28.1.3",
     "jest-transform-graphql": "^2.1.0",
