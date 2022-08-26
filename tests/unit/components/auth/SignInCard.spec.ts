@@ -35,7 +35,7 @@ describe("SignInCard.vue", () => {
     jest.spyOn(window.Math, "random").mockRestore();
   });
 
-  function createWrapper(propsData = {}) {
+  function createWrapper(propsData = {}): any {
     const localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     const pinia = createTestingPinia();

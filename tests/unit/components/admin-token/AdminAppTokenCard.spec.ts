@@ -1,3 +1,4 @@
+import { jest } from "@jest/globals";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
@@ -20,7 +21,7 @@ describe("AdminAppTokenCard.vue", () => {
   let localVue: ReturnType<typeof createLocalVue>;
   let vuetify: Vuetify;
   let router: ReturnType<typeof createRouter>;
-  let wrapper: ReturnType<typeof mount>;
+  let wrapper: any;
   let storeAuth: ReturnType<typeof useAuthStore>;
 
   beforeEach(function () {
