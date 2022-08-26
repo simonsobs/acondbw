@@ -11,7 +11,7 @@ import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 
 Vue.use(PiniaVuePlugin);
-Vue.use(Vuelidate);
+Vue.use(Vuelidate as any);
 // Vue.use(InstantSearch);
 
 Vue.config.productionTip = false;
