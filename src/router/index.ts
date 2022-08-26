@@ -248,7 +248,7 @@ function createRouter() {
 
     const isSignedIn = auth.isSignedIn;
     if (authRequired && !isSignedIn) {
-      next({ name: "SignInRequired" });
+      next({ name: "SignInRequired", query: { path: to.fullPath } });
       return;
     }
 

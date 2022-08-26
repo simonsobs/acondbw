@@ -84,6 +84,7 @@ describe("router", () => {
     const current = router.currentRoute;
     expect(current.name).toBe("SignInRequired");
     expect(current.path).toBe("/sign-in-required");
+    expect(current.query).toEqual({ path: "/product/map" });
   });
 
   it("requiresAdmin - not signed in", async () => {
@@ -93,6 +94,7 @@ describe("router", () => {
     const current = router.currentRoute;
     expect(current.name).toBe("SignInRequired");
     expect(current.path).toBe("/sign-in-required");
+    expect(current.query).toEqual({ path: "/admin/log" });
   });
 
   it("requiresAdmin - signed in - not admin", async () => {
