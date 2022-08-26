@@ -278,7 +278,7 @@
 <script>
 import _ from "lodash";
 
-import marked from "marked";
+import { marked } from "marked";
 
 import { defaultDataIdFromObject } from "apollo-cache-inmemory";
 
@@ -355,7 +355,7 @@ export default {
         : null;
     },
     note() {
-      return this.node.note ? marked(this.node.note) : null;
+      return this.node.note ? marked.parse(this.node.note) : null;
     },
     relations() {
       if (this.node && this.node.relations.edges.length > 0) {
