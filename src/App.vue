@@ -86,6 +86,10 @@ export default Vue.extend({
   word-break: normal;
 }
 
+#app .markdown-body pre code {
+  background-color: inherit;
+}
+
 html,
 body,
 .v-application,
