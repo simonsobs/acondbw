@@ -1,3 +1,4 @@
+import { jest } from "@jest/globals";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
@@ -16,35 +17,37 @@ Vue.use(VueRouter);
 
 describe("OAuthRedirect.vue", () => {
   let localVue: ReturnType<typeof createLocalVue>;
-  let vuetify: Vuetify;
   let router: ReturnType<typeof createRouter>;
-  let pinia: ReturnType<typeof createTestingPinia>;
 
   const callbackRoute = { name: "Auth" };
   const rawState: UnencodedState = {
     redirect: callbackRoute,
-    option: "01234567-abcd-efgh-ijkl-mnopqrstuvwx",
+    option: JSON.stringify({
+      path: { name: "Dashboard" },
+      randomString: "xjyls",
+    }),
   };
   const state = btoa(JSON.stringify(rawState));
   const query = { state: state };
 
   function createWrapper() {
-    let wrapper = shallowMount(OAuthRedirect, {
+    return shallowMount(OAuthRedirect, {
       localVue,
       router,
-      pinia,
-      vuetify,
+      pinia: createTestingPinia(),
+      vuetify: new Vuetify(),
     });
-    return wrapper;
   }
 
-  beforeEach(function () {
+  beforeEach(() => {
     (validateAndDecodeState as jest.Mock).mockReturnValue(rawState);
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
-    vuetify = new Vuetify();
     router = createRouter();
-    pinia = createTestingPinia();
+  });
+
+  afterEach(() => {
+    (validateAndDecodeState as jest.Mock).mockClear();
   });
 
   it("match snapshot", async () => {
@@ -64,6 +67,6 @@ describe("OAuthRedirect.vue", () => {
     (validateAndDecodeState as jest.Mock).mockReturnValue(null);
     await router.push({ name: "OAuthRedirect", query: query });
     createWrapper();
-    expect(router.currentRoute.path).toBe("/");
+    expect(router.currentRoute.name).toBe("Entry");
   });
 });
