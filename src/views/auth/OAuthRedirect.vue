@@ -18,7 +18,7 @@ export default Vue.extend({
   async mounted() {
     const route = this.$route;
     const router = this.$router;
-    const locationOnError = { path: "/" };
+    const locationOnError = { name: "Entry" };
 
     const state = route.query.state;
 
