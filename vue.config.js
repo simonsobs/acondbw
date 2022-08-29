@@ -1,5 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const fs = require("fs");
 var webpack = require("webpack");
 const packageJson = fs.readFileSync("./package.json");
@@ -15,6 +15,15 @@ module.exports = defineConfig({
         },
       }),
     ],
+    module: {
+      rules: [
+        {
+          test: /\.(graphql|gql)$/,
+          exclude: /node_modules/,
+          loader: "graphql-tag/loader",
+        },
+      ],
+    },
   },
   transpileDependencies: ["vuetify"],
   devServer: { allowedHosts: "all" },

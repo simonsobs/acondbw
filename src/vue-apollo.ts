@@ -1,22 +1,32 @@
+import 'cross-fetch/polyfill'; // https://stackoverflow.com/a/50719360/7309855
 import Vue from "vue";
 import VueApollo from "vue-apollo";
-import {
-  createApolloClient,
-  restartWebsockets,
-} from "vue-cli-plugin-apollo/graphql-client";
+import { ApolloClient } from "apollo-client";
+import { createHttpLink } from "apollo-link-http";
+import { setContext } from "apollo-link-context";
+import { InMemoryCache } from "apollo-cache-inmemory";
 
-require("regenerator-runtime/runtime");
-// https://github.com/facebook/jest/issues/3126#issuecomment-521616378
-
-// Install the vue plugin
 Vue.use(VueApollo);
 
 // Name of the localStorage item
 export const AUTH_TOKEN = "apollo-token";
 
-// Http endpoint
 const httpEndpoint =
   process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4000/graphql";
+
+const httpLink = createHttpLink({
+  uri: httpEndpoint,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem(AUTH_TOKEN);
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
 
 // Files URL root
 export const filesRoot =
@@ -25,45 +35,10 @@ export const filesRoot =
 
 Vue.prototype.$filesRoot = filesRoot;
 
-// Config
-const options = {
-  // You can use `https` for secure connection (recommended in production)
-  httpEndpoint,
-  // You can use `wss` for secure connection (recommended in production)
-  // Use `null` to disable subscriptions
-  // wsEndpoint: process.env.VUE_APP_GRAPHQL_WS || "ws://localhost:4000/graphql",
-  wsEndpoint: null,
-  // LocalStorage token
-  tokenName: AUTH_TOKEN,
-  // Enable Automatic Query persisting with Apollo Engine
-  persisting: false,
-  // Use websockets for everything (no HTTP)
-  // You need to pass a `wsEndpoint` for this to work
-  websocketsOnly: false,
-  // Is being rendered on the server?
-  ssr: false,
-
-  // Override default apollo link
-  // note: don't override httpLink here, specify httpLink options in the
-  // httpLinkOptions property of defaultOptions.
-  // link: myLink
-
-  // Override default cache
-  // cache: myCache
-
-  // Override the way the Authorization header is set
-  // getAuth: (tokenName) => ...
-
-  // Additional ApolloClient options
-  // apollo: { ... }
-
-  // Client local data (see apollo-link-state)
-  // clientState: { resolvers: { ... }, defaults: { ... } }
-};
-
-const { apolloClient, wsClient } = createApolloClient(options);
-
-apolloClient.wsClient = wsClient;
+const apolloClient = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
 
 export { apolloClient };
 
@@ -96,7 +71,7 @@ export async function onLogin(apolloClient, token) {
   if (typeof localStorage !== "undefined" && token) {
     localStorage.setItem(AUTH_TOKEN, token);
   }
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
+  // if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
   try {
     await apolloClient.resetStore();
   } catch (e) {
@@ -110,7 +85,7 @@ export async function onLogout(apolloClient) {
   if (typeof localStorage !== "undefined") {
     localStorage.removeItem(AUTH_TOKEN);
   }
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
+  // if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
   try {
     await apolloClient.resetStore();
   } catch (e) {
