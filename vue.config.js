@@ -1,5 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const fs = require("fs");
 var webpack = require("webpack");
 const packageJson = fs.readFileSync("./package.json");
