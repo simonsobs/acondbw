@@ -4,7 +4,7 @@
     <v-main>
       <transition :name="transitionName" :mode="transitionMode">
         <keep-alive>
-          <router-view :key="$route.fullPath"></router-view>
+          <router-view :key="route.fullPath"></router-view>
         </keep-alive>
       </transition>
     </v-main>
@@ -13,49 +13,55 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState } from "pinia";
+import { defineComponent, ref, computed, watch } from "vue";
+import { useRoute } from "vue-router/composables";
 import { useStore } from "@/stores/main";
+
 import Snackbar from "@/components/layout/Snackbar.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "App",
   components: {
     Snackbar,
   },
-  data: () => ({
-    transitionName: "fade-app-across",
-    transitionMode: "out-in",
-    error: null,
-  }),
-  computed: {
-    title() {
-      return this.webConfig.headTitle || "";
-    },
-    ...mapState(useStore, ["webConfig"]),
-  },
-   watch: {
-    title: {
-      immediate: true,
-      handler(val) {
+  setup() {
+    const store = useStore();
+    const title = computed(() => store.webConfig.headTitle);
+    watch(
+      title,
+      (val) => {
         document.title = val || "loading...";
       },
-    },
-    $route(to, from) {
-      // update the transition effect dynamically
-      // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
+      { immediate: true }
+    );
 
-      const toDir = to.path.split("/")[2]; // e.g., "/product/map/abc-def/" -> "map"
-      const fromDir = from.path.split("/")[2];
+    const transitionName = ref("fade-app-across");
+    const transitionMode = ref("out-in");
+    const route = useRoute();
+    watch(
+      () => route.path,
+      (to, from) => {
+        // update the transition effect dynamically
+        // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
 
-      if (toDir == fromDir) {
-        this.transitionName = "fade-app-within";
-        this.transitionMode = "out-in";
-      } else {
-        this.transitionName = "fade-app-across";
-        this.transitionMode = "out-in";
+        const toDir = to.split("/")[2]; // e.g., "/product/map/abc-def/" -> "map"
+        const fromDir = from.split("/")[2];
+
+        if (toDir === fromDir) {
+          transitionName.value = "fade-app-within";
+          transitionMode.value = "out-in";
+        } else {
+          transitionName.value = "fade-app-across";
+          transitionMode.value = "out-in";
+        }
       }
-    },
+    );
+
+    return {
+      transitionName,
+      transitionMode,
+      route,
+    };
   },
 });
 </script>
