@@ -26,6 +26,7 @@ new Vue({
     this.checkIfSignedIn(this.$apollo);
   },
   computed: {
+    ...mapState(useStore, ["vuetifyTheme"]),
     ...mapState(useAuthStore, ["isSignedIn"]),
   },
   watch: {
@@ -35,6 +36,12 @@ new Vue({
         if (val) return;
         checkAuthForCurrentRoute();
       },
+    },
+    vuetifyTheme(newTheme) {
+      this.$vuetify.theme.themes.light = {
+        ...this.$vuetify.theme.themes.light,
+        ...newTheme,
+      };
     },
   },
   methods: {

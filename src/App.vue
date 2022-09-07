@@ -39,15 +39,9 @@ export default Vue.extend({
     title() {
       return this.webConfig.headTitle || "";
     },
-    ...mapState(useStore, ["webConfig", "vuetifyTheme"]),
+    ...mapState(useStore, ["webConfig"]),
   },
   watch: {
-    vuetifyTheme(newTheme) {
-      this.$vuetify.theme.themes.light = {
-        ...this.$vuetify.theme.themes.light,
-        ...newTheme,
-      };
-    },
     $route(to, from) {
       // update the transition effect dynamically
       // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
