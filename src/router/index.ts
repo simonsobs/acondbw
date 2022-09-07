@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import VueMeta from "vue-meta";
 
 import { default as defaultPinia } from "@/stores";
 import { useAuthStore } from "@/stores/auth";
@@ -56,7 +55,6 @@ const AdminAppTokenError = () =>
   );
 
 Vue.use(VueRouter);
-Vue.use(VueMeta);
 
 let pinia = defaultPinia;
 

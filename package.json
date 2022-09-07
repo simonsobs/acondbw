@@ -32,7 +32,6 @@
     "uuid": "^8.3.2",
     "vue": "^2.7.10",
     "vue-apollo": "^3.1.0",
-    "vue-meta": "^2.4.0",
     "vue-router": "^3.6.4",
     "vuelidate": "^0.7.7",
     "vuetify": "^2.6.9",
