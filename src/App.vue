@@ -14,7 +14,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { MetaInfo } from "vue-meta";
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 import Snackbar from "@/components/layout/Snackbar.vue";
@@ -23,12 +22,6 @@ export default Vue.extend({
   name: "App",
   components: {
     Snackbar,
-  },
-  metaInfo(): MetaInfo {
-    return {
-      title: this.title || "loading...",
-      titleTemplate: "",
-    };
   },
   data: () => ({
     transitionName: "fade-app-across",
@@ -41,7 +34,13 @@ export default Vue.extend({
     },
     ...mapState(useStore, ["webConfig"]),
   },
-  watch: {
+   watch: {
+    title: {
+      immediate: true,
+      handler(val) {
+        document.title = val || "loading...";
+      },
+    },
     $route(to, from) {
       // update the transition effect dynamically
       // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
