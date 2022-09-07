@@ -81,8 +81,5 @@ export default Vue.extend({
     },
     ...mapState(useStore, ["webConfig"]),
   },
-  created() {
-    this.$vuetify.theme.dark = false;
-  },
 });
 </script>
