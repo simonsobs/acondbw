@@ -24,13 +24,13 @@
     <v-spacer></v-spacer>
     <user-menu-button></user-menu-button>
     <!-- <v-spacer></v-spacer>
-    <v-btn icon to="/about">
+    <v-btn icon :to="{ name: 'About' }" class="on-primary--text">
       <v-icon>mdi-information</v-icon>
     </v-btn> -->
 
     <!-- <v-menu left bottom offset-y open-on-hover :close-on-content-click="false">
       <template v-slot:activator="{ on }">
-        <v-btn icon v-on="on">
+        <v-btn icon v-on="on" class="on-primary--text">
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
@@ -58,28 +58,27 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState } from "pinia";
+import { defineComponent, ref, computed } from "vue";
 import { useStore } from "@/stores/main";
 
 import SearchWindow from "@/components/utils/SearchWindow.vue";
 import UserMenuButton from "@/components/auth/UserMenuButton.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "AppBar",
   components: {
     SearchWindow,
     UserMenuButton,
   },
-  data: () => ({
-    // graphiqlUrl: process.env.VUE_APP_GRAPHQL_HTTP,
-    error: null,
-  }),
-  computed: {
-    title() {
-      return this.webConfig.toolbarTitle || "";
-    },
-    ...mapState(useStore, ["webConfig"]),
+  setup() {
+    const store = useStore();
+    const title = computed(() => store.webConfig.toolbarTitle || "");
+    // const graphiqlUrl = ref(process.env.VUE_APP_GRAPHQL_HTTP);
+
+    return {
+      title,
+      // graphiqlUrl,
+    };
   },
 });
 </script>
