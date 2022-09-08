@@ -1,7 +1,7 @@
 import { DollarApollo } from "vue-apollo/types/vue-apollo";
 import _ from "lodash";
 
-import { apolloClient, onLogin, onLogout, AUTH_TOKEN } from "@/vue-apollo";
+import { apolloClient, AUTH_TOKEN } from "@/vue-apollo";
 
 import QUERY_SIGN_IN_INFO from "@/graphql/queries/SignInInfo.gql";
 import QUERY_IS_SIGNED_IN from "@/graphql/queries/IsSignedIn.gql";
@@ -64,7 +64,6 @@ export async function isSignedIn(apolloClient: DollarApollo<any>) {
 }
 
 export async function signOut(apolloClient: DollarApollo<any>) {
-  await onLogout(apolloClient);
   // localStorage.removeItem(AUTH_TOKEN);
   localStorage.clear();
 }
@@ -76,7 +75,6 @@ export async function signIn(
 ) {
   try {
     const token = await exchangeCodeForToken(code, state, apolloClient);
-    await onLogin(apolloClient, token);
     localStorage.setItem(AUTH_TOKEN, token);
     const signInInfo = await getSignInInfo();
     localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
