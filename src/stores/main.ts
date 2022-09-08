@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { Client } from "@urql/vue";
 
 import QUERY_WEB_CONFIG from "@/graphql/queries/WebConfig.gql";
 import MUTATION_SAVE_WEB_CONFIG from "@/graphql/mutations/SaveWebConfig.gql";
@@ -63,9 +64,9 @@ export const useStore = defineStore("main", {
     },
   },
   actions: {
-    async loadWebConfig(apolloClient) {
+    async loadWebConfig(urqlClient: Client) {
       try {
-        const { data } = await apolloClient.query({ query: QUERY_WEB_CONFIG });
+        const { data } = await urqlClient.query(QUERY_WEB_CONFIG, {}).toPromise();
         this.webConfig = JSON.parse(data.webConfig.json);
         this.webConfigLoaded = true;
       } catch (error) {

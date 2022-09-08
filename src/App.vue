@@ -70,7 +70,7 @@ export default defineComponent({
     const authStore = useAuthStore();
 
     onBeforeMount(async () => {
-      await store.loadWebConfig(apolloClient);
+      await store.loadWebConfig(client);
       await authStore.checkIfSignedIn(apolloClient);
     });
 

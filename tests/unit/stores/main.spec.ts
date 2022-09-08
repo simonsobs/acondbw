@@ -23,9 +23,11 @@ describe("Main Store", () => {
     ...sampleVuetifyTheme,
   };
 
-  const mockApolloClient = {
-    query: jest.fn().mockResolvedValue({
-      data: { webConfig: { json: JSON.stringify(sampleWebConfig) } },
+  const mockUrqlClient: any = {
+    query: jest.fn().mockReturnValue({
+      toPromise: jest.fn().mockResolvedValue({
+        data: { webConfig: { json: JSON.stringify(sampleWebConfig) } },
+      }),
     }),
   };
 
@@ -33,7 +35,7 @@ describe("Main Store", () => {
     const store = useStore();
     expect(store.webConfigLoaded).toBe(false);
     expect(store.vuetifyTheme).toEqual({});
-    await store.loadWebConfig(mockApolloClient);
+    await store.loadWebConfig(mockUrqlClient);
     expect(store.webConfigLoaded).toBe(true);
     expect(store.webConfig).toEqual(sampleWebConfig);
     expect(store.vuetifyTheme).toEqual(sampleVuetifyTheme);
