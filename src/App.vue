@@ -17,6 +17,7 @@ import { defineComponent, ref, computed, watch, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
+import { createClient, provideClient } from "@urql/vue";
 import { apolloClient } from "@/vue-apollo";
 import { checkAuthForCurrentRoute } from "@/router";
 import Snackbar from "@/components/layout/Snackbar.vue";
@@ -58,6 +59,13 @@ export default defineComponent({
         }
       }
     );
+
+    const httpEndpoint =
+      process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4000/graphql";
+    const client = createClient({
+      url: httpEndpoint,
+    });
+    provideClient(client);
 
     const authStore = useAuthStore();
 
