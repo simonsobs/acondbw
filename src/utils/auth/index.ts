@@ -65,6 +65,7 @@ export async function isSignedIn(apolloClient: DollarApollo<any>) {
 
 export async function signOut(apolloClient: DollarApollo<any>) {
   await onLogout(apolloClient);
+  // localStorage.removeItem(AUTH_TOKEN);
   localStorage.clear();
 }
 
@@ -76,6 +77,7 @@ export async function signIn(
   try {
     const token = await exchangeCodeForToken(code, state, apolloClient);
     await onLogin(apolloClient, token);
+    localStorage.setItem(AUTH_TOKEN, token);
     const signInInfo = await getSignInInfo();
     localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
     return { token, signInInfo };
