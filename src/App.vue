@@ -13,10 +13,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
-import { useRoute } from "vue-router/composables";
+import { defineComponent, ref, computed, watch, onBeforeMount } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
 import { useStore } from "@/stores/main";
-
+import { useAuthStore } from "@/stores/auth";
+import { apolloClient } from "@/vue-apollo";
+import { checkAuthForCurrentRoute } from "@/router";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
 export default defineComponent({
@@ -55,6 +57,23 @@ export default defineComponent({
           transitionMode.value = "out-in";
         }
       }
+    );
+
+    const authStore = useAuthStore();
+
+    onBeforeMount(async () => {
+      await store.loadWebConfig(apolloClient);
+      await authStore.checkIfSignedIn(apolloClient);
+    });
+
+    const router = useRouter();
+    watch(
+      () => authStore.isSignedIn,
+      async (val) => {
+        if (val) return;
+        await checkAuthForCurrentRoute(router);
+      },
+      { immediate: true }
     );
 
     return {
