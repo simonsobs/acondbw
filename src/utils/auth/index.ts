@@ -1,7 +1,7 @@
 import { DollarApollo } from "vue-apollo/types/vue-apollo";
 import _ from "lodash";
 
-import { apolloClient, AUTH_TOKEN } from "@/vue-apollo";
+import { AUTH_TOKEN } from "@/vue-apollo";
 
 import QUERY_SIGN_IN_INFO from "@/graphql/queries/SignInInfo.gql";
 import QUERY_IS_SIGNED_IN from "@/graphql/queries/IsSignedIn.gql";
@@ -54,7 +54,7 @@ export async function isSignedIn(apolloClient: DollarApollo<any>) {
   try {
     const { data } = await apolloClient.query({ query: QUERY_IS_SIGNED_IN });
     if (data.isSignedIn) {
-      const signInInfo = await getSignInInfo();
+      const signInInfo = await getSignInInfo(apolloClient);
       localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
       return signInInfo;
     }
@@ -76,7 +76,7 @@ export async function signIn(
   try {
     const token = await exchangeCodeForToken(code, state, apolloClient);
     localStorage.setItem(AUTH_TOKEN, token);
-    const signInInfo = await getSignInInfo();
+    const signInInfo = await getSignInInfo(apolloClient);
     localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
     return { token, signInInfo };
   } catch (error) {
@@ -85,7 +85,7 @@ export async function signIn(
   }
 }
 
-export async function getSignInInfo() {
+export async function getSignInInfo(apolloClient: DollarApollo<any>) {
   const { data } = await apolloClient.query({ query: QUERY_SIGN_IN_INFO });
   return _.pick(data, ["isSignedIn", "isAdmin", "gitHubViewer"]);
 }
