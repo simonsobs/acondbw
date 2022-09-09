@@ -15,10 +15,15 @@ import { AUTH_TOKEN } from "@/vue-apollo";
 const httpEndpoint =
   process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4000/graphql";
 
+function readTokenFromLocalStorage() {
+  const tokenJson = localStorage.getItem(AUTH_TOKEN);
+  return tokenJson && (JSON.parse(tokenJson) as string);
+}
+
 const getAuth = async ({ authState }) => {
+  console.log("getAuth(): authState", authState);
   if (!authState) {
-    const tokenJson = localStorage.getItem(AUTH_TOKEN);
-    const token = tokenJson && (JSON.parse(tokenJson) as string);
+    const token = readTokenFromLocalStorage();
     if (token) {
       return { token };
     }
@@ -29,11 +34,18 @@ const getAuth = async ({ authState }) => {
 };
 
 const addAuthToOperation = ({ authState, operation }) => {
-  console.log(authState);
-  console.log(operation);
-  if (!authState || !authState.token) {
-    return operation;
-  }
+  //   if (!authState || !authState.token) {
+  //     return operation;
+  //   }
+
+  // NOTE: Getting the token from localStorage every time for now because it is
+  // not clear how to correctly set up willAuthError() or didAuthError() such
+  // that getAuth() is called after singed in.
+  // https://stackoverflow.com/a/68299597/7309855
+  // An alternative solution is to create a new client when the user signs in.
+  // https://github.com/FormidableLabs/urql/discussions/2246
+  const token = readTokenFromLocalStorage();
+  if (!token) return operation;
 
   const fetchOptions =
     typeof operation.context.fetchOptions === "function"
@@ -46,7 +58,7 @@ const addAuthToOperation = ({ authState, operation }) => {
       ...fetchOptions,
       headers: {
         ...fetchOptions.headers,
-        Authorization: `Bearer "${authState.token}"`,
+        Authorization: `Bearer "${token}"`,
       },
     },
   });
