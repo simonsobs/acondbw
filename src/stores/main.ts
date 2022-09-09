@@ -66,7 +66,8 @@ export const useStore = defineStore("main", {
   actions: {
     async loadWebConfig(urqlClient: Client) {
       try {
-        const { data } = await urqlClient.query(QUERY_WEB_CONFIG, {}).toPromise();
+        const { error, data } = await urqlClient.query(QUERY_WEB_CONFIG, {}).toPromise();
+        if(error) throw error;
         this.webConfig = JSON.parse(data.webConfig.json);
         this.webConfigLoaded = true;
       } catch (error) {

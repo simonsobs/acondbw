@@ -75,9 +75,10 @@ export async function redirectToGitHubAuthURL(
   scope: string,
   state: string
 ) {
-  const { data } = await urqlClient
+  const { error, data } = await urqlClient
     .query(QUERY_GIT_HUB_O_AUTH_APP_INFO, {})
     .toPromise();
+  if(error) throw error;
   const gitHubOAuthAppInfo = data.gitHubOAuthAppInfo;
   const params: RequestParams = {
     response_type: "code",
@@ -99,9 +100,10 @@ export async function exchangeCodeForToken(
   if (!validateState(state)) {
     throw new Error("The state was invalid.");
   }
-  const { data } = await urqlClient
+  const { error, data } = await urqlClient
     .mutation(MUTATE_AUTHENTICATE_WITH_GIT_HUB, { code: code })
     .toPromise();
+  if(error) throw error;
   const authPayload = data.authenticateWithGitHub.authPayload;
   const token = JSON.stringify(authPayload.token);
   return token;
