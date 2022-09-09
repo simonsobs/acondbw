@@ -24,7 +24,7 @@ export default Vue.extend({
   name: "SignOutConfirmation",
   methods: {
     async callSignOut() {
-      await this.signOut(this.$apollo);
+      await this.signOut();
       this.$emit("finished");
       this.setSnackbarMessage("Signed out");
 

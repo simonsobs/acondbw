@@ -18,7 +18,6 @@ import { useRoute, useRouter } from "vue-router/composables";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 import { provideClient } from "@urql/vue";
-import { apolloClient } from "@/vue-apollo";
 import { client as urqlClient } from "@/plugins/urql";
 import { checkAuthForCurrentRoute } from "@/router";
 import Snackbar from "@/components/layout/Snackbar.vue";
@@ -67,7 +66,7 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       await store.loadWebConfig(urqlClient);
-      await authStore.checkIfSignedIn(apolloClient, urqlClient);
+      await authStore.checkIfSignedIn(urqlClient);
     });
 
     const router = useRouter();

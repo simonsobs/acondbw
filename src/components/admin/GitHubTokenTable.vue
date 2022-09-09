@@ -79,6 +79,7 @@ import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
+import { client } from "@/plugins/urql";
 
 import {
   redirectToGitHubAuthURL,
@@ -127,7 +128,7 @@ export default Vue.extend({
           option: uuidv4(),
         };
         const state = encodeAndStoreState(rawState);
-        await redirectToGitHubAuthURL(this.$apollo, scope, state);
+        await redirectToGitHubAuthURL(client, scope, state);
       } catch (error) {
         clearState();
         this.$router.push({ name: "AdminAppTokenError" });

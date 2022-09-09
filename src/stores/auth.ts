@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { DollarApollo } from "vue-apollo/types/vue-apollo";
+import { Client } from "@urql/vue";
 
 import {
   SignInInfo,
@@ -52,29 +52,34 @@ export const useAuthStore = defineStore("auth", {
       this.isSignedIn = false;
       this.isAdmin = false;
     },
-    async checkIfSignedIn(apolloClient) {
+    async checkIfSignedIn(urqlClient: Client) {
       try {
-        const result = await isSignedIn(apolloClient);
+        const result = await isSignedIn(urqlClient);
         if (result) {
           this.setSignInInfo(result);
           return;
         }
       } catch (error) {}
-      this.signOut(apolloClient);
+      this.signOut();
     },
-    async signOut(apolloClient) {
+    async signOut() {
       this.resetSignInInfo();
       this.token = null;
-      await signOut(apolloClient);
+      await signOut();
     },
-    async signIn(code: string, state: string, apolloClient: DollarApollo<any>) {
+    async signIn(
+      code: string,
+      state: string,
+      urqlClient: Client
+    ) {
       this.lastError = null;
       try {
-        const { token, signInInfo } = await signIn(code, state, apolloClient);
+        const { token, signInInfo } = await signIn(code, state, urqlClient);
+        console.log("authStore signIn() signInInfo:", signInInfo)
         this.token = token;
         this.setSignInInfo(signInInfo);
       } catch (error) {
-        this.signOut(apolloClient);
+        this.signOut();
         throw error;
       }
     },

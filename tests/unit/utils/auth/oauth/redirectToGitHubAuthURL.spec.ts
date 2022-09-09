@@ -14,19 +14,21 @@ describe("redirectToGitHubAuthURL", () => {
   // @ts-ignore
   delete window.location;
 
-  let apolloClient;
+  let urqlClient;
 
   beforeEach(() => {
     window.location = { ...locationOrg, assign: jest.fn() };
-    apolloClient = { query: jest.fn() };
+    urqlClient = { query: jest.fn() };
   });
   afterEach(() => {
     window.location = locationOrg;
   });
 
   it("success", async () => {
-    apolloClient.query.mockResolvedValue({ data: { gitHubOAuthAppInfo } });
-    await redirectToGitHubAuthURL(apolloClient, scope, state);
+    (urqlClient.query as jest.Mock).mockReturnValue({
+      toPromise: jest.fn().mockResolvedValue({ data: { gitHubOAuthAppInfo } }),
+    });
+    await redirectToGitHubAuthURL(urqlClient, scope, state);
     expect(window.location.assign).toHaveBeenCalled();
     const lastCall = (window.location.assign as jest.Mock).mock.lastCall;
     const href = lastCall[0];

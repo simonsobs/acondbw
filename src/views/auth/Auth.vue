@@ -14,7 +14,7 @@ import Vue from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
-
+import { client } from "@/plugins/urql";
 import { validateState, decodeState } from "@/utils/auth/oauth";
 
 export default Vue.extend({
@@ -41,7 +41,7 @@ export default Vue.extend({
       }
 
       try {
-        await this.signIn(code, state, this.$apollo);
+        await this.signIn(code, state, client);
       } catch (error) {
         this.$router.push({ name: "SignInError" });
         return;

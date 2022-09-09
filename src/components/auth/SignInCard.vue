@@ -21,6 +21,7 @@ import Vue, { PropType } from "vue";
 import { Location, RawLocation } from "vue-router";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/auth";
+import { client } from "@/plugins/urql";
 
 import {
   redirectToGitHubAuthURL,
@@ -64,7 +65,7 @@ export default Vue.extend({
       try {
         this.clearAuthError();
         const state = encodeAndStoreState(this.rawState);
-        await redirectToGitHubAuthURL(this.$apollo, this.scope, state);
+        await redirectToGitHubAuthURL(client, this.scope, state);
       } catch (error) {
         clearState();
         this.$router.push({ name: "SignInError" });

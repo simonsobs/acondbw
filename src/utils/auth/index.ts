@@ -1,4 +1,4 @@
-import { DollarApollo } from "vue-apollo/types/vue-apollo";
+import { Client } from "@urql/vue";
 import _ from "lodash";
 
 import { AUTH_TOKEN } from "@/vue-apollo";
@@ -50,20 +50,20 @@ export function restoreFromLocalStorage() {
   };
 }
 
-export async function isSignedIn(apolloClient: DollarApollo<any>) {
+export async function isSignedIn(urqlClient: Client) {
   try {
-    const { data } = await apolloClient.query({ query: QUERY_IS_SIGNED_IN });
+    const { data } = await urqlClient.query(QUERY_IS_SIGNED_IN, {}).toPromise();
     if (data.isSignedIn) {
-      const signInInfo = await getSignInInfo(apolloClient);
+      const signInInfo = await getSignInInfo(urqlClient);
       localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
       return signInInfo;
     }
   } catch {}
-  await signOut(apolloClient);
+  await signOut();
   return false;
 }
 
-export async function signOut(apolloClient: DollarApollo<any>) {
+export async function signOut() {
   // localStorage.removeItem(AUTH_TOKEN);
   localStorage.clear();
 }
@@ -71,21 +71,21 @@ export async function signOut(apolloClient: DollarApollo<any>) {
 export async function signIn(
   code: string,
   state: string,
-  apolloClient: DollarApollo<any>
+  urqlClient: Client
 ) {
   try {
-    const token = await exchangeCodeForToken(code, state, apolloClient);
+    const token = await exchangeCodeForToken(code, state, urqlClient);
     localStorage.setItem(AUTH_TOKEN, token);
-    const signInInfo = await getSignInInfo(apolloClient);
+    const signInInfo = await getSignInInfo(urqlClient);
     localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
     return { token, signInInfo };
   } catch (error) {
-    await signOut(apolloClient);
+    await signOut();
     throw error;
   }
 }
 
-export async function getSignInInfo(apolloClient: DollarApollo<any>) {
-  const { data } = await apolloClient.query({ query: QUERY_SIGN_IN_INFO });
+export async function getSignInInfo(urqlClient: Client) {
+  const { data } = await urqlClient.query(QUERY_SIGN_IN_INFO, {}).toPromise();
   return _.pick(data, ["isSignedIn", "isAdmin", "gitHubViewer"]);
 }
