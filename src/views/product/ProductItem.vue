@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -77,7 +77,7 @@ import ProductItemCard from "@/components/product/ProductItemCard.vue";
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductItem",
   components: {
     ProductItemCard,

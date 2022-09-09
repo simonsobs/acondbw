@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -53,7 +53,7 @@ import DELETE_PRODUCT from "@/graphql/mutations/DeleteProduct.gql";
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductDeleteForm",
   components: {
     DevToolLoadingStateOverridingMenu,

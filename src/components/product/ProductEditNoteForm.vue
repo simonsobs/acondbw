@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -62,7 +62,7 @@ import marked from "marked";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductEditNoteForm",
   props: {
     node: Object,

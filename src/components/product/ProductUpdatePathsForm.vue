@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -52,7 +52,7 @@ function composeInputPaths(text) {
     .filter((v, i, a) => a.indexOf(v) === i); // unique
 }
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductUpdatePathsForm",
   props: {
     node: Object,

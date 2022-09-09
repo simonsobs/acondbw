@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -33,7 +33,7 @@ import _ from "lodash";
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 import FormRelations from "./FormRelations.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductUpdateRelationsForm",
   components: {
     FormRelations,

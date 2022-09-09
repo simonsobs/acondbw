@@ -82,7 +82,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -93,7 +93,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductTop",
   components: {
     DevToolLoadingStateOverridingMenu,

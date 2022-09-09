@@ -192,7 +192,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -204,7 +204,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
 import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductList",
   components: {
     ProductItemCard,

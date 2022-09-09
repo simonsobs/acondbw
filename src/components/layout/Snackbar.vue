@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState, mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
-export default Vue.extend({
+export default defineComponent({
   name: "Snackbar",
   computed: {
     ...mapState(useStore, ["snackbar", "snackbarMessage"]),

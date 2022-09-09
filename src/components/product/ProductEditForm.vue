@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -43,7 +43,7 @@ import { camelCase } from "camel-case";
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 import FormStart from "./FormStart.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductEditForm",
   components: {
     FormStart,

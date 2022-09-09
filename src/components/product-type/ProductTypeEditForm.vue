@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -36,7 +36,7 @@ import UPDATE_PRODUCT_TYPE from "@/graphql/mutations/UpdateProductType.gql";
 
 import FormProductType from "./FormProductType.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductTypeEditForm",
   components: { FormProductType },
   props: {

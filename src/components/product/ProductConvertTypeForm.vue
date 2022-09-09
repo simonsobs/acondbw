@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -41,7 +41,7 @@ import CONVERT_PRODUCT_TYPE from "@/graphql/mutations/ConvertProductType.gql";
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import PRODUCT_TYPE from "@/graphql/queries/ProductType.gql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductConvertTypeForm",
   props: {
     node: Object,

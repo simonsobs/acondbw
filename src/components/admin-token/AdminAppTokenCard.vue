@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/auth";
@@ -30,7 +30,7 @@ import {
   UnencodedState,
 } from "@/utils/auth/oauth";
 
-export default Vue.extend({
+export default defineComponent({
   name: "AdminAppTokenCard",
   data: () => ({
     loading: false,

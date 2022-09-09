@@ -93,7 +93,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -110,7 +110,7 @@ import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductAddForm",
   components: {
     ProductAddFormStepStart,

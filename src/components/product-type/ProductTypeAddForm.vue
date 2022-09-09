@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -52,7 +52,7 @@ import FormProductType from "./FormProductType.vue";
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductTypeAddForm",
   components: {
     FormProductType,

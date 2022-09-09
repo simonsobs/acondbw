@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -65,7 +65,7 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
   return true;
 }
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductChangeNameForm",
   props: {
     node: Object,

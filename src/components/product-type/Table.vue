@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -54,7 +54,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductTypeTable",
   components: {
     DevToolLoadingStateOverridingMenu,

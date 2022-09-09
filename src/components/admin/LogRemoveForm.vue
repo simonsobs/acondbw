@@ -16,13 +16,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
 import DELETE_LOG from "@/graphql/mutations/DeleteLog.gql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "LogRemoveForm",
   props: {
     id_: Number,

@@ -29,12 +29,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import GitHubTokenTable from "@/components/admin/GitHubTokenTable.vue";
 import GitHubOrgTable from "@/components/admin/GitHubOrgTable.vue";
 import GitHubUserTable from "@/components/admin/GitHubUserTable.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "User",
   components: {
     GitHubTokenTable,

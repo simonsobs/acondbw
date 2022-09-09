@@ -18,13 +18,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
 import DELETE_PRODUCT_TYPE from "@/graphql/mutations/DeleteProductType.gql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductTypeDeleteForm",
   props: {
     node: Object,

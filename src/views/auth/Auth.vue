@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 import { client } from "@/plugins/urql";
 import { validateState, decodeState } from "@/utils/auth/oauth";
 
-export default Vue.extend({
+export default defineComponent({
   name: "Auth",
   data: () => ({}),
   methods: {

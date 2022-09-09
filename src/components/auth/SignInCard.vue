@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import { defineComponent, PropType } from "vue";
 import { Location, RawLocation } from "vue-router";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/auth";
@@ -30,7 +30,7 @@ import {
   UnencodedState,
 } from "@/utils/auth/oauth";
 
-export default Vue.extend({
+export default defineComponent({
   name: "SignInCard",
   props: {
     path: {

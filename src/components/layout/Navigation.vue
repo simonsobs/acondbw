@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -88,7 +88,7 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "Navigation",
   components: {
     DevToolLoadingStateOverridingMenu,

@@ -37,13 +37,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
 import State from "@/utils/LoadingState";
 
-export default Vue.extend({
+export default defineComponent({
   name: "DevToolLoadingStateOverridingMenu",
   props: ["value"], // for v-model
   data() {

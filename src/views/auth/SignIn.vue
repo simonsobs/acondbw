@@ -7,10 +7,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import SignInCard from "@/components/auth/SignInCard.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "SignIn",
   components: {
     SignInCard,

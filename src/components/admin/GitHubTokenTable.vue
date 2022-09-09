@@ -74,7 +74,7 @@
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
@@ -91,7 +91,7 @@ import {
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
 import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "GitHubTokenTable",
   data: () => ({
     allGitHubTokens: null as null | any,

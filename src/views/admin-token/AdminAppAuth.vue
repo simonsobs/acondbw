@@ -12,13 +12,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
 import { storeAdminAppToken } from "@/utils/admin-token";
 
-export default Vue.extend({
+export default defineComponent({
   name: "AdminAppAuth",
   data: () => ({}),
   methods: {
