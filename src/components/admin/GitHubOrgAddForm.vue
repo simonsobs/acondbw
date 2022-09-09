@@ -36,6 +36,8 @@ import { useStore } from "@/stores/main";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
+import { client } from "@/plugins/urql";
+
 import ADD_GITHUB_ORG from "@/graphql/mutations/AddGitHubOrg.gql";
 
 export default defineComponent({
@@ -75,10 +77,10 @@ export default defineComponent({
     },
     async add() {
       try {
-        const { data } = await this.$apollo.mutate({
-          mutation: ADD_GITHUB_ORG,
-          variables: { login: this.login },
-        });
+        const result = await client
+          .mutation(ADD_GITHUB_ORG, { login: this.login })
+          .toPromise();
+        if (result.error) throw result.error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Added");
         this.$emit("finished");
