@@ -4,13 +4,11 @@ import App from "./App.vue";
 import { createRouter } from "./router";
 import vuetify from "./plugins/vuetify";
 import { apolloProvider } from "./vue-apollo";
-import Vuelidate from "vuelidate";
 // import InstantSearch from "vue-instantsearch";
 import pinia from "@/stores";
 import { useStore } from "@/stores/main";
 
 Vue.use(PiniaVuePlugin);
-Vue.use(Vuelidate as any);
 // Vue.use(InstantSearch);
 
 Vue.config.productionTip = false;

@@ -11,9 +11,9 @@
             :hint="`Name of the ${productType.singular}.`"
             persistent-hint
             :error-messages="nameErrors"
-            :value="$v.form.name.$model"
-            @input="debounceInput($v.form.name, $event)"
-            @blur="$v.form.name.$touch()"
+            :value="v$.form.name.$model"
+            @input="debounceInput(v$.form.name, $event)"
+            @blur="v$.form.name.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="3" cols="12" md="10">
@@ -23,7 +23,7 @@
             required
             :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06.`"
             persistent-hint
-            v-model="$v.form.dateProduced.$model"
+            v-model="v$.form.dateProduced.$model"
             :error-messages="dateProducedErrors"
           ></v-text-field-with-date-picker>
         </v-col>
@@ -34,7 +34,7 @@
             required
             :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx.`"
             persistent-hint
-            v-model="$v.form.producedBy.$model"
+            v-model="v$.form.producedBy.$model"
             :error-messages="producedByErrors"
           ></v-text-field>
         </v-col>
@@ -45,7 +45,7 @@
             required
             :hint="`A person or group that can be contacted for questions or issues about the ${productType.singular}.`"
             persistent-hint
-            v-model="$v.form.contact.$model"
+            v-model="v$.form.contact.$model"
             :error-messages="contactErrors"
           ></v-text-field>
         </v-col>
@@ -58,7 +58,7 @@
             hint="A path per line. e.g., nersc:/go/to/my/product_v3. Note that pahts are an unordered set; they will not be always displayed in the order entered here."
             rows="4"
             persistent-hint
-            v-model="$v.form.paths.$model"
+            v-model="v$.form.paths.$model"
           ></v-textarea>
         </v-col>
         <v-col cols="12" md="10" class="mt-4">
@@ -79,7 +79,7 @@
                 outlined
                 label="Note will be parsed as Markdown"
                 rows="5"
-                v-model="$v.form.note.$model"
+                v-model="v$.form.note.$model"
               ></v-textarea>
             </v-tab-item>
             <v-tab-item
@@ -99,7 +99,7 @@
       <v-spacer></v-spacer>
       <v-btn
         color="secondary"
-        :disabled="!$v.form.$anyDirty"
+        :disabled="!v$.form.$anyDirty"
         text
         @click="reset"
       >
@@ -109,12 +109,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import _ from "lodash";
 import marked from "marked";
 import gql from "graphql-tag";
 
-import { required, maxLength, email } from "vuelidate/lib/validators";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
@@ -151,10 +153,13 @@ function parsableAsDate(value) {
   return true;
 }
 
-export default {
+export default defineComponent({
   name: "FormStart",
   components: {
     VTextFieldWithDatePicker,
+  },
+  setup() {
+    return { v$: useVuelidate() };
   },
   props: {
     value: Object,
@@ -209,7 +214,7 @@ export default {
   computed: {
     nameErrors() {
       const errors = [];
-      const field = this.$v.form.name;
+      const field = this.v$.form.name;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       !field.unique &&
@@ -218,7 +223,7 @@ export default {
     },
     dateProducedErrors() {
       const errors = [];
-      const field = this.$v.form.dateProduced;
+      const field = this.v$.form.dateProduced;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       !field.parsableAsDate &&
@@ -227,14 +232,14 @@ export default {
     },
     producedByErrors() {
       const errors = [];
-      const field = this.$v.form.producedBy;
+      const field = this.v$.form.producedBy;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       return errors;
     },
     contactErrors() {
       const errors = [];
-      const field = this.$v.form.contact;
+      const field = this.v$.form.contact;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       return errors;
@@ -245,7 +250,7 @@ export default {
         : "<em>Nothing to preview</em>";
     },
     valid() {
-      return !this.$v.$invalid;
+      return !this.v$.$invalid;
     },
   },
   watch: {
@@ -258,7 +263,7 @@ export default {
     },
     form: {
       handler() {
-        // if (this.$v.$invalid) return;
+        // if (this.v$.$invalid) return;
         this.$emit("input", { ...this.form });
       },
       deep: true,
@@ -281,8 +286,8 @@ export default {
       this.error = null;
       this.tabNote = null;
       this.form = { ...this.formReset };
-      this.$v.$reset();
+      this.v$.$reset();
     },
   },
-};
+});
 </script>

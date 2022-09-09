@@ -9,7 +9,7 @@
             required
             :hint="pluralHint"
             persistent-hint
-            v-model="$v.form.plural.$model"
+            v-model="v$.form.plural.$model"
             :error-messages="pluralErrors"
           ></v-text-field>
         </v-col>
@@ -21,8 +21,8 @@
                   label="Indefinite article for singular"
                   id="radio-group-indef-article"
                   class="mt-0"
-                  :value="$v.form.indefArticle.$model"
-                  @change="fixForEmptyString($v.form.indefArticle, $event)"
+                  :value="v$.form.indefArticle.$model"
+                  @change="fixForEmptyString(v$.form.indefArticle, $event)"
                   :hint="indefArticleHint"
                   persistent-hint
                   row
@@ -42,8 +42,8 @@
                   required
                   :hint="singularHint"
                   persistent-hint
-                  :prefix="$v.form.indefArticle.$model"
-                  v-model="$v.form.singular.$model"
+                  :prefix="v$.form.indefArticle.$model"
+                  v-model="v$.form.singular.$model"
                   :error-messages="singularErrors"
                 ></v-text-field>
               </v-col>
@@ -57,7 +57,7 @@
             required
             :hint="nameHint"
             persistent-hint
-            v-model="$v.form.name.$model"
+            v-model="v$.form.name.$model"
             :error-messages="nameErrors"
           >
             <template v-slot:message="{ message }">
@@ -72,8 +72,8 @@
             :items="iconItems"
             :hint="iconHint"
             persistent-hint
-            v-model="$v.form.icon.$model"
-            :prepend-icon="$v.form.icon.$model"
+            v-model="v$.form.icon.$model"
+            :prepend-icon="v$.form.icon.$model"
           >
             <template v-slot:item="data">
               <v-icon class="me-3"> {{ data.item }} </v-icon>
@@ -90,7 +90,7 @@
             label="Order"
             :hint="orderHint"
             persistent-hint
-            v-model="$v.form.order.$model"
+            v-model="v$.form.order.$model"
             :error-messages="orderErrors"
           ></v-text-field>
         </v-col>
@@ -99,7 +99,7 @@
         <v-spacer></v-spacer>
         <v-btn
           color="secondary"
-          :disabled="!$v.form.$anyDirty"
+          :disabled="!v$.form.$anyDirty"
           text
           @click="reset"
         >
@@ -110,17 +110,22 @@
   </div>
 </template>
 
-<script>
-import { required, integer } from "vuelidate/lib/validators";
+<script lang="ts">
+import { defineComponent } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, integer } from "@vuelidate/validators";
 
 import { mdIcons } from "@/utils/md-icons";
 
 const iconItems = mdIcons.map(({ name }) => `mdi-${name}`);
 
-export default {
+export default defineComponent({
   name: "FormProductType",
   props: {
     value: Object,
+  },
+  setup() {
+    return { v$: useVuelidate() };
   },
   data() {
     const formDefault = {
@@ -179,35 +184,35 @@ export default {
   },
   computed: {
     nameErrors() {
-      const field = this.$v.form.name;
+      const field = this.v$.form.name;
       const errors = [];
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       return errors;
     },
     singularErrors() {
-      const field = this.$v.form.singular;
+      const field = this.v$.form.singular;
       const errors = [];
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       return errors;
     },
     pluralErrors() {
-      const field = this.$v.form.plural;
+      const field = this.v$.form.plural;
       const errors = [];
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       return errors;
     },
     orderErrors() {
-      const field = this.$v.form.order;
+      const field = this.v$.form.order;
       const errors = [];
       if (!field.$dirty) return errors;
       !field.integer && errors.push("Must be an integer value");
       return errors;
     },
     valid() {
-      return !this.$v.$invalid;
+      return !this.v$.$invalid;
     },
   },
   watch: {
@@ -220,7 +225,7 @@ export default {
     },
     form: {
       handler() {
-        // if (this.$v.$invalid) return;
+        // if (this.v$.$invalid) return;
         this.$emit("input", { ...this.form });
       },
       deep: true,
@@ -247,10 +252,10 @@ export default {
     },
     reset() {
       this.form = { ...this.formReset };
-      this.$v.$reset();
+      this.v$.$reset();
     },
   },
-};
+});
 </script>
 
 <style>
