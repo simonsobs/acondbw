@@ -36,7 +36,7 @@ export default Vue.extend({
 
       const code = this.$route.query.code;
       if (!(typeof code === "string" && code)) {
-        this.$router.push({ path: "/" });
+        this.$router.push({ name: "Entry" });
         return;
       }
 
@@ -49,7 +49,7 @@ export default Vue.extend({
       const rawState = decodeState(state);
       const { path } = JSON.parse(rawState.option);
       this.setSnackbarMessage("Signed in");
-      this.$router.push(path);
+      await this.$router.push(path);
     },
     ...mapActions(useStore, ["setSnackbarMessage"]),
     ...mapActions(useAuthStore, ["setRequestAuthError", "signIn"]),
