@@ -48,7 +48,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 // The original implementation based on the example
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
@@ -58,14 +59,48 @@ import ALL_GIT_HUB_ORGS from "@/graphql/queries/AllGitHubOrgs.gql";
 import GitHubOrgAddForm from "./GitHubOrgAddForm.vue";
 import GitHubOrgRemoveForm from "./GitHubOrgRemoveForm.vue";
 
-export default {
+interface GitHubUser {
+  login: string;
+}
+
+interface GitHubOrgMembership {
+  member: GitHubUser;
+}
+
+interface GitHubOrgMembershipEdge {
+  node: GitHubOrgMembership;
+}
+
+interface GitHubOrgMembershipConnection {
+  totalCount: number;
+  edges: GitHubOrgMembershipEdge[];
+}
+
+interface GitHubOrg {
+  login: string;
+  avatarUrl?: string;
+  url?: string;
+  members: GitHubOrgMembershipConnection;
+}
+
+interface GitHubOrgEdge {
+  node: GitHubOrg;
+}
+
+interface GitHubOrgConnection {
+  totalCount: number;
+  edges: GitHubOrgEdge[];
+}
+
+export default defineComponent({
   name: "GitHubOrgTable",
   components: {
     GitHubOrgAddForm,
     GitHubOrgRemoveForm,
   },
+  setup() {},
   data: () => ({
-    allGitHubOrgs: null,
+    allGitHubOrgs: null as GitHubOrgConnection | null,
     allGitHubOrgsHeaders: [
       { text: "", value: "node.avatarUrl", align: "start" },
       { text: "Org", value: "node.login" },
@@ -74,7 +109,7 @@ export default {
     ],
     dialogAdd: false,
     dialogRemove: false,
-    removeLogin: null,
+    removeLogin: null as string | null,
     alert: false,
     error: null,
   }),
@@ -108,6 +143,7 @@ export default {
       });
     },
     openRemoveForm(item) {
+      if (!this.allGitHubOrgs) return;
       const index = this.allGitHubOrgs.edges.indexOf(item);
       this.removeLogin = this.allGitHubOrgs.edges[index].node.login;
       this.dialogRemove = true;
@@ -123,5 +159,5 @@ export default {
       }
     },
   },
-};
+});
 </script>
