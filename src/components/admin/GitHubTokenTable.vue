@@ -74,12 +74,12 @@
 // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
-import { defineComponent } from "vue"
+import { defineComponent, ref, watch, nextTick } from "vue";
+import { useRouter } from "vue-router/composables";
 import { v4 as uuidv4 } from "uuid";
-import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
-import { client } from "@/plugins/urql";
+import { useQuery, useMutation, useClientHandle } from "@urql/vue";
 
 import {
   redirectToGitHubAuthURL,
@@ -91,36 +91,65 @@ import {
 import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
 import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
 
+interface GitHubUser {
+  login: string;
+  avatarUrl?: string;
+  url?: string;
+}
+
+interface GitHubToken {
+  tokenId: string;
+  tokenMasked: string;
+  scope: string;
+  timeCreated: string;
+  user: GitHubUser;
+}
+
+interface GitHubTokenEdge {
+  node: GitHubToken;
+}
+
+interface GitHubTokenConnection {
+  totalCount: number;
+  edges: GitHubTokenEdge[];
+}
+
 export default defineComponent({
   name: "GitHubTokenTable",
-  data: () => ({
-    allGitHubTokens: null as null | any,
-    allGitHubTokensHeaders: [
+  setup() {
+    const router = useRouter();
+    const store = useStore();
+    const authStore = useAuthStore();
+    const clientHandle = useClientHandle();
+    const alert = ref(false);
+    const error = ref<any>(null);
+
+    const allGitHubTokens = ref<GitHubTokenConnection | null>(null);
+    const query = useQuery<{ allGitHubTokens: GitHubTokenConnection }>({
+      query: ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS,
+    });
+    watch(query.data, (data) => {
+      if (data) {
+        allGitHubTokens.value = data.allGitHubTokens;
+      }
+    });
+
+    const allGitHubTokensHeaders = ref([
       { text: "", value: "node.user.avatarUrl", align: "start" },
       { text: "User", value: "node.user.login" },
       { text: "Token", value: "node.tokenMasked" },
       { text: "Scope", value: "node.scope" },
       { text: "Created at", value: "node.timeCreated" },
       { text: "", value: "actions", sortable: false, align: "end" },
-    ],
-    dialogAdd: false,
-    dialogDelete: false,
-    deleteTokenId: null,
-    alert: false,
-    error: null as any,
-  }),
-  apollo: {
-    allGitHubTokens: {
-      query: ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS,
-    },
-  },
-  methods: {
-    closeAdd() {
-      this.dialogAdd = false;
-    },
-    async requestAuth() {
+    ]);
+
+    const dialogAdd = ref(false);
+    function closeAdd() {
+      dialogAdd.value = false;
+    }
+    async function requestAuth() {
       try {
-        this.clearAuthError();
+        authStore.clearAuthError();
         const callbackRoute = { name: "AdminAppAuth" };
         const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
         const rawState: UnencodedState = {
@@ -128,51 +157,68 @@ export default defineComponent({
           option: uuidv4(),
         };
         const state = encodeAndStoreState(rawState);
-        await redirectToGitHubAuthURL(client, scope, state);
+        await redirectToGitHubAuthURL(clientHandle.client, scope, state);
       } catch (error) {
         clearState();
-        this.$router.push({ name: "AdminAppTokenError" });
-        this.closeAdd();
+        router.push({ name: "AdminAppTokenError" });
+        closeAdd();
       }
-    },
-    deleteToken(item) {
-      if (!this.allGitHubTokens) return;
-      const index = this.allGitHubTokens.edges.indexOf(item);
-      this.deleteTokenId = this.allGitHubTokens.edges[index].node.tokenId;
-      this.dialogDelete = true;
-    },
-    async deleteItemConfirm() {
-      try {
-        const { data } = await this.$apollo.mutate({
-          mutation: DELETE_GITHUB_TOKEN,
-          variables: { tokenId: this.deleteTokenId },
-        });
-        this.$apollo.queries.allGitHubTokens.refetch();
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Deleted");
-      } catch (error) {
-        this.error = error;
-      }
-      this.closeDelete();
-    },
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.deleteTokenId = null;
+    }
+
+    const dialogDelete = ref(false);
+    const deleteTokenId = ref<string | null>(null);
+    function deleteToken(item) {
+      if (!allGitHubTokens.value) return;
+      const index = allGitHubTokens.value.edges.indexOf(item);
+      deleteTokenId.value = allGitHubTokens.value.edges[index].node.tokenId;
+      dialogDelete.value = true;
+    }
+    function closeDelete() {
+      dialogDelete.value = false;
+      nextTick(() => {
+        deleteTokenId.value = null;
       });
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
-    ...mapActions(useAuthStore, ["clearAuthError"]),
-  },
-  watch: {
-    error: function (val, oldVal) {
-      this.alert = val ? true : false;
-    },
-    alert: function (val, oldVal) {
-      if (!val) {
-        this.error = null;
+    }
+    const { executeMutation } = useMutation(DELETE_GITHUB_TOKEN);
+    async function deleteItemConfirm() {
+      try {
+        const { error } = await executeMutation({
+          tokenId: deleteTokenId.value,
+        });
+        if (error) throw error;
+        query.executeQuery({ requestPolicy: "network-only" });
+        store.apolloMutationCalled();
+        store.setSnackbarMessage("Deleted");
+      } catch (e) {
+        error.value = e;
       }
-    },
+      closeDelete();
+    }
+
+    watch(error, (val, oldVal) => {
+      alert.value = val ? true : false;
+    });
+
+    watch(alert, (val, oldVal) => {
+      if (!val) {
+        error.value = null;
+      }
+    });
+
+    return {
+      alert,
+      error,
+      allGitHubTokens,
+      allGitHubTokensHeaders,
+      dialogAdd,
+      closeAdd,
+      requestAuth,
+      dialogDelete,
+      deleteTokenId,
+      deleteToken,
+      closeDelete,
+      deleteItemConfirm,
+    };
   },
 });
 </script>
