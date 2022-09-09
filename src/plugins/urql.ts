@@ -21,7 +21,6 @@ function readTokenFromLocalStorage() {
 }
 
 const getAuth = async ({ authState }) => {
-  console.log("getAuth(): authState", authState);
   if (!authState) {
     const token = readTokenFromLocalStorage();
     if (token) {
