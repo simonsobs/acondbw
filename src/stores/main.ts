@@ -77,12 +77,14 @@ export const useStore = defineStore("main", {
     setWebConfig(webConfig: WebConfig) {
       this.webConfig = webConfig;
     },
-    async uploadWebConfig(apolloClient) {
+    async uploadWebConfig(urqlClient: Client) {
       try {
-        const { data } = await apolloClient.mutate({
-          mutation: MUTATION_SAVE_WEB_CONFIG,
-          variables: { json: JSON.stringify(this.webConfig) },
-        });
+        const { error, data } = await urqlClient
+          .mutation(MUTATION_SAVE_WEB_CONFIG, {
+            json: JSON.stringify(this.webConfig),
+          })
+          .toPromise();
+        if (error) throw error;
       } catch (e) {
         // console.error(e);
       }

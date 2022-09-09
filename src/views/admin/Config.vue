@@ -81,6 +81,7 @@
 import { defineComponent } from "vue"
 import { mapState, mapActions } from "pinia";
 import { useStore } from "@/stores/main";
+import { client } from "@/plugins/urql";
 
 export default defineComponent({
   name: "Config",
@@ -160,7 +161,7 @@ export default defineComponent({
       this.error = null;
     },
     saveToServer() {
-      this.uploadWebConfig(this.$apollo);
+      this.uploadWebConfig(client);
       this.copyOriginal();
     },
     save(item) {
