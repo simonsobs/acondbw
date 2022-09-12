@@ -141,7 +141,7 @@ export default defineComponent({
       }
     );
     watch(devtoolState, (val) => {
-      if(val) init.value = val === State.INIT
+      if (val) init.value = val === State.INIT;
       error.value = val === State.ERROR ? "Error from Dev Tools" : null;
     });
 
@@ -161,10 +161,10 @@ export default defineComponent({
     const addDialog = ref(false);
 
     function onAddFormCancelled() {
-      closeAddForm()
+      closeAddForm();
     }
     function onAddFormFinished() {
-      closeAddForm()
+      closeAddForm();
     }
     function closeAddForm() {
       addDialog.value = false;
@@ -184,7 +184,7 @@ export default defineComponent({
       onAddFormCancelled,
       onAddFormFinished,
       closeAddForm,
-      appVersion: store.appVersion
+      appVersion: store.appVersion,
     };
   },
 });
