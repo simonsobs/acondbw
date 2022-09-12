@@ -6,6 +6,7 @@ import {
   makeOperation,
 } from "@urql/vue";
 import { authExchange } from "@urql/exchange-auth";
+import { devtoolsExchange } from '@urql/devtools';
 
 import { AUTH_TOKEN } from "@/vue-apollo";
 
@@ -66,6 +67,7 @@ const addAuthToOperation = ({ authState, operation }) => {
 const client = createClient({
   url: httpEndpoint,
   exchanges: [
+    devtoolsExchange,
     dedupExchange,
     cacheExchange,
     authExchange({ getAuth, addAuthToOperation }),
