@@ -37,33 +37,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapState } from "pinia";
+import { defineComponent, ref, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
 
 import State from "@/utils/LoadingState";
 
 export default defineComponent({
   name: "DevToolLoadingStateOverridingMenu",
-  props: ["value"], // for v-model
-  data() {
+  props: { value: Number }, // for v-model
+  setup(prop, { emit }) {
+    const store = useStore();
+    const enabled = computed(() => store.webConfig.devtoolLoadingstate);
+    const state = ref<number | null>(null);
+    watch(state, (s) => {
+      emit("state", s);
+      emit("input", s); // for v-model
+    });
     return {
-      state: null as number | null,
-      State: State,
-      error: null,
+      enabled,
+      state,
+      State,
     };
-  },
-  computed: {
-    enabled() {
-      return this.webConfig.devtoolLoadingstate || false;
-    },
-    ...mapState(useStore, ["webConfig"]),
-  },
-  watch: {
-    state: function (s) {
-      this.$emit("state", s);
-      this.$emit("input", s); // for v-model
-    },
   },
 });
 </script>
