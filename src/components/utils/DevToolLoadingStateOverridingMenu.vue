@@ -27,7 +27,7 @@
           <v-list-item :value="State.NONE">
             <v-list-item-title>None</v-list-item-title>
           </v-list-item>
-          <v-list-item value="off">
+          <v-list-item :value="null">
             <v-list-item-title>Off</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
@@ -48,7 +48,7 @@ export default defineComponent({
   props: ["value"], // for v-model
   data() {
     return {
-      state: "off",
+      state: null as number | null,
       State: State,
       error: null,
     };
@@ -60,8 +60,7 @@ export default defineComponent({
     ...mapState(useStore, ["webConfig"]),
   },
   watch: {
-    state: function () {
-      const s = this.state == "off" ? null : this.state;
+    state: function (s) {
       this.$emit("state", s);
       this.$emit("input", s); // for v-model
     },
