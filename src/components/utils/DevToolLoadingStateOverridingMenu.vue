@@ -48,6 +48,9 @@ export default defineComponent({
   setup(prop, { emit }) {
     const store = useStore();
     const enabled = computed(() => store.webConfig.devtoolLoadingstate);
+    watch(enabled, (val) => {
+      if (!val) state.value = null;
+    });
     const state = ref<number | null>(null);
     watch(state, (s) => {
       emit("state", s);
