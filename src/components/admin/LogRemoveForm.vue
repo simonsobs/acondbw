@@ -16,9 +16,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent } from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
+import { client } from "@/plugins/urql";
 
 import DELETE_LOG from "@/graphql/mutations/DeleteLog.gql";
 
@@ -46,10 +47,10 @@ export default defineComponent({
     },
     async remove() {
       try {
-        const { data } = await this.$apollo.mutate({
-          mutation: DELETE_LOG,
-          variables: { id_: this.id_ },
-        });
+        const { error } = await client
+          .mutation(DELETE_LOG, { id_: this.id_ })
+          .toPromise();
+        if (error) throw error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Removed");
         this.$emit("finished");
