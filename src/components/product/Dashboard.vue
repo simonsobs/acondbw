@@ -5,7 +5,7 @@
       :headers="headers"
       :items="items"
       :items-per-page="items.length"
-      :loading="state == State.LOADING"
+      :loading="loading"
       disable-sort
       hide-default-footer
       @click:row="clickRow"
@@ -28,89 +28,114 @@
   </div>
 </template>
 
-<script>
-import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
+<script lang="ts">
+import { defineComponent, ref, watch, computed } from "vue";
+import { useRouter } from "vue-router/composables";
+import { useStore } from "@/stores/main";
+import { useQuery } from "@urql/vue";
+
+import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+interface ProductConnection {
+  totalCount: number;
+}
+
+interface ProductType {
+  id: string;
+  typeId: string;
+  name: string;
+  plural: string;
+  icon: string;
+  products: ProductConnection;
+}
+
+interface ProductTypeEdge {
+  node: ProductType;
+}
+
+interface ProductTypeConnection {
+  edges: ProductTypeEdge[];
+}
+
+export default defineComponent({
   name: "Dashboard",
   components: {
     DevToolLoadingStateOverridingMenu,
   },
-  data: () => ({
-    edges: null,
-    headers: [
+  setup() {
+    const router = useRouter();
+    const store = useStore();
+    const error = ref(null as any);
+    const devtoolState = ref<number | null>(null);
+    const edges = ref<ProductTypeEdge[]>([]);
+    const query = useQuery<{ allProductTypes: ProductTypeConnection }>({
+      query: ALL_PRODUCT_TYPES,
+    });
+    watch(query.data, (data) => {
+      if (data) {
+        edges.value = data.allProductTypes.edges;
+      }
+    });
+    watch(query.error, (e) => {
+      error.value = e || null;
+    });
+    watch(
+      () => store.nApolloMutations,
+      () => {
+        query.executeQuery({ requestPolicy: "network-only" });
+      }
+    );
+    watch(devtoolState, (val) => {
+      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
+    });
+
+    const headers = ref([
       { text: "Product type", value: "plural" },
       {
         text: "Number of products",
         align: "end",
         value: "products.totalCount",
       },
-    ],
-    error: null,
-    devtoolState: null,
-    State: State,
-  }),
-  apollo: {
-    edges: {
-      query: ALL_PRODUCTS_TYPES,
-      update: (data) =>
-        data.allProductTypes ? data.allProductTypes.edges : null,
-      result(result) {
-        this.error = result.error ? result.error : null;
-      },
-    },
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
+    ]);
 
-      if (this.loading) {
-        return State.LOADING;
-      } else if (this.error) {
-        return State.ERROR;
-      } else if (this.edges) {
-        if (this.edges.length) {
-          return State.LOADED;
-        } else {
-          return State.EMPTY;
-        }
-      } else {
-        return State.NONE;
-      }
-    },
-    loading() {
-      return this.$apollo.queries.edges.loading;
-    },
-    items() {
-      if (this.state == State.NONE) {
-        return [];
-      } else if (this.state == State.EMPTY) {
-        return [];
-      } else {
-        return this.edges ? this.edges.map((edge) => edge.node) : [];
-      }
-    },
-  },
-  methods: {
-    clickRow(item) {
-      this.$router.push({
+    const state = computed(() => {
+      if (devtoolState.value !== null) return devtoolState.value;
+      if (query.fetching.value) return State.LOADING;
+      if (error.value) return State.ERROR;
+      if (edges.value.length === 0) return State.EMPTY;
+      return State.LOADED;
+    });
+
+    const loading = computed(() => state.value === State.LOADING);
+
+    const items = computed(() => {
+      if (state.value === State.NONE) return [];
+      if (state.value === State.EMPTY) return [];
+      return edges.value.map((edge) => edge.node);
+    });
+
+    function clickRow(item: ProductType) {
+      router.push({
         name: "ProductList",
         params: { productTypeName: item.name },
       });
-    },
+    }
+
+    return {
+      error,
+      devtoolState,
+      edges,
+      headers,
+      state,
+      loading,
+      items,
+      clickRow,
+    };
   },
-  watch: {
-    devtoolState: function () {
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-  },
-};
+});
 </script>
 
 <style scoped>

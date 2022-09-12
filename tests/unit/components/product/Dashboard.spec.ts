@@ -1,16 +1,17 @@
-import Vue from "vue";
+import Vue, {ref} from "vue";
 import VueRouter from "vue-router";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import Dashboard from "@/components/product/Dashboard.vue";
 import { createRouter } from "@/router";
 
-jest.mock("vue-apollo");
-// To prevent the error: "[vue-test-utils]: could not overwrite
-// property $apollo, this is usually caused by a plugin that has added
-// the property as a read-only value"
-// https://github.com/vuejs/vue-apollo/issues/798
+import { useStore } from "@/stores/main";
+
+import { useQuery } from "@urql/vue";
+jest.mock("@urql/vue");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -20,6 +21,7 @@ describe("App.vue", () => {
   let vuetify: Vuetify;
   let router: ReturnType<typeof createRouter>;
   let wrapper: ReturnType<typeof mount>;
+  let store: ReturnType<typeof useStore>;
 
   const edges = [
     {
@@ -71,21 +73,31 @@ describe("App.vue", () => {
 
   beforeEach(() => {
     localVue = createLocalVue();
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
     router = createRouter();
+    const query = {
+      data: ref(null as any),
+      error: ref(null),
+      fetching: ref(false),
+    };
+    (useQuery as jest.Mock).mockReturnValue(query);
+    const pinia = createTestingPinia();
+    store = useStore(pinia);
     wrapper = mount(Dashboard, {
       localVue,
       vuetify,
+      pinia,
       router,
-      mocks: {
-        $apollo: {
-          queries: {
-            edges: {
-              loading: false,
-            },
-          },
-        },
-      },
+      // mocks: {
+      //   $apollo: {
+      //     queries: {
+      //       edges: {
+      //         loading: false,
+      //       },
+      //     },
+      //   },
+      // },
       stubs: {
         DevToolLoadingStateOverridingMenu: true,
       },
