@@ -120,15 +120,14 @@ export default defineComponent({
     const init = ref(true);
     const error = ref(null as any);
     const devtoolState = ref<number | null>(null);
-    const edges = ref<ProductTypeEdge[]>([]);
     const query = useQuery<{ allProductTypes: ProductTypeConnection }>({
       query: ALL_PRODUCT_TYPES,
     });
+    const edges = computed(
+      () => query.data?.value?.allProductTypes.edges || []
+    );
     watch(query.data, (data) => {
-      if (data) {
-        init.value = false;
-        edges.value = data.allProductTypes.edges;
-      }
+      if (data) init.value = false;
     });
     watch(query.error, (e) => {
       init.value = false;

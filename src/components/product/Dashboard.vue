@@ -70,15 +70,12 @@ export default defineComponent({
     const store = useStore();
     const error = ref(null as any);
     const devtoolState = ref<number | null>(null);
-    const edges = ref<ProductTypeEdge[]>([]);
     const query = useQuery<{ allProductTypes: ProductTypeConnection }>({
       query: ALL_PRODUCT_TYPES,
     });
-    watch(query.data, (data) => {
-      if (data) {
-        edges.value = data.allProductTypes.edges;
-      }
-    });
+    const edges = computed(
+      () => query.data?.value?.allProductTypes.edges || []
+    );
     watch(query.error, (e) => {
       error.value = e || null;
     });
