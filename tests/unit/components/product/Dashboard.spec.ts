@@ -1,4 +1,4 @@
-import Vue, {ref} from "vue";
+import Vue, { ref, nextTick } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
@@ -89,27 +89,16 @@ describe("App.vue", () => {
       vuetify,
       pinia,
       router,
-      // mocks: {
-      //   $apollo: {
-      //     queries: {
-      //       edges: {
-      //         loading: false,
-      //       },
-      //     },
-      //   },
-      // },
       stubs: {
         DevToolLoadingStateOverridingMenu: true,
       },
     });
-    wrapper.setData({
-      edges: edges,
-    });
+    query.data.value = { allProductTypes: { edges: edges } };
   });
 
   it("match snapshot", async () => {
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
+    await nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 });
