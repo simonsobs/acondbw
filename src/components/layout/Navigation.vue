@@ -77,9 +77,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapState } from "pinia";
+import { defineComponent, ref, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
+import { useQuery } from "@urql/vue";
 
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 
@@ -88,79 +88,104 @@ import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoading
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
+interface ProductConnection {
+  totalCount: number;
+}
+
+interface ProductType {
+  id: string;
+  typeId: string;
+  name: string;
+  plural: string;
+  icon: string;
+  products: ProductConnection;
+}
+
+interface ProductTypeEdge {
+  node: ProductType;
+}
+
+interface ProductTypeConnection {
+  edges: ProductTypeEdge[];
+}
+
 export default defineComponent({
   name: "Navigation",
   components: {
     DevToolLoadingStateOverridingMenu,
     ProductTypeAddForm,
   },
-  data: () => ({
-    init: true,
-    edges: [],
-    error: null,
-    addDialog: false,
-    devtoolState: null,
-    State: State,
-  }),
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.edges) {
-        if (this.edges.length) return State.LOADED;
-        return State.EMPTY;
-      }
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    empty() {
-      return this.state == State.EMPTY;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    ...mapState(useStore, ["nApolloMutations", "appVersion"]),
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-    nApolloMutations: function () {
-      this.$apollo.queries.edges.refetch();
-    },
-  },
-  apollo: {
-    edges: {
+  setup() {
+    const store = useStore();
+    const init = ref(true);
+    const error = ref(null as any);
+    const devtoolState = ref<number | null>(null);
+    const edges = ref<ProductTypeEdge[]>([]);
+    const query = useQuery<{ allProductTypes: ProductTypeConnection }>({
       query: ALL_PRODUCT_TYPES,
-      update: (data) =>
-        data.allProductTypes ? data.allProductTypes.edges : null,
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  methods: {
-    onAddFormCancelled() {
-      this.closeAddForm();
-    },
-    onAddFormFinished() {
-      this.closeAddForm();
-    },
-    closeAddForm() {
-      this.addDialog = false;
-    },
+    });
+    watch(query.data, (data) => {
+      if (data) {
+        init.value = false;
+        edges.value = data.allProductTypes.edges;
+      }
+    });
+    watch(query.error, (e) => {
+      init.value = false;
+      error.value = e || null;
+    });
+    watch(
+      () => store.nApolloMutations,
+      () => {
+        query.executeQuery({ requestPolicy: "network-only" });
+      }
+    );
+    watch(devtoolState, (val) => {
+      if(val) init.value = val === State.INIT
+      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
+    });
+
+    const state = computed(() => {
+      if (devtoolState.value !== null) return devtoolState.value;
+      if (query.fetching.value) return State.LOADING;
+      if (error.value) return State.ERROR;
+      if (edges.value.length === 0) return State.EMPTY;
+      return State.LOADED;
+    });
+
+    const loading = computed(() => state.value === State.LOADING);
+    const loaded = computed(() => state.value === State.LOADED);
+    const empty = computed(() => state.value === State.EMPTY);
+    const notFound = computed(() => state.value === State.NONE);
+
+    const addDialog = ref(false);
+
+    function onAddFormCancelled() {
+      closeAddForm()
+    }
+    function onAddFormFinished() {
+      closeAddForm()
+    }
+    function closeAddForm() {
+      addDialog.value = false;
+    }
+
+    return {
+      init,
+      error,
+      devtoolState,
+      edges,
+      state,
+      loading,
+      loaded,
+      empty,
+      notFound,
+      addDialog,
+      onAddFormCancelled,
+      onAddFormFinished,
+      closeAddForm,
+      appVersion: store.appVersion
+    };
   },
 });
 </script>

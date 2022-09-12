@@ -1,4 +1,4 @@
-import Vue from "vue";
+import Vue, { ref, nextTick } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
@@ -9,11 +9,8 @@ import Navigation from "@/components/layout/Navigation.vue";
 import { createRouter } from "@/router";
 import { useStore } from "@/stores/main";
 
-jest.mock("vue-apollo");
-// To prevent the error: "[vue-test-utils]: could not overwrite
-// property $apollo, this is usually caused by a plugin that has added
-// the property as a read-only value"
-// https://github.com/vuejs/vue-apollo/issues/798
+import { useQuery } from "@urql/vue";
+jest.mock("@urql/vue");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -78,31 +75,26 @@ describe("App.vue", () => {
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
     router = createRouter();
+    const query = {
+      data: ref(null as any),
+      error: ref(null),
+      fetching: ref(false),
+    };
+    (useQuery as jest.Mock).mockReturnValue(query);
     const pinia = createTestingPinia();
+    store = useStore(pinia);
+    store.packageVersion = "0.1.1";
     wrapper = shallowMount(Navigation, {
       localVue,
       vuetify,
       pinia,
       router,
-      mocks: {
-        $apollo: {
-          loading: false,
-          queries: {
-            edges: {
-              loading: false,
-            },
-          },
-        },
-      },
     });
-    wrapper.setData({
-      edges: edges,
-    });
-    store = useStore(pinia);
-    store.packageVersion = "0.1.1";
+    query.data.value = { allProductTypes: { edges: edges } };
   });
 
-  it("match snapshot", () => {
+  it("match snapshot", async () => {
+    await nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 });
