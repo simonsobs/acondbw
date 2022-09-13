@@ -9,6 +9,8 @@ import Navigation from "@/components/layout/Navigation.vue";
 import { createRouter } from "@/router";
 import { useStore } from "@/stores/main";
 
+import { AllProductTypesQuery, ProductTypeEdge } from "@/generated/graphql";
+
 import { useQuery } from "@urql/vue";
 jest.mock("@urql/vue");
 
@@ -22,7 +24,7 @@ describe("App.vue", () => {
   let wrapper: ReturnType<typeof shallowMount>;
   let store: ReturnType<typeof useStore>;
 
-  const edges = [
+  const edges: ProductTypeEdge[] = [
     {
       node: {
         id: "UHJvZHVjdFR5cGU6Mw==",
@@ -33,6 +35,7 @@ describe("App.vue", () => {
         singular: "simulation",
         plural: "simulations",
         icon: "mdi-creation",
+        // @ts-ignore
         products: {
           totalCount: 0,
         },
@@ -48,6 +51,7 @@ describe("App.vue", () => {
         singular: "map",
         plural: "maps",
         icon: "mdi-map",
+        // @ts-ignore
         products: {
           totalCount: 58,
         },
@@ -63,6 +67,7 @@ describe("App.vue", () => {
         singular: "beam",
         plural: "beams",
         icon: "mdi-spotlight-beam",
+        // @ts-ignore
         products: {
           totalCount: 5,
         },
@@ -76,7 +81,7 @@ describe("App.vue", () => {
     vuetify = new Vuetify();
     router = createRouter();
     const query = {
-      data: ref(null as any),
+      data: ref<AllProductTypesQuery | undefined>(undefined),
       error: ref(null),
       fetching: ref(false),
     };
