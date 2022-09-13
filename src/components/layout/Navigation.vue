@@ -24,7 +24,7 @@
           <v-list-item-icon class="ml-2">
             <v-chip
               small
-              v-if="!!node.products?.totalCount"
+              v-if="node.products && node.products.totalCount"
               v-text="node.products.totalCount"
             ></v-chip>
           </v-list-item-icon>
