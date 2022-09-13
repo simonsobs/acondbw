@@ -17,7 +17,7 @@
           color="secondary"
         ></v-progress-circular>
         <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
-        <v-card flat v-if="loaded">
+        <v-card flat v-if="loaded && node">
           <v-card-title class="text-h4 primary--text justify-space-between">
             <span>
               <v-icon large class="me-3" v-text="node.icon"></v-icon>
@@ -82,16 +82,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapState } from "pinia";
+import { defineComponent, ref, computed, watch, onMounted } from "vue";
+import {
+  useRoute,
+  useRouter,
+  onBeforeRouteUpdate,
+  onBeforeRouteLeave,
+} from "vue-router/composables";
 import { useStore } from "@/stores/main";
 
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
+import { ProductTypeByNameQuery } from "@/generated/graphql";
 
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
+import { useQuery } from "@urql/vue";
 
 export default defineComponent({
   name: "ProductTop",
@@ -99,124 +106,126 @@ export default defineComponent({
     DevToolLoadingStateOverridingMenu,
     ProductTypeEditForm,
   },
-  data: () => ({
-    productTypeName: null,
-    itemName: null,
-    init: true,
-    node: {},
-    error: null,
-    refreshing: false,
-    editDialog: false,
-    devtoolState: null,
-    State: State,
-    transitionName: "fade-product-top-leave",
-    transitionMode: "out-in",
-  }),
-  mounted() {
-    this.productTypeName = this.$route.params.productTypeName;
-    this.itemName = this.$route.params.name;
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.refreshing) return State.LOADING;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.node) return State.LOADED;
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    disableAdd() {
-      return !this.webConfig.productCreationDialog;
-    },
-    disableEdit() {
-      return !this.webConfig.productUpdateDialog;
-    },
-    disableDelete() {
-      return !this.webConfig.productDeletionDialog;
-    },
-    ...mapState(useStore, ["webConfig", "nApolloMutations"]),
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-    nApolloMutations: function () {
-      this.refresh();
-    },
-  },
-  apollo: {
-    node: {
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
+    const init = ref(true);
+    const error = ref(null as any);
+    const refreshing = ref(false);
+    const devtoolState = ref<number | null>(null);
+    const productTypeName = ref<string | null>(null);
+    const itemName = ref<string | null>(null);
+    onMounted(() => {
+      productTypeName.value = route.params.productTypeName;
+      itemName.value = route.params.name;
+    });
+    const query = useQuery<ProductTypeByNameQuery>({
       query: PRODUCT_TYPE_BY_NAME,
-      variables() {
-        return { name: this.productTypeName };
-      },
-      update: (data) => data.productType,
-      skip() {
-        return !this.productTypeName;
-      },
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  methods: {
-    onEditFormCancelled() {
-      this.closeEditForm();
-    },
-    onEditFormFinished(event) {
-      this.closeEditForm();
-      if (event) this.onNameChanged(event);
-    },
-    closeEditForm() {
-      this.editDialog = false;
-    },
-    onNameChanged(event) {
-      this.$router.push({
+      variables: { name: productTypeName },
+      pause: !productTypeName,
+    });
+    const node = computed(() => query.data?.value?.productType);
+    watch(query.data, (data) => {
+      if (data) init.value = false;
+    });
+    watch(query.error, (e) => {
+      init.value = false;
+      error.value = e || null;
+    });
+    watch(
+      () => store.nApolloMutations,
+      () => {
+        query.executeQuery({ requestPolicy: "network-only" });
+      }
+    );
+    watch(devtoolState, (val) => {
+      if (val) init.value = val === State.INIT;
+      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
+    });
+    const state = computed(() => {
+      if (devtoolState.value !== null) return devtoolState.value;
+      if (refreshing.value) return State.LOADING;
+      if (query.fetching.value) return State.LOADING;
+      if (error.value) return State.ERROR;
+      if (node.value) return State.LOADED;
+      if (init.value) return State.INIT;
+      return State.NONE;
+    });
+    const loading = computed(() => state.value === State.LOADING);
+    const loaded = computed(() => state.value === State.LOADED);
+    const notFound = computed(() => state.value === State.NONE);
+    const disableAdd = computed(() => !store.webConfig.productCreationDialog);
+    const disableEdit = computed(() => !store.webConfig.productUpdateDialog);
+    const disableDelete = computed(
+      () => !store.webConfig.productDeletionDialog
+    );
+    const editDialog = ref(false);
+    function onEditFormCancelled() {
+      closeEditForm();
+    }
+    function closeEditForm() {
+      editDialog.value = false;
+    }
+    function onEditFormFinished(event: string) {
+      closeEditForm();
+      if (event) onNameChanged(event);
+    }
+    function onNameChanged(event: string) {
+      router.push({
         name: "ProductList",
         params: {
           productTypeName: event,
         },
       });
-    },
-    async refresh() {
-      this.refreshing = true;
+    }
+    async function refresh() {
+      refreshing.value = true;
       const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      await Promise.all(
-        Object.values(this.$apollo.queries).map(async (query) => {
-          await query.refetch();
-        })
-      );
+      await query.executeQuery({ requestPolicy: "network-only" });
       await wait; // wait until 0.5 sec passes since starting refetch
       // because the progress circular is too flickering if
       // the refetch finishes too quickly
-      this.refreshing = false;
-    },
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.transitionName = "fade-product-top-update";
-    this.transitionMode = "out-in";
-    next();
-  },
-  beforeRouteLeave(to, from, next) {
-    this.transitionName = "fade-product-top-leave";
-    this.transitionMode = "out-in";
-    next();
+      refreshing.value = false;
+    }
+    const transitionName = ref("fade-product-top-leave");
+    const transitionMode = ref("out-in");
+    onBeforeRouteUpdate((to, from, next) => {
+      transitionName.value = "fade-product-top-update";
+      transitionMode.value = "out-in";
+      next();
+     });
+    onBeforeRouteLeave((to, from, next) => {
+      transitionName.value = "fade-product-top-leave";
+      transitionMode.value = "out-in";
+      next();
+    });
+    return {
+      init,
+      error,
+      refreshing,
+      devtoolState,
+      State,
+      query,
+      productTypeName,
+      itemName,
+      node,
+      state,
+      loading,
+      loaded,
+      notFound,
+      disableAdd,
+      disableEdit,
+      disableDelete,
+      editDialog,
+      onEditFormCancelled,
+      closeEditForm,
+      onEditFormFinished,
+      onNameChanged,
+      refresh,
+      transitionName,
+      transitionMode,
+    };
   },
 });
 </script>
