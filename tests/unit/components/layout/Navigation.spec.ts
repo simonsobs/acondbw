@@ -23,6 +23,7 @@ describe("App.vue", () => {
   let router: ReturnType<typeof createRouter>;
   let wrapper: ReturnType<typeof shallowMount>;
   let store: ReturnType<typeof useStore>;
+  let query: ReturnType<typeof useQuery<AllProductTypesQuery>>;
 
   const edges: ProductTypeEdge[] = [
     {
@@ -80,9 +81,10 @@ describe("App.vue", () => {
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
     router = createRouter();
-    const query = {
+    // @ts-ignore
+    query = {
       data: ref<AllProductTypesQuery | undefined>(undefined),
-      error: ref(null),
+      error: ref(undefined),
       fetching: ref(false),
     };
     (useQuery as jest.Mock).mockReturnValue(query);
@@ -96,6 +98,10 @@ describe("App.vue", () => {
       router,
     });
     query.data.value = { allProductTypes: { edges: edges } };
+  });
+
+  afterEach(() => {
+    (useQuery as jest.Mock).mockReset();
   });
 
   it("match snapshot", async () => {
