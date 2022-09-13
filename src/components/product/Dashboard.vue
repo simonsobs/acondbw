@@ -35,29 +35,13 @@ import { useStore } from "@/stores/main";
 import { useQuery } from "@urql/vue";
 
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
+import { AllProductTypesQuery, ProductType } from "@/generated/graphql";
 
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 interface ProductConnection {
   totalCount: number;
-}
-
-interface ProductType {
-  id: string;
-  typeId: string;
-  name: string;
-  plural: string;
-  icon: string;
-  products: ProductConnection;
-}
-
-interface ProductTypeEdge {
-  node: ProductType;
-}
-
-interface ProductTypeConnection {
-  edges: ProductTypeEdge[];
 }
 
 export default defineComponent({
@@ -70,11 +54,11 @@ export default defineComponent({
     const store = useStore();
     const error = ref(null as any);
     const devtoolState = ref<number | null>(null);
-    const query = useQuery<{ allProductTypes: ProductTypeConnection }>({
+    const query = useQuery<AllProductTypesQuery>({
       query: ALL_PRODUCT_TYPES,
     });
     const edges = computed(
-      () => query.data?.value?.allProductTypes.edges || []
+      () => query.data?.value?.allProductTypes?.edges || []
     );
     watch(query.error, (e) => {
       error.value = e || null;
@@ -111,7 +95,7 @@ export default defineComponent({
     const items = computed(() => {
       if (state.value === State.NONE) return [];
       if (state.value === State.EMPTY) return [];
-      return edges.value.map((edge) => edge.node);
+      return edges.value.flatMap((edge) => edge?.node ? [edge.node] : []);
     });
 
     function clickRow(item: ProductType) {

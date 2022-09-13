@@ -5,27 +5,27 @@
         <v-list-item
           link
           router
-          v-for="edge in edges"
-          :key="edge.node.typeId"
+          v-for="node in nodes"
+          :key="node.typeId"
           :to="{
             name: 'ProductList',
-            params: { productTypeName: edge.node.name },
+            params: { productTypeName: node.name },
           }"
         >
           <v-list-item-action class="mr-5">
-            <v-icon v-text="edge.node.icon"></v-icon>
+            <v-icon v-text="node.icon"></v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title
-              v-text="edge.node.plural"
+              v-text="node.plural"
               class="capitalize condensed-font font-weight-medium"
             ></v-list-item-title>
           </v-list-item-content>
           <v-list-item-icon class="ml-2">
             <v-chip
               small
-              v-if="!!edge.node.products.totalCount"
-              v-text="edge.node.products.totalCount"
+              v-if="!!node.products?.totalCount"
+              v-text="node.products.totalCount"
             ></v-chip>
           </v-list-item-icon>
         </v-list-item>
@@ -82,32 +82,12 @@ import { useStore } from "@/stores/main";
 import { useQuery } from "@urql/vue";
 
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
+import { AllProductTypesQuery } from "@/generated/graphql";
 
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
-
-interface ProductConnection {
-  totalCount: number;
-}
-
-interface ProductType {
-  id: string;
-  typeId: string;
-  name: string;
-  plural: string;
-  icon: string;
-  products: ProductConnection;
-}
-
-interface ProductTypeEdge {
-  node: ProductType;
-}
-
-interface ProductTypeConnection {
-  edges: ProductTypeEdge[];
-}
 
 export default defineComponent({
   name: "Navigation",
@@ -120,11 +100,17 @@ export default defineComponent({
     const init = ref(true);
     const error = ref(null as any);
     const devtoolState = ref<number | null>(null);
-    const query = useQuery<{ allProductTypes: ProductTypeConnection }>({
+    const query = useQuery<AllProductTypesQuery>({
       query: ALL_PRODUCT_TYPES,
     });
     const edges = computed(
-      () => query.data?.value?.allProductTypes.edges || []
+      () =>
+        query.data?.value?.allProductTypes?.edges?.flatMap((e) =>
+          e ? [e] : []
+        ) || []
+    );
+    const nodes = computed(() =>
+      edges.value.flatMap((e) => (e.node ? [e.node] : []))
     );
     watch(query.data, (data) => {
       if (data) init.value = false;
@@ -174,6 +160,7 @@ export default defineComponent({
       error,
       devtoolState,
       edges,
+      nodes,
       state,
       loading,
       loaded,
