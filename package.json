@@ -53,6 +53,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@types/jest": "^28.1.8",
     "@types/lodash": "^4.14.184",
+    "@types/marked": "^4.0.7",
     "@types/moxios": "^0.4.15",
     "@types/node": "^18.7.17",
     "@types/uuid": "^8.3.4",
