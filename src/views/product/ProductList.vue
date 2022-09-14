@@ -101,7 +101,7 @@
           v-for="edge in edges"
           :key="edge.node.id"
           :productId="edge.node.productId"
-          collapsible="true"
+          :collapsible="true"
           :collapsed="isCardCollapsed[edge.node.id]"
           v-on:expand="isCardCollapsed[edge.node.id] = false"
           v-on:collapse="isCardCollapsed[edge.node.id] = true"
