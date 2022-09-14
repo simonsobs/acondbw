@@ -97,7 +97,7 @@ export default defineComponent({
     const router = useRouter();
     const store = useStore();
     const init = ref(true);
-    const error = ref(null as any);
+    const error = ref<string | null>(null);
     const refreshing = ref(false);
     const devtoolState = ref<number | null>(null);
     const name = ref<string | null>(null);
