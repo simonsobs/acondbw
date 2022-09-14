@@ -12,7 +12,7 @@
       {{ error }}
     </v-alert>
     <v-container
-      v-else-if="loaded"
+      v-else-if="loaded && node"
       @click="$emit('expand')"
       style="cursor: default"
     >
@@ -30,17 +30,24 @@
                   },
                 }"
                 v-text="node.name"
+                v-if="node.type_"
               ></router-link>
             </span>
           </div>
         </v-col>
         <v-col order="3" cols="6" md="3">
           <div class="caption grey--text">Date produced</div>
-          <div v-text="attributes['date_produced']['value']"></div>
+          <div
+            v-if="attributes"
+            v-text="attributes['date_produced']['value']"
+          ></div>
         </v-col>
         <v-col order="4" cols="6" md="2">
           <div class="caption grey--text">Produced by</div>
-          <div v-text="attributes['produced_by']['value']"></div>
+          <div
+            v-if="attributes"
+            v-text="attributes['produced_by']['value']"
+          ></div>
         </v-col>
         <v-col order="2" order-md="5" cols="3" align-self="center">
           <v-container>
@@ -183,7 +190,10 @@
           <v-row>
             <v-col cols="12" md="4" offset-md="4">
               <div class="caption grey--text">Contact</div>
-              <div v-text="attributes['contact']['value']"></div>
+              <div
+                v-if="attributes"
+                v-text="attributes['contact']['value']"
+              ></div>
             </v-col>
           </v-row>
           <v-row>
@@ -193,7 +203,7 @@
                 <li
                   v-for="(edgep, index) in node.paths.edges"
                   :key="index"
-                  v-text="edgep.node.path"
+                  v-text="edgep && edgep.node && edgep.node.path"
                 ></li>
               </ul>
               <div v-else class="body-2 grey--text">None</div>
@@ -205,28 +215,46 @@
               <div v-if="relations && Object.keys(relations).length > 0">
                 <div v-for="(redges, typeId) in relations" :key="typeId">
                   <span class="capitalize subtitle-2 primary--text">
-                    <span v-if="redges.length > 1">{{
-                      redges[0].node.type_.plural
-                    }}</span>
-                    <span v-else>{{ redges[0].node.type_.singular }}</span
+                    <span v-if="redges.length > 1">
+                      {{
+                        redges[0] &&
+                        redges[0].node &&
+                        redges[0].node.type_ &&
+                        redges[0].node.type_.plural
+                      }}
+                    </span>
+                    <span v-else>
+                      {{
+                        redges[0] &&
+                        redges[0].node &&
+                        redges[0].node.type_ &&
+                        redges[0].node.type_.singular
+                      }} </span
                     >:
                   </span>
                   <span v-for="(redge, index) in redges" :key="index">
-                    <router-link
-                      class="font-weight-bold primary--text"
-                      :to="{
-                        name: 'ProductItem',
-                        params: {
-                          productTypeName: redge.node.other.type_.name,
-                          name: redge.node.other.name,
-                        },
-                      }"
-                      v-text="redge.node.other.name"
-                    ></router-link>
-                    ({{ redge.node.other.type_.name }})<span
-                      v-if="index != redges.length - 1"
-                      >,
-                    </span>
+                    <template
+                      v-if="
+                        redge &&
+                        redge.node &&
+                        redge.node.other &&
+                        redge.node.other.type_
+                      "
+                    >
+                      <router-link
+                        class="font-weight-bold primary--text"
+                        :to="{
+                          name: 'ProductItem',
+                          params: {
+                            productTypeName: redge.node.other.type_.name,
+                            name: redge.node.other.name,
+                          },
+                        }"
+                        v-text="redge.node.other.name"
+                      ></router-link>
+                      ({{ redge.node.other.type_.name }})
+                      <span v-if="index != redges.length - 1">, </span>
+                    </template>
                   </span>
                 </div>
               </div>
@@ -250,20 +278,20 @@
             <div>
               <div v-if="timeUpdated || node.updatingGitHubUser">
                 Updated
-                <span v-if="timeUpdated">at {{ timeUpdated }}</span>
+                <span v-if="timeUpdated"> at {{ timeUpdated }} </span>
                 <span v-if="node.updatingGitHubUser">
-                  by {{ node.updatingGitHubUser.login }}</span
-                >
+                  by {{ node.updatingGitHubUser.login }}
+                </span>
               </div>
               <div v-if="timePosted || node.postingGitHubUser">
                 Posted
-                <span v-if="timePosted">at {{ timePosted }}</span>
+                <span v-if="timePosted"> at {{ timePosted }} </span>
                 <span v-if="node.postingGitHubUser">
-                  by {{ node.postingGitHubUser.login }}</span
-                >
+                  by {{ node.postingGitHubUser.login }}
+                </span>
               </div>
             </div>
-            <div>Data ID: {{ dataId }}</div>
+            <div>ID: {{ node.id }}</div>
           </v-row>
         </div>
       </v-expand-transition>
@@ -275,24 +303,27 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, computed, watch, onMounted } from "vue";
+import { useStore } from "@/stores/main";
 import _ from "lodash";
 
 import { marked } from "marked";
 
-import { defaultDataIdFromObject } from "apollo-cache-inmemory";
-
 import PRODUCT from "@/graphql/queries/Product.gql";
+import { ProductQuery } from "@/generated/graphql";
 
 import ProductEditForm from "@/components/product/ProductEditForm.vue";
 import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
 import ProductConvertTypeForm from "@/components/product/ProductConvertTypeForm.vue";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 
+import { useQuery } from "@urql/vue";
+
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
-export default {
+export default defineComponent({
   name: "ProductItemCard",
   components: {
     ProductEditForm,
@@ -302,70 +333,33 @@ export default {
     DevToolLoadingStateOverridingMenu,
   },
   props: {
-    productId: { default: null }, // node.productId not node.id
-    collapsed: { default: false },
-    collapsible: { default: false },
-    disableEdit: { default: false },
-    disableDelete: { default: false },
+    productId: { type: String, required: true }, // node.productId not node.id
+    collapsed: { type: Boolean, default: false },
+    collapsible: { type: Boolean, default: false },
+    disableEdit: { type: Boolean, default: false },
+    disableDelete: { type: Boolean, default: false },
   },
-  data() {
-    return {
-      menu: false,
-      editDialog: false,
-      convertTypeDialog: false,
-      updateRelationsDialog: false,
-      deleteDialog: false,
-      init: true,
-      node: null,
-      error: null,
-      devtoolState: null,
-      State: State,
-    };
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.node) return State.LOADED;
-      if (this.init) return State.INIT;
-
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    dataId: function () {
-      return defaultDataIdFromObject(this.node);
-    },
-    timePosted() {
-      return this.node.timePosted
-        ? this.formatDateTime(this.node.timePosted)
-        : null;
-    },
-    timeUpdated() {
-      return this.node.timeUpdated
-        ? this.formatDateTime(this.node.timeUpdated)
-        : null;
-    },
-    note() {
-      return this.node.note ? marked.parse(this.node.note) : null;
-    },
-    relations() {
-      if (this.node && this.node.relations.edges.length > 0) {
-        return _.groupBy(this.node.relations.edges, "node.type_.typeId");
-      } else {
-        return null;
-      }
-    },
-    attributes() {
-      if (!this.node) return null;
+  setup(prop, { emit }) {
+    const store = useStore();
+    const init = ref(true);
+    const error = ref<string | null>(null);
+    const devtoolState = ref<number | null>(null);
+    const query = useQuery<ProductQuery>({
+      query: PRODUCT,
+      variables: { productId: prop.productId },
+    });
+    const node = computed(() => query.data?.value?.product);
+    const timePosted = computed(() => formatDateTime(node.value?.timePosted));
+    const timeUpdated = computed(() => formatDateTime(node.value?.timeUpdated));
+    const note = computed(() => marked.parse(node.value?.note ?? ""));
+    const relations = computed(() =>
+      node.value?.relations?.edges
+        ? _.groupBy(node.value.relations.edges, "node.type_.typeId")
+        : null
+    );
+    const attributes = computed(() => {
+      if (!node.value) return null;
+      const thisNode = node.value;
 
       const keys = [
         "attributesUnicodeText",
@@ -375,12 +369,12 @@ export default {
         "attributesDate",
         "attributesDateTime",
         "attributesTime",
-      ].filter((k) => k in this.node);
+      ].filter((k) => k in thisNode);
 
       const ret = keys.reduce(
         (a, key) => ({
           ...a,
-          ...this.node[key].edges.reduce(
+          ...thisNode[key].edges.reduce(
             (r, { node }) => ({
               ...r,
               ...{
@@ -397,34 +391,38 @@ export default {
         {}
       );
       return ret;
-    },
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-  },
-  apollo: {
-    node: {
-      query: PRODUCT,
-      variables() {
-        return {
-          productId: this.productId,
-        };
+    });
+    watch(query.data, (data) => {
+      if (data) init.value = false;
+    });
+    watch(query.error, (e) => {
+      init.value = false;
+      error.value = e?.message || null;
+    });
+    watch(
+      () => store.nApolloMutations,
+      () => {
+        query.executeQuery({ requestPolicy: "network-only" });
       },
-      update: (data) => data.product,
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  methods: {
-    formatDateTime(dateTime) {
+      { immediate: true }
+    );
+    watch(devtoolState, (val) => {
+      if (val) init.value = val === State.INIT;
+      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
+    });
+    const state = computed(() => {
+      if (devtoolState.value !== null) return devtoolState.value;
+      if (query.fetching.value) return State.LOADING;
+      if (error.value) return State.ERROR;
+      if (node.value) return State.LOADED;
+      if (init.value) return State.INIT;
+      return State.NONE;
+    });
+    const loading = computed(() => state.value === State.LOADING);
+    const loaded = computed(() => state.value === State.LOADED);
+    const notFound = computed(() => state.value === State.NONE);
+    function formatDateTime(dateTime: string | undefined | null) {
+      if (!dateTime) return null;
       const sinceEpoch = Date.parse(dateTime);
       const format = Intl.DateTimeFormat("default", {
         year: "numeric",
@@ -436,51 +434,90 @@ export default {
         hour12: false,
       });
       return format.format(sinceEpoch);
-    },
-    onEditFormCancelled() {
-      this.closeEditForm();
-    },
-    onEditFormFinished(event) {
-      this.closeEditForm();
-      if (event) this.$emit("nameChanged", event);
-    },
-    closeEditForm() {
-      this.editDialog = false;
-      this.menu = false;
-    },
-    onUpdateRelationsFormCancelled() {
-      this.closeUpdateRelationsForm();
-    },
-    onUpdateRelationsFormFinished() {
-      this.closeUpdateRelationsForm();
-    },
-    closeUpdateRelationsForm() {
-      this.updateRelationsDialog = false;
-      this.menu = false;
-    },
-    onConvertTypeFormCancelled() {
-      this.closeConvertTypeForm();
-    },
-    onConvertTypeFormFinished(event) {
-      this.closeConvertTypeForm();
-      if (event) this.$emit("typeChanged", event);
-    },
-    closeConvertTypeForm() {
-      this.convertTypeDialog = false;
-      this.menu = false;
-    },
-    onDeleteFormCancelled() {
-      this.closeDeleteForm();
-    },
-    onDeleteFormFinished() {
-      this.closeDeleteForm();
-      this.node = null;
-      this.$emit("deleted");
-    },
-    closeDeleteForm() {
-      this.deleteDialog = false;
-      this.menu = false;
-    },
+    }
+    const menu = ref(false);
+    const editDialog = ref(false);
+    function onEditFormCancelled() {
+      closeEditForm();
+    }
+    function onEditFormFinished(event: string | undefined) {
+      closeEditForm();
+      if (event) emit("nameChanged", event);
+    }
+    function closeEditForm() {
+      editDialog.value = false;
+      menu.value = false;
+    }
+    const updateRelationsDialog = ref(false);
+    function onUpdateRelationsFormCancelled() {
+      closeUpdateRelationsForm();
+    }
+    function onUpdateRelationsFormFinished() {
+      closeUpdateRelationsForm();
+    }
+    function closeUpdateRelationsForm() {
+      updateRelationsDialog.value = false;
+      menu.value = false;
+    }
+    const convertTypeDialog = ref(false);
+    function onConvertTypeFormCancelled() {
+      closeConvertTypeForm();
+    }
+    function onConvertTypeFormFinished(event: string) {
+      closeConvertTypeForm();
+      if (event) emit("typeChanged", event);
+    }
+    function closeConvertTypeForm() {
+      convertTypeDialog.value = false;
+      menu.value = false;
+    }
+    const deleteDialog = ref(false);
+    function onDeleteFormCancelled() {
+      closeDeleteForm();
+    }
+    function onDeleteFormFinished() {
+      closeDeleteForm();
+      emit("deleted");
+    }
+    function closeDeleteForm() {
+      deleteDialog.value = false;
+      menu.value = false;
+    }
+    return {
+      init,
+      error,
+      devtoolState,
+      query,
+      State,
+      node,
+      timePosted,
+      timeUpdated,
+      note,
+      relations,
+      attributes,
+      state,
+      loading,
+      loaded,
+      notFound,
+      formatDateTime,
+      menu,
+      editDialog,
+      onEditFormCancelled,
+      onEditFormFinished,
+      closeEditForm,
+      updateRelationsDialog,
+      onUpdateRelationsFormCancelled,
+      onUpdateRelationsFormFinished,
+      closeUpdateRelationsForm,
+      convertTypeDialog,
+      onConvertTypeFormCancelled,
+      onConvertTypeFormFinished,
+      closeConvertTypeForm,
+      deleteDialog,
+      onDeleteFormCancelled,
+      onDeleteFormFinished,
+      closeDeleteForm,
+    };
   },
-};
+});
 </script>
