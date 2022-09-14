@@ -1,4 +1,4 @@
-import Vue from "vue";
+import Vue, { ref, nextTick } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
@@ -10,11 +10,13 @@ import { createRouter } from "@/router";
 
 import { useAuthStore } from "@/stores/auth";
 
-jest.mock("vue-apollo");
-// To prevent the error: "[vue-test-utils]: could not overwrite
-// property $apollo, this is usually caused by a plugin that has added
-// the property as a read-only value"
-// https://github.com/vuejs/vue-apollo/issues/798
+import { ProductByTypeIdAndNameQuery } from "@/generated/graphql";
+
+import { CombinedError } from "@urql/core";
+
+import { useQuery } from "@urql/vue";
+jest.mock("@urql/vue");
+
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -23,24 +25,15 @@ describe("ProductItem.vue", () => {
   let localVue: ReturnType<typeof createLocalVue>;
   let router: ReturnType<typeof createRouter>;
   let pinia: ReturnType<typeof createTestingPinia>;
+  let query: ReturnType<typeof useQuery<ProductByTypeIdAndNameQuery>>;
 
-  function createWrapper(loading = false) {
+  function createWrapper() {
     return shallowMount(ProductItem, {
       localVue,
       pinia,
       router,
-      mocks: {
-        $apollo: {
-          loading: loading,
-          queries: {
-            node: {
-              loading: loading,
-            },
-          },
-        },
-      },
       propsData: {
-        productTypeId: 1,
+        productTypeId: "1",
       },
       stubs: {
         ProductItemCard: true,
@@ -53,15 +46,26 @@ describe("ProductItem.vue", () => {
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     router = createRouter();
+    // @ts-ignore
+    query = {
+      data: ref<ProductByTypeIdAndNameQuery | undefined>(undefined),
+      error: ref(undefined),
+      fetching: ref(false),
+      isPaused: ref(false),
+    };
+    (useQuery as jest.Mock).mockReturnValue(query);
     pinia = createTestingPinia();
     const authStore = useAuthStore(pinia);
     authStore.isSignedIn = true;
   });
 
+  afterEach(() => {
+    (useQuery as jest.Mock).mockReset();
+  });
+
   it("match snapshot", async () => {
-    const wrapper = createWrapper();
-    wrapper.setData({
-      node: {
+    query.data.value = {
+      product: {
         id: "UHJvZHVjdDoxMDEz",
         productId: "1013",
         name: "lat20200201",
@@ -72,30 +76,33 @@ describe("ProductItem.vue", () => {
           name: "map",
         },
       },
-    });
-    await Vue.nextTick();
+    };
+    const wrapper = createWrapper();
+    await nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("loading state - loading", async () => {
     const loading = true;
-    const wrapper = createWrapper(loading);
-    await Vue.nextTick();
+    query.fetching.value = loading;
+    const wrapper = createWrapper();
+    await nextTick();
     expect(wrapper.find("v-progress-circular-stub").exists()).toBe(true);
   });
 
   it("loading state - error", async () => {
     const wrapper = createWrapper();
-    wrapper.setData({
-      error: "Error: cannot load data",
+    const error = new CombinedError({
+      graphQLErrors: ["Error: cannot load data"],
     });
-    await Vue.nextTick();
+    query.error.value = error;
+    await nextTick();
     expect(wrapper.text()).toContain("Error: cannot load data");
   });
 
   it("loading state - none", async () => {
     const wrapper = createWrapper();
-    await Vue.nextTick();
+    await nextTick();
     // expect(wrapper.text()).toContain("Nothing to show here");
   });
 
@@ -105,13 +112,13 @@ describe("ProductItem.vue", () => {
       params: { productTypeName: "map", name: "map001" },
     });
     const wrapper = createWrapper();
-    await Vue.nextTick();
+    await nextTick();
 
     // @ts-ignore
     expect(wrapper.vm.name).toBe("map001");
 
     await router.push("/about");
-    await Vue.nextTick();
+    await nextTick();
 
     // @ts-ignore
     expect(wrapper.vm.name).toBe("map001"); // still "map001"
@@ -120,7 +127,7 @@ describe("ProductItem.vue", () => {
       name: "ProductItem",
       params: { productTypeName: "map", name: "map002" },
     });
-    await Vue.nextTick();
+    await nextTick();
 
     // @ts-ignore
     expect(wrapper.vm.name).toBe("map001"); // still "map001". The name is set only once.

@@ -3,7 +3,7 @@
     <v-row>
       <v-col class="pb-0">
         <v-card-actions class="align-end" style="height: 56px">
-          <v-tooltip v-if="node" bottom open-delay="800">
+          <v-tooltip v-if="node && node.type_" bottom open-delay="800">
             <template v-slot:activator="{ on }">
               <v-btn
                 text
@@ -43,7 +43,7 @@
       <v-col v-else-if="error">
         <v-alert type="error">{{ error }}</v-alert>
       </v-col>
-      <v-col v-else-if="loaded" class="pt-0">
+      <v-col v-else-if="loaded && node" class="pt-0">
         <component
           :is="productItemCard"
           :productId="node.productId"
@@ -66,13 +66,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapState } from "pinia";
+import { defineComponent, ref, computed, watch, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
 import { useStore } from "@/stores/main";
 
 import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/queries/ProductByTypeIdAndName.gql";
+import { ProductByTypeIdAndNameQuery } from "@/generated/graphql";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
+
+import { useQuery } from "@urql/vue";
 
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
@@ -84,118 +87,115 @@ export default defineComponent({
     DevToolLoadingStateOverridingMenu,
   },
   props: {
-    productTypeId: { required: true },
+    productTypeId: { type: String, required: true },
     productItemCard: { default: "ProductItemCard" },
-    disableEdit: { default: false },
-    disableDelete: { default: false },
+    disableEdit: { type: Boolean, default: false },
+    disableDelete: { type: Boolean, default: false },
   },
-  data() {
-    return {
-      init: true,
-      node: null,
-      name: null,
-      error: null,
-      refreshing: false,
-      devtoolState: null,
-      State: State,
-    };
-  },
-  mounted() {
-    this.name = this.$route.params.name;
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-    nApolloMutations: function () {
-      this.refresh();
-    },
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.refreshing) return State.LOADING;
-      if (this.node) return State.LOADED;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    productTypeName() {
-      if (!this.node) return null;
-      if (!this.node.type_) return null;
-      return this.node.type_.name;
-    },
-    ...mapState(useStore, ["nApolloMutations"]),
-  },
-  apollo: {
-    node: {
+  setup(prop) {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
+    const init = ref(true);
+    const error = ref(null as any);
+    const refreshing = ref(false);
+    const devtoolState = ref<number | null>(null);
+    const name = ref<string | null>(null);
+    onMounted(() => {
+      name.value = route.params.name;
+    });
+    const query = useQuery<ProductByTypeIdAndNameQuery>({
       query: PRODUCT_BY_TYPE_ID_AND_NAME,
-      variables() {
-        return {
-          typeId: this.productTypeId,
-          name: this.name,
-        };
-      },
-      skip: function () {
-        return !(this.productTypeId && this.name);
-      },
-      update: function (data) {
-        return data.product;
-      },
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  methods: {
-    onDeleted() {
-      this.$router.push({
-        name: "ProductList",
-        params: { productTypeName: this.productTypeName },
-      });
-    },
-    onNameChanged(event) {
-      this.$router.push({
-        name: "ProductItem",
-        params: {
-          productTypeName: this.productTypeName,
-          name: event,
-        },
-      });
-    },
-    onTypeChanged(event) {
-      this.$router.push({
-        name: "ProductItem",
-        params: {
-          productTypeName: event,
-          name: this.name,
-        },
-      });
-    },
-    async refresh() {
-      this.refreshing = true;
+      variables: { typeId: prop.productTypeId, name: name },
+      pause: !name,
+    });
+    const node = computed(() => query.data?.value?.product);
+    const productTypeName = computed(() => node.value?.type_?.name);
+    watch(query.data, (data) => {
+      if (data) init.value = false;
+    });
+    watch(query.error, (e) => {
+      init.value = false;
+      error.value = e?.message || null;
+    });
+    watch(
+      () => store.nApolloMutations,
+      () => {
+        query.executeQuery({ requestPolicy: "network-only" });
+      }
+    );
+    watch(devtoolState, (val) => {
+      if (val) init.value = val === State.INIT;
+      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
+    });
+    const state = computed(() => {
+      if (devtoolState.value !== null) return devtoolState.value;
+      if (refreshing.value) return State.LOADING;
+      if (query.fetching.value) return State.LOADING;
+      if (error.value) return State.ERROR;
+      if (node.value) return State.LOADED;
+      if (init.value) return State.INIT;
+      return State.NONE;
+    });
+    const loading = computed(() => state.value === State.LOADING);
+    const loaded = computed(() => state.value === State.LOADED);
+    const notFound = computed(() => state.value === State.NONE);
+    async function refresh() {
+      refreshing.value = true;
       const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      await this.$apollo.queries.node.refetch();
+      await query.executeQuery({ requestPolicy: "network-only" });
       await wait; // wait until 0.5 sec passes since starting refetch
       // because the progress circular is too flickering if
       // the refetch finishes too quickly
-      this.refreshing = false;
-    },
+      refreshing.value = false;
+    }
+    function onDeleted() {
+      if (productTypeName.value === undefined)
+        throw new Error("productTypeName is undefined");
+      router.push({
+        name: "ProductList",
+        params: { productTypeName: productTypeName.value },
+      });
+    }
+    function onNameChanged(event: string) {
+      if (productTypeName.value === undefined)
+        throw new Error("productTypeName is undefined");
+      router.push({
+        name: "ProductItem",
+        params: {
+          productTypeName: productTypeName.value,
+          name: event,
+        },
+      });
+    }
+    function onTypeChanged(event: string) {
+      if (name.value === null) throw new Error("name is null");
+      router.push({
+        name: "ProductItem",
+        params: {
+          productTypeName: event,
+          name: name.value,
+        },
+      });
+    }
+    return {
+      init,
+      error,
+      refreshing,
+      devtoolState,
+      state,
+      State,
+      loading,
+      loaded,
+      notFound,
+      name,
+      node,
+      productTypeName,
+      refresh,
+      onDeleted,
+      onNameChanged,
+      onTypeChanged,
+    };
   },
 });
 </script>
