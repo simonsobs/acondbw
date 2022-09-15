@@ -304,7 +304,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
 import _ from "lodash";
 
