@@ -34,13 +34,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, PropType } from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
 import { camelCase } from "camel-case";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
+import { client } from "@/plugins/urql";
+import { Product } from "@/generated/graphql";
 import FormStart from "./FormStart.vue";
 
 export default defineComponent({
@@ -49,17 +51,17 @@ export default defineComponent({
     FormStart,
   },
   props: {
-    node: Object,
+    node: Object as PropType<Product>,
     attributes: Object,
   },
   data() {
     const initialValue = {
-      name: this.node.name,
+      name: this.node?.name,
       dateProduced: this.attributes["date_produced"].value,
       producedBy: this.attributes["produced_by"].value,
       contact: this.attributes["contact"].value,
-      paths: this.node.paths.edges.map(({ node }) => node.path).join("\n"),
-      note: this.node.note,
+      paths: this.node?.paths?.edges?.flatMap((e) => e?.node?.path).join("\n"),
+      note: this.node?.note,
     };
     return {
       initialValue,
@@ -121,14 +123,13 @@ export default defineComponent({
     },
     async submit() {
       try {
-        const data = await this.$apollo.mutate({
-          mutation: UPDATE_PRODUCT,
-          variables: {
+        const { error, data } = await client
+          .mutation(UPDATE_PRODUCT, {
             productId: this.node.productId,
             input: this.input,
-          },
-        });
-        this.$apollo.provider.defaultClient.cache.data.data = {};
+          })
+          .toPromise();
+        if (error) throw error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Updated");
         this.$emit("finished", this.input.name);
