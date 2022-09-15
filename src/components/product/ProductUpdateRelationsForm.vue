@@ -37,15 +37,16 @@ import { client } from "@/plugins/urql";
 import { Product, ProductRelationEdge } from "@/generated/graphql";
 
 function composeRelation(edge: ProductRelationEdge) {
-  return {
-    productId: edge?.node?.other?.productId,
-    typeId: edge?.node?.typeId,
-  };
+  const productId = edge?.node?.other?.productId;
+  const typeId = edge?.node?.typeId;
+  if (!productId || !typeId) return null; // TODO: throw error
+  return { productId, typeId };
 }
 
 function composeRelations(node: Product) {
   return (
-    node.relations?.edges.flatMap((e) => (e ? composeRelation(e) : [])) || []
+    node.relations?.edges.flatMap((e) => (e ? composeRelation(e) || [] : [])) ||
+    []
   );
 }
 
@@ -95,7 +96,7 @@ export default defineComponent({
             productId: this.node.productId,
             input: updateProductInput,
           })
-          .toPromise(); 
+          .toPromise();
         if (error) throw error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Updated");
