@@ -32,6 +32,7 @@ import _ from "lodash";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 import FormRelations from "./FormRelations.vue";
+import { client } from "@/plugins/urql";
 
 import { Product, ProductRelationEdge } from "@/generated/graphql";
 
@@ -89,14 +90,13 @@ export default defineComponent({
     async submit() {
       try {
         const updateProductInput = { relations: this.input };
-        const data = await this.$apollo.mutate({
-          mutation: UPDATE_PRODUCT,
-          variables: {
+        const { error, data } = await client
+          .mutation(UPDATE_PRODUCT, {
             productId: this.node.productId,
             input: updateProductInput,
-          },
-        });
-
+          })
+          .toPromise(); 
+        if (error) throw error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Updated");
         this.$emit("finished");
