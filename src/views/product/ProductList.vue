@@ -214,7 +214,6 @@ export default defineComponent({
   props: {
     productTypeId: { required: true },
     productItemCard: { default: "ProductItemCard" },
-    productAddForm: { default: "ProductAddForm" },
     disableAdd: { default: false },
     disableEdit: { default: false },
     disableDelete: { default: false },
