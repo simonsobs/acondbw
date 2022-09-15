@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, PropType } from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -33,20 +33,40 @@ import _ from "lodash";
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 import FormRelations from "./FormRelations.vue";
 
+import { Product, ProductRelationEdge } from "@/generated/graphql";
+
+function composeRelation(edge: ProductRelationEdge) {
+  return {
+    productId: edge?.node?.other?.productId,
+    typeId: edge?.node?.typeId,
+  };
+}
+
+function composeRelations(node: Product) {
+  return (
+    node.relations?.edges.flatMap((e) => (e ? composeRelation(e) : [])) || []
+  );
+}
+
 export default defineComponent({
   name: "ProductUpdateRelationsForm",
   components: {
     FormRelations,
   },
   props: {
-    node: Object,
+    node: {
+      type: Object as PropType<Product>,
+      required: true,
+    },
   },
   data() {
-    const initialRelations = this.composeRelations(this.node);
+    const initialRelations = composeRelations(this.node);
     return {
       initialRelations,
-      relations: JSON.parse(JSON.stringify(initialRelations)),
-      error: null,
+      relations: JSON.parse(JSON.stringify(initialRelations)) as ReturnType<
+        typeof composeRelations
+      >,
+      error: null as any,
     };
   },
   computed: {
@@ -60,13 +80,7 @@ export default defineComponent({
     },
   },
   methods: {
-    composeRelations(node) {
-      return node.relations.edges.map(({ node }) => ({
-        productId: node.other.productId,
-        typeId: node.type_.typeId,
-      }));
-    },
-    composeInput(relations) {
+    composeInput<T>(relations: T[]): T[] {
       // unique https://medium.com/coding-at-dawn/how-to-use-set-to-filter-unique-items-in-javascript-es6-196c55ce924b
       return [...new Set(relations.map((o) => JSON.stringify(o)))].map((s) =>
         JSON.parse(s)
