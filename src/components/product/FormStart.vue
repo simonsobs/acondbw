@@ -112,7 +112,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import _ from "lodash";
-import marked from "marked";
+import { marked } from "marked";
 import gql from "graphql-tag";
 
 import { useVuelidate } from "@vuelidate/core";
@@ -246,7 +246,7 @@ export default defineComponent({
     },
     noteMarked() {
       return this.form.note
-        ? marked(this.form.note)
+        ? marked.parse(this.form.note)
         : "<em>Nothing to preview</em>";
     },
     valid() {
