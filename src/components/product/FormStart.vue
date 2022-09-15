@@ -55,7 +55,7 @@
           <v-textarea
             outlined
             label="Paths"
-            hint="A path per line. e.g., nersc:/go/to/my/product_v3. Note that pahts are an unordered set; they will not be always displayed in the order entered here."
+            hint="A path per line. e.g., nersc:/go/to/my/product_v3. Note that paths are an unordered set; they will not be always displayed in the order entered here."
             rows="4"
             persistent-hint
             v-model="v$.form.paths.$model"
