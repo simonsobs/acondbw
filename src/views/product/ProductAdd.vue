@@ -13,8 +13,8 @@
     ></v-progress-circular>
     <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
     <product-add-form
-      v-else-if="on && loaded"
-      :productTypeId="node ? node.typeId : null"
+      v-else-if="on && loaded && node"
+      :productTypeId="node.typeId"
       @finished="finished"
     ></product-add-form>
     <v-row v-else-if="notFound" align="center" justify="center">
@@ -26,101 +26,102 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, watch, computed, nextTick } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
+import { useQuery } from "@urql/vue";
+
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
+import { ProductTypeByNameQuery } from "@/generated/graphql";
 
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import ProductAddForm from "@/components/product/ProductAddForm.vue";
 
-export default {
+export default defineComponent({
   name: "ProductAdd",
   components: {
     ProductAddForm,
     DevToolLoadingStateOverridingMenu,
   },
-  data: () => ({
-    on: true,
-    init: true,
-    node: null,
-    error: null,
-    devtoolState: null,
-    State: State,
-  }),
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.node) return State.LOADED;
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    productTypeName() {
-      return this.$route.params.productTypeName;
-    },
-  },
-  apollo: {
-    node: {
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const init = ref(true);
+    const error = ref<string | null>(null);
+    const devtoolState = ref<number | null>(null);
+    const productTypeName = computed(() => route.params.productTypeName);
+    const query = useQuery<ProductTypeByNameQuery>({
       query: PRODUCT_TYPE_BY_NAME,
-      variables() {
-        return { name: this.productTypeName };
-      },
-      update: (data) => data.productType,
-      skip() {
-        return !this.productTypeName;
-      },
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  watch: {
-    devtoolState() {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-  },
-  methods: {
-    finished() {
-      this.$router.push({
+      variables: { name: productTypeName },
+    });
+    const node = computed(() => query.data?.value?.productType);
+    watch(query.data, (data) => {
+      if (data) init.value = false;
+    });
+    watch(query.error, (e) => {
+      init.value = false;
+      error.value = e?.message || null;
+    });
+    watch(devtoolState, (val) => {
+      if (val) init.value = val === State.INIT;
+      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
+    });
+    const state = computed(() => {
+      if (devtoolState.value !== null) return devtoolState.value;
+      if (query.fetching.value) return State.LOADING;
+      if (error.value) return State.ERROR;
+      if (node.value) return State.LOADED;
+      if (init.value) return State.INIT;
+      return State.NONE;
+    });
+    const loading = computed(() => state.value === State.LOADING);
+    const loaded = computed(() => state.value === State.LOADED);
+    const notFound = computed(() => state.value === State.NONE);
+    function finished() {
+      router.push({
         name: "ProductList",
-        params: { productTypeName: this.productTypeName },
+        params: { productTypeName: productTypeName.value },
       });
-    },
-    onEntered() {
-      if (this.init) return;
-      Object.values(this.$apollo.queries).forEach((query) => query.refetch());
-      this.recreateForm();
-    },
-    recreateForm() {
-      // A component will be reinstantiated
+    }
+    function onEntered() {
+      if (init.value) return;
+      query.executeQuery({ requestPolicy: "network-only" });
+      recreateForm();
+    }
+    function recreateForm() {
+      // A component will be re-instantiated
       // when v-if becomes once false and then true.
-      this.on = false;
-      this.$nextTick(() => {
-        this.on = true;
+      on.value = false;
+      nextTick(() => {
+        on.value = true;
       });
-    },
+    }
+    const on = ref(true);
+    return {
+      on,
+      init,
+      error,
+      devtoolState,
+      State,
+      productTypeName,
+      query,
+      node,
+      state,
+      loading,
+      loaded,
+      notFound,
+      finished,
+      onEntered,
+      recreateForm,
+    };
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
+      // @ts-ignore
       vm.onEntered();
     });
   },
-};
+});
 </script>
