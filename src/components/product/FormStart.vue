@@ -269,8 +269,11 @@ export default defineComponent({
       deep: true,
       immediate: true,
     },
-    valid(val) {
-      this.$emit("valid", val);
+    valid: {
+      handler(val) {
+        this.$emit("valid", val);
+      },
+      immediate: true,
     },
   },
   methods: {
