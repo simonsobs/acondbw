@@ -116,11 +116,20 @@ import { marked } from "marked";
 import gql from "graphql-tag";
 
 import { useVuelidate } from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { required, helpers } from "@vuelidate/validators";
+
+import { Client } from "@urql/vue";
+import { client } from "@/plugins/urql";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
-async function isNameAvailable(name, productTypeId, apolloClient) {
+const { withAsync } = helpers;
+
+async function isNameAvailable(
+  name: string,
+  productTypeId,
+  urqlClient: Client
+) {
   const QUERY = gql`
     query QueryProductNameInFormStart($typeId: Int!, $name: String!) {
       product(typeId: $typeId, name: $name) {
@@ -132,14 +141,16 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
     }
   `;
 
-  const { data } = await apolloClient.query({
-    query: QUERY,
-    variables: {
-      typeId: productTypeId,
-      name: name,
-    },
-    fetchPolicy: "network-only",
-  });
+  const { data } = await urqlClient
+    .query(
+      QUERY,
+      {
+        typeId: productTypeId,
+        name: name,
+      },
+      { requestPolicy: "network-only" }
+    )
+    .toPromise();
 
   if (data.product) return false;
   return true;
@@ -185,63 +196,65 @@ export default defineComponent({
       tabNote: null,
     };
   },
-  validations: {
-    form: {
-      name: {
-        required,
-        async unique(value) {
-          if (value === "") return true;
-          if (value === this.formReset.name) return true;
-          try {
-            return await isNameAvailable(
-              value.trim(),
-              this.productType.typeId,
-              this.$apollo
-            );
-          } catch (error) {
-            this.error = error;
-            return true;
-          }
+  validations() {
+    return {
+      form: {
+        name: {
+          required,
+          unique: withAsync(async (value) => {
+            if (value === "") return true;
+            if (value === this.formReset.name) return true;
+            try {
+              return await isNameAvailable(
+                value.trim(),
+                this.productType.typeId,
+                client
+              );
+            } catch (error) {
+              this.error = error;
+              return true;
+            }
+          }),
         },
+        producedBy: { required },
+        dateProduced: { required, parsableAsDate },
+        contact: { required },
+        paths: {},
+        note: {},
       },
-      producedBy: { required },
-      dateProduced: { required, parsableAsDate },
-      contact: { required },
-      paths: {},
-      note: {},
-    },
+    };
   },
   computed: {
     nameErrors() {
-      const errors = [];
+      const errors: string[] = [];
       const field = this.v$.form.name;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
-      !field.unique &&
+      field.required.$invalid && errors.push("This field is required");
+      field.unique.$invalid &&
         errors.push(`The name "${field.$model.trim()}" is not available.`);
       return errors;
     },
     dateProducedErrors() {
-      const errors = [];
+      const errors: string[] = [];
       const field = this.v$.form.dateProduced;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
-      !field.parsableAsDate &&
+      field.required.$invalid && errors.push("This field is required");
+      field.parsableAsDate.$invalid &&
         errors.push(`"${field.$model}" cannot be parsed as a date.`);
       return errors;
     },
     producedByErrors() {
-      const errors = [];
+      const errors: string[] = [];
       const field = this.v$.form.producedBy;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
+      field.required.$invalid && errors.push("This field is required");
       return errors;
     },
     contactErrors() {
-      const errors = [];
+      const errors: string[] = [];
       const field = this.v$.form.contact;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
+      field.required.$invalid && errors.push("This field is required");
       return errors;
     },
     noteMarked() {
