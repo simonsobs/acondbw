@@ -75,7 +75,6 @@ export const useAuthStore = defineStore("auth", {
       this.lastError = null;
       try {
         const { token, signInInfo } = await signIn(code, state, urqlClient);
-        console.log("authStore signIn() signInInfo:", signInInfo)
         this.token = token;
         this.setSignInInfo(signInInfo);
       } catch (error) {
