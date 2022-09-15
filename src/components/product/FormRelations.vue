@@ -77,8 +77,8 @@
             text
             @click="form[node.typeId].push({ productId: null })"
           >
-            Add a field</v-btn
-          >
+            Add a field
+          </v-btn>
         </v-card-actions>
       </div>
     </div>
