@@ -156,11 +156,11 @@ async function isNameAvailable(
   return true;
 }
 
-function parsableAsDate(value) {
+function parsableAsDate(value: string) {
   // test format "YYYY-MM-DD"
   const reg = /^[0-9]{4}-[0-9]{2}-[0-9]{2}?$/;
   if (!reg.test(value)) return false;
-  if (isNaN(new Date(value))) return false;
+  if (isNaN((new Date(value)).valueOf())) return false;
   return true;
 }
 
@@ -192,7 +192,7 @@ export default defineComponent({
     return {
       formReset,
       form: { ...formReset },
-      error: null,
+      error: null as any,
       tabNote: null,
     };
   },
