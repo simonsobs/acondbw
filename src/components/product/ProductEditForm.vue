@@ -57,9 +57,11 @@ export default defineComponent({
   data() {
     const initialValue = {
       name: this.node?.name,
-      dateProduced: this.attributes["date_produced"].value,
-      producedBy: this.attributes["produced_by"].value,
-      contact: this.attributes["contact"].value,
+      dateProduced: this.attributes?.["date_produced"].value as
+        | string
+        | undefined,
+      producedBy: this.attributes?.["produced_by"].value as string | undefined,
+      contact: this.attributes?.["contact"].value as string | undefined,
       paths: this.node?.paths?.edges?.flatMap((e) => e?.node?.path).join("\n"),
       note: this.node?.note,
     };
@@ -67,12 +69,13 @@ export default defineComponent({
       initialValue,
       value: { ...initialValue },
       valid: false,
-      error: null,
+      error: null as string | null,
     };
   },
   computed: {
     fields() {
-      const ret = this.node.type_.fields.edges.reduce(
+      const ret = this.node?.type_?.fields?.edges.reduce(
+        // @ts-ignore
         (a, { node }) => ({
           ...a,
           ...{
