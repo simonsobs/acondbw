@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import marked from "marked";
+import { marked } from "marked";
 
 import gql from "graphql-tag";
 
@@ -95,7 +95,7 @@ export default {
         );
 
         this.notePreview = this.createProductInput.note
-          ? marked(this.createProductInput.note)
+          ? marked.parse(this.createProductInput.note)
           : null;
       } catch (error) {
         this.error = error;
