@@ -47,7 +47,9 @@ function composeRelations(node: Product) {
   return (
     node.relations?.edges.flatMap((e) => (e ? composeRelation(e) || [] : [])) ||
     []
-  ).sort((a, b) => a.typeId - b.typeId || a.productId.localeCompare(b.productId));
+  ).sort(
+    (a, b) => a.typeId - b.typeId || a.productId.localeCompare(b.productId)
+  );
 }
 
 export default defineComponent({
