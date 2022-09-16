@@ -4307,6 +4307,33 @@ export type QueryForProductAddFormQuery = {
   } | null;
 };
 
+export type QueryForProductAddFormRelationsPreviewQueryVariables = Exact<{
+  productRelationTypeId: Scalars["Int"];
+  productId: Scalars["Int"];
+}>;
+
+export type QueryForProductAddFormRelationsPreviewQuery = {
+  __typename?: "QueryAdmin";
+  productRelationType?: {
+    __typename?: "ProductRelationType";
+    id: string;
+    typeId: string;
+    singular?: string | null;
+  } | null;
+  product?: {
+    __typename?: "Product";
+    id: string;
+    productId: string;
+    name: string;
+    type_?: {
+      __typename?: "ProductType";
+      id: string;
+      typeId: string;
+      singular?: string | null;
+    } | null;
+  } | null;
+};
+
 export type QueryForProductListQueryVariables = Exact<{
   typeId?: InputMaybe<Scalars["Int"]>;
   sort?: InputMaybe<
@@ -5498,6 +5525,43 @@ export function useQueryForProductAddFormQuery(
 ) {
   return Urql.useQuery<QueryForProductAddFormQuery>({
     query: QueryForProductAddFormDocument,
+    ...options,
+  });
+}
+export const QueryForProductAddFormRelationsPreviewDocument = gql`
+  query QueryForProductAddFormRelationsPreview(
+    $productRelationTypeId: Int!
+    $productId: Int!
+  ) {
+    productRelationType(typeId: $productRelationTypeId) {
+      id
+      typeId
+      singular
+    }
+    product(productId: $productId) {
+      id
+      productId
+      name
+      type_ {
+        id
+        typeId
+        singular
+      }
+    }
+  }
+`;
+
+export function useQueryForProductAddFormRelationsPreviewQuery(
+  options: Omit<
+    Urql.UseQueryArgs<
+      never,
+      QueryForProductAddFormRelationsPreviewQueryVariables
+    >,
+    "query"
+  > = {}
+) {
+  return Urql.useQuery<QueryForProductAddFormRelationsPreviewQuery>({
+    query: QueryForProductAddFormRelationsPreviewDocument,
     ...options,
   });
 }
