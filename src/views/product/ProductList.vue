@@ -326,6 +326,7 @@ export default defineComponent({
         }
       },
     },
+    ...mapState(useStore, ["nApolloMutations"]),
   },
   watch: {
     devtoolState: function () {
@@ -342,7 +343,6 @@ export default defineComponent({
       this.collapseCards();
       this.loadAllFewRemainingItems();
     },
-    ...mapState(useStore, ["nApolloMutations"]),
   },
   methods: {
     collapseCards() {
