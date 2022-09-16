@@ -44,7 +44,7 @@
 <script>
 import { marked } from "marked";
 
-import gql from "graphql-tag";
+import QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW from "@/graphql/queries/QueryForProductAddFormRelationsPreview.gql";
 
 export default {
   name: "ProductAddFormStepPreview",
@@ -104,29 +104,6 @@ export default {
   },
   methods: {
     async composeRelationPreview(relations) {
-      const QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW = gql`
-        query QueryForProductAddFormRelationsPreview(
-          $productRelationTypeId: Int!
-          $productId: Int!
-        ) {
-          productRelationType(typeId: $productRelationTypeId) {
-            id
-            typeId
-            singular
-          }
-          product(productId: $productId) {
-            id
-            productId
-            name
-            type_ {
-              id
-              typeId
-              singular
-            }
-          }
-        }
-      `;
-
       // https://flaviocopes.com/javascript-async-await-array-map/
       const ret = await Promise.all(
         relations.map(async (r) => {
