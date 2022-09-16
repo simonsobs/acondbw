@@ -110,7 +110,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import _ from "lodash";
 import { marked } from "marked";
 import gql from "graphql-tag";
@@ -164,6 +164,15 @@ function parsableAsDate(value: string) {
   return true;
 }
 
+export interface FormStepStart {
+  name: string;
+  dateProduced: string;
+  producedBy: string;
+  contact: string;
+  paths: string;
+  note: string;
+} 
+
 export default defineComponent({
   name: "FormStart",
   components: {
@@ -173,14 +182,14 @@ export default defineComponent({
     return { v$: useVuelidate() };
   },
   props: {
-    value: Object,
+    value: Object as PropType<FormStepStart>,
     productType: {
       type: Object,
       required: true,
     },
   },
   data() {
-    const formDefault = {
+    const formDefault: FormStepStart = {
       name: "",
       dateProduced: new Date().toISOString().substr(0, 10), // "YYYY-MM-DD"
       producedBy: "",
@@ -188,10 +197,10 @@ export default defineComponent({
       paths: "",
       note: "",
     };
-    const formReset = { ...formDefault, ...(this.value || {}) };
+    const formReset: FormStepStart = { ...formDefault, ...(this.value || {}) };
     return {
       formReset,
-      form: { ...formReset },
+      form: { ...formReset } as FormStepStart,
       error: null as any,
       tabNote: null,
     };
