@@ -26,18 +26,25 @@
   </div>
 </template>
 
-<script>
-import FormRelations from "./FormRelations.vue";
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+import FormRelations, { Relation } from "./FormRelations.vue";
 
-export default {
+interface ProductType {
+  singular: string;
+}
+
+export { Relation };
+
+export default defineComponent({
   name: "ProductAddFormStepRelations",
   components: {
     FormRelations,
   },
   props: {
-    value: Array,
-    productType: Object,
+    value: Array as PropType<Relation[]>,
+    productType: { type: Object as PropType<ProductType>, required: true },
     name: String,
   },
-};
+});
 </script>
