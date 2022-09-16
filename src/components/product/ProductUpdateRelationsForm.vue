@@ -65,9 +65,9 @@ export default defineComponent({
     const initialRelations = composeRelations(this.node);
     return {
       initialRelations,
-      relations: JSON.parse(JSON.stringify(initialRelations)) as ReturnType<
-        typeof composeRelations
-      >,
+      relations: JSON.parse(
+        JSON.stringify(initialRelations)
+      ) as typeof initialRelations,
       error: null as any,
     };
   },
