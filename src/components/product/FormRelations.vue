@@ -112,7 +112,7 @@ import { QueryForFormRelationsQuery } from "@/generated/graphql";
 
 import { useQuery } from "@urql/vue";
 
-interface Relation {
+export interface Relation {
   productId: string;
   typeId: number;
 }
@@ -139,21 +139,48 @@ export default defineComponent({
     DevToolLoadingStateOverridingMenu,
   },
   props: {
-    value: { type: Array as PropType<Relation[]>, require: true },
+    value: Array as PropType<Relation[]>,
     name: { type: String, require: true },
   },
-  setup(prop) {
+  setup(prop, { emit }) {
+    const init = ref(true);
+    const queryError = ref<string | null>(null);
+    const refreshing = ref(false);
+    const devtoolState = ref<number | null>(null);
     const query = useQuery<QueryForFormRelationsQuery>({
       query: QueryForFormRelations,
     });
     const allProductRelationTypes = computed(
       () => query.data.value?.allProductRelationTypes || { edges: [] }
     );
+    watch(allProductRelationTypes, (val) => {
+      const reshapedValue = prop.value ? reshapeValue(prop.value) : {};
+      form.value = composeForm(val, reshapedValue);
+      if (!formReset.value) {
+        formReset.value = JSON.parse(JSON.stringify(form.value));
+      }
+    });
+    function composeForm(
+      relationTypes: typeof allProductRelationTypes.value,
+      reshapedValue: Reshaped
+    ): Reshaped {
+      return relationTypes.edges.reduce(
+        (a, e) =>
+          e?.node
+            ? {
+                ...a,
+                [e.node.typeId]: [
+                  ...(reshapedValue[e.node.typeId] || []),
+                  { productId: null },
+                ],
+              }
+            : a,
+        {} as Reshaped
+      );
+    }
     const allProducts = computed(
       () => query.data.value?.allProducts || { edges: [] }
     );
-    const init = ref(true);
-    const queryError = ref<string | null>(null);
     watch(query.data, (data) => {
       if (data) init.value = false;
     });
@@ -161,45 +188,42 @@ export default defineComponent({
       init.value = false;
       queryError.value = e?.message || null;
     });
-    return {
-      query,
-      allProductRelationTypes,
-      allProducts,
-      init,
-      queryError,
-    };
-  },
-  data() {
-    return {
-      form: reshapeValue(this.value || []),
-      formReset: null,
-      refreshing: false,
-      devtoolState: null,
-      State: State,
-    };
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.refreshing) return State.LOADING;
-      if (this.query.fetching.value) return State.LOADING;
-      if (this.queryError) return State.ERROR;
-      if (this.allProductRelationTypes) return State.LOADED;
-      if (this.init) return State.INIT;
+    watch(devtoolState, (val) => {
+      if (val) init.value = val === State.INIT;
+      queryError.value = val === State.ERROR ? "Error from Dev Tools" : null;
+    });
+    const state = computed(() => {
+      if (devtoolState.value !== null) return devtoolState.value;
+      if (refreshing.value) return State.LOADING;
+      if (query.fetching.value) return State.LOADING;
+      if (queryError.value) return State.ERROR;
+      if (allProductRelationTypes.value) return State.LOADED;
+      if (init.value) return State.INIT;
       return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    input(): Relation[] {
-      return Object.entries(this.form)
-        .reduce((a, e) => {
+    });
+    const loading = computed(() => state.value === State.LOADING);
+    const loaded = computed(() => state.value === State.LOADED);
+    const notFound = computed(() => state.value === State.NONE);
+    async function refetch() {
+      refreshing.value = true;
+      const wait = new Promise((resolve) => setTimeout(resolve, 500));
+      await query.executeQuery({ requestPolicy: "network-only" });
+      await wait; // wait until 0.5 sec passes since starting refetch
+      // because the progress circular is too flickering if
+      // the refetch finishes too quickly
+      refreshing.value = false;
+    }
+    const form = ref(reshapeValue(prop.value || []));
+    const formReset = ref<typeof form.value | null>(null);
+    const unchanged = computed(() =>
+      formReset.value === null
+        ? false
+        : JSON.stringify(form.value) === JSON.stringify(formReset.value)
+    );
+    const input = computed((): Relation[] =>
+      Object.entries(form.value)
+        // @ts-ignore
+        .reduce((a, e: [string, typeof form.value[number]]) => {
           const typeId = Number(e[0]);
           const l = e[1].filter((x) => x.productId !== null);
           return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
@@ -207,77 +231,66 @@ export default defineComponent({
         .sort(
           (a, b) =>
             a.typeId - b.typeId || a.productId.localeCompare(b.productId)
-        );
-    },
-    unchanged() {
-      if (!this.formReset) return false;
-      return JSON.stringify(this.form) === JSON.stringify(this.formReset);
-    },
-    relationTypeItems() {
-      return this.allProductRelationTypes.edges.map(({ node }) => ({
-        text: node.singular,
-        value: node.typeId,
-      }));
+        )
+    );
+    watch(
+      input,
+      (val) => {
+        emit("input", val);
+      },
+      { deep: true, immediate: true }
+    );
+    const relationTypeItems = computed(
       // [{ text: relation type name (singular), value: relation type id }]
       // e.g., [{ text: "parent", value: "1" }, { text: "child", value: "2" }];
-    },
-    productItems() {
-      return this.allProducts.edges.map(({ node }) => ({
-        text: `${node.name} (${node.type_.singular})`,
-        value: node.productId,
-      }));
+      () =>
+        allProductRelationTypes.value.edges.flatMap((e) =>
+          e?.node
+            ? {
+                text: e.node.singular,
+                value: e.node.typeId,
+              }
+            : []
+        )
+    );
+    const productItems = computed(
       // [{ text: product name (product type name), value: product id }]
       // e.g., [{ text: "Map-01 (map)", value: "1" }, ...];
-    },
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.queryError =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-    allProductRelationTypes(val) {
-      const reshapedValue = this.value ? reshapeValue(this.value) : {};
-      this.form = this.composeForm(val, reshapedValue);
-      if (!this.formReset) {
-        this.formReset = JSON.parse(JSON.stringify(this.form));
-      }
-    },
-    input: {
-      handler(val) {
-        this.$emit("input", val);
-      },
-      deep: true,
-      immediate: true,
-    },
-  },
-  methods: {
-    async refetch() {
-      this.refreshing = true;
-      const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      await this.query.executeQuery({ requestPolicy: "network-only" });
-      await wait; // wait until 0.5 sec passes since starting refetch
-      // because the progress circular is too flickering if
-      // the refetch finishes too quickly
-      this.refreshing = false;
-    },
-    composeForm(allProductRelationTypes, reshapedValue: Reshaped): Reshaped {
-      return allProductRelationTypes.edges.reduce(
-        (a, { node }) => ({
-          ...a,
-          [node.typeId]: [
-            ...(reshapedValue[node.typeId] || []),
-            { productId: null },
-          ],
-        }),
-        {}
-      );
-    },
-    reset() {
-      this.form = JSON.parse(JSON.stringify(this.formReset));
-    },
+      () =>
+        allProducts.value.edges.map((e) =>
+          e?.node
+            ? {
+                text: `${e.node.name} (${e.node.type_?.singular})`,
+                value: e.node.productId,
+              }
+            : []
+        )
+    );
+    function reset() {
+      form.value = JSON.parse(JSON.stringify(formReset.value));
+    }
+    return {
+      query,
+      allProductRelationTypes,
+      allProducts,
+      init,
+      queryError,
+      refreshing,
+      devtoolState,
+      refetch,
+      state,
+      State,
+      loading,
+      loaded,
+      notFound,
+      form,
+      formReset,
+      unchanged,
+      input,
+      relationTypeItems,
+      productItems,
+      reset,
+    };
   },
 });
 </script>
