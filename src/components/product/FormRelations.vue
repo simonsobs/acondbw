@@ -113,7 +113,7 @@ import { QueryForFormRelationsQuery } from "@/generated/graphql";
 import { useQuery } from "@urql/vue";
 
 export interface Relation {
-  productId: string;
+  productId: number;
   typeId: number;
 }
 
