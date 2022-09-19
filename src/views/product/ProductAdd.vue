@@ -13,8 +13,8 @@
     ></v-progress-circular>
     <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
     <product-add-form
-      v-else-if="on && loaded && node"
-      :productTypeId="node.typeId"
+      v-else-if="on && loaded && productTypeId"
+      :productTypeId="productTypeId"
       @finished="finished"
     ></product-add-form>
     <v-row v-else-if="notFound" align="center" justify="center">
@@ -57,6 +57,10 @@ export default defineComponent({
       variables: { name: productTypeName },
     });
     const node = computed(() => query.data?.value?.productType);
+    const productTypeId = computed(() => {
+      const typeId = Number(node.value?.typeId);
+      return isNaN(typeId) ? undefined : typeId;
+    });
     watch(query.data, (data) => {
       if (data) init.value = false;
     });
@@ -106,6 +110,7 @@ export default defineComponent({
       devtoolState,
       State,
       productTypeName,
+      productTypeId,
       query,
       node,
       state,
