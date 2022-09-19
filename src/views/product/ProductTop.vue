@@ -75,14 +75,15 @@
         </v-card>
       </v-col>
     </v-row>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from "vue";
+import { defineComponent, ref, computed, onMounted } from "vue";
 import {
   useRoute,
   useRouter,
@@ -94,67 +95,37 @@ import { useStore } from "@/stores/main";
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 import { ProductTypeByNameQuery } from "@/generated/graphql";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
-
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 import { useQuery } from "@urql/vue";
+
+import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
+import { useQueryState } from "@/utils/query-state";
+
 
 export default defineComponent({
   name: "ProductTop",
   components: {
-    DevToolLoadingStateOverridingMenu,
+    DevToolLoadingStateMenu,
     ProductTypeEditForm,
   },
   setup() {
     const route = useRoute();
     const router = useRouter();
     const store = useStore();
-    const init = ref(true);
-    const error = ref(null as any);
-    const refreshing = ref(false);
-    const devtoolState = ref<number | null>(null);
+
     const productTypeName = ref<string | null>(null);
     const itemName = ref<string | null>(null);
     onMounted(() => {
       productTypeName.value = route.params.productTypeName;
       itemName.value = route.params.name;
     });
+
     const query = useQuery<ProductTypeByNameQuery>({
       query: PRODUCT_TYPE_BY_NAME,
       variables: { name: productTypeName },
       pause: !productTypeName,
     });
     const node = computed(() => query.data?.value?.productType);
-    watch(query.data, (data) => {
-      if (data) init.value = false;
-    });
-    watch(query.error, (e) => {
-      init.value = false;
-      error.value = e || null;
-    });
-    watch(
-      () => store.nApolloMutations,
-      () => {
-        query.executeQuery({ requestPolicy: "network-only" });
-      }
-    );
-    watch(devtoolState, (val) => {
-      if (val) init.value = val === State.INIT;
-      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
-    });
-    const state = computed(() => {
-      if (devtoolState.value !== null) return devtoolState.value;
-      if (refreshing.value) return State.LOADING;
-      if (query.fetching.value) return State.LOADING;
-      if (error.value) return State.ERROR;
-      if (node.value) return State.LOADED;
-      if (init.value) return State.INIT;
-      return State.NONE;
-    });
-    const loading = computed(() => state.value === State.LOADING);
-    const loaded = computed(() => state.value === State.LOADED);
-    const notFound = computed(() => state.value === State.NONE);
     const disableAdd = computed(() => !store.webConfig.productCreationDialog);
     const disableEdit = computed(() => !store.webConfig.productUpdateDialog);
     const disableDelete = computed(
@@ -179,15 +150,6 @@ export default defineComponent({
         },
       });
     }
-    async function refresh() {
-      refreshing.value = true;
-      const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      await query.executeQuery({ requestPolicy: "network-only" });
-      await wait; // wait until 0.5 sec passes since starting refetch
-      // because the progress circular is too flickering if
-      // the refetch finishes too quickly
-      refreshing.value = false;
-    }
     const transitionName = ref("fade-product-top-leave");
     const transitionMode = ref("out-in");
     onBeforeRouteUpdate((to, from, next) => {
@@ -201,19 +163,11 @@ export default defineComponent({
       next();
     });
     return {
-      init,
-      error,
-      refreshing,
-      devtoolState,
-      State,
+      ...useQueryState(query, { isNull: () => node === null}),
       query,
       productTypeName,
       itemName,
       node,
-      state,
-      loading,
-      loaded,
-      notFound,
       disableAdd,
       disableEdit,
       disableDelete,
@@ -222,7 +176,6 @@ export default defineComponent({
       closeEditForm,
       onEditFormFinished,
       onNameChanged,
-      refresh,
       transitionName,
       transitionMode,
     };
