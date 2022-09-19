@@ -2,7 +2,7 @@
   <div v-if="enabled">
     <v-menu right bottom offset-y :close-on-content-click="false">
       <template v-slot:activator="{ on }">
-        <v-btn absolute style="top: -15px; right: -10px" icon v-on="on">
+        <v-btn absolute :style="buttonStyle" icon v-on="on">
           <v-icon x-small color="grey lighten-1">mdi-nut</v-icon>
         </v-btn>
       </template>
@@ -37,16 +37,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent, ref, reactive, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
 
 import State from "@/utils/LoadingState";
 
 export default defineComponent({
   name: "DevToolLoadingStateMenu",
-  props: { value: Number }, // for v-model
+  props: {
+    value: Number,
+    top: { default: "-15px" },
+    right: { default: "-10px" },
+  }, // for v-model
   setup(prop, { emit }) {
     const store = useStore();
+    const buttonStyle = computed(() => ({
+      top: prop.top,
+      right: prop.right,
+    }));
     const enabled = computed(() => store.webConfig.devtoolLoadingstate);
     watch(enabled, (val) => {
       if (!val) state.value = null;
@@ -57,6 +65,7 @@ export default defineComponent({
       emit("input", s); // for v-model
     });
     return {
+      buttonStyle,
       enabled,
       state,
       State,
