@@ -2,9 +2,7 @@ import { ref, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
 import { useQuery, AnyVariables } from "@urql/vue";
 
-
 import State from "@/utils/LoadingState";
-
 
 export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
   query: ReturnType<typeof useQuery<T, V>>,
@@ -34,6 +32,7 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
 
   const state = computed(() => {
     if (devtoolState.value !== null) return devtoolState.value;
+    if (refreshing.value) return State.LOADING;
     if (query.fetching.value) return State.LOADING;
     if (error.value) return State.ERROR;
     if (isEmpty?.(query)) return State.EMPTY;
@@ -49,6 +48,17 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
       query.executeQuery({ requestPolicy: "network-only" });
     }
   );
+
+  const refreshing = ref(false);
+  async function refresh() {
+    refreshing.value = true;
+    const wait = new Promise((resolve) => setTimeout(resolve, 500));
+    await query.executeQuery({ requestPolicy: "network-only" });
+    await wait; // wait until 0.5 sec passes since starting refetch
+    // because the progress circular is too flickering if
+    // the refetch finishes too quickly
+    refreshing.value = false;
+  }
 
   return {
     init,
