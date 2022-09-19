@@ -8,27 +8,9 @@
       </template>
       <v-list dense>
         <v-subheader>Dev Tools</v-subheader>
-        <v-list-item-group v-model="state">
-          <v-list-item :value="State.INIT">
-            <v-list-item-title>Init</v-list-item-title>
-          </v-list-item>
-          <v-list-item :value="State.LOADING">
-            <v-list-item-title>Loading</v-list-item-title>
-          </v-list-item>
-          <v-list-item :value="State.ERROR">
-            <v-list-item-title>Error</v-list-item-title>
-          </v-list-item>
-          <v-list-item :value="State.LOADED">
-            <v-list-item-title>Loaded</v-list-item-title>
-          </v-list-item>
-          <v-list-item :value="State.EMPTY">
-            <v-list-item-title>Empty</v-list-item-title>
-          </v-list-item>
-          <v-list-item :value="State.NONE">
-            <v-list-item-title>None</v-list-item-title>
-          </v-list-item>
-          <v-list-item :value="null">
-            <v-list-item-title>Off</v-list-item-title>
+        <v-list-item-group v-model="state" v-for="item in menuItems">
+          <v-list-item :value="item.value">
+            <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -60,6 +42,18 @@ export default defineComponent({
       top: prop.top,
       right: prop.right,
     }));
+
+    const menuItems = ref([
+      { text: "Init", value: State.INIT },
+      { text: "Loading", value: State.LOADING },
+      { text: "Error", value: State.ERROR },
+      { text: "Loaded", value: State.LOADED },
+      { text: "Empty", value: State.EMPTY },
+      { text: "None", value: State.NONE },
+      { text: "Off", value: null },
+    ]
+
+    )
     const enabled = computed(() => store.webConfig.devtoolLoadingstate);
     watch(enabled, (val) => {
       if (!val) state.value = null;
@@ -71,6 +65,7 @@ export default defineComponent({
     });
     return {
       buttonStyle,
+      menuItems,
       enabled,
       state,
       State,
