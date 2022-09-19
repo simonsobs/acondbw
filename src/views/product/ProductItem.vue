@@ -59,16 +59,16 @@
         <v-card-text class="text-body-1">Not Found (404)</v-card-text>
       </v-col>
     </v-row>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from "vue";
+import { defineComponent, ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
-import { useStore } from "@/stores/main";
 
 import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/queries/ProductByTypeIdAndName.gql";
 import { ProductByTypeIdAndNameQuery } from "@/generated/graphql";
@@ -77,14 +77,14 @@ import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
 import { useQuery } from "@urql/vue";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
+import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "ProductItem",
   components: {
+    DevToolLoadingStateMenu,
     ProductItemCard,
-    DevToolLoadingStateOverridingMenu,
   },
   props: {
     productTypeId: { type: String, required: true },
@@ -95,11 +95,6 @@ export default defineComponent({
   setup(prop) {
     const route = useRoute();
     const router = useRouter();
-    const store = useStore();
-    const init = ref(true);
-    const error = ref<string | null>(null);
-    const refreshing = ref(false);
-    const devtoolState = ref<number | null>(null);
     const name = ref<string | null>(null);
     onMounted(() => {
       name.value = route.params.name;
@@ -111,44 +106,6 @@ export default defineComponent({
     });
     const node = computed(() => query.data?.value?.product);
     const productTypeName = computed(() => node.value?.type_?.name);
-    watch(query.data, (data) => {
-      if (data) init.value = false;
-    });
-    watch(query.error, (e) => {
-      init.value = false;
-      error.value = e?.message || null;
-    });
-    watch(
-      () => store.nApolloMutations,
-      () => {
-        query.executeQuery({ requestPolicy: "network-only" });
-      }
-    );
-    watch(devtoolState, (val) => {
-      if (val) init.value = val === State.INIT;
-      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
-    });
-    const state = computed(() => {
-      if (devtoolState.value !== null) return devtoolState.value;
-      if (refreshing.value) return State.LOADING;
-      if (query.fetching.value) return State.LOADING;
-      if (error.value) return State.ERROR;
-      if (node.value) return State.LOADED;
-      if (init.value) return State.INIT;
-      return State.NONE;
-    });
-    const loading = computed(() => state.value === State.LOADING);
-    const loaded = computed(() => state.value === State.LOADED);
-    const notFound = computed(() => state.value === State.NONE);
-    async function refresh() {
-      refreshing.value = true;
-      const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      await query.executeQuery({ requestPolicy: "network-only" });
-      await wait; // wait until 0.5 sec passes since starting refetch
-      // because the progress circular is too flickering if
-      // the refetch finishes too quickly
-      refreshing.value = false;
-    }
     function onDeleted() {
       if (productTypeName.value === undefined)
         throw new Error("productTypeName is undefined");
@@ -179,19 +136,10 @@ export default defineComponent({
       });
     }
     return {
-      init,
-      error,
-      refreshing,
-      devtoolState,
-      state,
-      State,
-      loading,
-      loaded,
-      notFound,
+      ...useQueryState(query, { isNull: () => node === null}),
       name,
       node,
       productTypeName,
-      refresh,
       onDeleted,
       onNameChanged,
       onTypeChanged,
