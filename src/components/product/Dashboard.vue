@@ -15,63 +15,50 @@
         <router-link
           :to="{ name: 'ProductList', params: { productTypeName: item.name } }"
         >
-          <span class="capitalize font-weight-bold primary--text">{{
-            item.plural
-          }}</span>
+          <span class="capitalize font-weight-bold primary--text">
+            {{ item.plural }}
+          </span>
         </router-link>
       </template>
     </v-data-table>
     <v-alert v-if="error" type="error" style="width: 100%">{{ error }}</v-alert>
-    <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
-    ></dev-tool-loading-state-overriding-menu>
+    <dev-tool-loading-state-menu
+      top="-10px"
+      v-model="devtoolState"
+    ></dev-tool-loading-state-menu>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed } from "vue";
 import { useRouter } from "vue-router/composables";
-import { useStore } from "@/stores/main";
 import { useQuery } from "@urql/vue";
 
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import { AllProductTypesQuery, ProductType } from "@/generated/graphql";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
-interface ProductConnection {
-  totalCount: number;
-}
+import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "Dashboard",
   components: {
-    DevToolLoadingStateOverridingMenu,
+    DevToolLoadingStateMenu,
   },
   setup() {
     const router = useRouter();
-    const store = useStore();
-    const error = ref(null as any);
-    const devtoolState = ref<number | null>(null);
     const query = useQuery<AllProductTypesQuery>({
       query: ALL_PRODUCT_TYPES,
     });
-    const edges = computed(
-      () => query.data?.value?.allProductTypes?.edges || []
-    );
-    watch(query.error, (e) => {
-      error.value = e || null;
-    });
-    watch(
-      () => store.nApolloMutations,
-      () => {
-        query.executeQuery({ requestPolicy: "network-only" });
-      }
-    );
-    watch(devtoolState, (val) => {
-      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
-    });
+    function readEdges(
+      query: ReturnType<typeof useQuery<AllProductTypesQuery>>
+    ) {
+      return query.data?.value?.allProductTypes?.edges?.flatMap((e) =>
+        e ? [e] : []
+      );
+    }
+    const edges = computed(() => readEdges(query) || []);
 
     const headers = ref([
       { text: "Product type", value: "plural" },
@@ -82,21 +69,14 @@ export default defineComponent({
       },
     ]);
 
-    const state = computed(() => {
-      if (devtoolState.value !== null) return devtoolState.value;
-      if (query.fetching.value) return State.LOADING;
-      if (error.value) return State.ERROR;
-      if (edges.value.length === 0) return State.EMPTY;
-      return State.LOADED;
-    });
+    function isEmpty(query: ReturnType<typeof useQuery<AllProductTypesQuery>>) {
+      const edges = readEdges(query);
+      return edges ? edges.length === 0 : false;
+    }
 
-    const loading = computed(() => state.value === State.LOADING);
-
-    const items = computed(() => {
-      if (state.value === State.NONE) return [];
-      if (state.value === State.EMPTY) return [];
-      return edges.value.flatMap((edge) => edge?.node ? [edge.node] : []);
-    });
+    const items = computed(() =>
+      edges.value.flatMap((edge) => (edge?.node ? [edge.node] : []))
+    );
 
     function clickRow(item: ProductType) {
       router.push({
@@ -106,12 +86,9 @@ export default defineComponent({
     }
 
     return {
-      error,
-      devtoolState,
+      ...useQueryState(query, { isEmpty }),
       edges,
       headers,
-      state,
-      loading,
       items,
       clickRow,
     };
