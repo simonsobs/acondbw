@@ -79,7 +79,7 @@ export default defineComponent({
       });
     }
     const on = ref(true);
-    const queryState = useQueryState(query, { isNull: () => node === null});
+    const queryState = useQueryState(query, { isNull: () => node.value === null});
     const { init } = queryState;
     return {
       ...queryState,
