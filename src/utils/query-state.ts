@@ -1,6 +1,6 @@
 import { ref, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
-import { useQuery, AnyVariables } from "@urql/vue";
+import { useQuery, AnyVariables, CombinedError } from "@urql/vue";
 
 import State from "@/utils/LoadingState";
 
@@ -53,11 +53,19 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
   async function refresh() {
     refreshing.value = true;
     const wait = new Promise((resolve) => setTimeout(resolve, 500));
-    await query.executeQuery({ requestPolicy: "network-only" });
-    await wait; // wait until 0.5 sec passes since starting refetch
-    // because the progress circular is too flickering if
-    // the refetch finishes too quickly
-    refreshing.value = false;
+    try {
+      const { error } = await query.executeQuery({
+        requestPolicy: "network-only",
+      });
+      if (error.value) throw error.value;
+    } catch (e: any) {
+      error.value = e?.toString() || null;
+    } finally {
+      await wait; // wait until 0.5 sec passes since starting refetch
+      // because the progress circular is too flickering if
+      // the refetch finishes too quickly
+      refreshing.value = false;
+    }
   }
 
   return {
@@ -68,5 +76,6 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     loaded: computed(() => state.value === State.LOADED),
     empty: computed(() => state.value === State.EMPTY),
     notFound: computed(() => state.value === State.NONE),
+    refresh,
   };
 }
