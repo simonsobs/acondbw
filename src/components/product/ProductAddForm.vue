@@ -13,7 +13,7 @@
         </span>
       </span>
     </v-card-title>
-    <v-alert v-if="error" type="error">{{ error }}</v-alert>
+    <v-alert v-if="formError" type="error">{{ formError }}</v-alert>
     <v-stepper v-if="loaded" v-model="stepper">
       <v-stepper-header>
         <v-stepper-step :complete="stepper > 1" step="1">
@@ -71,13 +71,13 @@
           ></v-progress-circular>
         </div>
         <v-alert
-          v-else-if="queryError"
+          v-else-if="error"
           outlined
           dense
           type="error"
           class="ma-2"
         >
-          {{ queryError }}
+          {{ error }}
         </v-alert>
         <v-card-text v-else-if="notFound"> Not Found </v-card-text>
       </v-card>
@@ -143,9 +143,9 @@ export default defineComponent({
   setup(prop, { emit }) {
     const store = useStore();
     const init = ref(true);
-    const queryError = ref<string | null>(null);
-    const devtoolState = ref<number | null>(null);
     const error = ref<string | null>(null);
+    const devtoolState = ref<number | null>(null);
+    const formError = ref<string | null>(null);
     const query = useQuery<QueryForProductAddFormQuery>({
       query: QueryForProductAddForm,
       variables: { typeId: prop.productTypeId },
@@ -156,16 +156,16 @@ export default defineComponent({
     });
     watch(query.error, (e) => {
       init.value = false;
-      queryError.value = e?.message || null;
+      error.value = e?.message || null;
     });
     watch(devtoolState, (val) => {
       if (val) init.value = val === State.INIT;
-      queryError.value = val === State.ERROR ? "Error from Dev Tools" : null;
+      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
     });
     const state = computed(() => {
       if (devtoolState.value !== null) return devtoolState.value;
       if (query.fetching.value) return State.LOADING;
-      if (queryError.value) return State.ERROR;
+      if (error.value) return State.ERROR;
       if (productType.value) return State.LOADED;
       if (init.value) return State.INIT;
       return State.NONE;
@@ -202,7 +202,7 @@ export default defineComponent({
           formStepRelation.value
         );
       } catch (e: any) {
-        error.value = e;
+        formError.value = e;
       } finally {
         stepper.value = 3;
       }
@@ -255,7 +255,7 @@ export default defineComponent({
           throw new Error("createProductInput is null");
         await addProduct(createProductInput.value);
       } catch (e: any) {
-        error.value = e;
+        formError.value = e;
         stepper.value = 1;
         return;
       }
@@ -285,14 +285,14 @@ export default defineComponent({
       stepper,
       query,
       init,
-      queryError,
+      error,
       devtoolState,
       State,
       state,
       loading,
       loaded,
       notFound,
-      error,
+      formError,
       productType,
       fields,
       formStepStart,
