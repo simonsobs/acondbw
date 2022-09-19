@@ -1,6 +1,8 @@
 import Vue from "vue";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import ProductList from "@/views/product/ProductList.vue";
 
@@ -16,8 +18,10 @@ describe("ProductList.vue", () => {
   let localVue: ReturnType<typeof createLocalVue>;
 
   function createWrapper(loading = false) {
+    const pinia = createTestingPinia();
     return shallowMount(ProductList, {
       localVue,
+      pinia,
       mocks: {
         $apollo: {
           queries: {
@@ -82,6 +86,7 @@ describe("ProductList.vue", () => {
 
   beforeEach(function () {
     localVue = createLocalVue();
+    localVue.use(PiniaVuePlugin);
   });
 
   it("match snapshot", async () => {
