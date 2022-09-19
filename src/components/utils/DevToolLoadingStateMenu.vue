@@ -37,18 +37,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, computed, watch } from "vue";
+import { defineComponent, ref, reactive, computed, watch, PropType } from "vue";
 import { useStore } from "@/stores/main";
+import { useQuery } from "@urql/vue";
 
 import State from "@/utils/LoadingState";
 
 export default defineComponent({
   name: "DevToolLoadingStateMenu",
   props: {
-    value: Number,
+    value: Number, // for v-model
+    query: {
+      type: Object as PropType<ReturnType<typeof useQuery>>,
+      required: true,
+    },
     top: { default: "-15px" },
     right: { default: "-10px" },
-  }, // for v-model
+  },
   setup(prop, { emit }) {
     const store = useStore();
     const buttonStyle = computed(() => ({
