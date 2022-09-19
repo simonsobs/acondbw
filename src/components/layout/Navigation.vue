@@ -70,9 +70,11 @@
       <!-- <v-spacer></v-spacer>
       <v-icon>mdi-plus-thick</v-icon> -->
     </v-bottom-navigation>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      :query="query"
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </div>
 </template>
 
@@ -85,14 +87,14 @@ import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import { AllProductTypesQuery } from "@/generated/graphql";
 
 import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
 export default defineComponent({
   name: "Navigation",
   components: {
-    DevToolLoadingStateOverridingMenu,
+    DevToolLoadingStateMenu,
     ProductTypeAddForm,
   },
   setup() {
@@ -158,6 +160,7 @@ export default defineComponent({
     return {
       init,
       error,
+      query,
       devtoolState,
       edges,
       nodes,
