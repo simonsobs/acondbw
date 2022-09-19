@@ -44,7 +44,6 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
   watch(
     () => store.nApolloMutations,
     () => {
-      console.log("nApolloMutations changed", store.nApolloMutations);
       query.executeQuery({ requestPolicy: "network-only" });
     }
   );
