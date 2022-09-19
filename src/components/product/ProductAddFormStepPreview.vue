@@ -41,16 +41,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, computed, watch, PropType } from "vue";
 import { marked } from "marked";
 
 import QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW from "@/graphql/queries/QueryForProductAddFormRelationsPreview.gql";
+import { QueryForProductAddFormQuery } from "@/generated/graphql";
 
-export default {
+export default defineComponent({
   name: "ProductAddFormStepPreview",
   props: {
     createProductInput: Object,
-    productType: Object,
+    productType: Object as PropType<QueryForProductAddFormQuery["productType"]>,
   },
   data() {
     return {
@@ -125,5 +127,5 @@ export default {
       return ret;
     },
   },
-};
+});
 </script>
