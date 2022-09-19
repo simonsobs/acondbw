@@ -71,7 +71,6 @@
       <v-icon>mdi-plus-thick</v-icon> -->
     </v-bottom-navigation>
     <dev-tool-loading-state-menu
-      :query="query"
       top="-10px"
       v-model="devtoolState"
     ></dev-tool-loading-state-menu>
@@ -162,8 +161,6 @@ export default defineComponent({
       const edges = readEdges(query);
       return edges ? edges.length === 0 : false;
     }
-    const { init, error, devtoolState, loading, loaded, empty, notFound } =
-      useQueryState(query, { isEmpty });
 
     function readEdges(
       query: ReturnType<typeof useQuery<AllProductTypesQuery>>
@@ -190,17 +187,10 @@ export default defineComponent({
     }
 
     return {
-      init,
-      error,
+      ...useQueryState(query, { isEmpty }),
       query,
-      devtoolState,
       edges,
       nodes,
-      // state,
-      loading,
-      loaded,
-      empty,
-      notFound,
       addDialog,
       onAddFormCancelled,
       onAddFormFinished,
