@@ -20,9 +20,10 @@
     <v-row v-else-if="notFound" align="center" justify="center">
       <v-col class="text-h1 text-center">Not Found (404)</v-col>
     </v-row>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-container>
 </template>
 
@@ -34,23 +35,20 @@ import { useQuery } from "@urql/vue";
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 import { ProductTypeByNameQuery } from "@/generated/graphql";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
-
 import ProductAddForm from "@/components/product/ProductAddForm.vue";
+
+import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
+import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "ProductAdd",
   components: {
+    DevToolLoadingStateMenu,
     ProductAddForm,
-    DevToolLoadingStateOverridingMenu,
   },
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const init = ref(true);
-    const error = ref<string | null>(null);
-    const devtoolState = ref<number | null>(null);
     const productTypeName = computed(() => route.params.productTypeName);
     const query = useQuery<ProductTypeByNameQuery>({
       query: PRODUCT_TYPE_BY_NAME,
@@ -61,28 +59,6 @@ export default defineComponent({
       const typeId = Number(node.value?.typeId);
       return isNaN(typeId) ? undefined : typeId;
     });
-    watch(query.data, (data) => {
-      if (data) init.value = false;
-    });
-    watch(query.error, (e) => {
-      init.value = false;
-      error.value = e?.message || null;
-    });
-    watch(devtoolState, (val) => {
-      if (val) init.value = val === State.INIT;
-      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
-    });
-    const state = computed(() => {
-      if (devtoolState.value !== null) return devtoolState.value;
-      if (query.fetching.value) return State.LOADING;
-      if (error.value) return State.ERROR;
-      if (node.value) return State.LOADED;
-      if (init.value) return State.INIT;
-      return State.NONE;
-    });
-    const loading = computed(() => state.value === State.LOADING);
-    const loaded = computed(() => state.value === State.LOADED);
-    const notFound = computed(() => state.value === State.NONE);
     function finished() {
       router.push({
         name: "ProductList",
@@ -103,20 +79,15 @@ export default defineComponent({
       });
     }
     const on = ref(true);
+    const queryState = useQueryState(query, { isNull: () => node === null});
+    const { init } = queryState;
     return {
+      ...queryState,
       on,
-      init,
-      error,
-      devtoolState,
-      State,
       productTypeName,
       productTypeId,
       query,
       node,
-      state,
-      loading,
-      loaded,
-      notFound,
       finished,
       onEntered,
       recreateForm,
