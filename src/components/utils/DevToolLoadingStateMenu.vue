@@ -19,9 +19,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, computed, watch, PropType } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
-import { useQuery } from "@urql/vue";
 
 import State from "@/utils/LoadingState";
 
@@ -29,10 +28,6 @@ export default defineComponent({
   name: "DevToolLoadingStateMenu",
   props: {
     value: Number, // for v-model
-    query: {
-      type: Object as PropType<ReturnType<typeof useQuery>>,
-      required: true,
-    },
     top: { default: "-15px" },
     right: { default: "-10px" },
   },
@@ -51,16 +46,14 @@ export default defineComponent({
       { text: "Empty", value: State.EMPTY },
       { text: "None", value: State.NONE },
       { text: "Off", value: null },
-    ]
+    ]);
 
-    )
     const enabled = computed(() => store.webConfig.devtoolLoadingstate);
     watch(enabled, (val) => {
       if (!val) state.value = null;
     });
     const state = ref<number | null>(null);
     watch(state, (s) => {
-      emit("state", s);
       emit("input", s); // for v-model
     });
     return {
