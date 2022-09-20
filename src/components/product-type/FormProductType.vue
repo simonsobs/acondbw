@@ -111,24 +111,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, integer } from "@vuelidate/validators";
 
 import { mdIcons } from "@/utils/md-icons";
 
+import { CreateProductTypeInput } from "@/generated/graphql";
+
 const iconItems = mdIcons.map(({ name }) => `mdi-${name}`);
+
+type ValueType = Omit<CreateProductTypeInput, "fieldIds">;
 
 export default defineComponent({
   name: "FormProductType",
   props: {
-    value: Object,
+    value: Object as PropType<ValueType>,
   },
   setup() {
     return { v$: useVuelidate() };
   },
   data() {
-    const formDefault = {
+    const formDefault: ValueType = {
       name: "",
       order: null,
       indefArticle: "",
@@ -172,43 +176,45 @@ export default defineComponent({
         "when relevant, e.g., in the sidebar navigation.",
     };
   },
-  validations: {
-    form: {
-      name: { required },
-      order: { integer },
-      indefArticle: {},
-      singular: { required },
-      plural: { required },
-      icon: {},
-    },
+  validations() {
+    return {
+      form: {
+        name: { required },
+        order: { integer },
+        indefArticle: {},
+        singular: { required },
+        plural: { required },
+        icon: {},
+      },
+    };
   },
   computed: {
     nameErrors() {
+      const errors: string[] = [];
       const field = this.v$.form.name;
-      const errors = [];
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
+      field.required.$invalid && errors.push("This field is required");
       return errors;
     },
     singularErrors() {
+      const errors: string[] = [];
       const field = this.v$.form.singular;
-      const errors = [];
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
+      field.required.$invalid && errors.push("This field is required");
       return errors;
     },
     pluralErrors() {
+      const errors: string[] = [];
       const field = this.v$.form.plural;
-      const errors = [];
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
+      field.required.$invalid && errors.push("This field is required");
       return errors;
     },
     orderErrors() {
+      const errors: string[] = [];
       const field = this.v$.form.order;
-      const errors = [];
       if (!field.$dirty) return errors;
-      !field.integer && errors.push("Must be an integer value");
+      field.integer.$invalid && errors.push("Must be an integer value");
       return errors;
     },
     valid() {
