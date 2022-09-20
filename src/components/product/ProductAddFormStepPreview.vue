@@ -54,6 +54,17 @@ import {
 
 import { client } from "@/plugins/urql";
 
+interface AttributePreviewItem {
+  field: string;
+  value: any;
+}
+
+interface RelationPreviewItem {
+  relationTypeSingular: string | undefined;
+  productTypeSingular: string | undefined;
+  productName: string | undefined;
+}
+
 export default defineComponent({
   name: "ProductAddFormStepPreview",
   props: {
@@ -62,10 +73,10 @@ export default defineComponent({
   },
   data() {
     return {
-      error: null,
-      attributePreview: null as { field: string; value: any }[] | null,
-      relationPreview: null,
-      notePreview: null,
+      error: null as any,
+      attributePreview: null as AttributePreviewItem[] | null,
+      relationPreview: null as RelationPreviewItem[] | null,
+      notePreview: null as string | null,
     };
   },
   watch: {
@@ -89,11 +100,6 @@ export default defineComponent({
                 : a,
             {} as { [key: number]: string }
           ) || {};
-
-        interface AttributePreviewItem {
-          field: string;
-          value: any;
-        }
 
         const attributes = this.createProductInput.attributes;
         // @ts-ignore
@@ -127,26 +133,30 @@ export default defineComponent({
     },
   },
   methods: {
-    async composeRelationPreview(relations: CreateProductInput["relations"]) {
+    async composeRelationPreview(
+      relations: CreateProductInput["relations"]
+    ): Promise<RelationPreviewItem[]> {
       // https://flaviocopes.com/javascript-async-await-array-map/
-      const ret = await Promise.all(
-        relations.map(async (r) => {
-          const { error, data } = await client
-            .query<QueryForProductAddFormRelationsPreviewQuery>(
-              QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
-              {
-                productRelationTypeId: r.typeId,
-                productId: r.productId,
-              }
-            )
-            .toPromise();
-          return {
-            relationTypeSingular: data?.productRelationType?.singular,
-            productTypeSingular: data?.product?.type_?.singular,
-            productName: data?.product?.name,
-          };
-        })
-      );
+      const ret = relations
+        ? await Promise.all(
+            relations.map(async (r) => {
+              const { error, data } = await client
+                .query<QueryForProductAddFormRelationsPreviewQuery>(
+                  QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
+                  {
+                    productRelationTypeId: r.typeId,
+                    productId: r.productId,
+                  }
+                )
+                .toPromise();
+              return {
+                relationTypeSingular: data?.productRelationType?.singular || undefined,
+                productTypeSingular: data?.product?.type_?.singular || undefined,
+                productName: data?.product?.name || undefined,
+              };
+            })
+          )
+        : [];
       return ret;
     },
   },
