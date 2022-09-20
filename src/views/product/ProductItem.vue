@@ -77,13 +77,11 @@ import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
 import { useQuery } from "@urql/vue";
 
-import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "ProductItem",
   components: {
-    DevToolLoadingStateMenu,
     ProductItemCard,
   },
   props: {

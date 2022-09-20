@@ -85,8 +85,6 @@ import { useQuery } from "@urql/vue";
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import { AllProductTypesQuery } from "@/generated/graphql";
 
-import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
-
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
 import { useQueryState } from "@/utils/query-state";
@@ -95,7 +93,6 @@ import { useQueryState } from "@/utils/query-state";
 export default defineComponent({
   name: "Navigation",
   components: {
-    DevToolLoadingStateMenu,
     ProductTypeAddForm,
   },
   setup() {

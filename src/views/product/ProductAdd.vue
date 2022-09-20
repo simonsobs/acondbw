@@ -37,13 +37,11 @@ import { ProductTypeByNameQuery } from "@/generated/graphql";
 
 import ProductAddForm from "@/components/product/ProductAddForm.vue";
 
-import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "ProductAdd",
   components: {
-    DevToolLoadingStateMenu,
     ProductAddForm,
   },
   setup() {

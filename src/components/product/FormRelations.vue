@@ -111,7 +111,6 @@ import { QueryForFormRelationsQuery } from "@/generated/graphql";
 
 import { useQuery } from "@urql/vue";
 
-import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 import { useQueryState } from "@/utils/query-state";
 
 export interface Relation {
@@ -137,9 +136,6 @@ function reshapeValue(val: Relation[]): Reshaped {
 
 export default defineComponent({
   name: "FormRelations",
-  components: {
-    DevToolLoadingStateMenu,
-  },
   props: {
     value: Array as PropType<Relation[]>,
     name: { type: String, require: true },

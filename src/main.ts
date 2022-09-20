@@ -7,9 +7,12 @@ import { apolloProvider } from "./vue-apollo";
 // import InstantSearch from "vue-instantsearch";
 import pinia from "@/stores";
 import { useStore } from "@/stores/main";
+import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
 Vue.use(PiniaVuePlugin);
 // Vue.use(InstantSearch);
+
+Vue.component("DevToolLoadingStateMenu", DevToolLoadingStateMenu);
 
 Vue.config.productionTip = false;
 

@@ -118,7 +118,6 @@ import ProductAddFormStepRelations, {
 } from "./ProductAddFormStepRelations.vue";
 import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 
-import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 import { useQueryState } from "@/utils/query-state";
 
 interface Fields {
@@ -132,7 +131,6 @@ interface Fields {
 export default defineComponent({
   name: "ProductAddForm",
   components: {
-    DevToolLoadingStateMenu,
     ProductAddFormStepStart,
     ProductAddFormStepRelations,
     ProductAddFormStepPreview,

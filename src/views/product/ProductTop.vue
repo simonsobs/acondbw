@@ -98,14 +98,12 @@ import { ProductTypeByNameQuery } from "@/generated/graphql";
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 import { useQuery } from "@urql/vue";
 
-import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 import { useQueryState } from "@/utils/query-state";
 
 
 export default defineComponent({
   name: "ProductTop",
   components: {
-    DevToolLoadingStateMenu,
     ProductTypeEditForm,
   },
   setup() {

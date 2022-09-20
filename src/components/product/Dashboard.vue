@@ -37,15 +37,10 @@ import { useQuery } from "@urql/vue";
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import { AllProductTypesQuery, ProductType } from "@/generated/graphql";
 
-import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
-
 import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "Dashboard",
-  components: {
-    DevToolLoadingStateMenu,
-  },
   setup() {
     const router = useRouter();
     const query = useQuery<AllProductTypesQuery>({
