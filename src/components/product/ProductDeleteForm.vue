@@ -1,12 +1,15 @@
 <template>
   <v-card class="product-delete-form" style="position: relative">
-    <v-card-title v-if="loaded">
+    <v-card-title v-if="loaded && node && node.type_">
       Delete the {{ node.type_.singular }}
     </v-card-title>
     <v-card-text v-if="error" class="py-2">
       <v-alert type="error" class="my-2">{{ error }}</v-alert>
     </v-card-text>
-    <template v-if="loaded">
+    <v-card-text v-if="mutationError" class="py-2">
+      <v-alert type="error" class="my-2">{{ mutationError }}</v-alert>
+    </v-card-text>
+    <template v-if="loaded && node && node.type_">
       <v-card-text class="body-1 font-weight-medium error--text">
         Really, delete the {{ node.type_.singular }} "{{ node.name }}"?
       </v-card-text>
@@ -36,136 +39,85 @@
         <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
       </v-card-actions>
     </template>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="1px"
+      right="1px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapActions } from "pinia";
+import { defineComponent, ref, computed } from "vue";
 import { useStore } from "@/stores/main";
+import { useQuery, useMutation } from "@urql/vue";
 
 import PRODUCT from "@/graphql/queries/Product.gql";
 import DELETE_PRODUCT from "@/graphql/mutations/DeleteProduct.gql";
+import {
+  ProductQuery,
+  ProductQueryVariables,
+  DeleteProductMutation,
+  DeleteProductMutationVariables,
+} from "@/generated/graphql";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "ProductDeleteForm",
-  components: {
-    DevToolLoadingStateOverridingMenu,
-  },
   props: {
-    productId: [String, Number], // product.productId not product.id
+    productId: { type: Number, required: true }, // product.productId not product.id
   },
-  data: () => ({
-    init: true,
-    node: null,
-    error: null,
-    devtoolState: null,
-    State: State,
-  }),
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.queries.node.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.node) return State.LOADED;
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-  },
-  watch: {
-    devtoolState() {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-  },
-  apollo: {
-    node: {
+  setup(prop, { emit }) {
+    const store = useStore();
+    const query = useQuery<ProductQuery>({
       query: PRODUCT,
-      variables() {
-        return {
-          productId: this.productId,
-        };
-      },
-      update: (data) => data.product,
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  methods: {
-    cancel() {
-      this.$emit("cancel");
-      this.delayedReset();
-    },
-    delayedReset() {
+      variables: { productId: prop.productId } as ProductQueryVariables,
+    });
+    const node = computed(() => query.data?.value?.product);
+
+    const mutationError = ref<string | null>(null);
+    function cancel() {
+      emit("cancel");
+      delayedReset();
+    }
+    function delayedReset() {
       // reset 0.5 sec after so that the reset form won't be shown.
       setTimeout(() => {
-        this.reset();
+        reset();
       }, 500);
-    },
-    reset() {
-      this.error = null;
-    },
-    async remove() {
+    }
+    function reset() {
+      mutationError.value = null;
+    }
+
+    const { executeMutation } = useMutation<
+      DeleteProductMutation,
+      DeleteProductMutationVariables
+    >(DELETE_PRODUCT);
+
+    async function remove() {
       try {
-        const data = await this.$apollo.mutate({
-          mutation: DELETE_PRODUCT,
-          variables: { productId: this.node.productId },
-          update: (cache, { data: { deleteProduct } }) => {
-            try {
-              // Delete all cache and dispacth "apolloMutationCalled", which triggers refetch
-              this.$apollo.provider.defaultClient.cache.data.data = {};
-
-              // The following code was used to update cache, which
-              // is typically a recommended way. But it is commented out
-              // because it is not clear how to systematically update
-              // all affected cache.
-
-              // this.$apollo.provider.defaultClient.cache.data.data = {};
-              // const data = cache.readQuery({
-              //   query: ALL_PRODUCTS_BY_TYPE_ID,
-              //   variables: { typeId: this.node.type_.typeId }
-              // });
-              // const index = data.allProducts.edges.findIndex(
-              //   e => e.node.productId == this.node.productId
-              // );
-              // data.allProducts.edges.splice(index, 1);
-              // cache.writeQuery({
-              //   query: ALL_PRODUCTS_BY_TYPE_ID,
-              //   variables: { typeId: this.node.type_.typeId },
-              //   data
-              // });
-            } catch (error) {}
-          },
+        const { error } = await executeMutation({
+          productId: prop.productId,
         });
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Deleted");
-        this.$emit("finished");
-        this.delayedReset();
-      } catch (error) {
-        this.error = error;
+        if (error) throw error;
+        store.apolloMutationCalled();
+        store.setSnackbarMessage("Deleted");
+        emit("finished");
+        delayedReset();
+      } catch (e: any) {
+        mutationError.value = (e as Error).toString();
       }
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
+    }
+
+    return {
+      ...useQueryState(query, { isNull: () => node.value === null }),
+      node,
+      mutationError,
+      cancel,
+      remove,
+    };
   },
 });
 </script>
