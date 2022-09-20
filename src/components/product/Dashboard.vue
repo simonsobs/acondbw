@@ -23,19 +23,20 @@
     </v-data-table>
     <v-alert v-if="error" type="error" style="width: 100%">{{ error }}</v-alert>
     <dev-tool-loading-state-menu
-      top="-10px"
+      top="-30px"
+      right="-10px"
       v-model="devtoolState"
     ></dev-tool-loading-state-menu>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useRouter } from "vue-router/composables";
 import { useQuery } from "@urql/vue";
 
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
-import { AllProductTypesQuery, ProductType } from "@/generated/graphql";
+import { AllProductTypesQuery } from "@/generated/graphql";
 
 import { useQueryState } from "@/utils/query-state";
 
@@ -73,7 +74,7 @@ export default defineComponent({
       edges.value.flatMap((edge) => (edge?.node ? [edge.node] : []))
     );
 
-    function clickRow(item: ProductType) {
+    function clickRow(item: typeof items.value[number]) {
       router.push({
         name: "ProductList",
         params: { productTypeName: item.name },
