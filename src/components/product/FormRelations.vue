@@ -96,21 +96,23 @@
         Reset
       </v-btn>
     </v-card-actions>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch, PropType } from "vue";
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import QueryForFormRelations from "@/graphql/queries/QueryForFormRelations.gql";
 import { QueryForFormRelationsQuery } from "@/generated/graphql";
 
 import { useQuery } from "@urql/vue";
+
+import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
+import { useQueryState } from "@/utils/query-state";
 
 export interface Relation {
   productId: number;
@@ -136,17 +138,13 @@ function reshapeValue(val: Relation[]): Reshaped {
 export default defineComponent({
   name: "FormRelations",
   components: {
-    DevToolLoadingStateOverridingMenu,
+    DevToolLoadingStateMenu,
   },
   props: {
     value: Array as PropType<Relation[]>,
     name: { type: String, require: true },
   },
   setup(prop, { emit }) {
-    const init = ref(true);
-    const error = ref<string | null>(null);
-    const refreshing = ref(false);
-    const devtoolState = ref<number | null>(null);
     const query = useQuery<QueryForFormRelationsQuery>({
       query: QueryForFormRelations,
     });
@@ -181,38 +179,6 @@ export default defineComponent({
     const allProducts = computed(
       () => query.data.value?.allProducts || { edges: [] }
     );
-    watch(query.data, (data) => {
-      if (data) init.value = false;
-    });
-    watch(query.error, (e) => {
-      init.value = false;
-      error.value = e?.message || null;
-    });
-    watch(devtoolState, (val) => {
-      if (val) init.value = val === State.INIT;
-      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
-    });
-    const state = computed(() => {
-      if (devtoolState.value !== null) return devtoolState.value;
-      if (refreshing.value) return State.LOADING;
-      if (query.fetching.value) return State.LOADING;
-      if (error.value) return State.ERROR;
-      if (allProductRelationTypes.value) return State.LOADED;
-      if (init.value) return State.INIT;
-      return State.NONE;
-    });
-    const loading = computed(() => state.value === State.LOADING);
-    const loaded = computed(() => state.value === State.LOADED);
-    const notFound = computed(() => state.value === State.NONE);
-    async function refetch() {
-      refreshing.value = true;
-      const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      await query.executeQuery({ requestPolicy: "network-only" });
-      await wait; // wait until 0.5 sec passes since starting refetch
-      // because the progress circular is too flickering if
-      // the refetch finishes too quickly
-      refreshing.value = false;
-    }
     const form = ref(reshapeValue(prop.value || []));
     const formReset = ref<typeof form.value | null>(null);
     const unchanged = computed(() =>
@@ -270,19 +236,10 @@ export default defineComponent({
       form.value = JSON.parse(JSON.stringify(formReset.value));
     }
     return {
+      ...useQueryState(query),
       query,
       allProductRelationTypes,
       allProducts,
-      init,
-      error,
-      refreshing,
-      devtoolState,
-      refetch,
-      state,
-      State,
-      loading,
-      loaded,
-      notFound,
       form,
       formReset,
       unchanged,
