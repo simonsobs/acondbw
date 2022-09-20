@@ -17,7 +17,7 @@
         :size="26"
         color="secondary"
       ></v-progress-circular>
-      <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
+      <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
     </v-card-text>
     <div v-if="loaded" class="pb-5">
       <div
@@ -144,7 +144,7 @@ export default defineComponent({
   },
   setup(prop, { emit }) {
     const init = ref(true);
-    const queryError = ref<string | null>(null);
+    const error = ref<string | null>(null);
     const refreshing = ref(false);
     const devtoolState = ref<number | null>(null);
     const query = useQuery<QueryForFormRelationsQuery>({
@@ -186,17 +186,17 @@ export default defineComponent({
     });
     watch(query.error, (e) => {
       init.value = false;
-      queryError.value = e?.message || null;
+      error.value = e?.message || null;
     });
     watch(devtoolState, (val) => {
       if (val) init.value = val === State.INIT;
-      queryError.value = val === State.ERROR ? "Error from Dev Tools" : null;
+      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
     });
     const state = computed(() => {
       if (devtoolState.value !== null) return devtoolState.value;
       if (refreshing.value) return State.LOADING;
       if (query.fetching.value) return State.LOADING;
-      if (queryError.value) return State.ERROR;
+      if (error.value) return State.ERROR;
       if (allProductRelationTypes.value) return State.LOADED;
       if (init.value) return State.INIT;
       return State.NONE;
@@ -274,7 +274,7 @@ export default defineComponent({
       allProductRelationTypes,
       allProducts,
       init,
-      queryError,
+      error,
       refreshing,
       devtoolState,
       refetch,
