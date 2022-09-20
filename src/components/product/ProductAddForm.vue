@@ -86,15 +86,15 @@
         <v-btn color="secondary" text @click="close()"> Close </v-btn>
       </v-card-actions>
     </div>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
-import { mapActions } from "pinia";
+import { defineComponent, ref, computed } from "vue";
 import { useStore } from "@/stores/main";
 import { useQuery, useMutation } from "@urql/vue";
 
@@ -118,8 +118,8 @@ import ProductAddFormStepRelations, {
 } from "./ProductAddFormStepRelations.vue";
 import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
+import { useQueryState } from "@/utils/query-state";
 
 interface Fields {
   [key: string]: NonNullable<
@@ -132,47 +132,22 @@ interface Fields {
 export default defineComponent({
   name: "ProductAddForm",
   components: {
+    DevToolLoadingStateMenu,
     ProductAddFormStepStart,
     ProductAddFormStepRelations,
     ProductAddFormStepPreview,
-    DevToolLoadingStateOverridingMenu,
   },
   props: {
     productTypeId: { type: Number, required: true },
   },
   setup(prop, { emit }) {
     const store = useStore();
-    const init = ref(true);
-    const error = ref<string | null>(null);
-    const devtoolState = ref<number | null>(null);
     const formError = ref<string | null>(null);
     const query = useQuery<QueryForProductAddFormQuery>({
       query: QueryForProductAddForm,
       variables: { typeId: prop.productTypeId },
     });
     const productType = computed(() => query.data?.value?.productType);
-    watch(query.data, (data) => {
-      if (data) init.value = false;
-    });
-    watch(query.error, (e) => {
-      init.value = false;
-      error.value = e?.message || null;
-    });
-    watch(devtoolState, (val) => {
-      if (val) init.value = val === State.INIT;
-      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
-    });
-    const state = computed(() => {
-      if (devtoolState.value !== null) return devtoolState.value;
-      if (query.fetching.value) return State.LOADING;
-      if (error.value) return State.ERROR;
-      if (productType.value) return State.LOADED;
-      if (init.value) return State.INIT;
-      return State.NONE;
-    });
-    const loading = computed(() => state.value === State.LOADING);
-    const loaded = computed(() => state.value === State.LOADED);
-    const notFound = computed(() => state.value === State.NONE);
     const fields = computed(() =>
       productType.value?.fields?.edges.reduce<Fields>(
         (a, e) =>
@@ -282,16 +257,9 @@ export default defineComponent({
     }
 
     return {
+      ...useQueryState(query, { isNull: () => productType.value === null}),
       stepper,
       query,
-      init,
-      error,
-      devtoolState,
-      State,
-      state,
-      loading,
-      loaded,
-      notFound,
       formError,
       productType,
       fields,
