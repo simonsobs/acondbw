@@ -33,13 +33,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent } from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
 import CONVERT_PRODUCT_TYPE from "@/graphql/mutations/ConvertProductType.gql";
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
 import PRODUCT_TYPE from "@/graphql/queries/ProductType.gql";
+
+import { client } from "@/plugins/urql";
 
 export default defineComponent({
   name: "ProductConvertTypeForm",
@@ -91,14 +93,13 @@ export default defineComponent({
   methods: {
     async submit() {
       try {
-        const data = await this.$apollo.mutate({
-          mutation: CONVERT_PRODUCT_TYPE,
-          variables: {
+        const { error } = await client
+          .mutation(CONVERT_PRODUCT_TYPE, {
             productId: this.node.productId,
             typeId: this.newTypeId,
-          },
-        });
-        this.$apollo.provider.defaultClient.cache.data.data = {};
+          })
+          .toPromise();
+        if (error) throw error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Converted");
         this.$emit("finished", this.newTypeName);
