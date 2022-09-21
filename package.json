@@ -35,7 +35,7 @@
     "vue-meta": "^2.4.0",
     "vue-router": "^3.6.4",
     "vuelidate": "^0.7.7",
-    "vuetify": "^2.6.9",
+    "vuetify": "^2.6.10",
     "webpack": "^5.74.0"
   },
   "devDependencies": {
