@@ -185,9 +185,10 @@
         <!-- state = State.NONE -->
       </v-col>
     </v-row>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-container>
 </template>
 
@@ -199,7 +200,6 @@ import { useStore } from "@/stores/main";
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
 import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
 
 import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
 import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
@@ -208,7 +208,6 @@ export default defineComponent({
   name: "ProductList",
   components: {
     ProductItemCard,
-    DevToolLoadingStateOverridingMenu,
     ProductTypeDeleteForm,
   },
   props: {
