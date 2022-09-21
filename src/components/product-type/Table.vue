@@ -61,15 +61,21 @@ export default defineComponent({
     const query = useQuery<AllProductTypesQuery>({
       query: ALL_PRODUCT_TYPES,
     });
-    const edges = computed(
-      () =>
-        query.data?.value?.allProductTypes?.edges?.flatMap((e) =>
-          e ? [e] : []
-        ) || []
-    );
+
+    type Query = typeof query;
+
+    function readEdges(query: Query) {
+      const edgesAndNulls = query.data?.value?.allProductTypes?.edges;
+      if (!edgesAndNulls) return [];
+      return edgesAndNulls.flatMap((e) => (e ? [e] : []));
+    }
+
+    function readItems(query: Query) {
+      return readEdges(query).flatMap((e) => (e.node ? e.node : []));
+    }
 
     const items = computed(() =>
-      edges.value.flatMap((e) => (e.node ? [e.node] : []))
+      loading.value || empty.value ? [] : readItems(query)
     );
 
     function onClickRow(item: typeof items.value[number]) {
@@ -92,9 +98,11 @@ export default defineComponent({
     ]);
 
     const queryState = useQueryState(query, {
-      isEmpty: () => edges.value.length === 0,
+      isEmpty: () => readItems(query).length === 0,
     });
-    const { error } = queryState;
+
+    const { loading, error, empty } = queryState;
+
     const alert = ref(false);
 
     watch(error, (val) => {
@@ -108,10 +116,9 @@ export default defineComponent({
     return {
       ...queryState,
       alert,
-      edges,
-      onClickRow,
       headers,
       items,
+      onClickRow,
     };
   },
 });
