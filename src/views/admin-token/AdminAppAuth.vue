@@ -18,6 +18,8 @@ import { useStore } from "@/stores/main";
 
 import { storeAdminAppToken } from "@/utils/admin-token";
 
+import { client } from "@/plugins/urql"
+
 export default defineComponent({
   name: "AdminAppAuth",
   data: () => ({}),
@@ -36,7 +38,7 @@ export default defineComponent({
 
       const state = this.$route.query.state;
       try {
-        await storeAdminAppToken(code, state, this.$apollo);
+        await storeAdminAppToken(code, state, client);
       } catch (error) {
         // console.log(error);
         this.$router.push({ name: "AdminAppTokenError" });
