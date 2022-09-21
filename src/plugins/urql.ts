@@ -1,12 +1,14 @@
 import {
   createClient,
   dedupExchange,
+  cacheExchange,
   fetchExchange,
   makeOperation,
 } from "@urql/vue";
-import { cacheExchange } from '@urql/exchange-graphcache';
+// import { cacheExchange } from "@urql/exchange-graphcache";
+// import { relayPagination } from "@urql/exchange-graphcache/extras";
 import { authExchange } from "@urql/exchange-auth";
-import { devtoolsExchange } from '@urql/devtools';
+import { devtoolsExchange } from "@urql/devtools";
 
 import { AUTH_TOKEN } from "@/vue-apollo";
 
@@ -69,7 +71,12 @@ const client = createClient({
   exchanges: [
     devtoolsExchange,
     dedupExchange,
-    cacheExchange({}),
+    cacheExchange, // default document cache
+    // cacheExchange({ // for graphcache, not clear how to initialize it
+    //   resolvers: {
+    //     productType: { products: relayPagination() },
+    //   },
+    // }),
     authExchange({ getAuth, addAuthToOperation }),
     fetchExchange,
   ],
