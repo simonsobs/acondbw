@@ -203,6 +203,7 @@ describe("ProductItemCard.vue", () => {
   });
 
   it("match snapshot", async () => {
+    // @ts-ignore
     query.data.value = { product: node };
     const wrapper = createWrapper();
     await nextTick();
