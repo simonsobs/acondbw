@@ -10,9 +10,11 @@ fragment productTypeFragment on ProductType {
   fields {
     edges {
       node {
+        id
         typeId
         fieldId
         field {
+          id
           fieldId
           name
           type_

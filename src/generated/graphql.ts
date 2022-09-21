@@ -1976,12 +1976,14 @@ export type WebConfig = Node & {
 
 export type GitHubTokenFragmentFragment = {
   __typename?: "GitHubToken";
+  id: string;
   tokenId: string;
   tokenMasked?: string | null;
   scope?: string | null;
   timeCreated?: any | null;
   user?: {
     __typename?: "GitHubUser";
+    id: string;
     login: string;
     avatarUrl?: string | null;
     url?: string | null;
@@ -2013,10 +2015,12 @@ export type ProductFragmentFragment = {
         __typename?: "TypeFieldAssociationEdge";
         node?: {
           __typename?: "TypeFieldAssociation";
+          id: string;
           typeId: number;
           fieldId: number;
           field?: {
             __typename?: "Field";
+            id: string;
             fieldId: string;
             name: string;
             type_?: FieldType | null;
@@ -2025,8 +2029,16 @@ export type ProductFragmentFragment = {
       } | null>;
     } | null;
   } | null;
-  postingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
-  updatingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
+  postingGitHubUser?: {
+    __typename?: "GitHubUser";
+    id: string;
+    login: string;
+  } | null;
+  updatingGitHubUser?: {
+    __typename?: "GitHubUser";
+    id: string;
+    login: string;
+  } | null;
   paths?: {
     __typename?: "ProductFilePathConnection";
     edges: Array<{
@@ -2082,10 +2094,12 @@ export type ProductFragmentFragment = {
                 __typename?: "TypeFieldAssociationEdge";
                 node?: {
                   __typename?: "TypeFieldAssociation";
+                  id: string;
                   typeId: number;
                   fieldId: number;
                   field?: {
                     __typename?: "Field";
+                    id: string;
                     fieldId: string;
                     name: string;
                     type_?: FieldType | null;
@@ -2116,10 +2130,12 @@ export type ProductFragmentFragment = {
       __typename?: "AttributeUnicodeTextEdge";
       node?: {
         __typename?: "AttributeUnicodeText";
+        id: string;
         fieldId: number;
         value?: string | null;
         field?: {
           __typename?: "Field";
+          id: string;
           name: string;
           type_?: FieldType | null;
         } | null;
@@ -2132,10 +2148,12 @@ export type ProductFragmentFragment = {
       __typename?: "AttributeBooleanEdge";
       node?: {
         __typename?: "AttributeBoolean";
+        id: string;
         fieldId: number;
         value?: boolean | null;
         field?: {
           __typename?: "Field";
+          id: string;
           name: string;
           type_?: FieldType | null;
         } | null;
@@ -2148,10 +2166,12 @@ export type ProductFragmentFragment = {
       __typename?: "AttributeIntegerEdge";
       node?: {
         __typename?: "AttributeInteger";
+        id: string;
         fieldId: number;
         value?: number | null;
         field?: {
           __typename?: "Field";
+          id: string;
           name: string;
           type_?: FieldType | null;
         } | null;
@@ -2164,10 +2184,12 @@ export type ProductFragmentFragment = {
       __typename?: "AttributeFloatEdge";
       node?: {
         __typename?: "AttributeFloat";
+        id: string;
         fieldId: number;
         value?: number | null;
         field?: {
           __typename?: "Field";
+          id: string;
           name: string;
           type_?: FieldType | null;
         } | null;
@@ -2180,10 +2202,12 @@ export type ProductFragmentFragment = {
       __typename?: "AttributeDateEdge";
       node?: {
         __typename?: "AttributeDate";
+        id: string;
         fieldId: number;
         value?: string | null;
         field?: {
           __typename?: "Field";
+          id: string;
           name: string;
           type_?: FieldType | null;
         } | null;
@@ -2196,10 +2220,12 @@ export type ProductFragmentFragment = {
       __typename?: "AttributeDateTimeEdge";
       node?: {
         __typename?: "AttributeDateTime";
+        id: string;
         fieldId: number;
         value?: any | null;
         field?: {
           __typename?: "Field";
+          id: string;
           name: string;
           type_?: FieldType | null;
         } | null;
@@ -2212,10 +2238,12 @@ export type ProductFragmentFragment = {
       __typename?: "AttributeTimeEdge";
       node?: {
         __typename?: "AttributeTime";
+        id: string;
         fieldId: number;
         value?: string | null;
         field?: {
           __typename?: "Field";
+          id: string;
           name: string;
           type_?: FieldType | null;
         } | null;
@@ -2240,10 +2268,12 @@ export type ProductTypeFragmentFragment = {
       __typename?: "TypeFieldAssociationEdge";
       node?: {
         __typename?: "TypeFieldAssociation";
+        id: string;
         typeId: number;
         fieldId: number;
         field?: {
           __typename?: "Field";
+          id: string;
           fieldId: string;
           name: string;
           type_?: FieldType | null;
@@ -2321,10 +2351,12 @@ export type ConvertProductTypeMutation = {
             __typename?: "TypeFieldAssociationEdge";
             node?: {
               __typename?: "TypeFieldAssociation";
+              id: string;
               typeId: number;
               fieldId: number;
               field?: {
                 __typename?: "Field";
+                id: string;
                 fieldId: string;
                 name: string;
                 type_?: FieldType | null;
@@ -2333,8 +2365,16 @@ export type ConvertProductTypeMutation = {
           } | null>;
         } | null;
       } | null;
-      postingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
-      updatingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
+      postingGitHubUser?: {
+        __typename?: "GitHubUser";
+        id: string;
+        login: string;
+      } | null;
+      updatingGitHubUser?: {
+        __typename?: "GitHubUser";
+        id: string;
+        login: string;
+      } | null;
       paths?: {
         __typename?: "ProductFilePathConnection";
         edges: Array<{
@@ -2390,10 +2430,12 @@ export type ConvertProductTypeMutation = {
                     __typename?: "TypeFieldAssociationEdge";
                     node?: {
                       __typename?: "TypeFieldAssociation";
+                      id: string;
                       typeId: number;
                       fieldId: number;
                       field?: {
                         __typename?: "Field";
+                        id: string;
                         fieldId: string;
                         name: string;
                         type_?: FieldType | null;
@@ -2424,10 +2466,12 @@ export type ConvertProductTypeMutation = {
           __typename?: "AttributeUnicodeTextEdge";
           node?: {
             __typename?: "AttributeUnicodeText";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2440,10 +2484,12 @@ export type ConvertProductTypeMutation = {
           __typename?: "AttributeBooleanEdge";
           node?: {
             __typename?: "AttributeBoolean";
+            id: string;
             fieldId: number;
             value?: boolean | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2456,10 +2502,12 @@ export type ConvertProductTypeMutation = {
           __typename?: "AttributeIntegerEdge";
           node?: {
             __typename?: "AttributeInteger";
+            id: string;
             fieldId: number;
             value?: number | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2472,10 +2520,12 @@ export type ConvertProductTypeMutation = {
           __typename?: "AttributeFloatEdge";
           node?: {
             __typename?: "AttributeFloat";
+            id: string;
             fieldId: number;
             value?: number | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2488,10 +2538,12 @@ export type ConvertProductTypeMutation = {
           __typename?: "AttributeDateEdge";
           node?: {
             __typename?: "AttributeDate";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2504,10 +2556,12 @@ export type ConvertProductTypeMutation = {
           __typename?: "AttributeDateTimeEdge";
           node?: {
             __typename?: "AttributeDateTime";
+            id: string;
             fieldId: number;
             value?: any | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2520,10 +2574,12 @@ export type ConvertProductTypeMutation = {
           __typename?: "AttributeTimeEdge";
           node?: {
             __typename?: "AttributeTime";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2568,10 +2624,12 @@ export type CreateProductMutation = {
             __typename?: "TypeFieldAssociationEdge";
             node?: {
               __typename?: "TypeFieldAssociation";
+              id: string;
               typeId: number;
               fieldId: number;
               field?: {
                 __typename?: "Field";
+                id: string;
                 fieldId: string;
                 name: string;
                 type_?: FieldType | null;
@@ -2580,8 +2638,16 @@ export type CreateProductMutation = {
           } | null>;
         } | null;
       } | null;
-      postingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
-      updatingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
+      postingGitHubUser?: {
+        __typename?: "GitHubUser";
+        id: string;
+        login: string;
+      } | null;
+      updatingGitHubUser?: {
+        __typename?: "GitHubUser";
+        id: string;
+        login: string;
+      } | null;
       paths?: {
         __typename?: "ProductFilePathConnection";
         edges: Array<{
@@ -2637,10 +2703,12 @@ export type CreateProductMutation = {
                     __typename?: "TypeFieldAssociationEdge";
                     node?: {
                       __typename?: "TypeFieldAssociation";
+                      id: string;
                       typeId: number;
                       fieldId: number;
                       field?: {
                         __typename?: "Field";
+                        id: string;
                         fieldId: string;
                         name: string;
                         type_?: FieldType | null;
@@ -2671,10 +2739,12 @@ export type CreateProductMutation = {
           __typename?: "AttributeUnicodeTextEdge";
           node?: {
             __typename?: "AttributeUnicodeText";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2687,10 +2757,12 @@ export type CreateProductMutation = {
           __typename?: "AttributeBooleanEdge";
           node?: {
             __typename?: "AttributeBoolean";
+            id: string;
             fieldId: number;
             value?: boolean | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2703,10 +2775,12 @@ export type CreateProductMutation = {
           __typename?: "AttributeIntegerEdge";
           node?: {
             __typename?: "AttributeInteger";
+            id: string;
             fieldId: number;
             value?: number | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2719,10 +2793,12 @@ export type CreateProductMutation = {
           __typename?: "AttributeFloatEdge";
           node?: {
             __typename?: "AttributeFloat";
+            id: string;
             fieldId: number;
             value?: number | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2735,10 +2811,12 @@ export type CreateProductMutation = {
           __typename?: "AttributeDateEdge";
           node?: {
             __typename?: "AttributeDate";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2751,10 +2829,12 @@ export type CreateProductMutation = {
           __typename?: "AttributeDateTimeEdge";
           node?: {
             __typename?: "AttributeDateTime";
+            id: string;
             fieldId: number;
             value?: any | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2767,10 +2847,12 @@ export type CreateProductMutation = {
           __typename?: "AttributeTimeEdge";
           node?: {
             __typename?: "AttributeTime";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -2806,10 +2888,12 @@ export type CreateProductTypeMutation = {
           __typename?: "TypeFieldAssociationEdge";
           node?: {
             __typename?: "TypeFieldAssociation";
+            id: string;
             typeId: number;
             fieldId: number;
             field?: {
               __typename?: "Field";
+              id: string;
               fieldId: string;
               name: string;
               type_?: FieldType | null;
@@ -2939,10 +3023,12 @@ export type UpdateProductMutation = {
             __typename?: "TypeFieldAssociationEdge";
             node?: {
               __typename?: "TypeFieldAssociation";
+              id: string;
               typeId: number;
               fieldId: number;
               field?: {
                 __typename?: "Field";
+                id: string;
                 fieldId: string;
                 name: string;
                 type_?: FieldType | null;
@@ -2951,8 +3037,16 @@ export type UpdateProductMutation = {
           } | null>;
         } | null;
       } | null;
-      postingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
-      updatingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
+      postingGitHubUser?: {
+        __typename?: "GitHubUser";
+        id: string;
+        login: string;
+      } | null;
+      updatingGitHubUser?: {
+        __typename?: "GitHubUser";
+        id: string;
+        login: string;
+      } | null;
       paths?: {
         __typename?: "ProductFilePathConnection";
         edges: Array<{
@@ -3008,10 +3102,12 @@ export type UpdateProductMutation = {
                     __typename?: "TypeFieldAssociationEdge";
                     node?: {
                       __typename?: "TypeFieldAssociation";
+                      id: string;
                       typeId: number;
                       fieldId: number;
                       field?: {
                         __typename?: "Field";
+                        id: string;
                         fieldId: string;
                         name: string;
                         type_?: FieldType | null;
@@ -3042,10 +3138,12 @@ export type UpdateProductMutation = {
           __typename?: "AttributeUnicodeTextEdge";
           node?: {
             __typename?: "AttributeUnicodeText";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -3058,10 +3156,12 @@ export type UpdateProductMutation = {
           __typename?: "AttributeBooleanEdge";
           node?: {
             __typename?: "AttributeBoolean";
+            id: string;
             fieldId: number;
             value?: boolean | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -3074,10 +3174,12 @@ export type UpdateProductMutation = {
           __typename?: "AttributeIntegerEdge";
           node?: {
             __typename?: "AttributeInteger";
+            id: string;
             fieldId: number;
             value?: number | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -3090,10 +3192,12 @@ export type UpdateProductMutation = {
           __typename?: "AttributeFloatEdge";
           node?: {
             __typename?: "AttributeFloat";
+            id: string;
             fieldId: number;
             value?: number | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -3106,10 +3210,12 @@ export type UpdateProductMutation = {
           __typename?: "AttributeDateEdge";
           node?: {
             __typename?: "AttributeDate";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -3122,10 +3228,12 @@ export type UpdateProductMutation = {
           __typename?: "AttributeDateTimeEdge";
           node?: {
             __typename?: "AttributeDateTime";
+            id: string;
             fieldId: number;
             value?: any | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -3138,10 +3246,12 @@ export type UpdateProductMutation = {
           __typename?: "AttributeTimeEdge";
           node?: {
             __typename?: "AttributeTime";
+            id: string;
             fieldId: number;
             value?: string | null;
             field?: {
               __typename?: "Field";
+              id: string;
               name: string;
               type_?: FieldType | null;
             } | null;
@@ -3178,10 +3288,12 @@ export type UpdateProductTypeMutation = {
           __typename?: "TypeFieldAssociationEdge";
           node?: {
             __typename?: "TypeFieldAssociation";
+            id: string;
             typeId: number;
             fieldId: number;
             field?: {
               __typename?: "Field";
+              id: string;
               fieldId: string;
               name: string;
               type_?: FieldType | null;
@@ -3223,6 +3335,7 @@ export type AllGitHubOrgsQuery = {
       __typename?: "GitHubOrgEdge";
       node?: {
         __typename?: "GitHubOrg";
+        id: string;
         login: string;
         avatarUrl?: string | null;
         url?: string | null;
@@ -3233,7 +3346,12 @@ export type AllGitHubOrgsQuery = {
             __typename?: "GitHubOrgMembershipEdge";
             node?: {
               __typename?: "GitHubOrgMembership";
-              member?: { __typename?: "GitHubUser"; login: string } | null;
+              id: string;
+              member?: {
+                __typename?: "GitHubUser";
+                id: string;
+                login: string;
+              } | null;
             } | null;
           } | null>;
         } | null;
@@ -3253,12 +3371,14 @@ export type AllGitHubTokensQuery = {
       __typename?: "GitHubTokenEdge";
       node?: {
         __typename?: "GitHubToken";
+        id: string;
         tokenId: string;
         tokenMasked?: string | null;
         scope?: string | null;
         timeCreated?: any | null;
         user?: {
           __typename?: "GitHubUser";
+          id: string;
           login: string;
           avatarUrl?: string | null;
           url?: string | null;
@@ -3281,12 +3401,14 @@ export type AllGitHubTokensWithOrgAccessQuery = {
       __typename?: "GitHubTokenEdge";
       node?: {
         __typename?: "GitHubToken";
+        id: string;
         tokenId: string;
         tokenMasked?: string | null;
         scope?: string | null;
         timeCreated?: any | null;
         user?: {
           __typename?: "GitHubUser";
+          id: string;
           login: string;
           avatarUrl?: string | null;
           url?: string | null;
@@ -3309,6 +3431,7 @@ export type AllGitHubUsersQuery = {
       __typename?: "GitHubUserEdge";
       node?: {
         __typename?: "GitHubUser";
+        id: string;
         login: string;
         name?: string | null;
         avatarUrl?: string | null;
@@ -3328,6 +3451,7 @@ export type AllLogsQuery = {
       __typename?: "LogEdge";
       node?: {
         __typename?: "Log";
+        id: string;
         id_: string;
         time?: any | null;
         level?: string | null;
@@ -3365,10 +3489,12 @@ export type AllProductTypesQuery = {
             __typename?: "TypeFieldAssociationEdge";
             node?: {
               __typename?: "TypeFieldAssociation";
+              id: string;
               typeId: number;
               fieldId: number;
               field?: {
                 __typename?: "Field";
+                id: string;
                 fieldId: string;
                 name: string;
                 type_?: FieldType | null;
@@ -3419,10 +3545,12 @@ export type AllProductsByTypeIdQuery = {
               __typename?: "TypeFieldAssociationEdge";
               node?: {
                 __typename?: "TypeFieldAssociation";
+                id: string;
                 typeId: number;
                 fieldId: number;
                 field?: {
                   __typename?: "Field";
+                  id: string;
                   fieldId: string;
                   name: string;
                   type_?: FieldType | null;
@@ -3431,9 +3559,14 @@ export type AllProductsByTypeIdQuery = {
             } | null>;
           } | null;
         } | null;
-        postingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
+        postingGitHubUser?: {
+          __typename?: "GitHubUser";
+          id: string;
+          login: string;
+        } | null;
         updatingGitHubUser?: {
           __typename?: "GitHubUser";
+          id: string;
           login: string;
         } | null;
         paths?: {
@@ -3491,10 +3624,12 @@ export type AllProductsByTypeIdQuery = {
                       __typename?: "TypeFieldAssociationEdge";
                       node?: {
                         __typename?: "TypeFieldAssociation";
+                        id: string;
                         typeId: number;
                         fieldId: number;
                         field?: {
                           __typename?: "Field";
+                          id: string;
                           fieldId: string;
                           name: string;
                           type_?: FieldType | null;
@@ -3525,10 +3660,12 @@ export type AllProductsByTypeIdQuery = {
             __typename?: "AttributeUnicodeTextEdge";
             node?: {
               __typename?: "AttributeUnicodeText";
+              id: string;
               fieldId: number;
               value?: string | null;
               field?: {
                 __typename?: "Field";
+                id: string;
                 name: string;
                 type_?: FieldType | null;
               } | null;
@@ -3541,10 +3678,12 @@ export type AllProductsByTypeIdQuery = {
             __typename?: "AttributeBooleanEdge";
             node?: {
               __typename?: "AttributeBoolean";
+              id: string;
               fieldId: number;
               value?: boolean | null;
               field?: {
                 __typename?: "Field";
+                id: string;
                 name: string;
                 type_?: FieldType | null;
               } | null;
@@ -3557,10 +3696,12 @@ export type AllProductsByTypeIdQuery = {
             __typename?: "AttributeIntegerEdge";
             node?: {
               __typename?: "AttributeInteger";
+              id: string;
               fieldId: number;
               value?: number | null;
               field?: {
                 __typename?: "Field";
+                id: string;
                 name: string;
                 type_?: FieldType | null;
               } | null;
@@ -3573,10 +3714,12 @@ export type AllProductsByTypeIdQuery = {
             __typename?: "AttributeFloatEdge";
             node?: {
               __typename?: "AttributeFloat";
+              id: string;
               fieldId: number;
               value?: number | null;
               field?: {
                 __typename?: "Field";
+                id: string;
                 name: string;
                 type_?: FieldType | null;
               } | null;
@@ -3589,10 +3732,12 @@ export type AllProductsByTypeIdQuery = {
             __typename?: "AttributeDateEdge";
             node?: {
               __typename?: "AttributeDate";
+              id: string;
               fieldId: number;
               value?: string | null;
               field?: {
                 __typename?: "Field";
+                id: string;
                 name: string;
                 type_?: FieldType | null;
               } | null;
@@ -3605,10 +3750,12 @@ export type AllProductsByTypeIdQuery = {
             __typename?: "AttributeDateTimeEdge";
             node?: {
               __typename?: "AttributeDateTime";
+              id: string;
               fieldId: number;
               value?: any | null;
               field?: {
                 __typename?: "Field";
+                id: string;
                 name: string;
                 type_?: FieldType | null;
               } | null;
@@ -3621,10 +3768,12 @@ export type AllProductsByTypeIdQuery = {
             __typename?: "AttributeTimeEdge";
             node?: {
               __typename?: "AttributeTime";
+              id: string;
               fieldId: number;
               value?: string | null;
               field?: {
                 __typename?: "Field";
+                id: string;
                 name: string;
                 type_?: FieldType | null;
               } | null;
@@ -3654,6 +3803,7 @@ export type GitHubViewerQuery = {
   __typename?: "QueryAdmin";
   gitHubViewer?: {
     __typename?: "GitHubUser";
+    id: string;
     login: string;
     name?: string | null;
     avatarUrl?: string | null;
@@ -3698,10 +3848,12 @@ export type ProductQuery = {
           __typename?: "TypeFieldAssociationEdge";
           node?: {
             __typename?: "TypeFieldAssociation";
+            id: string;
             typeId: number;
             fieldId: number;
             field?: {
               __typename?: "Field";
+              id: string;
               fieldId: string;
               name: string;
               type_?: FieldType | null;
@@ -3710,8 +3862,16 @@ export type ProductQuery = {
         } | null>;
       } | null;
     } | null;
-    postingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
-    updatingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
+    postingGitHubUser?: {
+      __typename?: "GitHubUser";
+      id: string;
+      login: string;
+    } | null;
+    updatingGitHubUser?: {
+      __typename?: "GitHubUser";
+      id: string;
+      login: string;
+    } | null;
     paths?: {
       __typename?: "ProductFilePathConnection";
       edges: Array<{
@@ -3767,10 +3927,12 @@ export type ProductQuery = {
                   __typename?: "TypeFieldAssociationEdge";
                   node?: {
                     __typename?: "TypeFieldAssociation";
+                    id: string;
                     typeId: number;
                     fieldId: number;
                     field?: {
                       __typename?: "Field";
+                      id: string;
                       fieldId: string;
                       name: string;
                       type_?: FieldType | null;
@@ -3801,10 +3963,12 @@ export type ProductQuery = {
         __typename?: "AttributeUnicodeTextEdge";
         node?: {
           __typename?: "AttributeUnicodeText";
+          id: string;
           fieldId: number;
           value?: string | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -3817,10 +3981,12 @@ export type ProductQuery = {
         __typename?: "AttributeBooleanEdge";
         node?: {
           __typename?: "AttributeBoolean";
+          id: string;
           fieldId: number;
           value?: boolean | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -3833,10 +3999,12 @@ export type ProductQuery = {
         __typename?: "AttributeIntegerEdge";
         node?: {
           __typename?: "AttributeInteger";
+          id: string;
           fieldId: number;
           value?: number | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -3849,10 +4017,12 @@ export type ProductQuery = {
         __typename?: "AttributeFloatEdge";
         node?: {
           __typename?: "AttributeFloat";
+          id: string;
           fieldId: number;
           value?: number | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -3865,10 +4035,12 @@ export type ProductQuery = {
         __typename?: "AttributeDateEdge";
         node?: {
           __typename?: "AttributeDate";
+          id: string;
           fieldId: number;
           value?: string | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -3881,10 +4053,12 @@ export type ProductQuery = {
         __typename?: "AttributeDateTimeEdge";
         node?: {
           __typename?: "AttributeDateTime";
+          id: string;
           fieldId: number;
           value?: any | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -3897,10 +4071,12 @@ export type ProductQuery = {
         __typename?: "AttributeTimeEdge";
         node?: {
           __typename?: "AttributeTime";
+          id: string;
           fieldId: number;
           value?: string | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -3942,10 +4118,12 @@ export type ProductByTypeIdAndNameQuery = {
           __typename?: "TypeFieldAssociationEdge";
           node?: {
             __typename?: "TypeFieldAssociation";
+            id: string;
             typeId: number;
             fieldId: number;
             field?: {
               __typename?: "Field";
+              id: string;
               fieldId: string;
               name: string;
               type_?: FieldType | null;
@@ -3954,8 +4132,16 @@ export type ProductByTypeIdAndNameQuery = {
         } | null>;
       } | null;
     } | null;
-    postingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
-    updatingGitHubUser?: { __typename?: "GitHubUser"; login: string } | null;
+    postingGitHubUser?: {
+      __typename?: "GitHubUser";
+      id: string;
+      login: string;
+    } | null;
+    updatingGitHubUser?: {
+      __typename?: "GitHubUser";
+      id: string;
+      login: string;
+    } | null;
     paths?: {
       __typename?: "ProductFilePathConnection";
       edges: Array<{
@@ -4011,10 +4197,12 @@ export type ProductByTypeIdAndNameQuery = {
                   __typename?: "TypeFieldAssociationEdge";
                   node?: {
                     __typename?: "TypeFieldAssociation";
+                    id: string;
                     typeId: number;
                     fieldId: number;
                     field?: {
                       __typename?: "Field";
+                      id: string;
                       fieldId: string;
                       name: string;
                       type_?: FieldType | null;
@@ -4045,10 +4233,12 @@ export type ProductByTypeIdAndNameQuery = {
         __typename?: "AttributeUnicodeTextEdge";
         node?: {
           __typename?: "AttributeUnicodeText";
+          id: string;
           fieldId: number;
           value?: string | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -4061,10 +4251,12 @@ export type ProductByTypeIdAndNameQuery = {
         __typename?: "AttributeBooleanEdge";
         node?: {
           __typename?: "AttributeBoolean";
+          id: string;
           fieldId: number;
           value?: boolean | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -4077,10 +4269,12 @@ export type ProductByTypeIdAndNameQuery = {
         __typename?: "AttributeIntegerEdge";
         node?: {
           __typename?: "AttributeInteger";
+          id: string;
           fieldId: number;
           value?: number | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -4093,10 +4287,12 @@ export type ProductByTypeIdAndNameQuery = {
         __typename?: "AttributeFloatEdge";
         node?: {
           __typename?: "AttributeFloat";
+          id: string;
           fieldId: number;
           value?: number | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -4109,10 +4305,12 @@ export type ProductByTypeIdAndNameQuery = {
         __typename?: "AttributeDateEdge";
         node?: {
           __typename?: "AttributeDate";
+          id: string;
           fieldId: number;
           value?: string | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -4125,10 +4323,12 @@ export type ProductByTypeIdAndNameQuery = {
         __typename?: "AttributeDateTimeEdge";
         node?: {
           __typename?: "AttributeDateTime";
+          id: string;
           fieldId: number;
           value?: any | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -4141,10 +4341,12 @@ export type ProductByTypeIdAndNameQuery = {
         __typename?: "AttributeTimeEdge";
         node?: {
           __typename?: "AttributeTime";
+          id: string;
           fieldId: number;
           value?: string | null;
           field?: {
             __typename?: "Field";
+            id: string;
             name: string;
             type_?: FieldType | null;
           } | null;
@@ -4176,10 +4378,12 @@ export type ProductTypeQuery = {
         __typename?: "TypeFieldAssociationEdge";
         node?: {
           __typename?: "TypeFieldAssociation";
+          id: string;
           typeId: number;
           fieldId: number;
           field?: {
             __typename?: "Field";
+            id: string;
             fieldId: string;
             name: string;
             type_?: FieldType | null;
@@ -4212,10 +4416,12 @@ export type ProductTypeByNameQuery = {
         __typename?: "TypeFieldAssociationEdge";
         node?: {
           __typename?: "TypeFieldAssociation";
+          id: string;
           typeId: number;
           fieldId: number;
           field?: {
             __typename?: "Field";
+            id: string;
             fieldId: string;
             name: string;
             type_?: FieldType | null;
@@ -4293,10 +4499,12 @@ export type QueryForProductAddFormQuery = {
         __typename?: "TypeFieldAssociationEdge";
         node?: {
           __typename?: "TypeFieldAssociation";
+          id: string;
           typeId: number;
           fieldId: number;
           field?: {
             __typename?: "Field";
+            id: string;
             fieldId: string;
             name: string;
             type_?: FieldType | null;
@@ -4392,10 +4600,12 @@ export type QueryForProductListQuery = {
                 __typename?: "TypeFieldAssociationEdge";
                 node?: {
                   __typename?: "TypeFieldAssociation";
+                  id: string;
                   typeId: number;
                   fieldId: number;
                   field?: {
                     __typename?: "Field";
+                    id: string;
                     fieldId: string;
                     name: string;
                     type_?: FieldType | null;
@@ -4406,10 +4616,12 @@ export type QueryForProductListQuery = {
           } | null;
           postingGitHubUser?: {
             __typename?: "GitHubUser";
+            id: string;
             login: string;
           } | null;
           updatingGitHubUser?: {
             __typename?: "GitHubUser";
+            id: string;
             login: string;
           } | null;
           paths?: {
@@ -4467,10 +4679,12 @@ export type QueryForProductListQuery = {
                         __typename?: "TypeFieldAssociationEdge";
                         node?: {
                           __typename?: "TypeFieldAssociation";
+                          id: string;
                           typeId: number;
                           fieldId: number;
                           field?: {
                             __typename?: "Field";
+                            id: string;
                             fieldId: string;
                             name: string;
                             type_?: FieldType | null;
@@ -4501,10 +4715,12 @@ export type QueryForProductListQuery = {
               __typename?: "AttributeUnicodeTextEdge";
               node?: {
                 __typename?: "AttributeUnicodeText";
+                id: string;
                 fieldId: number;
                 value?: string | null;
                 field?: {
                   __typename?: "Field";
+                  id: string;
                   name: string;
                   type_?: FieldType | null;
                 } | null;
@@ -4517,10 +4733,12 @@ export type QueryForProductListQuery = {
               __typename?: "AttributeBooleanEdge";
               node?: {
                 __typename?: "AttributeBoolean";
+                id: string;
                 fieldId: number;
                 value?: boolean | null;
                 field?: {
                   __typename?: "Field";
+                  id: string;
                   name: string;
                   type_?: FieldType | null;
                 } | null;
@@ -4533,10 +4751,12 @@ export type QueryForProductListQuery = {
               __typename?: "AttributeIntegerEdge";
               node?: {
                 __typename?: "AttributeInteger";
+                id: string;
                 fieldId: number;
                 value?: number | null;
                 field?: {
                   __typename?: "Field";
+                  id: string;
                   name: string;
                   type_?: FieldType | null;
                 } | null;
@@ -4549,10 +4769,12 @@ export type QueryForProductListQuery = {
               __typename?: "AttributeFloatEdge";
               node?: {
                 __typename?: "AttributeFloat";
+                id: string;
                 fieldId: number;
                 value?: number | null;
                 field?: {
                   __typename?: "Field";
+                  id: string;
                   name: string;
                   type_?: FieldType | null;
                 } | null;
@@ -4565,10 +4787,12 @@ export type QueryForProductListQuery = {
               __typename?: "AttributeDateEdge";
               node?: {
                 __typename?: "AttributeDate";
+                id: string;
                 fieldId: number;
                 value?: string | null;
                 field?: {
                   __typename?: "Field";
+                  id: string;
                   name: string;
                   type_?: FieldType | null;
                 } | null;
@@ -4581,10 +4805,12 @@ export type QueryForProductListQuery = {
               __typename?: "AttributeDateTimeEdge";
               node?: {
                 __typename?: "AttributeDateTime";
+                id: string;
                 fieldId: number;
                 value?: any | null;
                 field?: {
                   __typename?: "Field";
+                  id: string;
                   name: string;
                   type_?: FieldType | null;
                 } | null;
@@ -4597,10 +4823,12 @@ export type QueryForProductListQuery = {
               __typename?: "AttributeTimeEdge";
               node?: {
                 __typename?: "AttributeTime";
+                id: string;
                 fieldId: number;
                 value?: string | null;
                 field?: {
                   __typename?: "Field";
+                  id: string;
                   name: string;
                   type_?: FieldType | null;
                 } | null;
@@ -4616,10 +4844,12 @@ export type QueryForProductListQuery = {
         __typename?: "TypeFieldAssociationEdge";
         node?: {
           __typename?: "TypeFieldAssociation";
+          id: string;
           typeId: number;
           fieldId: number;
           field?: {
             __typename?: "Field";
+            id: string;
             fieldId: string;
             name: string;
             type_?: FieldType | null;
@@ -4663,6 +4893,7 @@ export type SignInInfoQuery = {
   isAdmin?: boolean | null;
   gitHubViewer?: {
     __typename?: "GitHubUser";
+    id: string;
     login: string;
     name?: string | null;
     avatarUrl?: string | null;
@@ -4690,6 +4921,7 @@ export type WebConfigQuery = {
   __typename?: "QueryAdmin";
   webConfig?: {
     __typename?: "WebConfig";
+    id: string;
     id_: string;
     json?: string | null;
   } | null;
@@ -4697,11 +4929,13 @@ export type WebConfigQuery = {
 
 export const GitHubTokenFragmentFragmentDoc = gql`
   fragment GitHubTokenFragment on GitHubToken {
+    id
     tokenId
     tokenMasked
     scope
     timeCreated
     user {
+      id
       login
       avatarUrl
       url
@@ -4721,9 +4955,11 @@ export const ProductTypeFragmentFragmentDoc = gql`
     fields {
       edges {
         node {
+          id
           typeId
           fieldId
           field {
+            id
             fieldId
             name
             type_
@@ -4744,10 +4980,12 @@ export const ProductFragmentFragmentDoc = gql`
     name
     timePosted
     postingGitHubUser {
+      id
       login
     }
     timeUpdated
     updatingGitHubUser {
+      id
       login
     }
     paths {
@@ -4802,8 +5040,10 @@ export const ProductFragmentFragmentDoc = gql`
     attributesUnicodeText {
       edges {
         node {
+          id
           fieldId
           field {
+            id
             name
             type_
           }
@@ -4814,8 +5054,10 @@ export const ProductFragmentFragmentDoc = gql`
     attributesBoolean {
       edges {
         node {
+          id
           fieldId
           field {
+            id
             name
             type_
           }
@@ -4826,8 +5068,10 @@ export const ProductFragmentFragmentDoc = gql`
     attributesInteger {
       edges {
         node {
+          id
           fieldId
           field {
+            id
             name
             type_
           }
@@ -4838,8 +5082,10 @@ export const ProductFragmentFragmentDoc = gql`
     attributesFloat {
       edges {
         node {
+          id
           fieldId
           field {
+            id
             name
             type_
           }
@@ -4850,8 +5096,10 @@ export const ProductFragmentFragmentDoc = gql`
     attributesDate {
       edges {
         node {
+          id
           fieldId
           field {
+            id
             name
             type_
           }
@@ -4862,8 +5110,10 @@ export const ProductFragmentFragmentDoc = gql`
     attributesDateTime {
       edges {
         node {
+          id
           fieldId
           field {
+            id
             name
             type_
           }
@@ -4874,8 +5124,10 @@ export const ProductFragmentFragmentDoc = gql`
     attributesTime {
       edges {
         node {
+          id
           fieldId
           field {
+            id
             name
             type_
           }
@@ -5149,6 +5401,7 @@ export const AllGitHubOrgsDocument = gql`
       totalCount
       edges {
         node {
+          id
           login
           avatarUrl
           url
@@ -5156,7 +5409,9 @@ export const AllGitHubOrgsDocument = gql`
             totalCount
             edges {
               node {
+                id
                 member {
+                  id
                   login
                 }
               }
@@ -5235,6 +5490,7 @@ export const AllGitHubUsersDocument = gql`
       totalCount
       edges {
         node {
+          id
           login
           name
           avatarUrl
@@ -5261,6 +5517,7 @@ export const AllLogsDocument = gql`
       totalCount
       edges {
         node {
+          id
           id_
           time
           level
@@ -5354,6 +5611,7 @@ export function useGitHubOAuthAppInfoQuery(
 export const GitHubViewerDocument = gql`
   query GitHubViewer {
     gitHubViewer {
+      id
       login
       name
       avatarUrl
@@ -5639,6 +5897,7 @@ export const SignInInfoDocument = gql`
     isSignedIn
     isAdmin
     gitHubViewer {
+      id
       login
       name
       avatarUrl
@@ -5683,6 +5942,7 @@ export function useVersionsQuery(
 export const WebConfigDocument = gql`
   query WebConfig {
     webConfig {
+      id
       id_
       json
     }

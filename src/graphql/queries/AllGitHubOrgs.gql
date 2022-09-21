@@ -3,6 +3,7 @@ query AllGitHubOrgs {
     totalCount
     edges {
       node {
+        id
         login
         avatarUrl
         url
@@ -10,7 +11,9 @@ query AllGitHubOrgs {
           totalCount
           edges {
             node {
+              id
               member {
+                id
                 login
               }
             }

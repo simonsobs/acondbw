@@ -3,6 +3,7 @@ query AllLogs {
     totalCount
     edges {
       node {
+        id
         id_
         time
         level

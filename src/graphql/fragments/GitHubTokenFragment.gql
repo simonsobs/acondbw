@@ -1,9 +1,11 @@
 fragment GitHubTokenFragment on GitHubToken {
+  id
   tokenId
   tokenMasked
   scope
   timeCreated
   user {
+    id
     login
     avatarUrl
     url

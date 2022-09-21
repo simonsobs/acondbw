@@ -1,5 +1,6 @@
 query GitHubViewer {
   gitHubViewer {
+    id
     login
     name
     avatarUrl
