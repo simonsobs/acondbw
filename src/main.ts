@@ -3,7 +3,6 @@ import { PiniaVuePlugin, mapState } from "pinia";
 import App from "./App.vue";
 import { createRouter } from "./router";
 import vuetify from "./plugins/vuetify";
-import { apolloProvider } from "./vue-apollo";
 // import InstantSearch from "vue-instantsearch";
 import pinia from "@/stores";
 import { useStore } from "@/stores/main";
@@ -20,7 +19,6 @@ new Vue({
   router: createRouter(),
   vuetify,
   pinia,
-  apolloProvider,
   computed: {
     ...mapState(useStore, ["vuetifyTheme"]),
   },
