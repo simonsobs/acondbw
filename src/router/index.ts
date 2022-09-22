@@ -212,7 +212,7 @@ const routes: Array<RouteConfig> = [
 function createRouter() {
   const router = new VueRouter({
     mode: "history",
-    base: process.env.BASE_URL,
+    base: import.meta.env.VITE_PUBLIC_PATH,
     routes,
   });
 

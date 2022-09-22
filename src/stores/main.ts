@@ -37,7 +37,7 @@ export const useStore = defineStore("main", {
       snackbar: false,
       snackbarMessage: null as string | null,
       nApolloMutations: 0,
-      packageVersion: (process.env.PACKAGE_VERSION as string) || "vx.x.x",
+      packageVersion: (import.meta.env.PACKAGE_VERSION as string) || "vx.x.x",
       webConfig: {} as WebConfig,
       webConfigLoaded: false,
     };

@@ -16,7 +16,7 @@ import { AUTH_TOKEN } from "@/vue-apollo";
 // https://formidable.com/open-source/urql/docs/advanced/authentication/
 
 const httpEndpoint =
-  process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4000/graphql";
+  import.meta.env.VITE_GRAPHQL_HTTP || "http://localhost:4000/graphql";
 
 function readTokenFromLocalStorage() {
   const tokenJson = localStorage.getItem(AUTH_TOKEN);
