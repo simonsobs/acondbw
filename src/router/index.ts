@@ -29,30 +29,16 @@ const NotFound = () => import("@/views/framework/NotFound.vue");
 const SignInRequired = () => import("@/views/auth/SignInRequired.vue");
 const AccessDenied = () => import("@/views/framework/AccessDenied.vue");
 
-const FrameAdmin = () =>
-  import(/* webpackChunkName: "admin" */ "@/components/admin/FrameAdmin.vue");
-const Version = () =>
-  import(/* webpackChunkName: "admin" */ "@/views/admin/Version.vue");
-const Log = () =>
-  import(/* webpackChunkName: "admin" */ "@/views/admin/Log.vue");
-const Config = () =>
-  import(/* webpackChunkName: "admin" */ "@/views/admin/Config.vue");
-const Theme = () =>
-  import(/* webpackChunkName: "admin" */ "@/views/admin/Theme.vue");
-const User = () =>
-  import(/* webpackChunkName: "admin" */ "@/views/admin/User.vue");
-const AdminAppToken = () =>
-  import(
-    /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppToken.vue"
-  );
-const AdminAppAuth = () =>
-  import(
-    /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppAuth.vue"
-  );
+const FrameAdmin = () => import("@/components/admin/FrameAdmin.vue");
+const Version = () => import("@/views/admin/Version.vue");
+const Log = () => import("@/views/admin/Log.vue");
+const Config = () => import("@/views/admin/Config.vue");
+const Theme = () => import("@/views/admin/Theme.vue");
+const User = () => import("@/views/admin/User.vue");
+const AdminAppToken = () => import("@/views/admin-token/AdminAppToken.vue");
+const AdminAppAuth = () => import("@/views/admin-token/AdminAppAuth.vue");
 const AdminAppTokenError = () =>
-  import(
-    /* webpackChunkName: "admin" */ "@/views/admin-token/AdminAppTokenError.vue"
-  );
+  import("@/views/admin-token/AdminAppTokenError.vue");
 
 Vue.use(VueRouter);
 
