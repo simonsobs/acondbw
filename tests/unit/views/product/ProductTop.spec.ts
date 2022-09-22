@@ -46,7 +46,7 @@ describe("ProductTop.vue", () => {
       pinia,
       router,
       propsData: {},
-      stubs: ["router-link", "router-view"],
+      stubs: ["router-link", "router-view", "dev-tool-loading-state-menu"],
     });
     const store = useStore(pinia);
     const authStore = useAuthStore(pinia);

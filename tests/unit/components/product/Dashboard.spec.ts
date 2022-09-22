@@ -96,9 +96,7 @@ describe("App.vue", () => {
       vuetify,
       pinia,
       router,
-      stubs: {
-        DevToolLoadingStateOverridingMenu: true,
-      },
+      stubs: ["dev-tool-loading-state-menu"],
     });
     query.data.value = { allProductTypes: { edges: edges } };
   });

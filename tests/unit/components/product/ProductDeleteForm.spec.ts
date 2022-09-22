@@ -1,4 +1,4 @@
-import Vue from "vue";
+import Vue, { ref, nextTick } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
@@ -9,11 +9,15 @@ import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 import { createRouter } from "@/router";
 import { useStore } from "@/stores/main";
 
-jest.mock("vue-apollo");
-// To prevent the error: "[vue-test-utils]: could not overwrite
-// property $apollo, this is usually caused by a plugin that has added
-// the property as a read-only value"
-// https://github.com/vuejs/vue-apollo/issues/798
+import { useQuery, useMutation } from "@urql/vue";
+jest.mock("@urql/vue");
+
+import {
+  ProductQuery,
+  ProductQueryVariables,
+  DeleteProductMutation,
+  DeleteProductMutationVariables,
+} from "@/generated/graphql";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -22,29 +26,23 @@ describe("ProductDeleteForm.vue", () => {
   let localVue: ReturnType<typeof createLocalVue>;
   let vuetify: Vuetify;
   let router: ReturnType<typeof createRouter>;
+  let query: ReturnType<typeof useQuery<ProductQuery>>;
+  let mutation: ReturnType<
+    typeof useMutation<DeleteProductMutation, DeleteProductMutationVariables>
+  >;
 
-  function createWrapper({ loading = false, propsData = {} } = {}) {
+  function createWrapper({ propsData = {} } = {}) {
     const mutate = jest.fn();
     let wrapper = mount(ProductDeleteForm, {
       localVue,
       router,
       vuetify,
       pinia: createTestingPinia(),
-      mocks: {
-        $apollo: {
-          queries: {
-            node: {
-              loading: loading,
-            },
-          },
-          mutate,
-        },
-      },
       propsData: {
         productId: 1013,
         ...propsData,
       },
-      stubs: ["dev-tool-loading-state-overriding-menu"],
+      stubs: ["dev-tool-loading-state-menu"],
     });
 
     return wrapper;
@@ -65,12 +63,31 @@ describe("ProductDeleteForm.vue", () => {
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
     router = createRouter();
+    // @ts-ignore
+    query = {
+      data: ref<ProductQuery | undefined>(undefined),
+      error: ref(undefined),
+      fetching: ref(false),
+    };
+    (useQuery as jest.Mock).mockReturnValue(query);
+    // @ts-ignore
+    mutation = {
+      executeMutation: jest.fn(),
+    };
+    (useMutation as jest.Mock).mockReturnValue(mutation);
+    (mutation.executeMutation as jest.Mock).mockReturnValue({ error: null });
+  });
+
+  afterEach(() => {
+    (useQuery as jest.Mock).mockReset();
+    (useMutation as jest.Mock).mockReset();
   });
 
   it("loading", async () => {
     const loading = true;
-    const wrapper = createWrapper({ loading });
-    await Vue.nextTick();
+    query.fetching.value = loading;
+    const wrapper = createWrapper();
+    await nextTick();
     expect(wrapper.find(".v-progress-circular").exists()).toBe(true);
   });
 
@@ -79,17 +96,8 @@ describe("ProductDeleteForm.vue", () => {
     wrapper.setData({
       error: "Error message!",
     });
-    await Vue.nextTick();
+    await nextTick();
     expect(wrapper.text()).toContain("Error message");
-  });
-
-  it("none", async () => {
-    const wrapper = createWrapper();
-    wrapper.setData({
-      init: false,
-    });
-    await Vue.nextTick();
-    expect(wrapper.text()).toContain("Not Found");
   });
 
   it("delete", async () => {
@@ -98,13 +106,12 @@ describe("ProductDeleteForm.vue", () => {
     app.setAttribute("data-app", "true");
     document.body.append(app);
 
+    // @ts-ignore
+    query.data.value = { product: node };
     const wrapper: any = createWrapper();
-    wrapper.setData({
-      node: node,
-    });
     const store = useStore();
     await wrapper.vm.remove();
-    expect(wrapper.vm.$apollo.mutate).toBeCalled();
+    expect(mutation.executeMutation).toBeCalled();
     expect(store.apolloMutationCalled).toHaveBeenCalled();
     expect(store.setSnackbarMessage).toHaveBeenCalled();
     expect(wrapper.emitted("finished")).toBeTruthy();
