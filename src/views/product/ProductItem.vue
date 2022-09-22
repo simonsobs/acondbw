@@ -134,7 +134,7 @@ export default defineComponent({
       });
     }
     return {
-      ...useQueryState(query, { isNull: () => node.value === null}),
+      ...useQueryState(query, { isNull: () => node.value === null }),
       name,
       node,
       productTypeName,
