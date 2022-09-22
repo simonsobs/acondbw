@@ -7,7 +7,8 @@
     "serve": "vite preview",
     "build": "vite build",
     "lint": "eslint src",
-    "test": "jest tests",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
     "gql-gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
