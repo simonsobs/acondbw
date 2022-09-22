@@ -15,6 +15,7 @@ export default ({ mode }) => {
     plugins: [
       vue(),
       loadVersion(),
+      // @ts-ignore
       graphql(),
       Components({
         resolvers: [VuetifyResolver()],
