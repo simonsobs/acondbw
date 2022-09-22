@@ -3,10 +3,11 @@
   "version": "0.3.1",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "dev": "vite",
+    "serve": "vite preview",
+    "build": "vite build",
+    "lint": "eslint src",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
     "gql-gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
