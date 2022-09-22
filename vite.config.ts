@@ -5,6 +5,7 @@ import graphql from '@rollup/plugin-graphql';
 import { VuetifyResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
 import path from "path-browserify";
+import { defaultExclude } from "vitest/config";
 
 export default ({ mode }) => {
   // loadEnv: https://stackoverflow.com/a/66389044/7309855
@@ -27,6 +28,11 @@ export default ({ mode }) => {
         "@": path.resolve(__dirname, "src"),
         path: "path-browserify",
       },
+    },
+    test: {
+      globals: true,
+      environment: "jsdom",
+      exclude: [...defaultExclude, "tests-old/**"],
     },
   });
 };
