@@ -6,10 +6,10 @@ HTML_DIR="/usr/share/nginx/html"
 PLACEHOLDER="graphql_api_url_placeholder_to_be_replaced"
 
 ##__________________________________________________________________||
-if [ -z $VUE_APP_GRAPHQL_HTTP ]
+if [ -z $VITE_GRAPHQL_HTTP ]
 then
-    echo 'Warning: $VUE_APP_GRAPHQL_HTTP is not set!'
-    command="VUE_APP_GRAPHQL_HTTP=$DEFAULT_API_URL"
+    echo 'Warning: $VITE_GRAPHQL_HTTP is not set!'
+    command="VITE_GRAPHQL_HTTP=$DEFAULT_API_URL"
     echo + $command
     eval $command
 fi
@@ -28,7 +28,7 @@ fi
     for f in js/*;
     do
         if [ -f $f ]; then
-            command="sed -i \"s#$PLACEHOLDER#$VUE_APP_GRAPHQL_HTTP#g\" $f";
+            command="sed -i \"s#$PLACEHOLDER#$VITE_GRAPHQL_HTTP#g\" $f";
             echo + $command;
             eval $command;
         fi
