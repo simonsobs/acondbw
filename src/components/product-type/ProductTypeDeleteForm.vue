@@ -18,38 +18,41 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapActions } from "pinia";
+import { defineComponent, PropType } from "vue";
 import { useStore } from "@/stores/main";
+import { useMutation } from "@urql/vue";
 
 import DELETE_PRODUCT_TYPE from "@/graphql/mutations/DeleteProductType.gql";
+import {
+  DeleteProductTypeMutation,
+  DeleteProductTypeMutationVariables,
+} from "@/generated/graphql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ProductTypeDeleteForm",
   props: {
-    node: Object,
-  },
-  data() {
-    return {};
-  },
-  methods: {
-    async submit() {
-      try {
-        const data = await this.$apollo.mutate({
-          mutation: DELETE_PRODUCT_TYPE,
-          variables: {
-            typeId: this.node.typeId,
-          },
-        });
-        this.$apollo.provider.defaultClient.cache.data.data = {};
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Deleted");
-        this.$emit("finished");
-      } catch (error) {
-        this.error = error;
-      }
+    node: {
+      type: Object as PropType<{ typeId: number; plural: string }>,
+      required: true,
     },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
+  },
+  setup(prop, { emit }) {
+    const store = useStore();
+
+    const { executeMutation } = useMutation<
+      DeleteProductTypeMutation,
+      DeleteProductTypeMutationVariables
+    >(DELETE_PRODUCT_TYPE);
+
+    async function submit() {
+      const { error } = await executeMutation({ typeId: prop.node.typeId });
+      if (error) throw error;
+      store.apolloMutationCalled();
+      store.setSnackbarMessage("Deleted");
+      emit("finished");
+    }
+
+    return { submit };
   },
 });
 </script>

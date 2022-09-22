@@ -11,14 +11,12 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import ProductTypeTable from "@/components/product-type/Table.vue";
 
-export default {
+export default defineComponent({
   name: "ProductType",
-  components: {
-    ProductTypeTable,
-  },
-  data: () => ({}),
-};
+  components: { ProductTypeTable },
+});
 </script>

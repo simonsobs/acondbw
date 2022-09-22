@@ -5,7 +5,7 @@
       :headers="headers"
       :items="items"
       :items-per-page="items.length"
-      :loading="state == State.LOADING"
+      :loading="loading"
       disable-sort
       hide-default-footer
       @click:row="clickRow"
@@ -15,102 +15,81 @@
         <router-link
           :to="{ name: 'ProductList', params: { productTypeName: item.name } }"
         >
-          <span class="capitalize font-weight-bold primary--text">{{
-            item.plural
-          }}</span>
+          <span class="capitalize font-weight-bold primary--text">
+            {{ item.plural }}
+          </span>
         </router-link>
       </template>
     </v-data-table>
     <v-alert v-if="error" type="error" style="width: 100%">{{ error }}</v-alert>
-    <dev-tool-loading-state-overriding-menu
-      @state="devtoolState = $event"
-    ></dev-tool-loading-state-overriding-menu>
+    <dev-tool-loading-state-menu
+      top="-30px"
+      right="-10px"
+      v-model="devtoolState"
+    ></dev-tool-loading-state-menu>
   </div>
 </template>
 
-<script>
-import ALL_PRODUCTS_TYPES from "@/graphql/queries/AllProductTypes.gql";
+<script lang="ts">
+import { defineComponent, ref, computed } from "vue";
+import { useRouter } from "vue-router/composables";
+import { useQuery } from "@urql/vue";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
+import { AllProductTypesQuery } from "@/generated/graphql";
 
-export default {
+import { useQueryState } from "@/utils/query-state";
+
+export default defineComponent({
   name: "Dashboard",
-  components: {
-    DevToolLoadingStateOverridingMenu,
-  },
-  data: () => ({
-    edges: null,
-    headers: [
+  setup() {
+    const router = useRouter();
+    const query = useQuery<AllProductTypesQuery>({
+      query: ALL_PRODUCT_TYPES,
+    });
+    function readEdges(
+      query: ReturnType<typeof useQuery<AllProductTypesQuery>>
+    ) {
+      return query.data?.value?.allProductTypes?.edges?.flatMap((e) =>
+        e ? [e] : []
+      );
+    }
+    const edges = computed(() => readEdges(query) || []);
+
+    const headers = ref([
       { text: "Product type", value: "plural" },
       {
         text: "Number of products",
         align: "end",
         value: "products.totalCount",
       },
-    ],
-    error: null,
-    devtoolState: null,
-    State: State,
-  }),
-  apollo: {
-    edges: {
-      query: ALL_PRODUCTS_TYPES,
-      update: (data) =>
-        data.allProductTypes ? data.allProductTypes.edges : null,
-      result(result) {
-        this.error = result.error ? result.error : null;
-      },
-    },
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
+    ]);
 
-      if (this.loading) {
-        return State.LOADING;
-      } else if (this.error) {
-        return State.ERROR;
-      } else if (this.edges) {
-        if (this.edges.length) {
-          return State.LOADED;
-        } else {
-          return State.EMPTY;
-        }
-      } else {
-        return State.NONE;
-      }
-    },
-    loading() {
-      return this.$apollo.queries.edges.loading;
-    },
-    items() {
-      if (this.state == State.NONE) {
-        return [];
-      } else if (this.state == State.EMPTY) {
-        return [];
-      } else {
-        return this.edges ? this.edges.map((edge) => edge.node) : [];
-      }
-    },
-  },
-  methods: {
-    clickRow(item) {
-      this.$router.push({
+    function isEmpty(query: ReturnType<typeof useQuery<AllProductTypesQuery>>) {
+      const edges = readEdges(query);
+      return edges ? edges.length === 0 : false;
+    }
+
+    const items = computed(() =>
+      edges.value.flatMap((edge) => (edge?.node ? [edge.node] : []))
+    );
+
+    function clickRow(item: typeof items.value[number]) {
+      router.push({
         name: "ProductList",
         params: { productTypeName: item.name },
       });
-    },
+    }
+
+    return {
+      ...useQueryState(query, { isEmpty }),
+      edges,
+      headers,
+      items,
+      clickRow,
+    };
   },
-  watch: {
-    devtoolState: function () {
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-  },
-};
+});
 </script>
 
 <style scoped>

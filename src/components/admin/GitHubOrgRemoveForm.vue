@@ -16,13 +16,15 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
+import { client } from "@/plugins/urql";
+
 import DELETE_GITHUB_ORG from "@/graphql/mutations/DeleteGitHubOrg.gql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "GitHubOrgRemoveForm",
   props: {
     login: String,
@@ -46,10 +48,10 @@ export default Vue.extend({
     },
     async remove() {
       try {
-        const { data } = await this.$apollo.mutate({
-          mutation: DELETE_GITHUB_ORG,
-          variables: { login: this.login },
-        });
+        const result = await client
+          .mutation(DELETE_GITHUB_ORG, { login: this.login })
+          .toPromise();
+        if (result.error) throw result.error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Removed");
         this.$emit("finished");

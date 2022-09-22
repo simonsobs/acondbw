@@ -17,16 +17,19 @@
   </div>
 </template>
 
-<script>
-import FormStart from "./FormStart.vue";
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+import FormStart, { FormStepStart } from "./FormStart.vue";
 
-export default {
+export { FormStepStart };
+
+export default defineComponent({
   name: "ProductAddFormStepStart",
   components: {
     FormStart,
   },
   props: {
-    value: Object,
+    value: Object as PropType<FormStepStart>,
     productType: {
       type: Object,
       required: true,
@@ -37,5 +40,5 @@ export default {
       valid: false,
     };
   },
-};
+});
 </script>

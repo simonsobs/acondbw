@@ -17,15 +17,21 @@ exports[`App.vue match snapshot 1`] = `
         </thead>
         <tbody>
           <tr class="">
-            <td class="text-start"><a href="/product/simulation/" class=""><span class="capitalize font-weight-bold primary--text">simulations</span></a></td>
+            <td class="text-start"><a href="/product/simulation/" class=""><span class="capitalize font-weight-bold primary--text">
+          simulations
+        </span></a></td>
             <td class="text-end">1</td>
           </tr>
           <tr class="">
-            <td class="text-start"><a href="/product/map/" class=""><span class="capitalize font-weight-bold primary--text">maps</span></a></td>
+            <td class="text-start"><a href="/product/map/" class=""><span class="capitalize font-weight-bold primary--text">
+          maps
+        </span></a></td>
             <td class="text-end">64</td>
           </tr>
           <tr class="">
-            <td class="text-start"><a href="/product/beam/" class=""><span class="capitalize font-weight-bold primary--text">beams</span></a></td>
+            <td class="text-start"><a href="/product/beam/" class=""><span class="capitalize font-weight-bold primary--text">
+          beams
+        </span></a></td>
             <td class="text-end">7</td>
           </tr>
         </tbody>
@@ -33,6 +39,6 @@ exports[`App.vue match snapshot 1`] = `
     </div>
   </div>
   <!---->
-  <devtoolloadingstateoverridingmenu-stub></devtoolloadingstateoverridingmenu-stub>
+  <dev-tool-loading-state-menu-stub top="-30px" right="-10px"></dev-tool-loading-state-menu-stub>
 </div>
 `;

@@ -1,5 +1,10 @@
 <template>
   <v-container class="product-list" style="position: relative">
+    <v-row v-if="error">
+      <v-col>
+        <v-alert v-if="error" type="error">{{ error }}</v-alert>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col class="pb-0">
         <v-card-actions class="align-end" style="height: 56px">
@@ -12,7 +17,7 @@
             <span>Refresh</span>
           </v-tooltip>
           <v-spacer></v-spacer>
-          <span v-if="loaded" class="secondary--text">
+          <span v-if="loaded && productType" class="secondary--text">
             <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
             <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
           </span>
@@ -80,6 +85,7 @@
                 name: 'ProductAdd',
                 params: { productTypeName: productType.name },
               }"
+              v-if="productType"
             >
               <v-icon class="on-secondary--text">mdi-plus-thick</v-icon>
             </v-btn>
@@ -88,38 +94,31 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-if="loading">
-        <v-progress-circular
-          indeterminate
-          :size="26"
-          color="secondary"
-        ></v-progress-circular>
-      </v-col>
-      <v-col v-if="loaded" class="pt-0 pb-16">
+      <v-col v-if="nodes.length" class="pt-0 pb-16">
         <component
           :is="productItemCard"
-          v-for="edge in edges"
-          :key="edge.node.id"
-          :productId="edge.node.productId"
-          collapsible="true"
-          :collapsed="isCardCollapsed[edge.node.id]"
-          v-on:expand="isCardCollapsed[edge.node.id] = false"
-          v-on:collapse="isCardCollapsed[edge.node.id] = true"
+          v-for="node in nodes"
+          :key="node.id"
+          :productId="node.productId"
+          :collapsible="true"
+          :collapsed="isCardCollapsed[node.id]"
+          v-on:expand="isCardCollapsed[node.id] = false"
+          v-on:collapse="isCardCollapsed[node.id] = true"
           :disableEdit="disableEdit"
           :disableDelete="disableDelete"
           class="my-1"
         ></component>
-        <div v-if="loadingMore" class="pa-3">
+        <div v-if="loading" class="pa-3">
           <v-progress-circular
             indeterminate
             :size="26"
             color="secondary"
           ></v-progress-circular>
         </div>
-        <v-card-actions v-if="showLoadMoreButton">
+        <v-card-actions v-if="showLoadMoreButton && productType">
           <v-spacer></v-spacer>
           <span v-if="nItemsTotal > 1">
-            <span v-if="edges.length == nItemsTotal">
+            <span v-if="nodes.length == nItemsTotal">
               {{ nItemsTotal }} {{ productType.plural }}
             </span>
             <span v-else>
@@ -129,6 +128,7 @@
           </span>
           <v-spacer></v-spacer>
           <v-btn
+            v-if="productType && productType.products"
             :disabled="!productType.products.pageInfo.hasNextPage"
             outlined
             color="secondary"
@@ -139,7 +139,16 @@
           </v-btn>
         </v-card-actions>
       </v-col>
-      <v-col v-else-if="empty">
+      <v-col v-else-if="loading">
+        <div class="pa-3">
+          <v-progress-circular
+            indeterminate
+            :size="26"
+            color="secondary"
+          ></v-progress-circular>
+        </div>
+      </v-col>
+      <v-col v-else-if="empty && productType">
         <v-card-text>
           Empty. No {{ productType.plural }} are found.
         </v-card-text>
@@ -178,264 +187,209 @@
           </v-dialog>
         </v-card-actions>
       </v-col>
-      <v-col v-else-if="error">
-        <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      </v-col>
-      <v-col v-else>
-        <!-- state = State.NONE -->
-      </v-col>
     </v-row>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-container>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState } from "pinia";
-import { useStore } from "@/stores/main";
+import { defineComponent, ref, watch, computed } from "vue";
+import { useRouter } from "vue-router/composables";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
-
 import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
+import {
+  QueryForProductListQuery,
+  QueryForProductListQueryVariables,
+} from "@/generated/graphql";
+
 import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
 
-export default Vue.extend({
+import { useQuery } from "@urql/vue";
+
+import { useQueryState } from "@/utils/query-state";
+
+export default defineComponent({
   name: "ProductList",
   components: {
     ProductItemCard,
-    DevToolLoadingStateOverridingMenu,
     ProductTypeDeleteForm,
   },
   props: {
-    productTypeId: { required: true },
+    productTypeId: { type: String, required: true },
     productItemCard: { default: "ProductItemCard" },
-    productAddForm: { default: "ProductAddForm" },
-    disableAdd: { default: false },
-    disableEdit: { default: false },
-    disableDelete: { default: false },
+    disableAdd: { type: Boolean, default: false },
+    disableEdit: { type: Boolean, default: false },
+    disableDelete: { type: Boolean, default: false },
   },
-  data() {
-    return {
-      productType: null,
-      init: true,
-      error: null,
-      refreshing: false,
-      loadingMore: false,
-      sortItem: 0,
-      sortItems: [
-        { text: "Recently posted", value: "TIME_POSTED_DESC" },
-        { text: "Recently updated", value: "TIME_UPDATED_DESC" },
-        // { text: "Recently produced", value: "DATE_PRODUCED_DESC" },
-        { text: "Name", value: "NAME_ASC" },
-      ],
-      nItemsInitialLoad: 10,
-      nEtraItemsAutomaticLoad: 2,
-      nItemsPerLoad: 20,
-      isCardCollapsed: {},
-      deleteDialog: false,
-      devtoolState: null,
-      State: State,
-    };
-  },
-  apollo: {
-    productType: {
+  setup(prop) {
+    const router = useRouter();
+    const sortItem = ref(0);
+
+    const sortItems = ref([
+      { text: "Recently posted", value: "TIME_POSTED_DESC" },
+      { text: "Recently updated", value: "TIME_UPDATED_DESC" },
+      // { text: "Recently produced", value: "DATE_PRODUCED_DESC" },
+      { text: "Name", value: "NAME_ASC" },
+    ]);
+
+    const nItemsInitialLoad = ref(10);
+    const first = ref(nItemsInitialLoad.value);
+
+    const sort = computed(() => [sortItems.value[sortItem.value].value]);
+
+    const query = useQuery<QueryForProductListQuery>({
       query: QueryForProductList,
-      variables() {
-        return {
-          typeId: this.productTypeId,
-          sort: [this.sort],
-          first: this.nItemsInitialLoad,
-          after: "",
-        };
+      variables: {
+        typeId: prop.productTypeId,
+        sort: sort,
+        // first: nItemsInitialLoad,
+        first: first,
+        after: "",
       },
-      skip: function () {
-        return !this.productTypeId || !this.sort;
-      },
-      result(result) {
-        this.init = false;
-        this.error = result.error ? result.error : null;
-      },
-    },
-  },
-  computed: {
-    edges() {
-      return this.productType ? this.productType.products.edges : null;
-    },
-    nItemsTotal() {
-      return this.productType ? this.productType.products.totalCount : null;
-    },
-    showLoadMoreButton() {
-      if (this.loadingMore) {
-        return false;
-      }
-      return (
-        this.nItemsTotal > this.nItemsInitialLoad + this.nEtraItemsAutomaticLoad
-      );
-    },
-    state() {
-      if (this.devtoolState) {
-        return this.devtoolState;
-      }
+    });
 
-      if (this.refreshing) {
-        return State.LOADING;
-      }
+    type Query = typeof query;
 
-      if (this.edges) {
-        if (this.edges.length) {
-          return State.LOADED;
-        } else {
-          return State.EMPTY;
-        }
-      } else if (this.$apollo.queries.productType.loading) {
-        return State.LOADING;
-      } else if (this.error) {
-        return State.ERROR;
-      } else {
-        return State.NONE;
-      }
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    empty() {
-      return this.state == State.EMPTY;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    sort() {
-      return this.sortItems[this.sortItem].value;
-    },
-    areAllCardsCollapsed: {
-      get: function () {
-        return Object.keys(this.isCardCollapsed).every(
-          (i) => this.isCardCollapsed[i]
-        );
-      },
-      set: function (v) {
-        for (const k in this.isCardCollapsed) {
-          this.isCardCollapsed[k] = v;
-        }
-      },
-    },
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-    nApolloMutations: function () {
-      this.refresh();
-    },
-    edges: function () {
-      this.collapseCards();
-      this.loadAllFewRemainingItems();
-    },
-    ...mapState(useStore, ["nApolloMutations"]),
-  },
-  methods: {
-    collapseCards() {
-      if (this.edges == undefined) {
-        return;
-      }
-      for (const edge of this.edges) {
-        const id = edge.node.id;
-        if (!(id in this.isCardCollapsed)) {
-          this.isCardCollapsed = {
-            ...this.isCardCollapsed,
-            [id]: true,
-          };
-          // The above line of the code adds a new element {id: true} to
-          // the object this.isCardCollapsed in the way that the new
-          // element will be a reactive object of Vue. The commented out
-          // code below is simpler but the new element won't be reactive.
-          // this.isCardCollapsed[id] = true;
-        }
-      }
-    },
-    onDeleteFormCancelled() {
-      this.closeDeleteForm();
-    },
-    onDeleteFormFinished() {
-      this.closeDeleteForm();
-      this.onDeleted();
-    },
-    closeDeleteForm() {
-      this.deleteDialog = false;
-    },
-    onDeleted() {
-      this.$router.push({ name: "Dashboard" });
-    },
-    loadAllFewRemainingItems() {
-      if (this.edges == undefined) {
-        return;
-      }
+    const productType = computed(() => query.data?.value?.productType);
+
+    function readEdges(query: Query) {
+      const edgesAndNulls = query.data?.value?.productType?.products?.edges;
+      if (!edgesAndNulls) return [];
+      return edgesAndNulls.flatMap((e) => (e ? [e] : []));
+    }
+    function readNodes(query: Query) {
+      return readEdges(query).flatMap((e) => (e.node ? e.node : []));
+    }
+
+    const queryState = useQueryState(query, {
+      isEmpty: () => readNodes(query).length === 0,
+    });
+
+    const { loading, error, empty, refresh: refresh_ } = queryState;
+
+    const refreshing = ref(false);
+
+    const edges = computed(() =>
+      refreshing.value || empty.value ? [] : readEdges(query)
+    );
+
+    const nodes = computed(() =>
+      refreshing.value || empty.value ? [] : readNodes(query)
+    );
+
+    watch(nodes, async () => {
+      collapseCards();
+      await loadAllFewRemainingItems();
+    });
+
+    async function loadAllFewRemainingItems() {
       if (
-        this.edges.length + this.nEtraItemsAutomaticLoad >=
-        this.nItemsTotal
+        nodes.value.length + nEtraItemsAutomaticLoad.value >=
+        nItemsTotal.value
       ) {
-        this.loadMore();
+        await loadMore();
       }
-    },
-    async refresh() {
-      this.refreshing = true;
-      const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      await this.$apollo.queries.productType.refetch();
-      this.areAllCardsCollapsed = true;
-      await wait; // wait until 0.5 sec passes since starting refetch
-      // because the progress circular is too flickering if
-      // the refetch finishes too quickly
-      this.refreshing = false;
-    },
-    async loadMore() {
-      if (!this.productType.products.pageInfo.hasNextPage) {
-        return;
-      }
+    }
 
-      this.loadingMore = true;
+    const nItemsTotal = computed(
+      () => productType.value?.products?.totalCount || 0
+    );
+
+    async function refresh() {
+      refreshing.value = true;
+      first.value = nItemsInitialLoad.value;
       try {
-        await this.$apollo.queries.productType.fetchMore({
-          variables: {
-            first: this.nItemsPerLoad,
-            after: this.productType.products.pageInfo.endCursor,
-          },
-          updateQuery: (previousResult, { fetchMoreResult }) => {
-            return {
-              productType: {
-                ...previousResult.productType,
-                products: {
-                  ...previousResult.productType.products,
-                  pageInfo: {
-                    ...previousResult.productType.products.pageInfo,
-                    endCursor:
-                      fetchMoreResult.productType.products.pageInfo.endCursor,
-                    hasNextPage:
-                      fetchMoreResult.productType.products.pageInfo.hasNextPage,
-                  },
-                  edges: [
-                    ...previousResult.productType.products.edges,
-                    ...fetchMoreResult.productType.products.edges,
-                  ],
-                },
-              },
-            };
-          },
+        await refresh_();
+      } finally {
+        areAllCardsCollapsed.value = true;
+        refreshing.value = false;
+      }
+    }
+
+    const isCardCollapsed = ref<{ [key: string]: boolean }>({});
+
+    function collapseCards() {
+      nodes.value.forEach((node) => {
+        const id = node.id;
+        if (id in isCardCollapsed.value) return;
+        isCardCollapsed.value = { ...isCardCollapsed.value, [id]: true };
+      });
+    }
+
+    const areAllCardsCollapsed = computed({
+      get: () => Object.values(isCardCollapsed.value).every((i) => i),
+      set: (v) => {
+        Object.keys(isCardCollapsed.value).forEach((k) => {
+          isCardCollapsed.value[k] = v;
         });
-      } catch (error) {}
-      this.loadingMore = false;
-    },
+      },
+    });
+
+    const deleteDialog = ref(false);
+
+    function onDeleteFormCancelled() {
+      closeDeleteForm();
+    }
+
+    function onDeleteFormFinished() {
+      closeDeleteForm();
+      onDeleted();
+    }
+
+    function closeDeleteForm() {
+      deleteDialog.value = false;
+    }
+
+    function onDeleted() {
+      router.push({ name: "Dashboard" });
+    }
+
+    const loadingMore = ref(false);
+    const nEtraItemsAutomaticLoad = ref(2);
+
+    const showLoadMoreButton = computed(() => {
+      // if (loadingMore.value) return false;
+      return (
+        nItemsTotal.value >
+        nItemsInitialLoad.value + nEtraItemsAutomaticLoad.value
+      );
+    });
+
+    const nItemsPerLoad = ref(20);
+    async function loadMore() {
+      if (!productType.value?.products?.pageInfo?.hasNextPage) return;
+      first.value = first.value + nItemsPerLoad.value;
+    }
+
+    return {
+      ...queryState,
+      refresh,
+      sortItem,
+      sortItems,
+      productType,
+      edges,
+      nodes,
+      first,
+      nItemsTotal,
+      nItemsInitialLoad,
+      nEtraItemsAutomaticLoad,
+      isCardCollapsed,
+      collapseCards,
+      areAllCardsCollapsed,
+      deleteDialog,
+      onDeleteFormCancelled,
+      onDeleteFormFinished,
+      closeDeleteForm,
+      onDeleted,
+      loadingMore,
+      showLoadMoreButton,
+      loadMore,
+    };
   },
 });
 </script>

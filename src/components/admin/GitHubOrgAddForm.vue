@@ -10,8 +10,8 @@
               label="GitHub organization account name"
               v-model="login"
               :error-messages="loginErrors"
-              @input="$v.login.$touch()"
-              @blur="$v.login.$touch()"
+              @input="v$.login.$touch()"
+              @blur="v$.login.$touch()"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -21,7 +21,7 @@
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
       <v-btn color="secondary" text @click="reset">Reset</v-btn>
-      <v-btn color="primary" :disabled="$v.$invalid" text @click="add"
+      <v-btn color="primary" :disabled="v$.$invalid" text @click="add"
         >Add</v-btn
       >
     </v-card-actions>
@@ -29,16 +29,22 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
-import { required } from "vuelidate/lib/validators";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+
+import { client } from "@/plugins/urql";
 
 import ADD_GITHUB_ORG from "@/graphql/mutations/AddGitHubOrg.gql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "GitHubOrgAddForm",
+  setup() {
+    return { v$: useVuelidate() };
+  },
   data: () => ({
     login: "",
     error: null as any,
@@ -47,7 +53,7 @@ export default Vue.extend({
   computed: {
     loginErrors() {
       const errors: string[] = [];
-      const field = this.$v.login;
+      const field = this.v$.login;
       if (!field.$dirty) return errors;
       !field.required && errors.push("This field is required");
       return errors;
@@ -66,15 +72,15 @@ export default Vue.extend({
     },
     reset() {
       this.login = "";
-      this.$v.$reset();
+      this.v$.$reset();
       this.error = null;
     },
     async add() {
       try {
-        const { data } = await this.$apollo.mutate({
-          mutation: ADD_GITHUB_ORG,
-          variables: { login: this.login },
-        });
+        const result = await client
+          .mutation(ADD_GITHUB_ORG, { login: this.login })
+          .toPromise();
+        if (result.error) throw result.error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Added");
         this.$emit("finished");

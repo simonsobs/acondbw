@@ -15,16 +15,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 
-export default Vue.extend({
+export default defineComponent({
   name: "SignOutConfirmation",
   methods: {
     async callSignOut() {
-      await this.signOut(this.$apollo);
+      await this.signOut();
       this.$emit("finished");
       this.setSnackbarMessage("Signed out");
 

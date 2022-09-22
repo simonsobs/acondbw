@@ -12,13 +12,15 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
 import { storeAdminAppToken } from "@/utils/admin-token";
 
-export default Vue.extend({
+import { client } from "@/plugins/urql"
+
+export default defineComponent({
   name: "AdminAppAuth",
   data: () => ({}),
   methods: {
@@ -36,7 +38,7 @@ export default Vue.extend({
 
       const state = this.$route.query.state;
       try {
-        await storeAdminAppToken(code, state, this.$apollo);
+        await storeAdminAppToken(code, state, client);
       } catch (error) {
         // console.log(error);
         this.$router.push({ name: "AdminAppTokenError" });

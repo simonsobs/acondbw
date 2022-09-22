@@ -41,23 +41,42 @@
   </div>
 </template>
 
-<script>
-import marked from "marked";
+<script lang="ts">
+import { defineComponent, ref, computed, watch, PropType } from "vue";
+import { marked } from "marked";
 
-import gql from "graphql-tag";
+import QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW from "@/graphql/queries/QueryForProductAddFormRelationsPreview.gql";
+import {
+  QueryForProductAddFormQuery,
+  QueryForProductAddFormRelationsPreviewQuery,
+  CreateProductInput,
+} from "@/generated/graphql";
 
-export default {
+import { client } from "@/plugins/urql";
+
+interface AttributePreviewItem {
+  field: string;
+  value: any;
+}
+
+interface RelationPreviewItem {
+  relationTypeSingular: string | undefined;
+  productTypeSingular: string | undefined;
+  productName: string | undefined;
+}
+
+export default defineComponent({
   name: "ProductAddFormStepPreview",
   props: {
-    createProductInput: Object,
-    productType: Object,
+    createProductInput: Object as PropType<CreateProductInput>,
+    productType: Object as PropType<QueryForProductAddFormQuery["productType"]>,
   },
   data() {
     return {
-      error: null,
-      attributePreview: null,
-      relationPreview: null,
-      notePreview: null,
+      error: null as any,
+      attributePreview: null as AttributePreviewItem[] | null,
+      relationPreview: null as RelationPreviewItem[] | null,
+      notePreview: null as string | null,
     };
   },
   watch: {
@@ -67,35 +86,46 @@ export default {
       this.relationPreview = null;
       this.notePreview = null;
 
-      if (!this.createProductInput) {
-        return;
-      }
+      if (!this.createProductInput) return;
+      if (!this.productType) return;
 
       try {
-        const filedMap = this.productType.fields.edges.reduce((a, { node }) => {
-          return Object.assign(a, {
-            [node.fieldId]: node.field.name.replaceAll("_", " "),
-          });
-        }, {});
+        const filedMap =
+          this.productType?.fields?.edges.reduce(
+            (a, e) =>
+              e?.node?.field
+                ? Object.assign(a, {
+                    [e.node.fieldId]: e.node.field.name.replaceAll("_", " "),
+                  })
+                : a,
+            {} as { [key: number]: string }
+          ) || {};
 
         const attributes = this.createProductInput.attributes;
-        if (attributes) {
-          this.attributePreview = Object.values(attributes).reduce((l, t) => {
-            l.push(
-              ...t.map((p) => {
-                return { field: filedMap[p.fieldId], value: p.value };
-              })
-            );
-            return l;
-          }, []);
-        }
+        // @ts-ignore
+        this.attributePreview = attributes
+          ? Object.values(attributes).reduce(
+              // @ts-ignore
+              (l, t: { fieldId: number; value: any }[]) => {
+                if (t)
+                  l.push(
+                    ...t.map((p) => ({
+                      field: filedMap[p.fieldId],
+                      value: p.value,
+                    }))
+                  );
+                return l;
+              },
+              [] as AttributePreviewItem[]
+            )
+          : [];
 
         this.relationPreview = await this.composeRelationPreview(
           this.createProductInput.relations
         );
 
         this.notePreview = this.createProductInput.note
-          ? marked(this.createProductInput.note)
+          ? marked.parse(this.createProductInput.note)
           : null;
       } catch (error) {
         this.error = error;
@@ -103,50 +133,32 @@ export default {
     },
   },
   methods: {
-    async composeRelationPreview(relations) {
-      const QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW = gql`
-        query QueryForProductAddFormRelationsPreview(
-          $productRelationTypeId: Int!
-          $productId: Int!
-        ) {
-          productRelationType(typeId: $productRelationTypeId) {
-            id
-            typeId
-            singular
-          }
-          product(productId: $productId) {
-            id
-            productId
-            name
-            type_ {
-              id
-              typeId
-              singular
-            }
-          }
-        }
-      `;
-
+    async composeRelationPreview(
+      relations: CreateProductInput["relations"]
+    ): Promise<RelationPreviewItem[]> {
       // https://flaviocopes.com/javascript-async-await-array-map/
-      const ret = await Promise.all(
-        relations.map(async (r) => {
-          const { data } = await this.$apollo.query({
-            query: QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
-            variables: {
-              productRelationTypeId: r.typeId,
-              productId: r.productId,
-            },
-          });
-          return {
-            relationTypeSingular: data.productRelationType.singular,
-            productTypeSingular: data.product.type_.singular,
-            productName: data.product.name,
-          };
-        })
-      );
-
+      const ret = relations
+        ? await Promise.all(
+            relations.map(async (r) => {
+              const { error, data } = await client
+                .query<QueryForProductAddFormRelationsPreviewQuery>(
+                  QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
+                  {
+                    productRelationTypeId: r.typeId,
+                    productId: r.productId,
+                  }
+                )
+                .toPromise();
+              return {
+                relationTypeSingular: data?.productRelationType?.singular || undefined,
+                productTypeSingular: data?.product?.type_?.singular || undefined,
+                productName: data?.product?.name || undefined,
+              };
+            })
+          )
+        : [];
       return ret;
     },
   },
-};
+});
 </script>

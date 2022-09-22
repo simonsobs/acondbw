@@ -17,69 +17,77 @@
         :size="26"
         color="secondary"
       ></v-progress-circular>
-      <v-alert v-else-if="queryError" type="error">{{ queryError }}</v-alert>
+      <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
     </v-card-text>
     <div v-if="loaded" class="pb-5">
       <div
-        v-for="({ node }, i) in allProductRelationTypes.edges"
+        v-for="(edge, i) in allProductRelationTypes.edges"
         :key="i"
         class="pb-4"
       >
-        <v-divider></v-divider>
-        <v-card-title class="text-h5 capitalize">
-          {{ node.plural }}
-        </v-card-title>
-        <v-card-text class="grey--text">
-          <span>
-            <span class="font-italic capitalize">
-              {{ node.plural }}
+        <template v-if="edge && edge.node">
+          <v-divider></v-divider>
+          <v-card-title class="text-h5 capitalize">
+            {{ edge.node.plural }}
+          </v-card-title>
+          <v-card-text class="grey--text" v-if="edge.node.reverse">
+            <span>
+              <span class="font-italic capitalize">
+                {{ edge.node.plural }}
+              </span>
+              of <span class="font-italic"> {{ name }}. </span>
+              <span class="font-italic"> {{ name }} </span>
+              will be {{ edge.node.reverse.indefArticle }}
+              <span class="font-italic">
+                {{ edge.node.reverse.singular }}.
+              </span>
             </span>
-            of <span class="font-italic"> {{ name }}. </span>
-            <span class="font-italic"> {{ name }} </span>
-            will be {{ node.reverse.indefArticle }}
-            <span class="font-italic"> {{ node.reverse.singular }}. </span>
-          </span>
-        </v-card-text>
-        <v-container>
-          <v-row
-            v-for="(e, i) in form[node.typeId]"
-            :key="i"
-            class="flex-nowrap"
-          >
-            <v-card-text>
-              <v-autocomplete
-                :label="node.singular"
-                :items="productItems"
-                outlined
-                clearable
-                hide-details
-                hide-no-data
-                v-model="e.productId"
-              ></v-autocomplete>
-            </v-card-text>
-            <v-card-actions>
-              <v-tooltip bottom open-delay="800">
-                <template v-slot:activator="{ on }">
-                  <v-btn icon @click="form[node.typeId].splice(i, 1)" v-on="on">
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
-                </template>
-                <span>Delete the field</span>
-              </v-tooltip>
-            </v-card-actions>
-          </v-row>
-        </v-container>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="secondary"
-            outlined
-            text
-            @click="form[node.typeId].push({ productId: null })"
-          >
-            Add a field</v-btn
-          >
-        </v-card-actions>
+          </v-card-text>
+          <v-container>
+            <v-row
+              v-for="(e, i) in form[edge.node.typeId]"
+              :key="i"
+              class="flex-nowrap"
+            >
+              <v-card-text>
+                <v-autocomplete
+                  :label="edge.node.singular"
+                  :items="productItems"
+                  outlined
+                  clearable
+                  hide-details
+                  hide-no-data
+                  v-model="e.productId"
+                ></v-autocomplete>
+              </v-card-text>
+              <v-card-actions>
+                <v-tooltip bottom open-delay="800">
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      icon
+                      @click="form[edge.node.typeId].splice(i, 1)"
+                      v-on="on"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Delete the field</span>
+                </v-tooltip>
+              </v-card-actions>
+            </v-row>
+          </v-container>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="secondary"
+              outlined
+              text
+              @click="form[edge.node.typeId].push({ productId: null })"
+            >
+              Add a field
+            </v-btn>
+          </v-card-actions>
+        </template>
       </div>
     </div>
     <v-card-actions>
@@ -88,157 +96,154 @@
         Reset
       </v-btn>
     </v-card-actions>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </div>
 </template>
 
-<script>
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+<script lang="ts">
+import { defineComponent, ref, computed, watch, PropType } from "vue";
 
 import QueryForFormRelations from "@/graphql/queries/QueryForFormRelations.gql";
+import { QueryForFormRelationsQuery } from "@/generated/graphql";
 
-export default {
+import { useQuery } from "@urql/vue";
+
+import { useQueryState } from "@/utils/query-state";
+
+export interface Relation {
+  productId: number;
+  typeId: number;
+}
+
+interface Reshaped {
+  [key: number]: { productId: string | null }[];
+}
+
+function reshapeValue(val: Relation[]): Reshaped {
+  if (!val) return {};
+  return val.reduce((a, o) => {
+    if (o.typeId in a) {
+      a[o.typeId].push({ productId: o.productId });
+      return a;
+    } else {
+      return { ...a, [o.typeId]: [{ productId: o.productId }] };
+    }
+  }, {});
+}
+
+export default defineComponent({
   name: "FormRelations",
-  components: {
-    DevToolLoadingStateOverridingMenu,
+  props: {
+    value: Array as PropType<Relation[]>,
+    name: { type: String, require: true },
   },
-  props: { value: Array, name: String },
-  data() {
-    return {
-      form: this.reshapeValue(this.value || []),
-      formReset: null,
-      allProductRelationTypes: { edges: [] },
-      allProducts: { edges: [] },
-      init: true,
-      queryError: null,
-      refreshing: false,
-      devtoolState: null,
-      State: State,
-    };
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.refreshing) return State.LOADING;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.queryError) return State.ERROR;
-      if (this.allProductRelationTypes) return State.LOADED;
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    input() {
-      return Object.entries(this.form).reduce((a, e) => {
-        const typeId = e[0];
-        const l = e[1].filter((x) => x.productId !== null);
-        return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
-      }, []);
-    },
-    unchanged() {
-      if (!this.formReset) return false;
-      return JSON.stringify(this.form) === JSON.stringify(this.formReset);
-    },
-    relationTypeItems() {
-      return this.allProductRelationTypes.edges.map(({ node }) => ({
-        text: node.singular,
-        value: node.typeId,
-      }));
+  setup(prop, { emit }) {
+    const query = useQuery<QueryForFormRelationsQuery>({
+      query: QueryForFormRelations,
+    });
+    const allProductRelationTypes = computed(
+      () => query.data.value?.allProductRelationTypes || { edges: [] }
+    );
+    watch(allProductRelationTypes, (val) => {
+      const reshapedValue = prop.value ? reshapeValue(prop.value) : {};
+      form.value = composeForm(val, reshapedValue);
+      if (!formReset.value) {
+        formReset.value = JSON.parse(JSON.stringify(form.value));
+      }
+    });
+    function composeForm(
+      relationTypes: typeof allProductRelationTypes.value,
+      reshapedValue: Reshaped
+    ): Reshaped {
+      return relationTypes.edges.reduce(
+        (a, e) =>
+          e?.node
+            ? {
+                ...a,
+                [e.node.typeId]: [
+                  ...(reshapedValue[e.node.typeId] || []),
+                  { productId: null },
+                ],
+              }
+            : a,
+        {} as Reshaped
+      );
+    }
+    const allProducts = computed(
+      () => query.data.value?.allProducts || { edges: [] }
+    );
+    const form = ref(reshapeValue(prop.value || []));
+    const formReset = ref<typeof form.value | null>(null);
+    const unchanged = computed(() =>
+      formReset.value === null
+        ? false
+        : JSON.stringify(form.value) === JSON.stringify(formReset.value)
+    );
+    const input = computed((): Relation[] =>
+      Object.entries(form.value)
+        // @ts-ignore
+        .reduce((a, e: [string, typeof form.value[number]]) => {
+          const typeId = Number(e[0]);
+          const l = e[1].filter((x) => x.productId !== null);
+          return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
+        }, [] as Relation[])
+        .sort(
+          (a, b) =>
+            a.typeId - b.typeId || a.productId.localeCompare(b.productId)
+        )
+    );
+    watch(
+      input,
+      (val) => {
+        emit("input", val);
+      },
+      { deep: true, immediate: true }
+    );
+    const relationTypeItems = computed(
       // [{ text: relation type name (singular), value: relation type id }]
       // e.g., [{ text: "parent", value: "1" }, { text: "child", value: "2" }];
-    },
-    productItems() {
-      return this.allProducts.edges.map(({ node }) => ({
-        text: `${node.name} (${node.type_.singular})`,
-        value: node.productId,
-      }));
+      () =>
+        allProductRelationTypes.value.edges.flatMap((e) =>
+          e?.node
+            ? {
+                text: e.node.singular,
+                value: e.node.typeId,
+              }
+            : []
+        )
+    );
+    const productItems = computed(
       // [{ text: product name (product type name), value: product id }]
       // e.g., [{ text: "Map-01 (map)", value: "1" }, ...];
-    },
+      () =>
+        allProducts.value.edges.map((e) =>
+          e?.node
+            ? {
+                text: `${e.node.name} (${e.node.type_?.singular})`,
+                value: e.node.productId,
+              }
+            : []
+        )
+    );
+    function reset() {
+      form.value = JSON.parse(JSON.stringify(formReset.value));
+    }
+    return {
+      ...useQueryState(query),
+      query,
+      allProductRelationTypes,
+      allProducts,
+      form,
+      formReset,
+      unchanged,
+      input,
+      relationTypeItems,
+      productItems,
+      reset,
+    };
   },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.queryError =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-    allProductRelationTypes(val) {
-      const reshapedValue = this.reshapeValue(this.value);
-      this.form = this.composeForm(val, reshapedValue);
-      if (!this.formReset) {
-        this.formReset = JSON.parse(JSON.stringify(this.form));
-      }
-    },
-    input: {
-      handler(val) {
-        this.$emit("input", val);
-      },
-      deep: true,
-      immediate: true,
-    },
-  },
-  apollo: {
-    allProductRelationTypes: {
-      query: QueryForFormRelations,
-      result(result) {
-        this.init = false;
-
-        this.queryError = result.error || null;
-        if (this.queryError) return;
-
-        this.allProductRelationTypes = result.data.allProductRelationTypes;
-        this.allProducts = result.data.allProducts;
-      },
-    },
-  },
-  methods: {
-    async refetch() {
-      this.refreshing = true;
-      const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      Object.values(this.$apollo.queries).forEach((query) => query.refetch());
-      await wait; // wait until 0.5 sec passes since starting refetch
-      // because the progress circular is too flickering if
-      // the refetch finishes too quickly
-      this.refreshing = false;
-    },
-    reshapeValue(val) {
-      if (!val) return {};
-      return val.reduce((a, o) => {
-        if (o.typeId in a) {
-          a[o.typeId].push({ productId: o.productId });
-          return a;
-        } else {
-          return { ...a, [o.typeId]: [{ productId: o.productId }] };
-        }
-      }, {});
-    },
-    composeForm(allProductRelationTypes, reshapedValue) {
-      return allProductRelationTypes.edges.reduce(
-        (a, { node }) => ({
-          ...a,
-          [node.typeId]: [
-            ...(reshapedValue[node.typeId] || []),
-            { productId: null },
-          ],
-        }),
-        {}
-      );
-    },
-    reset() {
-      this.form = JSON.parse(JSON.stringify(this.formReset));
-    },
-  },
-};
+});
 </script>

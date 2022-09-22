@@ -17,6 +17,6 @@ exports[`ProductItem.vue match snapshot 1`] = `
     </v-col-stub>
     <!---->
   </v-row-stub>
-  <dev-tool-loading-state-overriding-menu-stub></dev-tool-loading-state-overriding-menu-stub>
+  <dev-tool-loading-state-menu-stub top="-10px"></dev-tool-loading-state-menu-stub>
 </v-container-stub>
 `;

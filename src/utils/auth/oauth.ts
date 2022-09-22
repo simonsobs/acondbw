@@ -1,4 +1,4 @@
-import { DollarApollo } from "vue-apollo/types/vue-apollo";
+import { Client } from "@urql/vue";
 import { Location } from "vue-router";
 
 import QUERY_GIT_HUB_O_AUTH_APP_INFO from "@/graphql/queries/GitHubOAuthAppInfo.gql";
@@ -66,18 +66,19 @@ type RequestParams = {
 
 /**
  *
- * @param apolloClient - an apollo client
+ * @param urqlClient - a urql client
  * @param scope - scopes as described in https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
  * @param state - the state parameter of OAuth2 authorization request
  */
 export async function redirectToGitHubAuthURL(
-  apolloClient: DollarApollo<any>,
+  urqlClient: Client,
   scope: string,
   state: string
 ) {
-  const { data } = await apolloClient.query({
-    query: QUERY_GIT_HUB_O_AUTH_APP_INFO,
-  });
+  const { error, data } = await urqlClient
+    .query(QUERY_GIT_HUB_O_AUTH_APP_INFO, {})
+    .toPromise();
+  if(error) throw error;
   const gitHubOAuthAppInfo = data.gitHubOAuthAppInfo;
   const params: RequestParams = {
     response_type: "code",
@@ -94,15 +95,15 @@ export async function redirectToGitHubAuthURL(
 export async function exchangeCodeForToken(
   code: string,
   state: string,
-  apolloClient: DollarApollo<any>
+  urqlClient: Client
 ) {
   if (!validateState(state)) {
     throw new Error("The state was invalid.");
   }
-  const { data } = await apolloClient.mutate({
-    mutation: MUTATE_AUTHENTICATE_WITH_GIT_HUB,
-    variables: { code: code },
-  });
+  const { error, data } = await urqlClient
+    .mutation(MUTATE_AUTHENTICATE_WITH_GIT_HUB, { code: code })
+    .toPromise();
+  if(error) throw error;
   const authPayload = data.authenticateWithGitHub.authPayload;
   const token = JSON.stringify(authPayload.token);
   return token;

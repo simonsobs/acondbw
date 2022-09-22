@@ -19,12 +19,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 import VERSIONS from "@/graphql/queries/Versions.gql";
 
-export default Vue.extend({
+export default defineComponent({
   data() {
     return {
       versions: null,

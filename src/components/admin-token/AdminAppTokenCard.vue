@@ -17,10 +17,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/auth";
+import { client } from "@/plugins/urql";
 
 import {
   redirectToGitHubAuthURL,
@@ -29,7 +30,7 @@ import {
   UnencodedState,
 } from "@/utils/auth/oauth";
 
-export default Vue.extend({
+export default defineComponent({
   name: "AdminAppTokenCard",
   data: () => ({
     loading: false,
@@ -46,7 +47,7 @@ export default Vue.extend({
           option: uuidv4(),
         };
         const state = encodeAndStoreState(rawState);
-        await redirectToGitHubAuthURL(this.$apollo, scope, state);
+        await redirectToGitHubAuthURL(client, scope, state);
       } catch (error) {
         clearState();
         this.$router.push({ name: "AdminAppTokenError" });

@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent, PropType } from "vue";
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 
@@ -32,21 +32,45 @@ import _ from "lodash";
 
 import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
 import FormRelations from "./FormRelations.vue";
+import { client } from "@/plugins/urql";
 
-export default Vue.extend({
+import { Product, ProductRelationEdge } from "@/generated/graphql";
+
+function composeRelation(edge: ProductRelationEdge) {
+  const productId = edge?.node?.other?.productId;
+  const typeId = edge?.node?.typeId;
+  if (!productId || !typeId) return null; // TODO: throw error
+  return { productId, typeId };
+}
+
+function composeRelations(node: Product) {
+  return (
+    node.relations?.edges.flatMap((e) => (e ? composeRelation(e) || [] : [])) ||
+    []
+  ).sort(
+    (a, b) => a.typeId - b.typeId || a.productId.localeCompare(b.productId)
+  );
+}
+
+export default defineComponent({
   name: "ProductUpdateRelationsForm",
   components: {
     FormRelations,
   },
   props: {
-    node: Object,
+    node: {
+      type: Object as PropType<Product>,
+      required: true,
+    },
   },
   data() {
-    const initialRelations = this.composeRelations(this.node);
+    const initialRelations = composeRelations(this.node);
     return {
       initialRelations,
-      relations: JSON.parse(JSON.stringify(initialRelations)),
-      error: null,
+      relations: JSON.parse(
+        JSON.stringify(initialRelations)
+      ) as typeof initialRelations,
+      error: null as any,
     };
   },
   computed: {
@@ -60,13 +84,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    composeRelations(node) {
-      return node.relations.edges.map(({ node }) => ({
-        productId: node.other.productId,
-        typeId: node.type_.typeId,
-      }));
-    },
-    composeInput(relations) {
+    composeInput<T>(relations: T[]): T[] {
       // unique https://medium.com/coding-at-dawn/how-to-use-set-to-filter-unique-items-in-javascript-es6-196c55ce924b
       return [...new Set(relations.map((o) => JSON.stringify(o)))].map((s) =>
         JSON.parse(s)
@@ -75,14 +93,13 @@ export default Vue.extend({
     async submit() {
       try {
         const updateProductInput = { relations: this.input };
-        const data = await this.$apollo.mutate({
-          mutation: UPDATE_PRODUCT,
-          variables: {
+        const { error, data } = await client
+          .mutation(UPDATE_PRODUCT, {
             productId: this.node.productId,
             input: updateProductInput,
-          },
-        });
-
+          })
+          .toPromise();
+        if (error) throw error;
         this.apolloMutationCalled();
         this.setSnackbarMessage("Updated");
         this.$emit("finished");

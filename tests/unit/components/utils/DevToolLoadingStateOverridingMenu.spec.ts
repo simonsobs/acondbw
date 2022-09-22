@@ -59,7 +59,7 @@ describe("DevToolLoadingStateOverridingMenu.vue", () => {
     });
     await Vue.nextTick();
     wrapper.setData({
-      state: "off",
+      state: null,
     });
     await Vue.nextTick();
     expect(wrapper.emitted("state").length).toBe(2);

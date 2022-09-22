@@ -28,75 +28,82 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapActions } from "pinia";
+import { defineComponent, ref, computed, readonly, PropType } from "vue";
 import { useStore } from "@/stores/main";
+import { useMutation } from "@urql/vue";
 
 import UPDATE_PRODUCT_TYPE from "@/graphql/mutations/UpdateProductType.gql";
+import {
+  UpdateProductTypeMutation,
+  UpdateProductTypeMutationVariables,
+  UpdateProductTypeInput,
+  ProductTypeByNameQuery,
+} from "@/generated/graphql";
 
 import FormProductType from "./FormProductType.vue";
 
-export default Vue.extend({
+type FormType = NonNullable<InstanceType<typeof FormProductType>["value"]>;
+type NodeType = NonNullable<ProductTypeByNameQuery["productType"]>;
+
+export default defineComponent({
   name: "ProductTypeEditForm",
   components: { FormProductType },
   props: {
-    node: Object,
+    node: { type: Object as PropType<NodeType>, required: true },
   },
-  data() {
-    const initialValue = {
-      name: this.node.name,
-      order: this.node.order,
-      indefArticle: this.node.indefArticle,
-      singular: this.node.singular,
-      plural: this.node.plural,
-      icon: this.node.icon,
-    };
+  setup(prop, { emit }) {
+    const store = useStore();
+    const initialValue = readonly<FormType>({
+      name: prop.node.name,
+      order: prop.node.order,
+      indefArticle: prop.node.indefArticle,
+      singular: prop.node.singular,
+      plural: prop.node.plural,
+      icon: prop.node.icon,
+    });
+
+    const value = ref<FormType>(initialValue);
+
+    const valid = ref(false);
+
+    const unchanged = computed(
+      () => JSON.stringify(value.value) === JSON.stringify(initialValue)
+    );
+
+    const input = computed(() => {
+      if (!valid.value) return null;
+      const keys = Object.keys(value.value) as (keyof FormType)[];
+      return Object.fromEntries(
+        keys.flatMap((k) =>
+          value.value[k] !== initialValue[k] ? [[k, value.value[k]]] : []
+        )
+      ) as UpdateProductTypeInput;
+    });
+
+    const { executeMutation } = useMutation<
+      UpdateProductTypeMutation,
+      UpdateProductTypeMutationVariables
+    >(UPDATE_PRODUCT_TYPE);
+
+    async function submit() {
+      const typeId = Number(prop.node.typeId);
+      if (isNaN(typeId)) throw new Error("Invalid type ID");
+      if (input.value === null) throw new Error("Invalid input");
+      const { error } = await executeMutation({ typeId, input: input.value });
+      if (error) throw error;
+      store.apolloMutationCalled();
+      store.setSnackbarMessage("Updated");
+      emit("finished", input.value.name);
+    }
+
     return {
       initialValue,
-      value: { ...initialValue },
-      valid: false,
+      value,
+      valid,
+      unchanged,
+      input,
+      submit,
     };
-  },
-  computed: {
-    unchanged() {
-      return JSON.stringify(this.value) === JSON.stringify(this.initialValue);
-    },
-    input() {
-      if (!this.valid) return null;
-      return this.composeInput(this.value, this.initialValue);
-    },
-  },
-  methods: {
-    composeInput(value, initialValue) {
-      const ret = {};
-      if (value.name != initialValue.name) ret.name = value.name;
-      if (value.order != initialValue.order) ret.order = value.order;
-      if (value.indefArticle != initialValue.indefArticle)
-        ret.indefArticle = value.indefArticle;
-      if (value.singular != initialValue.singular)
-        ret.singular = value.singular;
-      if (value.plural != initialValue.plural) ret.plural = value.plural;
-      if (value.icon != initialValue.icon) ret.icon = value.icon;
-      return ret;
-    },
-    async submit() {
-      try {
-        const data = await this.$apollo.mutate({
-          mutation: UPDATE_PRODUCT_TYPE,
-          variables: {
-            typeId: this.node.typeId,
-            input: this.input,
-          },
-        });
-        this.$apollo.provider.defaultClient.cache.data.data = {};
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Updated");
-        this.$emit("finished", this.input.name);
-      } catch (error) {
-        this.error = error;
-      }
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
 });
 </script>

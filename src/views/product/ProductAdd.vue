@@ -13,114 +13,89 @@
     ></v-progress-circular>
     <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
     <product-add-form
-      v-else-if="on && loaded"
-      :productTypeId="node ? node.typeId : null"
+      v-else-if="on && loaded && productTypeId"
+      :productTypeId="productTypeId"
       @finished="finished"
     ></product-add-form>
     <v-row v-else-if="notFound" align="center" justify="center">
       <v-col class="text-h1 text-center">Not Found (404)</v-col>
     </v-row>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-container>
 </template>
 
-<script>
-import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
+<script lang="ts">
+import { defineComponent, ref, watch, computed, nextTick } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
+import { useQuery } from "@urql/vue";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
+import { ProductTypeByNameQuery } from "@/generated/graphql";
 
 import ProductAddForm from "@/components/product/ProductAddForm.vue";
 
-export default {
+import { useQueryState } from "@/utils/query-state";
+
+export default defineComponent({
   name: "ProductAdd",
   components: {
     ProductAddForm,
-    DevToolLoadingStateOverridingMenu,
   },
-  data: () => ({
-    on: true,
-    init: true,
-    node: null,
-    error: null,
-    devtoolState: null,
-    State: State,
-  }),
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.node) return State.LOADED;
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    productTypeName() {
-      return this.$route.params.productTypeName;
-    },
-  },
-  apollo: {
-    node: {
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const productTypeName = computed(() => route.params.productTypeName);
+    const query = useQuery<ProductTypeByNameQuery>({
       query: PRODUCT_TYPE_BY_NAME,
-      variables() {
-        return { name: this.productTypeName };
-      },
-      update: (data) => data.productType,
-      skip() {
-        return !this.productTypeName;
-      },
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  watch: {
-    devtoolState() {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-  },
-  methods: {
-    finished() {
-      this.$router.push({
+      variables: { name: productTypeName },
+    });
+    const node = computed(() => query.data?.value?.productType);
+    const productTypeId = computed(() => {
+      const typeId = Number(node.value?.typeId);
+      return isNaN(typeId) ? undefined : typeId;
+    });
+    function finished() {
+      router.push({
         name: "ProductList",
-        params: { productTypeName: this.productTypeName },
+        params: { productTypeName: productTypeName.value },
       });
-    },
-    onEntered() {
-      if (this.init) return;
-      Object.values(this.$apollo.queries).forEach((query) => query.refetch());
-      this.recreateForm();
-    },
-    recreateForm() {
-      // A component will be reinstantiated
+    }
+    function onEntered() {
+      if (init.value) return;
+      query.executeQuery({ requestPolicy: "network-only" });
+      recreateForm();
+    }
+    function recreateForm() {
+      // A component will be re-instantiated
       // when v-if becomes once false and then true.
-      this.on = false;
-      this.$nextTick(() => {
-        this.on = true;
+      on.value = false;
+      nextTick(() => {
+        on.value = true;
       });
-    },
+    }
+    const on = ref(true);
+    const queryState = useQueryState(query, { isNull: () => node.value === null});
+    const { init } = queryState;
+    return {
+      ...queryState,
+      on,
+      productTypeName,
+      productTypeId,
+      query,
+      node,
+      finished,
+      onEntered,
+      recreateForm,
+    };
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
+      // @ts-ignore
       vm.onEntered();
     });
   },
-};
+});
 </script>

@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { validateAndDecodeState } from "@/utils/auth/oauth";
 
-export default Vue.extend({
+export default defineComponent({
   name: "OAuthRedirect",
   async mounted() {
     const route = this.$route;

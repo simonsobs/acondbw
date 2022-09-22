@@ -5,27 +5,27 @@
         <v-list-item
           link
           router
-          v-for="edge in edges"
-          :key="edge.node.typeId"
+          v-for="node in nodes"
+          :key="node.typeId"
           :to="{
             name: 'ProductList',
-            params: { productTypeName: edge.node.name },
+            params: { productTypeName: node.name },
           }"
         >
           <v-list-item-action class="mr-5">
-            <v-icon v-text="edge.node.icon"></v-icon>
+            <v-icon v-text="node.icon"></v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title
-              v-text="edge.node.plural"
+              v-text="node.plural"
               class="capitalize condensed-font font-weight-medium"
             ></v-list-item-title>
           </v-list-item-content>
           <v-list-item-icon class="ml-2">
             <v-chip
               small
-              v-if="!!edge.node.products.totalCount"
-              v-text="edge.node.products.totalCount"
+              v-if="node.products && node.products.totalCount"
+              v-text="node.products.totalCount"
             ></v-chip>
           </v-list-item-icon>
         </v-list-item>
@@ -70,97 +70,77 @@
       <!-- <v-spacer></v-spacer>
       <v-icon>mdi-plus-thick</v-icon> -->
     </v-bottom-navigation>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState } from "pinia";
+import { defineComponent, ref, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
+import { useQuery } from "@urql/vue";
 
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
-
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import { AllProductTypesQuery } from "@/generated/graphql";
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
-export default Vue.extend({
+import { useQueryState } from "@/utils/query-state";
+
+
+export default defineComponent({
   name: "Navigation",
   components: {
-    DevToolLoadingStateOverridingMenu,
     ProductTypeAddForm,
   },
-  data: () => ({
-    init: true,
-    edges: [],
-    error: null,
-    addDialog: false,
-    devtoolState: null,
-    State: State,
-  }),
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.edges) {
-        if (this.edges.length) return State.LOADED;
-        return State.EMPTY;
-      }
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    empty() {
-      return this.state == State.EMPTY;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    ...mapState(useStore, ["nApolloMutations", "appVersion"]),
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-    nApolloMutations: function () {
-      this.$apollo.queries.edges.refetch();
-    },
-  },
-  apollo: {
-    edges: {
+  setup() {
+    const store = useStore();
+    const query = useQuery<AllProductTypesQuery>({
       query: ALL_PRODUCT_TYPES,
-      update: (data) =>
-        data.allProductTypes ? data.allProductTypes.edges : null,
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  methods: {
-    onAddFormCancelled() {
-      this.closeAddForm();
-    },
-    onAddFormFinished() {
-      this.closeAddForm();
-    },
-    closeAddForm() {
-      this.addDialog = false;
-    },
+    });
+
+    function isEmpty(query: ReturnType<typeof useQuery<AllProductTypesQuery>>) {
+      const edges = readEdges(query);
+      return edges ? edges.length === 0 : false;
+    }
+
+    function readEdges(
+      query: ReturnType<typeof useQuery<AllProductTypesQuery>>
+    ) {
+      return query.data?.value?.allProductTypes?.edges?.flatMap((e) =>
+        e ? [e] : []
+      );
+    }
+    const edges = computed(() => readEdges(query) || []);
+    const nodes = computed(() =>
+      edges.value.flatMap((e) => (e.node ? [e.node] : []))
+    );
+
+    const addDialog = ref(false);
+
+    function onAddFormCancelled() {
+      closeAddForm();
+    }
+    function onAddFormFinished() {
+      closeAddForm();
+    }
+    function closeAddForm() {
+      addDialog.value = false;
+    }
+
+    return {
+      ...useQueryState(query, { isEmpty }),
+      query,
+      edges,
+      nodes,
+      addDialog,
+      onAddFormCancelled,
+      onAddFormFinished,
+      closeAddForm,
+      appVersion: store.appVersion,
+    };
   },
 });
 </script>

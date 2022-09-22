@@ -1,5 +1,6 @@
 query WebConfig {
   webConfig {
+    id
     id_
     json
   }

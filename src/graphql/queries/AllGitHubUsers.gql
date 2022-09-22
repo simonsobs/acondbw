@@ -3,6 +3,7 @@ query AllGitHubUsers($orgMember: Boolean = false) {
     totalCount
     edges {
       node {
+        id
         login
         name
         avatarUrl

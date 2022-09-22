@@ -60,13 +60,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
 import SignOutConfirmation from "./SignOutConfirmation.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "UserMenuButton",
   components: { SignOutConfirmation },
   data: () => ({

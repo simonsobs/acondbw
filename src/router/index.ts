@@ -262,16 +262,14 @@ function createRouter() {
   return router;
 }
 
-const router = createRouter();
-
-function checkAuthForCurrentRoute() {
+async function checkAuthForCurrentRoute(router: VueRouter) {
   const authRequired = router.currentRoute.matched.some(
     (record) => record.meta.requiresAuth
   );
   const auth = useAuthStore(pinia);
   const signedIn = auth.isSignedIn;
   if (authRequired && !signedIn) {
-    router.push("/");
+    await router.push({ name: "Entry" });
   }
 }
 

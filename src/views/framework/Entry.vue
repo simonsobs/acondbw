@@ -20,14 +20,14 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState } from "pinia";
 import { useStore } from "@/stores/main";
 
 import SignInCard from "@/components/auth/SignInCard.vue";
 import Dashboard from "@/components/product/Dashboard.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "Home",
   components: {
     SignInCard,

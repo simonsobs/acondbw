@@ -17,7 +17,7 @@
           color="secondary"
         ></v-progress-circular>
         <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
-        <v-card flat v-if="loaded">
+        <v-card flat v-if="loaded && node">
           <v-card-title class="text-h4 primary--text justify-space-between">
             <span>
               <v-icon large class="me-3" v-text="node.icon"></v-icon>
@@ -75,148 +75,108 @@
         </v-card>
       </v-col>
     </v-row>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-container>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState } from "pinia";
+import { defineComponent, ref, computed, onMounted } from "vue";
+import {
+  useRoute,
+  useRouter,
+  onBeforeRouteUpdate,
+  onBeforeRouteLeave,
+} from "vue-router/composables";
 import { useStore } from "@/stores/main";
 
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
-
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import { ProductTypeByNameQuery } from "@/generated/graphql";
 
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
+import { useQuery } from "@urql/vue";
 
-export default Vue.extend({
+import { useQueryState } from "@/utils/query-state";
+
+
+export default defineComponent({
   name: "ProductTop",
   components: {
-    DevToolLoadingStateOverridingMenu,
     ProductTypeEditForm,
   },
-  data: () => ({
-    productTypeName: null,
-    itemName: null,
-    init: true,
-    node: {},
-    error: null,
-    refreshing: false,
-    editDialog: false,
-    devtoolState: null,
-    State: State,
-    transitionName: "fade-product-top-leave",
-    transitionMode: "out-in",
-  }),
-  mounted() {
-    this.productTypeName = this.$route.params.productTypeName;
-    this.itemName = this.$route.params.name;
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.refreshing) return State.LOADING;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.node) return State.LOADED;
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    disableAdd() {
-      return !this.webConfig.productCreationDialog;
-    },
-    disableEdit() {
-      return !this.webConfig.productUpdateDialog;
-    },
-    disableDelete() {
-      return !this.webConfig.productDeletionDialog;
-    },
-    ...mapState(useStore, ["webConfig", "nApolloMutations"]),
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
 
-      this.error =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-    nApolloMutations: function () {
-      this.refresh();
-    },
-  },
-  apollo: {
-    node: {
+    const productTypeName = ref<string | null>(null);
+    const itemName = ref<string | null>(null);
+    onMounted(() => {
+      productTypeName.value = route.params.productTypeName;
+      itemName.value = route.params.name;
+    });
+
+    const query = useQuery<ProductTypeByNameQuery>({
       query: PRODUCT_TYPE_BY_NAME,
-      variables() {
-        return { name: this.productTypeName };
-      },
-      update: (data) => data.productType,
-      skip() {
-        return !this.productTypeName;
-      },
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  methods: {
-    onEditFormCancelled() {
-      this.closeEditForm();
-    },
-    onEditFormFinished(event) {
-      this.closeEditForm();
-      if (event) this.onNameChanged(event);
-    },
-    closeEditForm() {
-      this.editDialog = false;
-    },
-    onNameChanged(event) {
-      this.$router.push({
+      variables: { name: productTypeName },
+      pause: !productTypeName,
+    });
+    const node = computed(() => query.data?.value?.productType);
+    const disableAdd = computed(() => !store.webConfig.productCreationDialog);
+    const disableEdit = computed(() => !store.webConfig.productUpdateDialog);
+    const disableDelete = computed(
+      () => !store.webConfig.productDeletionDialog
+    );
+    const editDialog = ref(false);
+    function onEditFormCancelled() {
+      closeEditForm();
+    }
+    function closeEditForm() {
+      editDialog.value = false;
+    }
+    function onEditFormFinished(event: string) {
+      closeEditForm();
+      if (event) onNameChanged(event);
+    }
+    function onNameChanged(event: string) {
+      router.push({
         name: "ProductList",
         params: {
           productTypeName: event,
         },
       });
-    },
-    async refresh() {
-      this.refreshing = true;
-      const wait = new Promise((resolve) => setTimeout(resolve, 500));
-      await Promise.all(
-        Object.values(this.$apollo.queries).map(async (query) => {
-          await query.refetch();
-        })
-      );
-      await wait; // wait until 0.5 sec passes since starting refetch
-      // because the progress circular is too flickering if
-      // the refetch finishes too quickly
-      this.refreshing = false;
-    },
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.transitionName = "fade-product-top-update";
-    this.transitionMode = "out-in";
-    next();
-  },
-  beforeRouteLeave(to, from, next) {
-    this.transitionName = "fade-product-top-leave";
-    this.transitionMode = "out-in";
-    next();
+    }
+    const transitionName = ref("fade-product-top-leave");
+    const transitionMode = ref("out-in");
+    onBeforeRouteUpdate((to, from, next) => {
+      transitionName.value = "fade-product-top-update";
+      transitionMode.value = "out-in";
+      next();
+     });
+    onBeforeRouteLeave((to, from, next) => {
+      transitionName.value = "fade-product-top-leave";
+      transitionMode.value = "out-in";
+      next();
+    });
+    return {
+      ...useQueryState(query, { isNull: () => node.value === null}),
+      query,
+      productTypeName,
+      itemName,
+      node,
+      disableAdd,
+      disableEdit,
+      disableDelete,
+      editDialog,
+      onEditFormCancelled,
+      closeEditForm,
+      onEditFormFinished,
+      onNameChanged,
+      transitionName,
+      transitionMode,
+    };
   },
 });
 </script>

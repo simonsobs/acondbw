@@ -5,10 +5,9 @@
         <v-card flat>
           <v-card-title class="text-h4">Log</v-card-title>
           <v-data-table
-            v-if="allLogs"
             :headers="headers"
-            :items="allLogs.edges"
-            :items-per-page="allLogs.totalCount"
+            :items="items"
+            :items-per-page="items.length"
             :hide-default-footer="true"
             item-key="node.id_"
             :single-expand="singleExpand"
@@ -17,10 +16,10 @@
           >
             <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
-                <pre>{{ item.node.message }}</pre>
+                <pre>{{ item.message }}</pre>
               </td>
             </template>
-            <template v-slot:[`item.actions`]="{ item }">
+            <template v-slot:item.actions="{ item }">
               <v-icon small @click="openRemoveForm(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
@@ -37,41 +36,53 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, watch, computed, nextTick } from "vue";
+import { useQuery } from "@urql/vue";
+
 import ALL_LOGS from "@/graphql/queries/AllLogs.gql";
+import { AllLogsQuery } from "@/generated/graphql";
 
 import LogRemoveForm from "@/components/admin/LogRemoveForm.vue";
 
-export default {
+import { useQueryState } from "@/utils/query-state";
+
+export default defineComponent({
   name: "Log",
   components: { LogRemoveForm },
-  data() {
-    return {
-      allLogs: null,
-      expanded: [],
-      singleExpand: false,
-      headers: [
-        { text: "Time", value: "node.time", align: "start" },
-        { text: "Level", value: "node.level", align: "start" },
-        { text: "", value: "data-table-expand" },
-        { text: "", value: "actions", sortable: false, align: "end" },
-      ],
-      dialogRemove: false,
-      removeId: null,
-    };
-  },
-  apollo: {
-    allLogs: {
-      query: ALL_LOGS,
-      result(result) {
-        result.data.allLogs.edges.forEach((e) => {
-          e.node.time = this.formatDateTime(e.node.time);
-        });
-      },
-    },
-  },
-  methods: {
-    formatDateTime(dateTime) {
+  setup() {
+    const query = useQuery<AllLogsQuery>({ query: ALL_LOGS });
+
+    const queryState = useQueryState(query, {
+      isEmpty: () => readItems(query).length === 0,
+    });
+
+    const { loading, error, empty } = queryState;
+
+    type Query = typeof query;
+
+    function readEdges(query: Query) {
+      const edgesAndNulls = query.data?.value?.allLogs?.edges;
+      if (!edgesAndNulls) return [];
+      return edgesAndNulls.flatMap((e) => (e ? [e] : []));
+    }
+
+    function readItems(query: Query) {
+      return readEdges(query).flatMap((e) => (e.node ? e.node : []));
+    }
+
+    const items_ = computed(() =>
+      loading.value || empty.value ? [] : readItems(query)
+    );
+
+    const items = computed(() => {
+      return items_.value.map((item) => ({
+        ...item,
+        time: item.time ? formatDateTime(item.time) : "",
+      }));
+    });
+
+    function formatDateTime(dateTime: string) {
       const sinceEpoch = Date.parse(dateTime);
       const format = Intl.DateTimeFormat("default", {
         year: "numeric",
@@ -83,24 +94,51 @@ export default {
         hour12: false,
       });
       return format.format(sinceEpoch);
-    },
-    removeFormCanceled() {
-      this.closeRemoveForm();
-    },
-    removeFormFinished() {
-      this.$apollo.queries.allLogs.refetch();
-      this.closeRemoveForm();
-    },
-    closeRemoveForm() {
-      this.dialogRemove = false;
-      this.$nextTick(() => {
-        this.removeLogin = null;
+    }
+
+    const headers = ref([
+      { text: "Time", value: "time", align: "start" },
+      { text: "Level", value: "level", align: "start" },
+      { text: "", value: "data-table-expand" },
+      { text: "", value: "actions", sortable: false, align: "end" },
+    ]);
+
+    const dialogRemove = ref(false);
+    const removeId = ref<number | null>(null);
+
+    function removeFormCanceled() {
+      closeRemoveForm();
+    }
+
+    function removeFormFinished() {
+      query.executeQuery();
+      closeRemoveForm();
+    }
+
+    function closeRemoveForm() {
+      dialogRemove.value = false;
+      nextTick(() => {
+        removeId.value = null;
       });
-    },
-    openRemoveForm(item) {
-      this.removeId = Number(item.node.id_);
-      this.dialogRemove = true;
-    },
+    }
+
+    function openRemoveForm(item: typeof items.value[0]) {
+      removeId.value = Number(item.id_);
+      dialogRemove.value = true;
+    }
+
+    return {
+      headers,
+      items,
+      expanded: ref([]),
+      singleExpand: ref(true),
+      dialogRemove,
+      removeId,
+      removeFormCanceled,
+      removeFormFinished,
+      closeRemoveForm,
+      openRemoveForm,
+    };
   },
-};
+});
 </script>

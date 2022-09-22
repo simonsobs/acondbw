@@ -11,9 +11,9 @@
             :hint="`Name of the ${productType.singular}.`"
             persistent-hint
             :error-messages="nameErrors"
-            :value="$v.form.name.$model"
-            @input="debounceInput($v.form.name, $event)"
-            @blur="$v.form.name.$touch()"
+            :value="v$.form.name.$model"
+            @input="debounceInput(v$.form.name, $event)"
+            @blur="v$.form.name.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="3" cols="12" md="10">
@@ -23,7 +23,7 @@
             required
             :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06.`"
             persistent-hint
-            v-model="$v.form.dateProduced.$model"
+            v-model="v$.form.dateProduced.$model"
             :error-messages="dateProducedErrors"
           ></v-text-field-with-date-picker>
         </v-col>
@@ -34,7 +34,7 @@
             required
             :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx.`"
             persistent-hint
-            v-model="$v.form.producedBy.$model"
+            v-model="v$.form.producedBy.$model"
             :error-messages="producedByErrors"
           ></v-text-field>
         </v-col>
@@ -45,7 +45,7 @@
             required
             :hint="`A person or group that can be contacted for questions or issues about the ${productType.singular}.`"
             persistent-hint
-            v-model="$v.form.contact.$model"
+            v-model="v$.form.contact.$model"
             :error-messages="contactErrors"
           ></v-text-field>
         </v-col>
@@ -55,10 +55,10 @@
           <v-textarea
             outlined
             label="Paths"
-            hint="A path per line. e.g., nersc:/go/to/my/product_v3. Note that pahts are an unordered set; they will not be always displayed in the order entered here."
+            hint="A path per line. e.g., nersc:/go/to/my/product_v3. Note that paths are an unordered set; they will not be always displayed in the order entered here."
             rows="4"
             persistent-hint
-            v-model="$v.form.paths.$model"
+            v-model="v$.form.paths.$model"
           ></v-textarea>
         </v-col>
         <v-col cols="12" md="10" class="mt-4">
@@ -79,7 +79,7 @@
                 outlined
                 label="Note will be parsed as Markdown"
                 rows="5"
-                v-model="$v.form.note.$model"
+                v-model="v$.form.note.$model"
               ></v-textarea>
             </v-tab-item>
             <v-tab-item
@@ -99,7 +99,7 @@
       <v-spacer></v-spacer>
       <v-btn
         color="secondary"
-        :disabled="!$v.form.$anyDirty"
+        :disabled="!v$.form.$anyDirty"
         text
         @click="reset"
       >
@@ -109,16 +109,27 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
 import _ from "lodash";
-import marked from "marked";
+import { marked } from "marked";
 import gql from "graphql-tag";
 
-import { required, maxLength, email } from "vuelidate/lib/validators";
+import { useVuelidate } from "@vuelidate/core";
+import { required, helpers } from "@vuelidate/validators";
+
+import { Client } from "@urql/vue";
+import { client } from "@/plugins/urql";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
-async function isNameAvailable(name, productTypeId, apolloClient) {
+const { withAsync } = helpers;
+
+async function isNameAvailable(
+  name: string,
+  productTypeId,
+  urqlClient: Client
+) {
   const QUERY = gql`
     query QueryProductNameInFormStart($typeId: Int!, $name: String!) {
       product(typeId: $typeId, name: $name) {
@@ -130,41 +141,55 @@ async function isNameAvailable(name, productTypeId, apolloClient) {
     }
   `;
 
-  const { data } = await apolloClient.query({
-    query: QUERY,
-    variables: {
-      typeId: productTypeId,
-      name: name,
-    },
-    fetchPolicy: "network-only",
-  });
+  const { data } = await urqlClient
+    .query(
+      QUERY,
+      {
+        typeId: productTypeId,
+        name: name,
+      },
+      { requestPolicy: "network-only" }
+    )
+    .toPromise();
 
   if (data.product) return false;
   return true;
 }
 
-function parsableAsDate(value) {
+function parsableAsDate(value: string) {
   // test format "YYYY-MM-DD"
   const reg = /^[0-9]{4}-[0-9]{2}-[0-9]{2}?$/;
   if (!reg.test(value)) return false;
-  if (isNaN(new Date(value))) return false;
+  if (isNaN((new Date(value)).valueOf())) return false;
   return true;
 }
 
-export default {
+export interface FormStepStart {
+  name: string;
+  dateProduced: string;
+  producedBy: string;
+  contact: string;
+  paths: string;
+  note: string;
+} 
+
+export default defineComponent({
   name: "FormStart",
   components: {
     VTextFieldWithDatePicker,
   },
+  setup() {
+    return { v$: useVuelidate() };
+  },
   props: {
-    value: Object,
+    value: Object as PropType<FormStepStart>,
     productType: {
       type: Object,
       required: true,
     },
   },
   data() {
-    const formDefault = {
+    const formDefault: FormStepStart = {
       name: "",
       dateProduced: new Date().toISOString().substr(0, 10), // "YYYY-MM-DD"
       producedBy: "",
@@ -172,80 +197,82 @@ export default {
       paths: "",
       note: "",
     };
-    const formReset = { ...formDefault, ...(this.value || {}) };
+    const formReset: FormStepStart = { ...formDefault, ...(this.value || {}) };
     return {
       formReset,
-      form: { ...formReset },
-      error: null,
+      form: { ...formReset } as FormStepStart,
+      error: null as any,
       tabNote: null,
     };
   },
-  validations: {
-    form: {
-      name: {
-        required,
-        async unique(value) {
-          if (value === "") return true;
-          if (value === this.formReset.name) return true;
-          try {
-            return await isNameAvailable(
-              value.trim(),
-              this.productType.typeId,
-              this.$apollo
-            );
-          } catch (error) {
-            this.error = error;
-            return true;
-          }
+  validations() {
+    return {
+      form: {
+        name: {
+          required,
+          unique: withAsync(async (value) => {
+            if (value === "") return true;
+            if (value === this.formReset.name) return true;
+            try {
+              return await isNameAvailable(
+                value.trim(),
+                this.productType.typeId,
+                client
+              );
+            } catch (error) {
+              this.error = error;
+              return true;
+            }
+          }),
         },
+        producedBy: { required },
+        dateProduced: { required, parsableAsDate },
+        contact: { required },
+        paths: {},
+        note: {},
       },
-      producedBy: { required },
-      dateProduced: { required, parsableAsDate },
-      contact: { required },
-      paths: {},
-      note: {},
-    },
+    };
   },
   computed: {
     nameErrors() {
-      const errors = [];
-      const field = this.$v.form.name;
+      const errors: string[] = [];
+      const field = this.v$.form.name;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
-      !field.unique &&
+      field.required.$invalid && errors.push("This field is required");
+      field.unique.$invalid &&
         errors.push(`The name "${field.$model.trim()}" is not available.`);
       return errors;
     },
     dateProducedErrors() {
-      const errors = [];
-      const field = this.$v.form.dateProduced;
+      const errors: string[] = [];
+      const field = this.v$.form.dateProduced;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
-      !field.parsableAsDate &&
+      field.required.$invalid && errors.push("This field is required");
+      field.parsableAsDate.$invalid &&
         errors.push(`"${field.$model}" cannot be parsed as a date.`);
       return errors;
     },
     producedByErrors() {
-      const errors = [];
-      const field = this.$v.form.producedBy;
+      const errors: string[] = [];
+      const field = this.v$.form.producedBy;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
+      field.required.$invalid && errors.push("This field is required");
       return errors;
     },
     contactErrors() {
-      const errors = [];
-      const field = this.$v.form.contact;
+      const errors: string[] = [];
+      const field = this.v$.form.contact;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
+      field.required.$invalid && errors.push("This field is required");
       return errors;
     },
     noteMarked() {
       return this.form.note
-        ? marked(this.form.note)
+        ? marked.parse(this.form.note)
         : "<em>Nothing to preview</em>";
     },
     valid() {
-      return !this.$v.$invalid;
+      return !this.v$.$invalid;
     },
   },
   watch: {
@@ -258,14 +285,17 @@ export default {
     },
     form: {
       handler() {
-        // if (this.$v.$invalid) return;
+        // if (this.v$.$invalid) return;
         this.$emit("input", { ...this.form });
       },
       deep: true,
       immediate: true,
     },
-    valid(val) {
-      this.$emit("valid", val);
+    valid: {
+      handler(val) {
+        this.$emit("valid", val);
+      },
+      immediate: true,
     },
   },
   methods: {
@@ -281,8 +311,8 @@ export default {
       this.error = null;
       this.tabNote = null;
       this.form = { ...this.formReset };
-      this.$v.$reset();
+      this.v$.$reset();
     },
   },
-};
+});
 </script>

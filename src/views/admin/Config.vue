@@ -78,11 +78,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapState, mapActions } from "pinia";
 import { useStore } from "@/stores/main";
+import { client } from "@/plugins/urql";
 
-export default Vue.extend({
+export default defineComponent({
   name: "Config",
   data() {
     return {
@@ -160,7 +161,7 @@ export default Vue.extend({
       this.error = null;
     },
     saveToServer() {
-      this.uploadWebConfig(this.$apollo);
+      this.uploadWebConfig(client);
       this.copyOriginal();
     },
     save(item) {

@@ -1,8 +1,13 @@
+import { Client } from "@urql/vue";
 import AddGitHubAdminAppToken from "@/graphql/mutations/AddGitHubAdminAppToken.gql";
 
 const AUTH_ADMIN_STATE = "auth-state";
 
-export async function storeAdminAppToken(code, state, apolloClient) {
+export async function storeAdminAppToken(
+  code,
+  state,
+  urqlClient: Client
+) {
   const authStateJson = localStorage.getItem(AUTH_ADMIN_STATE);
   const authState = authStateJson && JSON.parse(authStateJson);
   if (!authState) {
@@ -14,9 +19,8 @@ export async function storeAdminAppToken(code, state, apolloClient) {
   if (!(authState == state)) {
     throw new Error("The state did not match.");
   }
-  const { data } = await apolloClient.mutate({
-    mutation: AddGitHubAdminAppToken,
-    variables: { code: code },
-  });
-  // const ok = data.StoreAdminAppToken.ok;
+  const { error } = await urqlClient
+    .mutation(AddGitHubAdminAppToken, { code: code })
+    .toPromise();
+  if (error) throw error;
 }

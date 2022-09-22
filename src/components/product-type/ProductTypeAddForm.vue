@@ -25,7 +25,7 @@
         <v-btn color="secondary" text @click="$emit('cancel')"> Cancel </v-btn>
         <v-btn
           color="primary"
-          :disabled="unchanged || !valid"
+          :disabled="!valid"
           text
           @click="submit"
         >
@@ -33,112 +33,93 @@
         </v-btn>
       </v-card-actions>
     </template>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="1px"
+      right="1px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-card>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapActions } from "pinia";
+import { defineComponent, reactive, ref, computed } from "vue";
 import { useStore } from "@/stores/main";
+import { useQuery, useMutation } from "@urql/vue";
 
 import CREATE_PRODUCT_TYPE from "@/graphql/mutations/CreateProductType.gql";
 import ALL_FIELDS from "@/graphql/queries/AllFields.gql";
+import {
+  CreateProductTypeMutation,
+  CreateProductTypeMutationVariables,
+  CreateProductTypeInput,
+  AllFieldsQuery,
+} from "@/generated/graphql";
 
 import FormProductType from "./FormProductType.vue";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import { useQueryState } from "@/utils/query-state";
 
-export default Vue.extend({
+type PropType = NonNullable<InstanceType<typeof FormProductType>["value"]>;
+
+const initialValue: PropType = {
+  name: "",
+  order: 1,
+  indefArticle: "a",
+  singular: "",
+  plural: "",
+  icon: "mdi-beaker-question-outline",
+};
+
+export default defineComponent({
   name: "ProductTypeAddForm",
-  components: {
-    FormProductType,
-    DevToolLoadingStateOverridingMenu,
-  },
-  data() {
-    const initialValue = {
-      name: "",
-      order: 1,
-      indefArticle: "a",
-      singular: "",
-      plural: "",
-      icon: "mdi-beaker-question-outline",
-    };
+  components: { FormProductType },
+  setup(prop, { emit }) {
+    const store = useStore();
+    const query = useQuery<AllFieldsQuery>({ query: ALL_FIELDS });
+    const fields = computed(
+      () =>
+        query.data?.value?.allFields?.edges?.flatMap((e) =>
+          e?.node ? [e.node] : []
+        ) || []
+    );
+    const fieldIds = computed(() => {
+      return fields.value.map(({ fieldId }) => parseInt(fieldId, 10));
+    });
+
+    const value = ref<PropType>(initialValue);
+    const valid = ref(false);
+
+    const input = computed(() =>
+      valid.value
+        ? ({ ...value.value, fieldIds: fieldIds.value } as CreateProductTypeInput)
+        : null
+    );
+
+    const { executeMutation } = useMutation<
+      CreateProductTypeMutation,
+      CreateProductTypeMutationVariables
+    >(CREATE_PRODUCT_TYPE);
+
+    async function submit() {
+      if (input.value === null) throw new Error("Invalid input");
+      const { error } = await executeMutation({ input: input.value });
+      if (error) throw error;
+      store.apolloMutationCalled();
+      store.setSnackbarMessage("Added");
+      emit("finished", input.value.name);
+    }
+
     return {
-      initialValue,
-      value: { ...initialValue },
-      valid: false,
-      fields: [],
-      init: true,
-      devtoolState: null,
-      State: State,
+      ...useQueryState(query, {
+        isEmpty: (query) => fields.value.length === 0,
+      }),
+      fields,
+      fieldIds,
+      value,
+      valid,
+      input,
+      submit,
     };
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.error) return State.ERROR;
-      if (this.init) return State.INIT;
-      if (this.fields) return State.LOADED;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    unchanged() {
-      return JSON.stringify(this.value) === JSON.stringify(this.initialValue);
-    },
-    fieldIds() {
-      return this.fields.map(({ fieldId }) => parseInt(fieldId, 10));
-    },
-    input() {
-      if (!this.valid) return null;
-      return this.composeInput(this.value, this.initialValue);
-    },
-  },
-  apollo: {
-    fields: {
-      query: ALL_FIELDS,
-      update(data) {
-        if (!data.allFields) return [];
-        return data.allFields.edges.map(({ node }) => node);
-      },
-      result(result) {
-        this.init = false;
-        this.error = result.error || null;
-      },
-    },
-  },
-  methods: {
-    composeInput(value, initialValue) {
-      const ret = { ...value };
-      ret.fieldIds = this.fieldIds;
-      return ret;
-    },
-    async submit() {
-      try {
-        const data = await this.$apollo.mutate({
-          mutation: CREATE_PRODUCT_TYPE,
-          variables: {
-            input: this.input,
-          },
-        });
-        this.$apollo.provider.defaultClient.cache.data.data = {};
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Added");
-        this.$emit("finished", this.input.name);
-      } catch (error) {
-        this.error = error;
-      }
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
   },
 });
 </script>

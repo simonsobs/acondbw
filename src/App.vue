@@ -13,10 +13,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
-import { useRoute } from "vue-router/composables";
+import { defineComponent, ref, computed, watch, onBeforeMount } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
 import { useStore } from "@/stores/main";
-
+import { useAuthStore } from "@/stores/auth";
+import { provideClient } from "@urql/vue";
+import { client as urqlClient } from "@/plugins/urql";
+import { checkAuthForCurrentRoute } from "@/router";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
 export default defineComponent({
@@ -55,6 +58,25 @@ export default defineComponent({
           transitionMode.value = "out-in";
         }
       }
+    );
+
+    provideClient(urqlClient);
+
+    const authStore = useAuthStore();
+
+    onBeforeMount(async () => {
+      await store.loadWebConfig(urqlClient);
+      await authStore.checkIfSignedIn(urqlClient);
+    });
+
+    const router = useRouter();
+    watch(
+      () => authStore.isSignedIn,
+      async (val) => {
+        if (val) return;
+        await checkAuthForCurrentRoute(router);
+      },
+      { immediate: true }
     );
 
     return {

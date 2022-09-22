@@ -2,6 +2,7 @@ query SignInInfo {
   isSignedIn
   isAdmin
   gitHubViewer {
+    id
     login
     name
     avatarUrl

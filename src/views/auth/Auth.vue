@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue"
 import { mapActions } from "pinia";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
-
+import { client } from "@/plugins/urql";
 import { validateState, decodeState } from "@/utils/auth/oauth";
 
-export default Vue.extend({
+export default defineComponent({
   name: "Auth",
   data: () => ({}),
   methods: {
@@ -36,12 +36,12 @@ export default Vue.extend({
 
       const code = this.$route.query.code;
       if (!(typeof code === "string" && code)) {
-        this.$router.push({ path: "/" });
+        this.$router.push({ name: "Entry" });
         return;
       }
 
       try {
-        await this.signIn(code, state, this.$apollo);
+        await this.signIn(code, state, client);
       } catch (error) {
         this.$router.push({ name: "SignInError" });
         return;
@@ -49,7 +49,7 @@ export default Vue.extend({
       const rawState = decodeState(state);
       const { path } = JSON.parse(rawState.option);
       this.setSnackbarMessage("Signed in");
-      this.$router.push(path);
+      await this.$router.push(path);
     },
     ...mapActions(useStore, ["setSnackbarMessage"]),
     ...mapActions(useAuthStore, ["setRequestAuthError", "signIn"]),

@@ -5,7 +5,7 @@
     class="product-add-form mx-auto"
     style="border: 0; position: relative"
   >
-    <v-card-title v-if="loaded" class="text-h3 primary--text">
+    <v-card-title v-if="loaded && productType" class="text-h3 primary--text">
       <span>
         Add {{ productType.indefArticle }}
         <span class="font-italic font-weight-light">
@@ -13,7 +13,7 @@
         </span>
       </span>
     </v-card-title>
-    <v-alert v-if="error" type="error">{{ error }}</v-alert>
+    <v-alert v-if="formError" type="error">{{ formError }}</v-alert>
     <v-stepper v-if="loaded" v-model="stepper">
       <v-stepper-header>
         <v-stepper-step :complete="stepper > 1" step="1">
@@ -71,13 +71,13 @@
           ></v-progress-circular>
         </div>
         <v-alert
-          v-else-if="queryError"
+          v-else-if="error"
           outlined
           dense
           type="error"
           class="ma-2"
         >
-          {{ queryError }}
+          {{ error }}
         </v-alert>
         <v-card-text v-else-if="notFound"> Not Found </v-card-text>
       </v-card>
@@ -86,210 +86,188 @@
         <v-btn color="secondary" text @click="close()"> Close </v-btn>
       </v-card-actions>
     </div>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-card>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapActions } from "pinia";
+import { defineComponent, ref, computed } from "vue";
 import { useStore } from "@/stores/main";
+import { useQuery, useMutation } from "@urql/vue";
 
 import _ from "lodash";
 import { camelCase } from "camel-case";
 
 import QueryForProductAddForm from "@/graphql/queries/QueryForProductAddForm.gql";
+import {
+  QueryForProductAddFormQuery,
+  CreateProductInput,
+  CreateProductMutation,
+  CreateProductMutationVariables,
+} from "@/generated/graphql";
 import CREATE_PRODUCT from "@/graphql/mutations/CreateProduct.gql";
 
-import ProductAddFormStepStart from "./ProductAddFormStepStart.vue";
-import ProductAddFormStepRelations from "./ProductAddFormStepRelations.vue";
+import ProductAddFormStepStart, {
+  FormStepStart,
+} from "./ProductAddFormStepStart.vue";
+import ProductAddFormStepRelations, {
+  Relation,
+} from "./ProductAddFormStepRelations.vue";
 import ProductAddFormStepPreview from "./ProductAddFormStepPreview.vue";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import { useQueryState } from "@/utils/query-state";
 
-export default Vue.extend({
+interface Fields {
+  [key: string]: NonNullable<
+    NonNullable<
+      NonNullable<QueryForProductAddFormQuery["productType"]>["fields"]
+    >["edges"][number]
+  >["node"];
+}
+
+export default defineComponent({
   name: "ProductAddForm",
   components: {
     ProductAddFormStepStart,
     ProductAddFormStepRelations,
     ProductAddFormStepPreview,
-    DevToolLoadingStateOverridingMenu,
   },
   props: {
-    productTypeId: { required: true },
+    productTypeId: { type: Number, required: true },
   },
-  data() {
-    return {
-      stepper: 1,
-      productType: null,
-      init: true,
-      queryError: null,
-      devtoolState: null,
-      State: State,
-      step: 1,
-      formStepStart: null,
-      formStepRelation: null,
-      error: null,
-      createProductInput: null,
-    };
-  },
-  computed: {
-    state() {
-      if (this.devtoolState) return this.devtoolState;
-      if (this.$apollo.loading) return State.LOADING;
-      if (this.queryError) return State.ERROR;
-      if (this.productType) return State.LOADED;
-      if (this.init) return State.INIT;
-      return State.NONE;
-    },
-    loading() {
-      return this.state == State.LOADING;
-    },
-    loaded() {
-      return this.state == State.LOADED;
-    },
-    notFound() {
-      return this.state == State.NONE;
-    },
-    fields() {
-      if (!this.productType) return null;
-      const ret = this.productType.fields.edges.reduce(
-        (a, { node }) => ({
-          ...a,
-          ...{
-            [camelCase(node.field.name)]: node,
-          },
-        }),
-        {}
-      );
-      return ret;
-    },
-  },
-  apollo: {
-    productType: {
+  setup(prop, { emit }) {
+    const store = useStore();
+    const formError = ref<string | null>(null);
+    const query = useQuery<QueryForProductAddFormQuery>({
       query: QueryForProductAddForm,
-      variables() {
-        return { typeId: this.productTypeId };
-      },
-      skip: function () {
-        return !this.productTypeId;
-      },
-      result(result) {
-        this.init = false;
-        this.queryError = result.error ? result.error : null;
-        if (this.queryError) return;
+      variables: { typeId: prop.productTypeId },
+    });
+    const productType = computed(() => query.data?.value?.productType);
+    const fields = computed(() =>
+      productType.value?.fields?.edges.reduce<Fields>(
+        (a, e) =>
+          e?.node?.field?.name
+            ? {
+                ...a,
+                ...{ [camelCase(e.node.field.name)]: e.node },
+              }
+            : a,
+        {}
+      )
+    );
+    const stepper = ref(1);
+    const formStepStart = ref<FormStepStart | null>(null);
+    const formStepRelation = ref<Relation[] | null>(null);
+    const createProductInput = ref<CreateProductInput | null>(null);
 
-        this.productType = result.data.productType;
-      },
-    },
-  },
-  watch: {
-    devtoolState: function () {
-      if (this.devtoolState) {
-        this.init = this.devtoolState == State.INIT;
-      }
-      this.queryError =
-        this.devtoolState == State.ERROR ? "Error from Dev Tools" : null;
-    },
-  },
-  methods: {
-    close() {
-      this.$emit("finished");
-    },
-    preview() {
+    function preview() {
       try {
-        this.createProductInput = this.composeCreateProductInput(
-          this.productTypeId,
-          this.formStepStart,
-          this.formStepRelation
+        if (formStepStart.value === null)
+          throw new Error("formStepStart is null");
+        if (formStepRelation.value === null)
+          throw new Error("formStepRelation is null");
+        createProductInput.value = composeCreateProductInput(
+          prop.productTypeId,
+          formStepStart.value,
+          formStepRelation.value
         );
-      } catch (error) {
-        this.error = error;
+      } catch (e: any) {
+        formError.value = e;
       } finally {
-        this.stepper = 3;
+        stepper.value = 3;
       }
-    },
-    async submit() {
-      try {
-        await this.addProduct(this.createProductInput);
-      } catch (error) {
-        this.error = error;
-        this.stepper = 1;
-        return;
-      }
-      this.apolloMutationCalled();
-      this.setSnackbarMessage("Added");
-      this.close();
-    },
-    composeCreateProductInput(productTypeId, formStepStart, formStepRelation) {
-      const ret = {
-        name: formStepStart.name,
-        note: formStepStart.note,
-      };
-
-      ret.typeId = productTypeId;
-
-      ret.paths = formStepStart.paths
+    }
+    function composeCreateProductInput(
+      productTypeId: number,
+      formStepStart: FormStepStart,
+      formStepRelation: Relation[]
+    ): CreateProductInput {
+      const paths = formStepStart.paths
         .split("\n")
         .map((x) => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
         .filter(Boolean) // remove empty strings
         .filter((v, i, a) => a.indexOf(v) === i); // unique
 
       // unique https://medium.com/coding-at-dawn/how-to-use-set-to-filter-unique-items-in-javascript-es6-196c55ce924b
-      ret.relations = [
+      const relations: Relation[] = [
         ...new Set(formStepRelation.map((o) => JSON.stringify(o))),
       ].map((s) => JSON.parse(s));
 
       const keys = ["contact", "dateProduced", "producedBy"].filter(
-        (k) => k in this.fields
+        (k) => k in (fields.value || [])
       );
-      ret.attributes = keys.reduce((a, k) => {
-        const typeName = camelCase(this.fields[k].field.type_);
+      const attributes = keys.reduce((a, k) => {
+        const assoc = fields.value?.[k];
+        if (!assoc) return a;
+        if (!assoc.field?.type_) return a;
+        const typeName = camelCase(assoc.field.type_);
         a[typeName] = a[typeName] ? a[typeName] : [];
         a[typeName].push({
-          fieldId: this.fields[k].fieldId,
+          fieldId: assoc.fieldId,
           value: formStepStart[k],
         });
         return a;
-      }, {});
+      }, {} as NonNullable<CreateProductInput["attributes"]>);
 
-      return ret;
-    },
-    async addProduct(createProductInput) {
-      await this.$apollo.mutate({
-        mutation: CREATE_PRODUCT,
-        variables: { input: createProductInput },
-        update: (cache, { data: { createProduct } }) => {
-          try {
-            // Delete all cache and dispacth "apolloMutationCalled", which triggers refetch
-            this.$apollo.provider.defaultClient.cache.data.data = {};
+      return {
+        name: formStepStart.name,
+        note: formStepStart.note,
+        typeId: productTypeId,
+        paths,
+        relations,
+        attributes,
+      };
+    }
 
-            // The following code was used to update cache, which
-            // is typically a recommended way. But it is commented out
-            // because it is not clear how to systematically update
-            // all affected cache.
+    async function submit() {
+      try {
+        if (createProductInput.value === null)
+          throw new Error("createProductInput is null");
+        await addProduct(createProductInput.value);
+      } catch (e: any) {
+        formError.value = e;
+        stepper.value = 1;
+        return;
+      }
+      store.apolloMutationCalled();
+      store.setSnackbarMessage("Added");
+      close();
+    }
 
-            // const data = cache.readQuery({
-            //   query: ALL_PRODUCTS_BY_TYPE_ID,
-            //   variables: { typeId: this.productTypeId }
-            // });
-            // data.allProducts.edges.splice(0, 0, {
-            //   node: createProduct.product,
-            //   __typename: "ProductEdge"
-            // });
-            // cache.writeQuery({
-            //   query: ALL_PRODUCTS_BY_TYPE_ID,
-            //   variables: { typeId: this.productTypeId },
-            //   data
-            // });
-          } catch (error) {}
-        },
-      });
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
+    const { executeMutation } = useMutation<
+      CreateProductMutation,
+      CreateProductMutationVariables
+    >(CREATE_PRODUCT);
+
+    async function addProduct(createProductInput: CreateProductInput) {
+      try {
+        const { error } = await executeMutation({ input: createProductInput });
+        if (error) throw error;
+        // TODO: Might need to delete cache
+      } catch (e: any) {}
+    }
+
+    function close() {
+      emit("finished");
+    }
+
+    return {
+      ...useQueryState(query, { isNull: () => productType.value === null}),
+      stepper,
+      query,
+      formError,
+      productType,
+      fields,
+      formStepStart,
+      formStepRelation,
+      createProductInput,
+      close,
+      preview,
+      submit,
+    };
   },
 });
 </script>

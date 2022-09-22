@@ -1,16 +1,19 @@
-import Vue from "vue";
+import Vue, { ref, nextTick } from "vue";
 import VueRouter from "vue-router";
+import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import Dashboard from "@/components/product/Dashboard.vue";
 import { createRouter } from "@/router";
 
-jest.mock("vue-apollo");
-// To prevent the error: "[vue-test-utils]: could not overwrite
-// property $apollo, this is usually caused by a plugin that has added
-// the property as a read-only value"
-// https://github.com/vuejs/vue-apollo/issues/798
+import { useStore } from "@/stores/main";
+
+import { AllProductTypesQuery, ProductTypeEdge } from "@/generated/graphql";
+
+import { useQuery } from "@urql/vue";
+jest.mock("@urql/vue");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -20,8 +23,10 @@ describe("App.vue", () => {
   let vuetify: Vuetify;
   let router: ReturnType<typeof createRouter>;
   let wrapper: ReturnType<typeof mount>;
+  let store: ReturnType<typeof useStore>;
+  let query: ReturnType<typeof useQuery<AllProductTypesQuery>>;
 
-  const edges = [
+  const edges: ProductTypeEdge[] = [
     {
       node: {
         id: "UHJvZHVjdFR5cGU6Mw==",
@@ -32,6 +37,7 @@ describe("App.vue", () => {
         singular: "simulation",
         plural: "simulations",
         icon: "mdi-creation",
+        // @ts-ignore
         products: {
           totalCount: 1,
         },
@@ -47,6 +53,7 @@ describe("App.vue", () => {
         singular: "map",
         plural: "maps",
         icon: "mdi-map",
+        // @ts-ignore
         products: {
           totalCount: 64,
         },
@@ -62,6 +69,7 @@ describe("App.vue", () => {
         singular: "beam",
         plural: "beams",
         icon: "mdi-spotlight-beam",
+        // @ts-ignore
         products: {
           totalCount: 7,
         },
@@ -71,33 +79,35 @@ describe("App.vue", () => {
 
   beforeEach(() => {
     localVue = createLocalVue();
+    localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
     router = createRouter();
+    // @ts-ignore
+    query = {
+      data: ref<AllProductTypesQuery | undefined>(undefined),
+      error: ref(undefined),
+      fetching: ref(false),
+    };
+    (useQuery as jest.Mock).mockReturnValue(query);
+    const pinia = createTestingPinia();
+    store = useStore(pinia);
     wrapper = mount(Dashboard, {
       localVue,
       vuetify,
+      pinia,
       router,
-      mocks: {
-        $apollo: {
-          queries: {
-            edges: {
-              loading: false,
-            },
-          },
-        },
-      },
-      stubs: {
-        DevToolLoadingStateOverridingMenu: true,
-      },
+      stubs: ["dev-tool-loading-state-menu"],
     });
-    wrapper.setData({
-      edges: edges,
-    });
+    query.data.value = { allProductTypes: { edges: edges } };
+  });
+
+  afterEach(() => {
+    (useQuery as jest.Mock).mockReset();
   });
 
   it("match snapshot", async () => {
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
+    await nextTick();
     expect(wrapper.html()).toMatchSnapshot();
   });
 });

@@ -10,10 +10,12 @@ fragment productFragment on Product {
   name
   timePosted
   postingGitHubUser {
+    id
     login
   }
   timeUpdated
   updatingGitHubUser {
+    id
     login
   }
   paths {
@@ -68,8 +70,10 @@ fragment productFragment on Product {
   attributesUnicodeText {
     edges {
       node {
+        id
         fieldId
         field {
+          id
           name
           type_
         }
@@ -80,8 +84,10 @@ fragment productFragment on Product {
   attributesBoolean {
     edges {
       node {
+        id
         fieldId
         field {
+          id
           name
           type_
         }
@@ -92,8 +98,10 @@ fragment productFragment on Product {
   attributesInteger {
     edges {
       node {
+        id
         fieldId
         field {
+          id
           name
           type_
         }
@@ -104,8 +112,10 @@ fragment productFragment on Product {
   attributesFloat {
     edges {
       node {
+        id
         fieldId
         field {
+          id
           name
           type_
         }
@@ -116,8 +126,10 @@ fragment productFragment on Product {
   attributesDate {
     edges {
       node {
+        id
         fieldId
         field {
+          id
           name
           type_
         }
@@ -128,8 +140,10 @@ fragment productFragment on Product {
   attributesDateTime {
     edges {
       node {
+        id
         fieldId
         field {
+          id
           name
           type_
         }
@@ -140,8 +154,10 @@ fragment productFragment on Product {
   attributesTime {
     edges {
       node {
+        id
         fieldId
         field {
+          id
           name
           type_
         }

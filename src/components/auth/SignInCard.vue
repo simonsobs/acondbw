@@ -17,10 +17,11 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import { defineComponent, PropType } from "vue";
 import { Location, RawLocation } from "vue-router";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/auth";
+import { client } from "@/plugins/urql";
 
 import {
   redirectToGitHubAuthURL,
@@ -29,7 +30,7 @@ import {
   UnencodedState,
 } from "@/utils/auth/oauth";
 
-export default Vue.extend({
+export default defineComponent({
   name: "SignInCard",
   props: {
     path: {
@@ -64,7 +65,7 @@ export default Vue.extend({
       try {
         this.clearAuthError();
         const state = encodeAndStoreState(this.rawState);
-        await redirectToGitHubAuthURL(this.$apollo, this.scope, state);
+        await redirectToGitHubAuthURL(client, this.scope, state);
       } catch (error) {
         clearState();
         this.$router.push({ name: "SignInError" });
