@@ -28,13 +28,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import FormRelations, { Relation } from "./FormRelations.vue";
+import FormRelations from "./FormRelations.vue";
 
 interface ProductType {
   singular: string;
 }
 
-export { Relation };
+type Relations = NonNullable<InstanceType<typeof FormRelations>["value"]>;
 
 export default defineComponent({
   name: "ProductAddFormStepRelations",
@@ -42,7 +42,7 @@ export default defineComponent({
     FormRelations,
   },
   props: {
-    value: Array as PropType<Relation[]>,
+    value: Array as PropType<Relations>,
     productType: { type: Object as PropType<ProductType>, required: true },
     name: String,
   },
