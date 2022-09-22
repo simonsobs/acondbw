@@ -33,6 +33,7 @@ export default ({ mode }) => {
       globals: true,
       environment: "jsdom",
       exclude: [...defaultExclude, "tests-old/**"],
+      setupFiles: "./tests/unit/setup.ts",
     },
   });
 };
