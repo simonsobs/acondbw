@@ -1,3 +1,4 @@
+import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import { useStore, VuetifyTheme, WebConfig } from "@/stores/main";
 
@@ -24,8 +25,8 @@ describe("Main Store", () => {
   };
 
   const mockUrqlClient: any = {
-    query: jest.fn().mockReturnValue({
-      toPromise: jest.fn().mockResolvedValue({
+    query: vi.fn().mockReturnValue({
+      toPromise: vi.fn().mockResolvedValue({
         data: { webConfig: { json: JSON.stringify(sampleWebConfig) } },
       }),
     }),

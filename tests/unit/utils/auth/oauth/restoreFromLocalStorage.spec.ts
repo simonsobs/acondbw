@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { AUTH_TOKEN } from "@/vue-apollo";
 
 import { restoreFromLocalStorage } from "@/utils/auth";

@@ -1,3 +1,4 @@
+import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import moxios from "moxios";
 
@@ -68,7 +69,7 @@ describe("router", () => {
     await router.push("/product/map");
 
     // sleep so pending to become current
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     const current = router.currentRoute;
     expect(current.path).toBe("/product/map");
@@ -79,7 +80,7 @@ describe("router", () => {
     await expect(router.push("/product/map")).rejects.toThrow();
 
     // sleep so pending to become current
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     const current = router.currentRoute;
     expect(current.name).toBe("SignInRequired");
@@ -90,6 +91,9 @@ describe("router", () => {
   it("requiresAdmin - not signed in", async () => {
     // https://stackoverflow.com/q/62223195/7309855
     await expect(router.push("/admin/log")).rejects.toThrow();
+
+    // sleep so pending to become current
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     const current = router.currentRoute;
     expect(current.name).toBe("SignInRequired");
@@ -103,7 +107,7 @@ describe("router", () => {
     await expect(router.push("/admin/log")).rejects.toThrow();
 
     // sleep so pending to become current
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     const current = router.currentRoute;
     expect(current.name).toBe("AccessDenied");
