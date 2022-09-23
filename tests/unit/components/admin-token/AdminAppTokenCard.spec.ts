@@ -1,3 +1,4 @@
+import { Mock } from "vitest";
 import Vue, { nextTick } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
