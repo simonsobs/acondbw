@@ -12,17 +12,10 @@
   </v-container>
 </template>
 
-<script>
-import VERSION from "@/graphql/queries/Version.gql";
+<script setup lang="ts">
+import { computed } from "vue";
+import { useVersionQuery } from "@/generated/graphql";
 
-export default {
-  data() {
-    return {
-      version: null,
-    };
-  },
-  apollo: {
-    version: VERSION,
-  },
-};
+const { data } = useVersionQuery();
+const version = computed(() => data?.value?.version || "unknown");
 </script>

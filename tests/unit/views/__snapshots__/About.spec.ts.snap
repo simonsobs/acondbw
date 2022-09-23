@@ -1,14 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`About.vue match snapshot 1`] = `
-<div class="container container--fluid fill-height">
-  <div class="row align-center justify-center">
+exports[`About.vue > match snapshot 1`] = `
+"<div class=\\"container container--fluid fill-height\\">
+  <div class=\\"row align-center justify-center\\">
     <div>
-      <div class="text-h3 text-center">This is an about page</div>
-      <div class="mt-5 text-center"><span class="font-italic font-weight-medium">Server version:</span>
-        0.0.1.test
-      </div>
+      <div class=\\"text-h3 text-center\\">This is an about page</div>
+      <div class=\\"mt-5 text-center\\"><span class=\\"font-italic font-weight-medium\\">Server version:</span> 0.0.1.test </div>
     </div>
   </div>
-</div>
+</div>"
 `;
