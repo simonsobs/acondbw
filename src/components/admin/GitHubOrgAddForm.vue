@@ -28,70 +28,64 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { mapActions } from "pinia";
+<script setup lang="ts">
+import { ref, computed, defineEmits } from "vue";
 import { useStore } from "@/stores/main";
 
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
-import { client } from "@/plugins/urql";
+import { useAddGitHubOrgMutation } from "@/generated/graphql";
 
-import ADD_GITHUB_ORG from "@/graphql/mutations/AddGitHubOrg.gql";
+const emit = defineEmits(["cancel", "finished"]);
 
-export default defineComponent({
-  name: "GitHubOrgAddForm",
-  setup() {
-    return { v$: useVuelidate() };
-  },
-  data: () => ({
-    login: "",
-    error: null as any,
-  }),
-  validations() {
-    return { login: { required } };
-  },
-  computed: {
-    loginErrors() {
-      const errors: string[] = [];
-      const field = this.v$.login;
-      if (!field.$dirty) return errors;
-      field.required.$invalid && errors.push("This field is required");
-      return errors;
-    },
-  },
-  methods: {
-    cancel() {
-      this.$emit("cancel");
-      this.delayedReset();
-    },
-    delayedReset() {
-      // reset 0.5 sec after so that the reset form won't be shown.
-      setTimeout(() => {
-        this.reset();
-      }, 500);
-    },
-    reset() {
-      this.login = "";
-      this.v$.$reset();
-      this.error = null;
-    },
-    async add() {
-      try {
-        const result = await client
-          .mutation(ADD_GITHUB_ORG, { login: this.login })
-          .toPromise();
-        if (result.error) throw result.error;
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Added");
-        this.$emit("finished");
-        this.delayedReset();
-      } catch (error) {
-        this.error = error;
-      }
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
-  },
+const store = useStore();
+const error = ref<any>(null);
+const login = ref<string>("");
+
+const rules = computed(() => ({
+  login: { required },
+}));
+
+const v$ = useVuelidate(rules, { login });
+
+const loginErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.login;
+  if (!field.$dirty) return errors;
+  field.required.$invalid && errors.push("This field is required");
+  return errors;
 });
+
+function cancel() {
+  emit("cancel");
+  delayedReset();
+}
+function delayedReset() {
+  // reset 0.5 sec after so that the reset form won't be shown.
+  setTimeout(() => {
+    reset();
+  }, 500);
+}
+function reset() {
+  login.value = "";
+  v$.value.$reset();
+  error.value = null;
+}
+
+const { executeMutation } = useAddGitHubOrgMutation();
+async function add() {
+  try {
+    const { error } = await executeMutation({
+      login: login.value,
+    });
+    if (error) throw error;
+    store.apolloMutationCalled();
+    store.setSnackbarMessage("Added");
+    emit("finished");
+    delayedReset();
+  } catch (e) {
+    error.value = e;
+  }
+}
 </script>
