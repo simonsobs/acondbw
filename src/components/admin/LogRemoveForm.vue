@@ -15,51 +15,56 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { mapActions } from "pinia";
+<script setup lang="ts">
+import { ref, defineProps, defineEmits } from "vue";
 import { useStore } from "@/stores/main";
-import { client } from "@/plugins/urql";
 
-import DELETE_LOG from "@/graphql/mutations/DeleteLog.gql";
+import { useDeleteLogMutation } from "@/generated/graphql";
 
-export default defineComponent({
-  name: "LogRemoveForm",
-  props: {
-    id_: Number,
-  },
-  data: () => ({
-    error: null as any,
-  }),
-  methods: {
-    cancel() {
-      this.$emit("cancel");
-      this.delayedReset();
-    },
-    delayedReset() {
-      // reset 0.5 sec after so that the reset form won't be shown.
-      setTimeout(() => {
-        this.reset();
-      }, 500);
-    },
-    reset() {
-      this.error = null;
-    },
-    async remove() {
-      try {
-        const { error } = await client
-          .mutation(DELETE_LOG, { id_: this.id_ })
-          .toPromise();
-        if (error) throw error;
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Removed");
-        this.$emit("finished");
-        this.delayedReset();
-      } catch (error) {
-        this.error = error;
-      }
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
-  },
-});
+const props = defineProps<{
+  id_?: number;
+}>();
+
+interface Emits {
+  (e: "cancel"): void;
+  (e: "finished"): void;
+}
+
+const emit = defineEmits<Emits>();
+
+const store = useStore();
+const error = ref<any>(null);
+
+function cancel() {
+  emit("cancel");
+  delayedReset();
+}
+
+function delayedReset() {
+  // reset 0.5 sec after so that the reset form won't be shown.
+  setTimeout(() => {
+    reset();
+  }, 500);
+}
+
+function reset() {
+  error.value = null;
+}
+
+const { executeMutation } = useDeleteLogMutation();
+async function remove() {
+  try {
+    if (!props.id_) throw new Error("Id is required");
+    const { error } = await executeMutation({
+      id_: props.id_,
+    });
+    if (error) throw error;
+    store.apolloMutationCalled();
+    store.setSnackbarMessage("Removed");
+    emit("finished");
+    delayedReset();
+  } catch (e) {
+    error.value = e;
+  }
+}
 </script>
