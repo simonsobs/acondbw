@@ -32,6 +32,7 @@ export default ({ mode }) => {
     test: {
       globals: true,
       environment: "jsdom",
+      alias: [{ find: /^vue$/, replacement: "vue/dist/vue.runtime.common.js" }],
       exclude: [...defaultExclude, "tests-old/**"],
       setupFiles: "./tests/unit/setup.ts",
     },
