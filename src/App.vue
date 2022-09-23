@@ -92,12 +92,6 @@ export default defineComponent({
 <style>
 @import "../node_modules/github-markdown-css/github-markdown-light.css";
 
-body #app {
-  font-family: "Barlow", sans-serif;
-  /* Repeat font-family here because the one in src/styles/variables.scss is not
-  effective with vite. */
-}
-
 .capitalize {
   text-transform: capitalize;
 }
