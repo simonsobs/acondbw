@@ -1,10 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`Frame.vue match snapshot 1`] = `
-<div>
-  <v-navigation-drawer-stub app="true" mobilebreakpoint="1264" clipped="true" height="100vh" minivariantwidth="56" src="" tag="nav" width="256">
+exports[`Frame.vue > match snapshot 1`] = `
+"<div>
+  <vuecomponent-stub app=\\"true\\" mobilebreakpoint=\\"1264\\" clipped=\\"true\\" height=\\"100vh\\" minivariantwidth=\\"56\\" src=\\"\\" tag=\\"nav\\" width=\\"256\\">
     <navigation-stub></navigation-stub>
-  </v-navigation-drawer-stub>
-  <app-bar-stub></app-bar-stub>
-</div>
+  </vuecomponent-stub>
+  <appbar-stub></appbar-stub>
+</div>"
 `;

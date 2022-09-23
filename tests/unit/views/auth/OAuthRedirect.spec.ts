@@ -1,4 +1,4 @@
-import { jest } from "@jest/globals";
+import { Mock } from "vitest";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
@@ -10,7 +10,7 @@ import OAuthRedirect from "@/views/auth/OAuthRedirect.vue";
 import { createRouter } from "@/router";
 
 import { validateAndDecodeState, UnencodedState } from "@/utils/auth/oauth";
-jest.mock("@/utils/auth/oauth");
+vi.mock("@/utils/auth/oauth");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -40,14 +40,14 @@ describe("OAuthRedirect.vue", () => {
   }
 
   beforeEach(() => {
-    (validateAndDecodeState as jest.Mock).mockReturnValue(rawState);
+    (validateAndDecodeState as Mock).mockReturnValue(rawState);
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     router = createRouter();
   });
 
   afterEach(() => {
-    (validateAndDecodeState as jest.Mock).mockClear();
+    (validateAndDecodeState as Mock).mockClear();
   });
 
   it("match snapshot", async () => {
@@ -64,7 +64,7 @@ describe("OAuthRedirect.vue", () => {
   });
 
   it("failure", async () => {
-    (validateAndDecodeState as jest.Mock).mockReturnValue(null);
+    (validateAndDecodeState as Mock).mockReturnValue(null);
     await router.push({ name: "OAuthRedirect", query: query });
     createWrapper();
     expect(router.currentRoute.name).toBe("Entry");

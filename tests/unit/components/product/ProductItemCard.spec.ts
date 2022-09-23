@@ -1,11 +1,10 @@
+import { Mock } from "vitest";
 import Vue, { ref, nextTick } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
-
-import "@testing-library/jest-dom";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 import { createRouter } from "@/router";
@@ -17,7 +16,7 @@ import { ProductQuery } from "@/generated/graphql";
 import { CombinedError } from "@urql/core";
 
 import { useQuery } from "@urql/vue";
-jest.mock("@urql/vue");
+vi.mock("@urql/vue");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -167,15 +166,15 @@ describe("ProductItemCard.vue", () => {
       error: ref(undefined),
       fetching: ref(false),
       isPaused: ref(false),
-      executeQuery: jest.fn(),
+      executeQuery: vi.fn(),
     };
-    (useQuery as jest.Mock).mockReturnValue(query);
+    (useQuery as Mock).mockReturnValue(query);
     pinia = createTestingPinia();
     const store = useStore(pinia);
   });
 
   afterEach(() => {
-    (useQuery as jest.Mock).mockReset();
+    (useQuery as Mock).mockReset();
   });
 
   it("loading", async () => {

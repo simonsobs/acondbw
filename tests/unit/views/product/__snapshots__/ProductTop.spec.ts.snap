@@ -1,47 +1,41 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`ProductTop.vue match snapshot item 1`] = `
-<v-container-stub tag="div" class="product-top" style="position: relative;">
-  <v-row-stub tag="div">
-    <v-col-stub tag="div">
+exports[`ProductTop.vue > match snapshot item 1`] = `
+"<vuecomponent-stub data-v-8ec89bbf=\\"\\" tag=\\"div\\" class=\\"product-top\\" style=\\"position: relative;\\">
+  <vuecomponent-stub data-v-8ec89bbf=\\"\\" tag=\\"div\\">
+    <vuecomponent-stub data-v-8ec89bbf=\\"\\" tag=\\"div\\">
       <!---->
-      <v-card-stub loaderheight="4" tag="div" flat="true">
-        <v-card-title-stub tag="div" class="text-h4 primary--text justify-space-between"><span><v-icon-stub large="" class="me-3">mdi-map</v-icon-stub> <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub> <!----></span> <span><v-tooltip-stub opendelay="800" closedelay="0" left="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
-                Settings:
-                <span class="capitalize font-italic">
-                  maps
-                </span></span></v-tooltip-stub></span></v-card-title-stub>
-        <transition-stub name="fade-product-top-leave" mode="out-in">
-          <keep-alive-stub>
-            <router-view-stub name="default" producttypeid="1"></router-view-stub>
-          </keep-alive-stub>
-        </transition-stub>
-      </v-card-stub>
-    </v-col-stub>
-  </v-row-stub>
-  <dev-tool-loading-state-menu-stub top="-10px"></dev-tool-loading-state-menu-stub>
-</v-container-stub>
+      <vuecomponent-stub data-v-8ec89bbf=\\"\\" loaderheight=\\"4\\" tag=\\"div\\" flat=\\"true\\">
+        <vuecomponent-stub data-v-8ec89bbf=\\"\\" tag=\\"div\\" class=\\"text-h4 primary--text justify-space-between\\"><span data-v-8ec89bbf=\\"\\"><vuecomponent-stub data-v-8ec89bbf=\\"\\" large=\\"\\" class=\\"me-3\\">mdi-map</vuecomponent-stub><router-link-stub data-v-8ec89bbf=\\"\\" to=\\"[object Object]\\" tag=\\"a\\" ariacurrentvalue=\\"page\\" event=\\"click\\" class=\\"capitalize\\" style=\\"text-decoration: none;\\">maps</router-link-stub><!----></span><span data-v-8ec89bbf=\\"\\"><vuecomponent-stub data-v-8ec89bbf=\\"\\" opendelay=\\"800\\" closedelay=\\"0\\" left=\\"true\\" openonclick=\\"true\\" openonhover=\\"true\\" openonfocus=\\"true\\" contentclass=\\"\\" maxwidth=\\"auto\\" nudgebottom=\\"0\\" nudgeleft=\\"0\\" nudgeright=\\"0\\" nudgetop=\\"0\\" nudgewidth=\\"0\\" tag=\\"span\\"><span data-v-8ec89bbf=\\"\\"> Settings: <span data-v-8ec89bbf=\\"\\" class=\\"capitalize font-italic\\"> maps </span></span></vuecomponent-stub></span>
+      </vuecomponent-stub>
+      <transition-stub data-v-8ec89bbf=\\"\\" name=\\"fade-product-top-leave\\" mode=\\"out-in\\">
+        <keep-alive-stub data-v-8ec89bbf=\\"\\">
+          <router-view-stub data-v-8ec89bbf=\\"\\" name=\\"default\\" producttypeid=\\"1\\"></router-view-stub>
+        </keep-alive-stub>
+      </transition-stub>
+    </vuecomponent-stub>
+  </vuecomponent-stub>
+</vuecomponent-stub>
+<devtoolloadingstatemenu-stub data-v-8ec89bbf=\\"\\" top=\\"-10px\\" right=\\"-10px\\"></devtoolloadingstatemenu-stub>
+</vuecomponent-stub>"
 `;
 
-exports[`ProductTop.vue match snapshot list 1`] = `
-<v-container-stub tag="div" class="product-top" style="position: relative;">
-  <v-row-stub tag="div">
-    <v-col-stub tag="div">
+exports[`ProductTop.vue > match snapshot list 1`] = `
+"<vuecomponent-stub data-v-8ec89bbf=\\"\\" tag=\\"div\\" class=\\"product-top\\" style=\\"position: relative;\\">
+  <vuecomponent-stub data-v-8ec89bbf=\\"\\" tag=\\"div\\">
+    <vuecomponent-stub data-v-8ec89bbf=\\"\\" tag=\\"div\\">
       <!---->
-      <v-card-stub loaderheight="4" tag="div" flat="true">
-        <v-card-title-stub tag="div" class="text-h4 primary--text justify-space-between"><span><v-icon-stub large="" class="me-3">mdi-map</v-icon-stub> <router-link-stub to="[object Object]" tag="a" ariacurrentvalue="page" event="click" class="capitalize" style="text-decoration: none;">maps</router-link-stub> <!----></span> <span><v-tooltip-stub opendelay="800" closedelay="0" left="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>
-                Settings:
-                <span class="capitalize font-italic">
-                  maps
-                </span></span></v-tooltip-stub></span></v-card-title-stub>
-        <transition-stub name="fade-product-top-leave" mode="out-in">
-          <keep-alive-stub>
-            <router-view-stub name="default" producttypeid="1"></router-view-stub>
-          </keep-alive-stub>
-        </transition-stub>
-      </v-card-stub>
-    </v-col-stub>
-  </v-row-stub>
-  <dev-tool-loading-state-menu-stub top="-10px"></dev-tool-loading-state-menu-stub>
-</v-container-stub>
+      <vuecomponent-stub data-v-8ec89bbf=\\"\\" loaderheight=\\"4\\" tag=\\"div\\" flat=\\"true\\">
+        <vuecomponent-stub data-v-8ec89bbf=\\"\\" tag=\\"div\\" class=\\"text-h4 primary--text justify-space-between\\"><span data-v-8ec89bbf=\\"\\"><vuecomponent-stub data-v-8ec89bbf=\\"\\" large=\\"\\" class=\\"me-3\\">mdi-map</vuecomponent-stub><router-link-stub data-v-8ec89bbf=\\"\\" to=\\"[object Object]\\" tag=\\"a\\" ariacurrentvalue=\\"page\\" event=\\"click\\" class=\\"capitalize\\" style=\\"text-decoration: none;\\">maps</router-link-stub><!----></span><span data-v-8ec89bbf=\\"\\"><vuecomponent-stub data-v-8ec89bbf=\\"\\" opendelay=\\"800\\" closedelay=\\"0\\" left=\\"true\\" openonclick=\\"true\\" openonhover=\\"true\\" openonfocus=\\"true\\" contentclass=\\"\\" maxwidth=\\"auto\\" nudgebottom=\\"0\\" nudgeleft=\\"0\\" nudgeright=\\"0\\" nudgetop=\\"0\\" nudgewidth=\\"0\\" tag=\\"span\\"><span data-v-8ec89bbf=\\"\\"> Settings: <span data-v-8ec89bbf=\\"\\" class=\\"capitalize font-italic\\"> maps </span></span></vuecomponent-stub></span>
+      </vuecomponent-stub>
+      <transition-stub data-v-8ec89bbf=\\"\\" name=\\"fade-product-top-leave\\" mode=\\"out-in\\">
+        <keep-alive-stub data-v-8ec89bbf=\\"\\">
+          <router-view-stub data-v-8ec89bbf=\\"\\" name=\\"default\\" producttypeid=\\"1\\"></router-view-stub>
+        </keep-alive-stub>
+      </transition-stub>
+    </vuecomponent-stub>
+  </vuecomponent-stub>
+</vuecomponent-stub>
+<devtoolloadingstatemenu-stub data-v-8ec89bbf=\\"\\" top=\\"-10px\\" right=\\"-10px\\"></devtoolloadingstatemenu-stub>
+</vuecomponent-stub>"
 `;

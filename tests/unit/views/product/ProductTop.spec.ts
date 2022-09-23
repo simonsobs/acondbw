@@ -1,3 +1,4 @@
+import { Mock } from "vitest";
 import Vue, { ref, nextTick } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
@@ -14,7 +15,7 @@ import { useAuthStore } from "@/stores/auth";
 import { ProductTypeByNameQuery } from "@/generated/graphql";
 
 import { useQuery } from "@urql/vue";
-jest.mock("@urql/vue");
+vi.mock("@urql/vue");
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -38,7 +39,7 @@ describe("ProductTop.vue", () => {
       fetching: ref(false),
       isPaused: ref(false),
     };
-    (useQuery as jest.Mock).mockReturnValue(query);
+    (useQuery as Mock).mockReturnValue(query);
     const pinia = createTestingPinia();
     wrapper = shallowMount(ProductTop, {
       localVue,
@@ -59,7 +60,7 @@ describe("ProductTop.vue", () => {
   });
 
   afterEach(() => {
-    (useQuery as jest.Mock).mockReset();
+    (useQuery as Mock).mockReset();
   });
 
   it("match snapshot list", async () => {

@@ -1,22 +1,22 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`ProductItem.vue match snapshot 1`] = `
-<v-container-stub tag="div" class="product-item" style="position: relative;">
-  <v-row-stub tag="div">
-    <v-col-stub tag="div" class="pb-0">
-      <v-card-actions-stub tag="div" class="align-end" style="height: 56px;">
-        <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Back to the list</span></v-tooltip-stub>
-        <v-tooltip-stub opendelay="800" closedelay="0" bottom="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span>Refresh</span></v-tooltip-stub>
-        <v-spacer-stub tag="div"></v-spacer-stub>
-      </v-card-actions-stub>
-    </v-col-stub>
-  </v-row-stub>
-  <v-row-stub tag="div">
-    <v-col-stub tag="div" class="pt-0">
-      <productitemcard-stub productid="1013"></productitemcard-stub>
-    </v-col-stub>
+exports[`ProductItem.vue > match snapshot 1`] = `
+"<vuecomponent-stub tag=\\"div\\" class=\\"product-item\\" style=\\"position: relative;\\">
+  <vuecomponent-stub tag=\\"div\\">
+    <vuecomponent-stub tag=\\"div\\" class=\\"pb-0\\">
+      <vuecomponent-stub tag=\\"div\\" class=\\"align-end\\" style=\\"height: 56px;\\">
+        <vuecomponent-stub opendelay=\\"800\\" closedelay=\\"0\\" bottom=\\"true\\" openonclick=\\"true\\" openonhover=\\"true\\" openonfocus=\\"true\\" contentclass=\\"\\" maxwidth=\\"auto\\" nudgebottom=\\"0\\" nudgeleft=\\"0\\" nudgeright=\\"0\\" nudgetop=\\"0\\" nudgewidth=\\"0\\" tag=\\"span\\"><span>Back to the list</span></vuecomponent-stub>
+        <vuecomponent-stub opendelay=\\"800\\" closedelay=\\"0\\" bottom=\\"true\\" openonclick=\\"true\\" openonhover=\\"true\\" openonfocus=\\"true\\" contentclass=\\"\\" maxwidth=\\"auto\\" nudgebottom=\\"0\\" nudgeleft=\\"0\\" nudgeright=\\"0\\" nudgetop=\\"0\\" nudgewidth=\\"0\\" tag=\\"span\\"><span>Refresh</span></vuecomponent-stub>
+        <vuecomponent-stub tag=\\"div\\"></vuecomponent-stub>
+      </vuecomponent-stub>
+    </vuecomponent-stub>
+  </vuecomponent-stub>
+  <vuecomponent-stub tag=\\"div\\">
+    <vuecomponent-stub tag=\\"div\\" class=\\"pt-0\\">
+      <productitemcard-stub productid=\\"1013\\"></productitemcard-stub>
+    </vuecomponent-stub>
     <!---->
-  </v-row-stub>
-  <dev-tool-loading-state-menu-stub top="-10px"></dev-tool-loading-state-menu-stub>
-</v-container-stub>
+  </vuecomponent-stub>
+  <devtoolloadingstatemenu-stub top=\\"-10px\\" right=\\"-10px\\"></devtoolloadingstatemenu-stub>
+</vuecomponent-stub>"
 `;
