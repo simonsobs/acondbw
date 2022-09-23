@@ -25,7 +25,7 @@ fi
     command="cd $HTML_DIR"
     echo + $command
     $command
-    for f in js/*;
+    for f in assets/*;
     do
         if [ -f $f ]; then
             command="sed -i \"s#$PLACEHOLDER#$VITE_GRAPHQL_HTTP#g\" $f";
