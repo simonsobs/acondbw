@@ -1,17 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`AdminAppTokenCard.vue match snapshot 1`] = `
-<div class="v-card v-card--flat v-sheet theme--light">
-  <div class="v-card__title">Admin App</div>
-  <div class="v-card__actions"><button type="button" class="v-btn v-btn--block v-btn--outlined theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate v-icon--left mdi mdi-github theme--light"></i>Store Admin App Token
-    </span></button></div>
-</div>
+exports[`AdminAppTokenCard.vue > match snapshot 1`] = `
+"<div class=\\"v-card v-card--flat v-sheet theme--light\\">
+  <div class=\\"v-card__title\\">Admin App</div>
+  <div class=\\"v-card__actions\\"><button type=\\"button\\" class=\\"v-btn v-btn--block v-btn--outlined theme--light v-size--default\\"><span class=\\"v-btn__content\\"><i aria-hidden=\\"true\\" class=\\"v-icon notranslate v-icon--left mdi mdi-github theme--light\\"></i>Store Admin App Token </span></button></div>
+</div>"
 `;
 
-exports[`AdminAppTokenCard.vue match snapshot loading 1`] = `
-<div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="v-progress-circular v-progress-circular--visible v-progress-circular--indeterminate secondary--text" style="height: 18px; width: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="24 24 48 48" style="transform: rotate(0deg);">
-    <circle fill="transparent" cx="48" cy="48" r="20" stroke-width="8" stroke-dasharray="125.664" stroke-dashoffset="125.66370614359172px" class="v-progress-circular__overlay"></circle>
-  </svg>
-  <div class="v-progress-circular__info"></div>
-</div>
+exports[`AdminAppTokenCard.vue > match snapshot loading 1`] = `
+"<div class=\\"v-card v-card--flat v-sheet theme--light\\">
+  <div class=\\"v-card__title\\">Admin App</div>
+  <div class=\\"v-card__actions\\"><button type=\\"button\\" class=\\"v-btn v-btn--block v-btn--outlined theme--light v-size--default\\"><span class=\\"v-btn__content\\"><i aria-hidden=\\"true\\" class=\\"v-icon notranslate v-icon--left mdi mdi-github theme--light\\"></i>Store Admin App Token </span></button></div>
+</div>"
 `;

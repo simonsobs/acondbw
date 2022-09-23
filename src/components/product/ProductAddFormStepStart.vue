@@ -19,9 +19,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import FormStart, { FormStepStart } from "./FormStart.vue";
+import FormStart from "./FormStart.vue";
 
-export { FormStepStart };
+type FormStepStart = NonNullable<InstanceType<typeof FormStart>["value"]>;
 
 export default defineComponent({
   name: "ProductAddFormStepStart",

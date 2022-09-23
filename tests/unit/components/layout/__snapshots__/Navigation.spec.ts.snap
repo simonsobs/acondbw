@@ -1,52 +1,52 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`App.vue match snapshot 1`] = `
-<div class="navigation">
-  <v-card-stub loaderheight="4" tag="div" flat="true">
-    <v-list-stub shaped="true" tag="div">
-      <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
-        <v-list-item-action-stub class="mr-5">
-          <v-icon-stub>mdi-creation</v-icon-stub>
-        </v-list-item-action-stub>
-        <v-list-item-content-stub tag="div">
-          <v-list-item-title-stub tag="div" class="capitalize condensed-font font-weight-medium">simulations</v-list-item-title-stub>
-        </v-list-item-content-stub>
-        <v-list-item-icon-stub class="ml-2">
+exports[`App.vue > match snapshot 1`] = `
+"<div class=\\"navigation\\">
+  <vuecomponent-stub loaderheight=\\"4\\" tag=\\"div\\" flat=\\"true\\">
+    <vuecomponent-stub shaped=\\"true\\" tag=\\"div\\">
+      <vuecomponent-stub activeclass=\\"\\" link=\\"true\\" to=\\"[object Object]\\" tag=\\"div\\" router=\\"\\">
+        <vuecomponent-stub class=\\"mr-5\\">
+          <vuecomponent-stub>mdi-creation</vuecomponent-stub>
+        </vuecomponent-stub>
+        <vuecomponent-stub tag=\\"div\\">
+          <vuecomponent-stub tag=\\"div\\" class=\\"capitalize condensed-font font-weight-medium\\">simulations</vuecomponent-stub>
+        </vuecomponent-stub>
+        <vuecomponent-stub class=\\"ml-2\\">
           <!---->
-        </v-list-item-icon-stub>
-      </v-list-item-stub>
-      <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
-        <v-list-item-action-stub class="mr-5">
-          <v-icon-stub>mdi-map</v-icon-stub>
-        </v-list-item-action-stub>
-        <v-list-item-content-stub tag="div">
-          <v-list-item-title-stub tag="div" class="capitalize condensed-font font-weight-medium">maps</v-list-item-title-stub>
-        </v-list-item-content-stub>
-        <v-list-item-icon-stub class="ml-2">
-          <v-chip-stub small="true" activeclass="" tag="span" active="true" closeicon="$delete" closelabel="$vuetify.close" filtericon="$complete">58</v-chip-stub>
-        </v-list-item-icon-stub>
-      </v-list-item-stub>
-      <v-list-item-stub activeclass="" link="true" to="[object Object]" tag="div" router="">
-        <v-list-item-action-stub class="mr-5">
-          <v-icon-stub>mdi-spotlight-beam</v-icon-stub>
-        </v-list-item-action-stub>
-        <v-list-item-content-stub tag="div">
-          <v-list-item-title-stub tag="div" class="capitalize condensed-font font-weight-medium">beams</v-list-item-title-stub>
-        </v-list-item-content-stub>
-        <v-list-item-icon-stub class="ml-2">
-          <v-chip-stub small="true" activeclass="" tag="span" active="true" closeicon="$delete" closelabel="$vuetify.close" filtericon="$complete">5</v-chip-stub>
-        </v-list-item-icon-stub>
-      </v-list-item-stub>
-    </v-list-stub>
+        </vuecomponent-stub>
+      </vuecomponent-stub>
+      <vuecomponent-stub activeclass=\\"\\" link=\\"true\\" to=\\"[object Object]\\" tag=\\"div\\" router=\\"\\">
+        <vuecomponent-stub class=\\"mr-5\\">
+          <vuecomponent-stub>mdi-map</vuecomponent-stub>
+        </vuecomponent-stub>
+        <vuecomponent-stub tag=\\"div\\">
+          <vuecomponent-stub tag=\\"div\\" class=\\"capitalize condensed-font font-weight-medium\\">maps</vuecomponent-stub>
+        </vuecomponent-stub>
+        <vuecomponent-stub class=\\"ml-2\\">
+          <vuecomponent-stub small=\\"true\\" activeclass=\\"\\" tag=\\"span\\" active=\\"true\\" closeicon=\\"$delete\\" closelabel=\\"$vuetify.close\\" filtericon=\\"$complete\\">58</vuecomponent-stub>
+        </vuecomponent-stub>
+      </vuecomponent-stub>
+      <vuecomponent-stub activeclass=\\"\\" link=\\"true\\" to=\\"[object Object]\\" tag=\\"div\\" router=\\"\\">
+        <vuecomponent-stub class=\\"mr-5\\">
+          <vuecomponent-stub>mdi-spotlight-beam</vuecomponent-stub>
+        </vuecomponent-stub>
+        <vuecomponent-stub tag=\\"div\\">
+          <vuecomponent-stub tag=\\"div\\" class=\\"capitalize condensed-font font-weight-medium\\">beams</vuecomponent-stub>
+        </vuecomponent-stub>
+        <vuecomponent-stub class=\\"ml-2\\">
+          <vuecomponent-stub small=\\"true\\" activeclass=\\"\\" tag=\\"span\\" active=\\"true\\" closeicon=\\"$delete\\" closelabel=\\"$vuetify.close\\" filtericon=\\"$complete\\">5</vuecomponent-stub>
+        </vuecomponent-stub>
+      </vuecomponent-stub>
+    </vuecomponent-stub>
     <!---->
-    <v-card-actions-stub tag="div" class="px-5 py-0">
-      <v-spacer-stub tag="div"></v-spacer-stub>
-      <v-tooltip-stub opendelay="800" closedelay="0" left="true" openonclick="true" openonhover="true" openonfocus="true" contentclass="" maxwidth="auto" nudgebottom="0" nudgeleft="0" nudgeright="0" nudgetop="0" nudgewidth="0" tag="span"> <span> Add a product type </span></v-tooltip-stub>
-    </v-card-actions-stub>
+    <vuecomponent-stub tag=\\"div\\" class=\\"px-5 py-0\\">
+      <vuecomponent-stub tag=\\"div\\"></vuecomponent-stub>
+      <vuecomponent-stub opendelay=\\"800\\" closedelay=\\"0\\" left=\\"true\\" openonclick=\\"true\\" openonhover=\\"true\\" openonfocus=\\"true\\" contentclass=\\"\\" maxwidth=\\"auto\\" nudgebottom=\\"0\\" nudgeleft=\\"0\\" nudgeright=\\"0\\" nudgetop=\\"0\\" nudgewidth=\\"0\\" tag=\\"span\\"><span> Add a product type </span></vuecomponent-stub>
+    </vuecomponent-stub>
     <!---->
     <!---->
-  </v-card-stub>
-  <v-bottom-navigation-stub absolute="true" height="56" inputvalue="true" activeclass="v-btn--active" tag="div" class="px-3 justify-start align-center"><span class="grey--text text-caption"> v0.1.1 </span></v-bottom-navigation-stub>
-  <dev-tool-loading-state-menu-stub top="-10px"></dev-tool-loading-state-menu-stub>
-</div>
+  </vuecomponent-stub>
+  <vuecomponent-stub absolute=\\"true\\" height=\\"56\\" inputvalue=\\"true\\" activeclass=\\"v-btn--active\\" tag=\\"div\\" class=\\"px-3 justify-start align-center\\"><span class=\\"grey--text text-caption\\"> v0.1.1 </span></vuecomponent-stub>
+  <devtoolloadingstatemenu-stub top=\\"-10px\\" right=\\"-10px\\"></devtoolloadingstatemenu-stub>
+</div>"
 `;

@@ -1,4 +1,6 @@
+import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
 import { redirectToGitHubAuthURL } from "@/utils/auth/oauth";
+import { Client } from "@urql/vue";
 
 describe("redirectToGitHubAuthURL", () => {
   const gitHubOAuthAppInfo = {
@@ -14,23 +16,24 @@ describe("redirectToGitHubAuthURL", () => {
   // @ts-ignore
   delete window.location;
 
-  let urqlClient;
+  let urqlClient: Client;
 
   beforeEach(() => {
-    window.location = { ...locationOrg, assign: jest.fn() };
-    urqlClient = { query: jest.fn() };
+    window.location = { ...locationOrg, assign: vi.fn() };
+    // @ts-ignore
+    urqlClient = { query: vi.fn() };
   });
   afterEach(() => {
     window.location = locationOrg;
   });
 
   it("success", async () => {
-    (urqlClient.query as jest.Mock).mockReturnValue({
-      toPromise: jest.fn().mockResolvedValue({ data: { gitHubOAuthAppInfo } }),
+    (urqlClient.query as ReturnType<typeof vi.fn>).mockReturnValue({
+      toPromise: vi.fn().mockResolvedValue({ data: { gitHubOAuthAppInfo } }),
     });
     await redirectToGitHubAuthURL(urqlClient, scope, state);
     expect(window.location.assign).toHaveBeenCalled();
-    const lastCall = (window.location.assign as jest.Mock).mock.lastCall;
+    const lastCall = (window.location.assign as any).mock.lastCall;
     const href = lastCall[0];
     const url = href.split("?")[0];
     const query: any = getJsonFromUrl(href);

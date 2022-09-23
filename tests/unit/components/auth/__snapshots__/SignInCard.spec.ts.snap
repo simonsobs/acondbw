@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`SignInCard.vue match snapshot 1`] = `
-<v-card-stub loaderheight="4" tag="div" flat="true">
-  <v-card-title-stub tag="div">Sign In</v-card-title-stub>
-  <v-card-actions-stub tag="div">
-    <v-btn-stub outlined="true" tag="button" activeclass="" block="true" type="button">
-      <v-icon-stub left="">mdi-github</v-icon-stub>Sign In with GitHub
-    </v-btn-stub>
-  </v-card-actions-stub>
-</v-card-stub>
+exports[`SignInCard.vue > match snapshot 1`] = `
+"<vuecomponent-stub loaderheight=\\"4\\" tag=\\"div\\" flat=\\"true\\">
+  <vuecomponent-stub tag=\\"div\\">Sign In</vuecomponent-stub>
+  <vuecomponent-stub tag=\\"div\\">
+    <vuecomponent-stub outlined=\\"true\\" tag=\\"button\\" activeclass=\\"\\" block=\\"true\\" type=\\"button\\">
+      <vuecomponent-stub left=\\"\\">mdi-github</vuecomponent-stub>Sign In with GitHub
+    </vuecomponent-stub>
+  </vuecomponent-stub>
+</vuecomponent-stub>"
 `;
 
-exports[`SignInCard.vue match snapshot loading 1`] = `<v-progress-circular-stub color="secondary" indeterminate="true" rotate="0" size="18" width="3" value="0"></v-progress-circular-stub>`;
+exports[`SignInCard.vue > match snapshot loading 1`] = `"<vuecomponent-stub color=\\"secondary\\" indeterminate=\\"true\\" rotate=\\"0\\" size=\\"18\\" width=\\"3\\" value=\\"0\\"></vuecomponent-stub>"`;

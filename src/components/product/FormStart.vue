@@ -164,7 +164,7 @@ function parsableAsDate(value: string) {
   return true;
 }
 
-export interface FormStepStart {
+interface FormStepStart {
   name: string;
   dateProduced: string;
   producedBy: string;

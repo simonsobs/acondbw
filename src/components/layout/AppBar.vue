@@ -73,7 +73,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const title = computed(() => store.webConfig.toolbarTitle || "");
-    // const graphiqlUrl = ref(process.env.VUE_APP_GRAPHQL_HTTP);
+    // const graphiqlUrl = ref(import.meta.env.VUE_APP_GRAPHQL_HTTP);
 
     return {
       title,

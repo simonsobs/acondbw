@@ -1,3 +1,4 @@
+import { Mock } from "vitest";
 import Vue, { ref, nextTick } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
@@ -10,7 +11,7 @@ import { createRouter } from "@/router";
 import { useStore } from "@/stores/main";
 
 import { useQuery, useMutation } from "@urql/vue";
-jest.mock("@urql/vue");
+vi.mock("@urql/vue");
 
 import {
   ProductQuery,
@@ -32,7 +33,7 @@ describe("ProductDeleteForm.vue", () => {
   >;
 
   function createWrapper({ propsData = {} } = {}) {
-    const mutate = jest.fn();
+    const mutate = vi.fn();
     let wrapper = mount(ProductDeleteForm, {
       localVue,
       router,
@@ -69,18 +70,18 @@ describe("ProductDeleteForm.vue", () => {
       error: ref(undefined),
       fetching: ref(false),
     };
-    (useQuery as jest.Mock).mockReturnValue(query);
+    (useQuery as Mock).mockReturnValue(query);
     // @ts-ignore
     mutation = {
-      executeMutation: jest.fn(),
+      executeMutation: vi.fn(),
     };
-    (useMutation as jest.Mock).mockReturnValue(mutation);
-    (mutation.executeMutation as jest.Mock).mockReturnValue({ error: null });
+    (useMutation as Mock).mockReturnValue(mutation);
+    (mutation.executeMutation as Mock).mockReturnValue({ error: null });
   });
 
   afterEach(() => {
-    (useQuery as jest.Mock).mockReset();
-    (useMutation as jest.Mock).mockReset();
+    (useQuery as Mock).mockReset();
+    (useMutation as Mock).mockReset();
   });
 
   it("loading", async () => {

@@ -113,7 +113,7 @@ import { useQuery } from "@urql/vue";
 
 import { useQueryState } from "@/utils/query-state";
 
-export interface Relation {
+interface Relation {
   productId: number;
   typeId: number;
 }

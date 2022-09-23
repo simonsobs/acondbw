@@ -1,31 +1,31 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`SignInError.vue match snapshot with error 1`] = `
-<v-container-stub tag="div" fluid="true" fill-height="">
-  <v-row-stub tag="div" align="center" justify="center">
-    <v-card-stub loaderheight="4" tag="div" minwidth="250px" flat="true">
-      <v-card-title-stub tag="div">Sign In Unsuccessful</v-card-title-stub>
+exports[`SignInError.vue > match snapshot with error 1`] = `
+"<vuecomponent-stub tag=\\"div\\" fluid=\\"true\\" fill-height=\\"\\">
+  <vuecomponent-stub tag=\\"div\\" align=\\"center\\" justify=\\"center\\">
+    <vuecomponent-stub loaderheight=\\"4\\" tag=\\"div\\" minwidth=\\"250px\\" flat=\\"true\\">
+      <vuecomponent-stub tag=\\"div\\">Sign In Unsuccessful</vuecomponent-stub>
       <!---->
-      <v-card-actions-stub tag="div">
-        <v-spacer-stub tag="div"></v-spacer-stub>
-        <v-btn-stub outlined="true" tag="button" activeclass="" to="/" type="button">Go back</v-btn-stub>
-      </v-card-actions-stub>
-    </v-card-stub>
-  </v-row-stub>
-</v-container-stub>
+      <vuecomponent-stub tag=\\"div\\">
+        <vuecomponent-stub tag=\\"div\\"></vuecomponent-stub>
+        <vuecomponent-stub outlined=\\"true\\" tag=\\"button\\" activeclass=\\"\\" to=\\"/\\" type=\\"button\\">Go back</vuecomponent-stub>
+      </vuecomponent-stub>
+    </vuecomponent-stub>
+  </vuecomponent-stub>
+</vuecomponent-stub>"
 `;
 
-exports[`SignInError.vue match snapshot without error 1`] = `
-<v-container-stub tag="div" fluid="true" fill-height="">
-  <v-row-stub tag="div" align="center" justify="center">
-    <v-card-stub loaderheight="4" tag="div" minwidth="250px" flat="true">
-      <v-card-title-stub tag="div">Sign In Unsuccessful</v-card-title-stub>
+exports[`SignInError.vue > match snapshot without error 1`] = `
+"<vuecomponent-stub tag=\\"div\\" fluid=\\"true\\" fill-height=\\"\\">
+  <vuecomponent-stub tag=\\"div\\" align=\\"center\\" justify=\\"center\\">
+    <vuecomponent-stub loaderheight=\\"4\\" tag=\\"div\\" minwidth=\\"250px\\" flat=\\"true\\">
+      <vuecomponent-stub tag=\\"div\\">Sign In Unsuccessful</vuecomponent-stub>
       <!---->
-      <v-card-actions-stub tag="div">
-        <v-spacer-stub tag="div"></v-spacer-stub>
-        <v-btn-stub outlined="true" tag="button" activeclass="" to="/" type="button">Go back</v-btn-stub>
-      </v-card-actions-stub>
-    </v-card-stub>
-  </v-row-stub>
-</v-container-stub>
+      <vuecomponent-stub tag=\\"div\\">
+        <vuecomponent-stub tag=\\"div\\"></vuecomponent-stub>
+        <vuecomponent-stub outlined=\\"true\\" tag=\\"button\\" activeclass=\\"\\" to=\\"/\\" type=\\"button\\">Go back</vuecomponent-stub>
+      </vuecomponent-stub>
+    </vuecomponent-stub>
+  </vuecomponent-stub>
+</vuecomponent-stub>"
 `;
