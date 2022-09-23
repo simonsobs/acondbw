@@ -49,13 +49,15 @@ export default defineComponent({
     login: "",
     error: null as any,
   }),
-  validations: { login: { required } },
+  validations() {
+    return { login: { required } };
+  },
   computed: {
     loginErrors() {
       const errors: string[] = [];
       const field = this.v$.login;
       if (!field.$dirty) return errors;
-      !field.required && errors.push("This field is required");
+      field.required.$invalid && errors.push("This field is required");
       return errors;
     },
   },
