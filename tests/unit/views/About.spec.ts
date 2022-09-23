@@ -1,12 +1,14 @@
-import { describe, expect, beforeEach, afterEach, it, vi, Mock } from "vitest";
-import Vue, { ref } from "vue";
+import { describe, expect, beforeEach, afterEach, it } from "vitest";
+import Vue, { ref, Ref } from "vue";
 import Vuetify from "vuetify";
 import { mount, createLocalVue } from "@vue/test-utils";
+import { Client as UrqlClient } from "@urql/vue";
+import { fromValue } from "wonka";
 
 import About from "@/views/framework/About.vue";
 
 import { useVersionQuery, VersionQuery } from "@/generated/graphql";
-vi.mock("@/generated/graphql");
+// vi.mock("@/generated/graphql");
 
 Vue.use(Vuetify);
 
@@ -14,28 +16,24 @@ describe("About.vue", () => {
   let localVue: ReturnType<typeof createLocalVue>;
   let vuetify: Vuetify;
   let wrapper: ReturnType<typeof mount<About>>;
-  let query: ReturnType<typeof useVersionQuery>;
+  let mockUrqlClient: Ref<UrqlClient>;
 
   beforeEach(() => {
     localVue = createLocalVue();
     vuetify = new Vuetify();
-    // @ts-ignore
-    query = {
-      data: ref<VersionQuery | undefined>(undefined),
-      error: ref(undefined),
-      fetching: ref(false),
-    };
-    (useVersionQuery as Mock).mockReturnValue(query);
-    query.data.value = { version: "0.0.1.test" };
+    const response = { data: { version: "0.0.1.test" } };
+    mockUrqlClient = ref({
+      // @ts-ignore
+      executeQuery: ({ query }) => fromValue(response),
+    });
     wrapper = mount(About, {
       localVue,
       vuetify,
+      provide: { $urql: mockUrqlClient },
     });
   });
 
-  afterEach(() => {
-    (useVersionQuery as Mock).mockReset();
-  });
+  afterEach(() => {});
 
   it("test text", () => {
     const text = wrapper
