@@ -297,15 +297,15 @@
       </v-expand-transition>
     </v-container>
     <v-card-text v-else-if="notFound">Not Found</v-card-text>
-    <dev-tool-loading-state-overriding-menu
+    <dev-tool-loading-state-menu
+      top="-10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-overriding-menu>
+    ></dev-tool-loading-state-menu>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
-import { useStore } from "@/stores/main";
+import { defineComponent, ref, computed } from "vue";
 import _ from "lodash";
 
 import { marked } from "marked";
@@ -317,8 +317,7 @@ import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 
 import { useProductQuery } from "@/generated/graphql";
 
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "ProductItemCard",
@@ -327,7 +326,6 @@ export default defineComponent({
     ProductUpdateRelationsForm,
     ProductConvertTypeForm,
     ProductDeleteForm,
-    DevToolLoadingStateOverridingMenu,
   },
   props: {
     productId: { type: Number, required: true }, // node.productId not node.id
@@ -337,10 +335,6 @@ export default defineComponent({
     disableDelete: { type: Boolean, default: false },
   },
   setup(prop, { emit }) {
-    const store = useStore();
-    const init = ref(true);
-    const error = ref<string | null>(null);
-    const devtoolState = ref<number | null>(null);
     const query = useProductQuery({ variables: { productId: prop.productId } });
     const node = computed(() => query.data?.value?.product);
     const timePosted = computed(() => formatDateTime(node.value?.timePosted));
@@ -386,35 +380,6 @@ export default defineComponent({
       );
       return ret;
     });
-    watch(query.data, (data) => {
-      if (data) init.value = false;
-    });
-    watch(query.error, (e) => {
-      init.value = false;
-      error.value = e?.message || null;
-    });
-    watch(
-      () => store.nApolloMutations,
-      () => {
-        query.executeQuery({ requestPolicy: "network-only" });
-      },
-      { immediate: true }
-    );
-    watch(devtoolState, (val) => {
-      if (val) init.value = val === State.INIT;
-      error.value = val === State.ERROR ? "Error from Dev Tools" : null;
-    });
-    const state = computed(() => {
-      if (devtoolState.value !== null) return devtoolState.value;
-      if (query.fetching.value) return State.LOADING;
-      if (error.value) return State.ERROR;
-      if (node.value) return State.LOADED;
-      if (init.value) return State.INIT;
-      return State.NONE;
-    });
-    const loading = computed(() => state.value === State.LOADING);
-    const loaded = computed(() => state.value === State.LOADED);
-    const notFound = computed(() => state.value === State.NONE);
     function formatDateTime(dateTime: string | undefined | null) {
       if (!dateTime) return null;
       const sinceEpoch = Date.parse(dateTime);
@@ -478,21 +443,14 @@ export default defineComponent({
       menu.value = false;
     }
     return {
-      init,
-      error,
-      devtoolState,
+      ...useQueryState(query, { isNull: () => node.value === null }),
       query,
-      State,
       node,
       timePosted,
       timeUpdated,
       note,
       relations,
       attributes,
-      state,
-      loading,
-      loaded,
-      notFound,
       formatDateTime,
       menu,
       editDialog,

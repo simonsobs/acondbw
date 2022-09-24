@@ -39,7 +39,7 @@ describe("ProductItemCard.vue", () => {
         ...propsData,
       },
       stubs: {
-        "dev-tool-loading-state-overriding-menu": true,
+        "dev-tool-loading-state-menu": true,
       },
     });
 
