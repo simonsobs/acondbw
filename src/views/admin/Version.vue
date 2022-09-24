@@ -18,26 +18,12 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
-import { mapState } from "pinia";
+<script setup lang="ts">
+import { ref } from "vue"
 import { useStore } from "@/stores/main";
-import VERSIONS from "@/graphql/queries/Versions.gql";
-
-export default defineComponent({
-  data() {
-    return {
-      versions: null,
-    };
-  },
-  computed: {
-    ...mapState(useStore, ["appVersion"]),
-  },
-  apollo: {
-    versions: {
-      query: VERSIONS,
-      update: (data) => data,
-    },
-  },
-});
+import { useVersionsQuery } from "@/generated/graphql";
+const store = useStore();
+const appVersion = ref(store.appVersion);
+const query = useVersionsQuery();
+const versions = query.data;
 </script>
