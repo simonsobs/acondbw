@@ -42,7 +42,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, PropType } from "vue";
+import { defineComponent, ref, watch, PropType } from "vue";
+import { useClientHandle } from "@urql/vue";
 import { marked } from "marked";
 
 import QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW from "@/graphql/queries/QueryForProductAddFormRelationsPreview.gql";
@@ -51,8 +52,6 @@ import {
   QueryForProductAddFormRelationsPreviewQuery,
   CreateProductInput,
 } from "@/generated/graphql";
-
-import { client } from "@/plugins/urql";
 
 interface AttributePreviewItem {
   field: string;
@@ -71,76 +70,21 @@ export default defineComponent({
     createProductInput: Object as PropType<CreateProductInput>,
     productType: Object as PropType<QueryForProductAddFormQuery["productType"]>,
   },
-  data() {
-    return {
-      error: null as any,
-      attributePreview: null as AttributePreviewItem[] | null,
-      relationPreview: null as RelationPreviewItem[] | null,
-      notePreview: null as string | null,
-    };
-  },
-  watch: {
-    async createProductInput() {
-      this.error = null;
-      this.attributePreview = null;
-      this.relationPreview = null;
-      this.notePreview = null;
+  setup(prop) {
+    const urqlClientHandle = useClientHandle();
+    const error = ref<any>(null);
+    const attributePreview = ref<AttributePreviewItem[] | null>(null);
+    const relationPreview = ref<RelationPreviewItem[] | null>(null);
+    const notePreview = ref<string | null>(null);
 
-      if (!this.createProductInput) return;
-      if (!this.productType) return;
-
-      try {
-        const filedMap =
-          this.productType?.fields?.edges.reduce(
-            (a, e) =>
-              e?.node?.field
-                ? Object.assign(a, {
-                    [e.node.fieldId]: e.node.field.name.replaceAll("_", " "),
-                  })
-                : a,
-            {} as { [key: number]: string }
-          ) || {};
-
-        const attributes = this.createProductInput.attributes;
-        // @ts-ignore
-        this.attributePreview = attributes
-          ? Object.values(attributes).reduce(
-              // @ts-ignore
-              (l, t: { fieldId: number; value: any }[]) => {
-                if (t)
-                  l.push(
-                    ...t.map((p) => ({
-                      field: filedMap[p.fieldId],
-                      value: p.value,
-                    }))
-                  );
-                return l;
-              },
-              [] as AttributePreviewItem[]
-            )
-          : [];
-
-        this.relationPreview = await this.composeRelationPreview(
-          this.createProductInput.relations
-        );
-
-        this.notePreview = this.createProductInput.note
-          ? marked.parse(this.createProductInput.note)
-          : null;
-      } catch (error) {
-        this.error = error;
-      }
-    },
-  },
-  methods: {
-    async composeRelationPreview(
+    async function composeRelationPreview(
       relations: CreateProductInput["relations"]
     ): Promise<RelationPreviewItem[]> {
       // https://flaviocopes.com/javascript-async-await-array-map/
       const ret = relations
         ? await Promise.all(
             relations.map(async (r) => {
-              const { error, data } = await client
+              const { error, data } = await urqlClientHandle.client
                 .query<QueryForProductAddFormRelationsPreviewQuery>(
                   QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
                   {
@@ -150,15 +94,78 @@ export default defineComponent({
                 )
                 .toPromise();
               return {
-                relationTypeSingular: data?.productRelationType?.singular || undefined,
-                productTypeSingular: data?.product?.type_?.singular || undefined,
+                relationTypeSingular:
+                  data?.productRelationType?.singular || undefined,
+                productTypeSingular:
+                  data?.product?.type_?.singular || undefined,
                 productName: data?.product?.name || undefined,
               };
             })
           )
         : [];
       return ret;
-    },
+    }
+
+    watch(
+      () => prop.createProductInput,
+      async (val) => {
+        error.value = null;
+        attributePreview.value = null;
+        relationPreview.value = null;
+        notePreview.value = null;
+
+        if (!val) return;
+        if (!prop.productType) return;
+
+        try {
+          const filedMap =
+            prop.productType?.fields?.edges.reduce(
+              (a, e) =>
+                e?.node?.field
+                  ? Object.assign(a, {
+                      [e.node.fieldId]: e.node.field.name.replaceAll("_", " "),
+                    })
+                  : a,
+              {} as { [key: number]: string }
+            ) || {};
+
+          const attributes = val.attributes;
+          // @ts-ignore
+          attributePreview.value = attributes
+            ? Object.values(attributes).reduce(
+                // @ts-ignore
+                (l, t: { fieldId: number; value: any }[]) => {
+                  if (t)
+                    l.push(
+                      ...t.map((p) => ({
+                        field: filedMap[p.fieldId],
+                        value: p.value,
+                      }))
+                    );
+                  return l;
+                },
+                [] as AttributePreviewItem[]
+              )
+            : [];
+
+          relationPreview.value = await composeRelationPreview(val.relations);
+
+          notePreview.value = val.note
+            ? marked.parse(val.note)
+            : null;
+        } catch (e) {
+          error.value = e;
+        }
+      }
+    );
+
+    return {
+      error,
+      attributePreview,
+      relationPreview,
+      notePreview,
+      composeRelationPreview,
+    };
   },
 });
 </script>
