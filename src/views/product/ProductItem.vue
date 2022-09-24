@@ -46,7 +46,7 @@
       <v-col v-else-if="loaded && node" class="pt-0">
         <component
           :is="productItemCard"
-          :productId="node.productId"
+          :productId="Number(node.productId)"
           :collapsible="false"
           @deleted="onDeleted"
           @nameChanged="onNameChanged($event)"

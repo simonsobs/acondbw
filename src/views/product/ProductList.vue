@@ -99,7 +99,7 @@
           :is="productItemCard"
           v-for="node in nodes"
           :key="node.id"
-          :productId="node.productId"
+          :productId="Number(node.productId)"
           :collapsible="true"
           :collapsed="isCardCollapsed[node.id]"
           v-on:expand="isCardCollapsed[node.id] = false"

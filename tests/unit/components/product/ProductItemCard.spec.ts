@@ -35,7 +35,7 @@ describe("ProductItemCard.vue", () => {
       vuetify,
       pinia,
       propsData: {
-        productId: "1013",
+        productId: 1013,
         ...propsData,
       },
       stubs: {

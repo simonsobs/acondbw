@@ -333,7 +333,7 @@ export default defineComponent({
     DevToolLoadingStateOverridingMenu,
   },
   props: {
-    productId: { type: String, required: true }, // node.productId not node.id
+    productId: { type: Number, required: true }, // node.productId not node.id
     collapsed: { type: Boolean, default: false },
     collapsible: { type: Boolean, default: false },
     disableEdit: { type: Boolean, default: false },
