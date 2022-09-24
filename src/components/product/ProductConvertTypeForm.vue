@@ -9,7 +9,7 @@
     </v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      <span>
+      <span v-if="node && node.type_">
         Current type:
         <span class="font-italic"> {{ node.type_.singular }} </span>
       </span>
@@ -33,81 +33,93 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { mapActions } from "pinia";
+import { defineComponent, PropType, ref, computed } from "vue";
 import { useStore } from "@/stores/main";
 
-import CONVERT_PRODUCT_TYPE from "@/graphql/mutations/ConvertProductType.gql";
-import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
-import PRODUCT_TYPE from "@/graphql/queries/ProductType.gql";
+import {
+  useConvertProductTypeMutation,
+  useProductQuery,
+  useAllProductTypesQuery,
+  useProductTypeQuery,
+} from "@/generated/graphql";
 
-import { client } from "@/plugins/urql";
+type Product = NonNullable<
+  NonNullable<
+    NonNullable<ReturnType<typeof useProductQuery>["data"]>["value"]
+  >["product"]
+>;
 
 export default defineComponent({
   name: "ProductConvertTypeForm",
   props: {
-    node: Object,
+    node: { type: Object as PropType<Product>, required: true },
   },
-  data() {
-    return {
-      newTypeId: this.node.type_.typeId,
-      allProductTypes: { edges: [] },
-      productType: { name: this.node.type_.name },
-      error: null,
-    };
-  },
-  computed: {
-    items() {
-      return (
-        this.allProductTypes.edges
-          // .filter(({ node }) => node.typeId != this.node.type_.typeId)
-          .map(({ node }) => ({
-            text: node.singular,
-            value: node.typeId,
-          }))
-      );
-    },
-    unchanged() {
-      return (
-        this.newTypeId == this.node.type_.typeId &&
-        this.newTypeName == this.node.type_.name
-      );
-    },
-    newTypeName() {
-      return this.productType.name;
-    },
-  },
-  apollo: {
-    allProductTypes: {
-      query: ALL_PRODUCT_TYPES,
-    },
-    productType: {
-      query: PRODUCT_TYPE,
-      variables() {
-        return {
-          typeId: this.newTypeId,
-        };
-      },
-    },
-  },
-  methods: {
-    async submit() {
+  setup(prop, { emit }) {
+    const error = ref<any>(null);
+    const store = useStore();
+    const typeId = prop.node.type_?.typeId;
+    const newTypeId = ref<number | undefined>(
+      typeId ? Number(typeId) : undefined
+    );
+    const productTypeQuery = useProductTypeQuery({
+      variables: { typeId: newTypeId },
+    });
+    const productType = computed(
+      () => productTypeQuery.data?.value?.productType
+    );
+
+    const allProductTypesQuery = useAllProductTypesQuery();
+    const allProductTypes = computed(
+      () => allProductTypesQuery.data?.value?.allProductTypes
+    );
+
+    const items = computed(
+      () =>
+        allProductTypes?.value?.edges.flatMap((e) =>
+          e?.node
+            ? {
+                text: e.node.singular,
+                value: Number(e.node.typeId),
+              }
+            : []
+        ) || []
+    );
+
+    const newTypeName = computed(() => productType.value?.name);
+
+    const unchanged = computed(
+      () =>
+        newTypeId.value === Number(prop.node?.type_?.typeId) &&
+        newTypeName.value === prop.node.type_?.name
+    );
+
+    const { executeMutation } = useConvertProductTypeMutation();
+    async function submit() {
       try {
-        const { error } = await client
-          .mutation(CONVERT_PRODUCT_TYPE, {
-            productId: this.node.productId,
-            typeId: this.newTypeId,
-          })
-          .toPromise();
+        if(!newTypeId.value) throw new Error("typeId is required");
+        const { error } = await executeMutation({
+          productId: Number(prop.node.productId),
+          typeId: newTypeId.value,
+        });
         if (error) throw error;
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Converted");
-        this.$emit("finished", this.newTypeName);
-      } catch (error) {
-        this.error = error;
+        store.apolloMutationCalled();
+        store.setSnackbarMessage("Converted");
+        emit("finished", newTypeName.value);
+      } catch (e) {
+        error.value = e;
       }
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
+    }
+
+    return {
+      error,
+      newTypeId,
+      productType,
+      allProductTypes,
+      items,
+      newTypeName,
+      unchanged,
+      submit
+    };
   },
 });
 </script>
