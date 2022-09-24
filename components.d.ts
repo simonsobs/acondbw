@@ -7,7 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AdminAppTokenCard: typeof import('./src/components/admin-token/AdminAppTokenCard.vue')['default']
     AppBar: typeof import('./src/components/layout/AppBar.vue')['default']
     Dashboard: typeof import('./src/components/product/Dashboard.vue')['default']
     DevToolLoadingStateMenu: typeof import('./src/components/utils/DevToolLoadingStateMenu.vue')['default']

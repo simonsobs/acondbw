@@ -35,7 +35,6 @@ const Log = () => import("@/views/admin/Log.vue");
 const Config = () => import("@/views/admin/Config.vue");
 const Theme = () => import("@/views/admin/Theme.vue");
 const User = () => import("@/views/admin/User.vue");
-const AdminAppToken = () => import("@/views/admin-token/AdminAppToken.vue");
 const AdminAppAuth = () => import("@/views/admin-token/AdminAppAuth.vue");
 const AdminAppTokenError = () =>
   import("@/views/admin-token/AdminAppTokenError.vue");
@@ -155,11 +154,6 @@ const routes: Array<RouteConfig> = [
     name: "AdminUser",
     components: { default: User, frame: FrameAdmin },
     meta: { requiresAdmin: true },
-  },
-  {
-    path: "/admin/token",
-    name: "AdminAppToken",
-    components: { default: AdminAppToken, frame: FrameAdmin },
   },
   {
     path: "/admin/auth",
