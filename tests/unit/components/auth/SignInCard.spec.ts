@@ -1,5 +1,5 @@
 import { Mock } from "vitest";
-import Vue from "vue";
+import Vue, { ref } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
@@ -47,6 +47,7 @@ describe("SignInCard.vue", () => {
       vuetify: new Vuetify(),
       pinia,
       propsData,
+      provide: { $urql: ref({}) },
     });
   }
 

@@ -17,11 +17,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref, computed } from "vue";
+import { useRouter } from "vue-router/composables";
 import { Location, RawLocation } from "vue-router";
-import { mapActions } from "pinia";
+import { useClientHandle } from "@urql/vue";
 import { useAuthStore } from "@/stores/auth";
-import { client } from "@/plugins/urql";
 
 import {
   redirectToGitHubAuthURL,
@@ -38,41 +38,54 @@ export default defineComponent({
       default: () => ({ name: "Dashboard" } as RawLocation),
     },
   },
-  data() {
-    return {
-      loading: false,
-      redirect: { name: "Auth" } as Location,
-      scope: "", // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-    };
-  },
-  computed: {
-    option(): string {
+  setup(prop) {
+    const router = useRouter();
+    const urqlClientHandle = useClientHandle();
+    const authStore = useAuthStore();
+
+    const loading = ref(false);
+
+    const option = computed(() => {
       // https://stackoverflow.com/a/8084248/7309855
       const randomString = (Math.random() + 1).toString(36).substring(7);
-      const rawOption = { path: this.path, randomString };
+      const rawOption = { path: prop.path, randomString };
       return JSON.stringify(rawOption);
-    },
-    rawState(): UnencodedState {
-      return {
-        redirect: this.redirect,
-        option: this.option,
-      };
-    },
-  },
-  methods: {
-    async signIn() {
-      this.loading = true;
+    });
+
+    const redirect = ref<Location>({ name: "Auth" });
+
+    const rawState = computed<UnencodedState>(() => ({
+      redirect: redirect.value,
+      option: option.value,
+    }));
+
+    const scope = ref(""); // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
+
+    async function signIn() {
+      loading.value = true;
       try {
-        this.clearAuthError();
-        const state = encodeAndStoreState(this.rawState);
-        await redirectToGitHubAuthURL(client, this.scope, state);
+        authStore.clearAuthError();
+        const state = encodeAndStoreState(rawState.value);
+        await redirectToGitHubAuthURL(
+          urqlClientHandle.client,
+          scope.value,
+          state
+        );
       } catch (error) {
         clearState();
-        this.$router.push({ name: "SignInError" });
-        this.loading = false;
+        router.push({ name: "SignInError" });
+        loading.value = false;
       }
-    },
-    ...mapActions(useAuthStore, { clearAuthError: "clearAuthError" }),
+    }
+
+    return {
+      loading,
+      option,
+      redirect,
+      rawState,
+      scope,
+      signIn,
+    };
   },
 });
 </script>
