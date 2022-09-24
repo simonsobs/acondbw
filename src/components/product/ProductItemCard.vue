@@ -310,15 +310,12 @@ import _ from "lodash";
 
 import { marked } from "marked";
 
-import PRODUCT from "@/graphql/queries/Product.gql";
-import { ProductQuery } from "@/generated/graphql";
-
 import ProductEditForm from "@/components/product/ProductEditForm.vue";
 import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
 import ProductConvertTypeForm from "@/components/product/ProductConvertTypeForm.vue";
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 
-import { useQuery } from "@urql/vue";
+import { useProductQuery } from "@/generated/graphql";
 
 import State from "@/utils/LoadingState";
 import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
@@ -344,10 +341,7 @@ export default defineComponent({
     const init = ref(true);
     const error = ref<string | null>(null);
     const devtoolState = ref<number | null>(null);
-    const query = useQuery<ProductQuery>({
-      query: PRODUCT,
-      variables: { productId: prop.productId },
-    });
+    const query = useProductQuery({ variables: { productId: prop.productId } });
     const node = computed(() => query.data?.value?.product);
     const timePosted = computed(() => formatDateTime(node.value?.timePosted));
     const timeUpdated = computed(() => formatDateTime(node.value?.timeUpdated));
