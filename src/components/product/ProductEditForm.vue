@@ -34,113 +34,157 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { mapActions } from "pinia";
+import { defineComponent, PropType, ref, computed } from "vue";
 import { useStore } from "@/stores/main";
 
 import { camelCase } from "camel-case";
 
-import UPDATE_PRODUCT from "@/graphql/mutations/UpdateProduct.gql";
-import { client } from "@/plugins/urql";
-import { Product } from "@/generated/graphql";
+import {
+  useProductQuery,
+  useUpdateProductMutation,
+  UpdateProductInput,
+} from "@/generated/graphql";
+
 import FormStart from "./FormStart.vue";
+
+type Product = NonNullable<
+  NonNullable<
+    NonNullable<ReturnType<typeof useProductQuery>["data"]>["value"]
+  >["product"]
+>;
+
+interface Attribute {
+  fieldId: number;
+  name: string;
+  value: unknown;
+}
+
+interface Attributes {
+  [key: string]: Attribute;
+}
+
+type TypeFieldAssociation = NonNullable<
+  NonNullable<
+    NonNullable<
+      NonNullable<NonNullable<Product["type_"]>["fields"]>["edges"]
+    >[number]
+  >["node"]
+>;
+
+interface Fields {
+  [key: string]: TypeFieldAssociation;
+}
 
 export default defineComponent({
   name: "ProductEditForm",
-  components: {
-    FormStart,
-  },
+  components: { FormStart },
   props: {
-    node: Object as PropType<Product>,
-    attributes: Object,
+    node: { type: Object as PropType<Product>, required: true },
+    attributes: { type: Object as PropType<Attributes>, required: true },
   },
-  data() {
-    const initialValue = {
-      name: this.node?.name,
-      dateProduced: this.attributes?.["date_produced"].value as
+  setup(prop, { emit }) {
+    const store = useStore();
+    const error = ref<any>(null);
+    const initialValue = ref({
+      name: prop.node.name,
+      dateProduced: prop.attributes["date_produced"].value as
         | string
         | undefined,
-      producedBy: this.attributes?.["produced_by"].value as string | undefined,
-      contact: this.attributes?.["contact"].value as string | undefined,
-      paths: this.node?.paths?.edges?.flatMap((e) => e?.node?.path).join("\n"),
-      note: this.node?.note,
-    };
-    return {
-      initialValue,
-      value: { ...initialValue },
-      valid: false,
-      error: null as string | null,
-    };
-  },
-  computed: {
-    fields() {
-      const ret = this.node?.type_?.fields?.edges.reduce(
-        // @ts-ignore
-        (a, { node }) => ({
-          ...a,
-          ...{
-            [camelCase(node.field.name)]: node,
-          },
-        }),
-        {}
-      );
-      return ret;
-    },
-    unchanged() {
-      return JSON.stringify(this.value) === JSON.stringify(this.initialValue);
-    },
-    input() {
-      if (!this.valid) return null;
-      return this.composeUpdateProductInput(this.value, this.initialValue);
-    },
-  },
-  watch: {},
-  methods: {
-    composeUpdateProductInput(value, initialValue) {
-      const ret = {};
-      if (value.name != initialValue.name) ret.name = value.name;
-      if (value.note != initialValue.note) ret.note = value.note;
+      producedBy: prop.attributes["produced_by"].value as string | undefined,
+      contact: prop.attributes["contact"].value as string | undefined,
+      paths: prop.node.paths?.edges?.flatMap((e) => e?.node?.path).join("\n"),
+      note: prop.node.note,
+    });
 
-      if (value.paths != initialValue.paths)
+    const value = ref({ ...initialValue.value });
+
+    const valid = ref(false);
+
+    const fields = computed(() =>
+      prop.node?.type_?.fields?.edges.reduce(
+        (a, e) =>
+          e?.node?.field
+            ? {
+                ...a,
+                ...{
+                  [camelCase(e.node.field.name)]: e.node,
+                },
+              }
+            : a,
+        {} as Fields
+      )
+    );
+
+    const unchanged = computed(
+      () => JSON.stringify(value.value) === JSON.stringify(initialValue.value)
+    );
+
+    const input = computed(() =>
+      valid.value
+        ? composeUpdateProductInput(value.value, initialValue.value)
+        : null
+    );
+
+    type Value = typeof value.value;
+
+    function composeUpdateProductInput(value: Value, initialValue: Value) {
+      const ret: UpdateProductInput = {};
+      if (value.name !== initialValue.name) ret.name = value.name;
+      if (value.note !== initialValue.note) ret.note = value.note;
+
+      if (value.paths !== initialValue.paths)
         ret.paths = value.paths
-          .split("\n")
+          ?.split("\n")
           .map((x) => x.trim()) // trim e.g., " /a/b/c " => "/a/b/c"
           .filter(Boolean) // remove empty strings
           .filter((v, i, a) => a.indexOf(v) === i); // unique
 
       const keys = ["contact", "dateProduced", "producedBy"].filter(
-        (k) => value[k] != initialValue[k] && k in this.fields
+        (k) => value[k] !== initialValue[k] && k in (fields.value || {})
       );
       if (keys.length)
         ret.attributes = keys.reduce((a, k) => {
-          const typeName = camelCase(this.fields[k].field.type_);
+          const typeEnum = fields.value?.[k].field?.type_
+          if(!typeEnum) throw new Error("no type")
+          const typeName = camelCase(typeEnum);
           a[typeName] = a[typeName] ? a[typeName] : [];
           a[typeName].push({
-            fieldId: this.fields[k].fieldId,
+            fieldId: fields.value[k].fieldId,
             value: value[k],
           });
           return a;
         }, {});
 
       return ret;
-    },
-    async submit() {
+    }
+
+    const { executeMutation } = useUpdateProductMutation();
+    async function submit() {
       try {
-        const { error, data } = await client
-          .mutation(UPDATE_PRODUCT, {
-            productId: this.node.productId,
-            input: this.input,
-          })
-          .toPromise();
+        if(input.value === null) throw new Error("input is null")
+        const { error } = await executeMutation({
+          productId: Number(prop.node.productId),
+          input: input.value,
+        }); 
         if (error) throw error;
-        this.apolloMutationCalled();
-        this.setSnackbarMessage("Updated");
-        this.$emit("finished", this.input.name);
-      } catch (error) {
-        this.error = error;
+        store.apolloMutationCalled();
+        store.setSnackbarMessage("Updated");
+        emit("finished", input.value.name);
+      } catch (e) {
+        error.value = e;
       }
-    },
-    ...mapActions(useStore, ["apolloMutationCalled", "setSnackbarMessage"]),
+    };
+
+    return {
+      error,
+      initialValue,
+      value,
+      valid,
+      fields,
+      unchanged,
+      input,
+      submit,
+    };
   },
 });
 </script>
