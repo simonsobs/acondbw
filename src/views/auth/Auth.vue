@@ -10,52 +10,57 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapActions } from "pinia";
+import { defineComponent, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
+import { useClientHandle } from "@urql/vue";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
-import { client } from "@/plugins/urql";
 import { validateState, decodeState } from "@/utils/auth/oauth";
 
 export default defineComponent({
   name: "Auth",
-  data: () => ({}),
-  methods: {
-    async main() {
-      const state = this.$route.query.state;
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
+    const authStore = useAuthStore();
+    const urqlClientHandle = useClientHandle();
+
+    async function main() {
+      const state = route.query.state;
       if (!(typeof state === "string" && validateState(state))) {
-        this.$router.push({ path: "/" });
+        router.push({ name: "Entry" });
         return;
       }
 
-      if (this.$route.query.error) {
-        this.setRequestAuthError(this.$route.query);
-        this.$router.push({ name: "SignInError" });
+      if (route.query.error) {
+        authStore.setRequestAuthError(route.query);
+        router.push({ name: "SignInError" });
         return;
       }
 
-      const code = this.$route.query.code;
+      const code = route.query.code;
       if (!(typeof code === "string" && code)) {
-        this.$router.push({ name: "Entry" });
+        router.push({ name: "Entry" });
         return;
       }
 
       try {
-        await this.signIn(code, state, client);
+        await authStore.signIn(code, state, urqlClientHandle.client);
       } catch (error) {
-        this.$router.push({ name: "SignInError" });
+        router.push({ name: "SignInError" });
         return;
       }
       const rawState = decodeState(state);
       const { path } = JSON.parse(rawState.option);
-      this.setSnackbarMessage("Signed in");
-      await this.$router.push(path);
-    },
-    ...mapActions(useStore, ["setSnackbarMessage"]),
-    ...mapActions(useAuthStore, ["setRequestAuthError", "signIn"]),
-  },
-  mounted: async function () {
-    await this.main();
+      store.setSnackbarMessage("Signed in");
+      await router.push(path);
+    };
+
+    onMounted(async () => {
+      await main();
+    });
+
   },
 });
 </script>
