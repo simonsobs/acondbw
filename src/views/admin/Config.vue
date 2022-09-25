@@ -78,119 +78,147 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapState, mapActions } from "pinia";
+import { defineComponent, ref, computed, watch } from "vue";
+import { useClientHandle } from "@urql/vue";
 import { useStore } from "@/stores/main";
-import { client } from "@/plugins/urql";
+
+// https://stackoverflow.com/a/66430948/7309855
+let a_: any;
+const t_ = typeof a_;
+type TypeOfTypes = typeof t_;
+
+interface Item {
+  key: string;
+  value: string;
+  type: TypeOfTypes;
+}
+
+interface StringKeyObject {
+  [key: string]: unknown;
+}
 
 export default defineComponent({
   name: "Config",
-  data() {
-    return {
-      first: true,
-      webConfigOriginal: {},
-      itemsOriginal: [],
-      items: [],
-      headers: [
-        { text: "Key", value: "key" },
-        { text: "Value (stringified)", value: "value" },
-        { text: "Type", value: "type" },
-      ],
-      error: null,
-    };
-  },
-  computed: {
-    itemsInStore() {
-      return this.reshapeWebConfigToItems(this.webConfig);
-    },
-    changed() {
-      return !(
-        JSON.stringify(this.items) === JSON.stringify(this.itemsOriginal)
-      );
-    },
-    slotName() {
-      return "item.key";
-    },
-    ...mapState(useStore, ["webConfig", "webConfigLoaded"]),
-  },
-  watch: {
-    webConfigLoaded: {
-      immediate: true,
-      handler(newValue) {
-        if (!newValue) return;
-        if (!this.first) return;
-        this.copyOriginal();
-        // this.webConfigOriginal = this.nestedCopy(this.webConfig);
-        // this.itemsOriginal = this.reshapeWebConfigToItems(
-        //   this.webConfigOriginal
-        // );
-        // this.items = this.nestedCopy(this.itemsOriginal);
-        this.first = false;
-      },
-    },
-  },
-  methods: {
-    copyOriginal() {
-      this.webConfigOriginal = this.nestedCopy(this.webConfig);
-      this.itemsOriginal = this.reshapeWebConfigToItems(this.webConfigOriginal);
-      this.items = this.nestedCopy(this.itemsOriginal);
-    },
-    nestedCopy(data) {
-      return JSON.parse(JSON.stringify(data));
-    },
-    reshapeWebConfigToItems(webConfig) {
+  setup() {
+    const store = useStore();
+    const urqlClientHandle = useClientHandle();
+    const error = ref<any>(null);
+    const first = ref(true);
+
+    const webConfig = computed(() => store.webConfig);
+    const itemsInStore = computed(() =>
+      reshapeWebConfigToItems(webConfig.value)
+    );
+
+    function reshapeWebConfigToItems(webConfig: StringKeyObject) {
       return Object.entries(webConfig).map((e) => ({
         key: e[0],
         value: JSON.stringify(e[1]),
         type: typeof e[1],
       }));
-    },
-    reshapeItemsToWebConfig(items) {
+    }
+
+    function reshapeItemsToWebConfig(items: Item[]) {
       const webConfig = items.reduce(
         (a, item) => ({
           ...a,
           ...{ [item.key]: JSON.parse(item.value) },
         }),
-        {}
+        {} as StringKeyObject
       );
       return webConfig;
-    },
-    reset() {
-      this.items = this.nestedCopy(this.itemsOriginal);
-      this.setWebConfig(this.webConfigOriginal);
-      this.error = null;
-    },
-    saveToServer() {
-      this.uploadWebConfig(client);
-      this.copyOriginal();
-    },
-    save(item) {
-      this.error = null;
+    }
+
+    const webConfigOriginal = ref<typeof webConfig.value>({});
+    const itemsOriginal = ref<Item[]>([]);
+    const items = ref<Item[]>([]);
+
+    const changed = computed(
+      () =>
+        !(JSON.stringify(items.value) === JSON.stringify(itemsOriginal.value))
+    );
+
+    function copyOriginal() {
+      webConfigOriginal.value = nestedCopy(webConfig.value);
+      itemsOriginal.value = reshapeWebConfigToItems(webConfigOriginal.value);
+      items.value = nestedCopy(itemsOriginal.value);
+    }
+
+    function nestedCopy<T>(data: T): T {
+      return JSON.parse(JSON.stringify(data));
+    }
+
+    watch(
+      () => store.webConfigLoaded,
+      (newValue) => {
+        if (!newValue) return;
+        if (!first.value) return;
+        copyOriginal();
+        first.value = false;
+      },
+      { immediate: true }
+    );
+
+    function reset() {
+      items.value = nestedCopy(itemsOriginal.value);
+      store.setWebConfig(webConfigOriginal.value);
+      error.value = null;
+    }
+
+    function saveToServer() {
+      store.uploadWebConfig(urqlClientHandle.client);
+      copyOriginal();
+    }
+
+    function save(item: Item) {
+      error.value = null;
 
       try {
         item.type = typeof JSON.parse(item.value);
       } catch (e) {
-        item.type = `error: cannot parse "${item.value}"`;
-        this.error = e;
+        error.value = e;
+        return;
       }
 
-      if (this.error) return;
-
-      let webConfig;
+      let webConfig: StringKeyObject;
       try {
-        webConfig = this.reshapeItemsToWebConfig(this.items);
+        webConfig = reshapeItemsToWebConfig(items.value);
       } catch (e) {
-        this.error = e;
+        error.value = e;
+        return;
       }
 
-      if (this.error) return;
+      store.setWebConfig(webConfig);
+    }
 
-      this.setWebConfig(webConfig);
-    },
-    cancel() {},
-    open() {},
-    close() {},
-    ...mapActions(useStore, ["setWebConfig", "uploadWebConfig"]),
+    function cancel() {}
+    function open() {}
+    function close() {}
+
+    const headers = ref([
+      { text: "Key", value: "key" },
+      { text: "Value (stringified)", value: "value" },
+      { text: "Type", value: "type" },
+    ]);
+
+    return {
+      error,
+      first,
+      webConfig,
+      itemsInStore,
+      webConfigOriginal,
+      itemsOriginal,
+      items,
+      changed,
+      headers,
+      slotName: ref("item.key"),
+      reset,
+      saveToServer,
+      save,
+      cancel,
+      open,
+      close,
+    };
   },
 });
 </script>
