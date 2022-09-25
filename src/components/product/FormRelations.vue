@@ -223,7 +223,7 @@ export default defineComponent({
           e?.node
             ? {
                 text: `${e.node.name} (${e.node.type_?.singular})`,
-                value: e.node.productId,
+                value: Number(e.node.productId),
               }
             : []
         )
