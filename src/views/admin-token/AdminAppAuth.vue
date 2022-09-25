@@ -12,45 +12,48 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
-import { mapActions } from "pinia";
+import { defineComponent, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router/composables";
+import { useClientHandle } from "@urql/vue";
 import { useStore } from "@/stores/main";
 
 import { storeAdminAppToken } from "@/utils/admin-token";
 
-import { client } from "@/plugins/urql"
-
 export default defineComponent({
   name: "AdminAppAuth",
-  data: () => ({}),
-  methods: {
-    async main() {
-      if (this.$route.query.error) {
-        this.$router.push({ name: "AdminAppTokenError" });
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
+    const urqlClientHandle = useClientHandle();
+
+    async function main() {
+      if (route.query.error) {
+        router.push({ name: "AdminAppTokenError" });
         return;
       }
 
-      const code = this.$route.query.code;
+      const code = route.query.code;
       if (!code) {
-        this.$router.push({ path: "/" });
+        router.push({ name: "Entry" });
         return;
       }
 
-      const state = this.$route.query.state;
+      const state = route.query.state;
       try {
-        await storeAdminAppToken(code, state, client);
+        await storeAdminAppToken(code, state, urqlClientHandle.client);
       } catch (error) {
         // console.log(error);
-        this.$router.push({ name: "AdminAppTokenError" });
+        router.push({ name: "AdminAppTokenError" });
         return;
       }
-      this.setSnackbarMessage("Admin App Token stored");
-      this.$router.push({ name: "AdminUser" });
-    },
-    ...mapActions(useStore, ["setSnackbarMessage"]),
-  },
-  mounted: async function () {
-    this.main();
+      store.setSnackbarMessage("Admin App Token stored");
+      router.push({ name: "AdminUser" });
+    }
+
+    onMounted(async () => {
+      await main();
+    });
   },
 });
 </script>
