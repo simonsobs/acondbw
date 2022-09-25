@@ -319,6 +319,16 @@ import { useProductQuery } from "@/generated/graphql";
 
 import { useQueryState } from "@/utils/query-state";
 
+interface Attribute {
+  fieldId: number;
+  name: string;
+  value: unknown;
+}
+
+interface Attributes {
+  [key: string]: Attribute;
+}
+
 export default defineComponent({
   name: "ProductItemCard",
   components: {
@@ -345,7 +355,7 @@ export default defineComponent({
         ? _.groupBy(node.value.relations.edges, "node.type_.typeId")
         : null
     );
-    const attributes = computed(() => {
+    const attributes = computed<Attributes | null>(() => {
       if (!node.value) return null;
       const thisNode = node.value;
 
@@ -376,7 +386,7 @@ export default defineComponent({
             {}
           ),
         }),
-        {}
+        {} as Attributes
       );
       return ret;
     });
