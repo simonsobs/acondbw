@@ -12,8 +12,8 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, watch, onBeforeMount } from "vue";
+<script setup lang="ts">
+import { ref, computed, watch, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
@@ -22,70 +22,56 @@ import { client as urqlClient } from "@/plugins/urql";
 import { checkAuthForCurrentRoute } from "@/router";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
-export default defineComponent({
-  name: "App",
-  components: {
-    Snackbar,
+const store = useStore();
+const title = computed(() => store.webConfig.headTitle);
+watch(
+  title,
+  (val) => {
+    document.title = val || "loading...";
   },
-  setup() {
-    const store = useStore();
-    const title = computed(() => store.webConfig.headTitle);
-    watch(
-      title,
-      (val) => {
-        document.title = val || "loading...";
-      },
-      { immediate: true }
-    );
+  { immediate: true }
+);
 
-    const transitionName = ref("fade-app-across");
-    const transitionMode = ref("out-in");
-    const route = useRoute();
-    watch(
-      () => route.path,
-      (to, from) => {
-        // update the transition effect dynamically
-        // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
+const transitionName = ref("fade-app-across");
+const transitionMode = ref("out-in");
+const route = useRoute();
+watch(
+  () => route.path,
+  (to, from) => {
+    // update the transition effect dynamically
+    // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
 
-        const toDir = to.split("/")[2]; // e.g., "/product/map/abc-def/" -> "map"
-        const fromDir = from.split("/")[2];
+    const toDir = to.split("/")[2]; // e.g., "/product/map/abc-def/" -> "map"
+    const fromDir = from.split("/")[2];
 
-        if (toDir === fromDir) {
-          transitionName.value = "fade-app-within";
-          transitionMode.value = "out-in";
-        } else {
-          transitionName.value = "fade-app-across";
-          transitionMode.value = "out-in";
-        }
-      }
-    );
+    if (toDir === fromDir) {
+      transitionName.value = "fade-app-within";
+      transitionMode.value = "out-in";
+    } else {
+      transitionName.value = "fade-app-across";
+      transitionMode.value = "out-in";
+    }
+  }
+);
 
-    provideClient(urqlClient);
+provideClient(urqlClient);
 
-    const authStore = useAuthStore();
+const authStore = useAuthStore();
 
-    onBeforeMount(async () => {
-      await store.loadWebConfig(urqlClient);
-      await authStore.checkIfSignedIn(urqlClient);
-    });
-
-    const router = useRouter();
-    watch(
-      () => authStore.isSignedIn,
-      async (val) => {
-        if (val) return;
-        await checkAuthForCurrentRoute(router);
-      },
-      { immediate: true }
-    );
-
-    return {
-      transitionName,
-      transitionMode,
-      route,
-    };
-  },
+onBeforeMount(async () => {
+  await store.loadWebConfig(urqlClient);
+  await authStore.checkIfSignedIn(urqlClient);
 });
+
+const router = useRouter();
+watch(
+  () => authStore.isSignedIn,
+  async (val) => {
+    if (val) return;
+    await checkAuthForCurrentRoute(router);
+  },
+  { immediate: true }
+);
 </script>
 
 <!-- https://github.com/sindresorhus/github-markdown-css -->
