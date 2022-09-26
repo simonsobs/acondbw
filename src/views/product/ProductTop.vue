@@ -65,7 +65,7 @@
             <keep-alive>
               <router-view
                 :key="$route.fullPath"
-                :productTypeId="node ? node.typeId : null"
+                :productTypeId="node ? Number(node.typeId) : null"
                 :disableAdd="disableAdd"
                 :disableEdit="disableEdit"
                 :disableDelete="disableDelete"
