@@ -10,6 +10,6 @@ exports[`App.vue > match snapshot 1`] = `
       </keep-alive-stub>
     </transition-stub>
   </vuecomponent-stub>
-  <snackbar-stub data-v-7a7a37b1=\\"\\"></snackbar-stub>
+  <anonymous-stub data-v-7a7a37b1=\\"\\"></anonymous-stub>
 </vuecomponent-stub>"
 `;
