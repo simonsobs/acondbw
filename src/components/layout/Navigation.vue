@@ -77,70 +77,53 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+<script setup lang="ts">
+import { ref, computed } from "vue";
 import { useStore } from "@/stores/main";
-import { useQuery } from "@urql/vue";
 
-import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
-import { AllProductTypesQuery } from "@/generated/graphql";
+import { useAllProductTypesQuery } from "@/generated/graphql";
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
 import { useQueryState } from "@/utils/query-state";
 
+const store = useStore();
+const { appVersion } = store;
 
-export default defineComponent({
-  name: "Navigation",
-  components: {
-    ProductTypeAddForm,
-  },
-  setup() {
-    const store = useStore();
-    const query = useQuery<AllProductTypesQuery>({
-      query: ALL_PRODUCT_TYPES,
-    });
+const query = useAllProductTypesQuery();
+type Query = typeof query;
 
-    function isEmpty(query: ReturnType<typeof useQuery<AllProductTypesQuery>>) {
-      const edges = readEdges(query);
-      return edges ? edges.length === 0 : false;
-    }
+function readEdges(query: Query) {
+  const edgesAndNulls = query.data?.value?.allProductTypes?.edges;
+  if (!edgesAndNulls) return [];
+  return edgesAndNulls.flatMap((e) => (e ? [e] : []));
+}
 
-    function readEdges(
-      query: ReturnType<typeof useQuery<AllProductTypesQuery>>
-    ) {
-      return query.data?.value?.allProductTypes?.edges?.flatMap((e) =>
-        e ? [e] : []
-      );
-    }
-    const edges = computed(() => readEdges(query) || []);
-    const nodes = computed(() =>
-      edges.value.flatMap((e) => (e.node ? [e.node] : []))
-    );
+function readNodes(query: Query) {
+  return readEdges(query).flatMap((e) => (e.node ? e.node : []));
+}
 
-    const addDialog = ref(false);
+function isEmpty(query: Query) {
+  return readNodes(query).length === 0;
+}
 
-    function onAddFormCancelled() {
-      closeAddForm();
-    }
-    function onAddFormFinished() {
-      closeAddForm();
-    }
-    function closeAddForm() {
-      addDialog.value = false;
-    }
+const queryState = useQueryState(query, { isEmpty });
+const { loading, loaded, empty, error, devtoolState } = queryState;
 
-    return {
-      ...useQueryState(query, { isEmpty }),
-      query,
-      edges,
-      nodes,
-      addDialog,
-      onAddFormCancelled,
-      onAddFormFinished,
-      closeAddForm,
-      appVersion: store.appVersion,
-    };
-  },
-});
+const edges = computed(() => (empty.value ? [] : readEdges(query)));
+const nodes = computed(() => (empty.value ? [] : readNodes(query)));
+
+const addDialog = ref(false);
+
+function onAddFormCancelled() {
+  closeAddForm();
+}
+
+function onAddFormFinished() {
+  closeAddForm();
+}
+
+function closeAddForm() {
+  addDialog.value = false;
+}
 </script>
