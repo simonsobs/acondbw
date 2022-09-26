@@ -16,59 +16,64 @@
   ></v-autocomplete>
 </template>
 
-<script>
-import State from "@/utils/LoadingState";
-import DevToolLoadingStateOverridingMenu from "@/components/utils/DevToolLoadingStateOverridingMenu.vue";
+<script lang="ts">
+import { defineComponent, ref, computed, nextTick } from "vue";
+import { useRouter } from "vue-router/composables";
 
-import QueryForSearchWindow from "@/graphql/queries/QueryForSearchWindow.gql";
+import { useQueryForSearchWindowQuery } from "@/generated/graphql";
 
-export default {
+import { useQueryState } from "@/utils/query-state";
+
+export default defineComponent({
   name: "SearchWindow",
-  components: {
-    DevToolLoadingStateOverridingMenu,
-  },
-  data: () => ({
-    s: 0,
-    value: null,
-    edges: null,
-    devtoolState: null,
-    State: State,
-  }),
-  apollo: {
-    edges: {
-      query: QueryForSearchWindow,
-      update: function (data) {
-        return data.allProducts.edges;
-      },
-      result(result) {},
-    },
-  },
-  computed: {
-    items() {
-      return this.edges
-        ? this.edges.map((edge) => ({
-            text: edge.node.name + " (" + edge.node.type_.singular + ")",
-            value: edge.node,
-          }))
-        : [];
-    },
-  },
-  methods: {
-    focus() {
-      this.s += 1;
-    },
-    input(value) {
-      if (!value.type_) {
-        return;
-      }
-      this.$router.push({
+  setup() {
+    const router = useRouter();
+    const s = ref(0);
+
+    const query = useQueryForSearchWindowQuery();
+    // const edges = computed(() => query.data?.value?.allProducts?.edges);
+    const edges = computed(() =>
+      query.data?.value?.allProducts?.edges.flatMap((e) => (e ? e : []))
+    );
+    const items = computed(() =>
+      edges.value
+        ? edges.value.flatMap((edge) =>
+            edge.node
+              ? {
+                  text: `${edge.node.name} (${edge.node.type_?.singular})`,
+                  value: edge.node,
+                }
+              : []
+          )
+        : []
+    );
+    type Item = typeof items.value[0]["value"];
+    const value = ref<Item | null>(null);
+
+    function focus() {
+      s.value += 1;
+    }
+
+    function input(selected: Item) {
+      if (!selected.type_)  return; 
+      router.push({
         name: "ProductItem",
-        params: { productTypeName: value.type_.name, name: value.name },
+        params: { productTypeName: selected.type_.name, name: selected.name },
       });
-      this.$nextTick(() => {
-        this.value = null;
+      nextTick(() => {
+        value.value = null;
       });
-    },
+    }
+
+    return {
+      ...useQueryState(query),// for nApolloMutations
+      s,
+      edges,
+      items,
+      value,
+      focus,
+      input,
+    };
   },
-};
+});
 </script>
