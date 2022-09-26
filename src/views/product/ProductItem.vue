@@ -66,82 +66,79 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, computed, withDefaults, Component, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
 
-import PRODUCT_BY_TYPE_ID_AND_NAME from "@/graphql/queries/ProductByTypeIdAndName.gql";
-import { ProductByTypeIdAndNameQuery } from "@/generated/graphql";
+import { useProductByTypeIdAndNameQuery } from "@/generated/graphql";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
-import { useQuery } from "@urql/vue";
-
 import { useQueryState } from "@/utils/query-state";
 
-export default defineComponent({
-  name: "ProductItem",
-  components: {
-    ProductItemCard,
-  },
-  props: {
-    productTypeId: { type: String, required: true },
-    productItemCard: { default: "ProductItemCard" },
-    disableEdit: { type: Boolean, default: false },
-    disableDelete: { type: Boolean, default: false },
-  },
-  setup(prop) {
-    const route = useRoute();
-    const router = useRouter();
-    const name = ref<string | null>(null);
-    onMounted(() => {
-      name.value = route.params.name;
-    });
-    const query = useQuery<ProductByTypeIdAndNameQuery>({
-      query: PRODUCT_BY_TYPE_ID_AND_NAME,
-      variables: { typeId: prop.productTypeId, name: name },
-      pause: !name,
-    });
-    const node = computed(() => query.data?.value?.product);
-    const productTypeName = computed(() => node.value?.type_?.name);
-    function onDeleted() {
-      if (productTypeName.value === undefined)
-        throw new Error("productTypeName is undefined");
-      router.push({
-        name: "ProductList",
-        params: { productTypeName: productTypeName.value },
-      });
-    }
-    function onNameChanged(event: string) {
-      if (productTypeName.value === undefined)
-        throw new Error("productTypeName is undefined");
-      router.push({
-        name: "ProductItem",
-        params: {
-          productTypeName: productTypeName.value,
-          name: event,
-        },
-      });
-    }
-    function onTypeChanged(event: string) {
-      if (name.value === null) throw new Error("name is null");
-      router.push({
-        name: "ProductItem",
-        params: {
-          productTypeName: event,
-          name: name.value,
-        },
-      });
-    }
-    return {
-      ...useQueryState(query, { isNull: () => node.value === null }),
-      name,
-      node,
-      productTypeName,
-      onDeleted,
-      onNameChanged,
-      onTypeChanged,
-    };
-  },
+const props = withDefaults(
+  defineProps<{
+    productTypeId: number;
+    productItemCard?: Component;
+    disableEdit?: boolean;
+    disableDelete?: boolean;
+  }>(),
+  {
+    productItemCard: () => ProductItemCard,
+    disableEdit: false,
+    disableDelete: false,
+  }
+);
+
+const route = useRoute();
+const router = useRouter();
+
+const name = ref<string>("");
+
+onMounted(() => {
+  name.value = route.params.name || "";
 });
+
+const query = useProductByTypeIdAndNameQuery({
+  variables: { typeId: props.productTypeId, name: name },
+  pause: !name,
+});
+
+const node = computed(() => query.data?.value?.product);
+const productTypeName = computed(() => node.value?.type_?.name);
+
+function onDeleted() {
+  if (productTypeName.value === undefined)
+    throw new Error("productTypeName is undefined");
+  router.push({
+    name: "ProductList",
+    params: { productTypeName: productTypeName.value },
+  });
+}
+
+function onNameChanged(event: string) {
+  if (productTypeName.value === undefined)
+    throw new Error("productTypeName is undefined");
+  router.push({
+    name: "ProductItem",
+    params: {
+      productTypeName: productTypeName.value,
+      name: event,
+    },
+  });
+}
+
+function onTypeChanged(event: string) {
+  if (name.value === null) throw new Error("name is null");
+  router.push({
+    name: "ProductItem",
+    params: {
+      productTypeName: event,
+      name: name.value,
+    },
+  });
+}
+
+const queryState = useQueryState(query, { isNull: () => node.value === null });
+const { loading, loaded, notFound, error, refresh, devtoolState } = queryState;
 </script>
