@@ -1,24 +1,15 @@
 <template>
-  <v-snackbar :timeout="5000" left bottom color="secondary" :value="snackbar">
+  <v-snackbar :timeout="5000" left bottom color="secondary" v-model="snackbar">
     {{ snackbarMessage }}
-    <v-btn icon @click="closeSnackbar">
+    <v-btn icon @click="snackbar = false">
       <v-icon>mdi-close</v-icon>
     </v-btn>
   </v-snackbar>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
-import { mapState, mapActions } from "pinia";
+<script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { useStore } from "@/stores/main";
-
-export default defineComponent({
-  name: "Snackbar",
-  computed: {
-    ...mapState(useStore, ["snackbar", "snackbarMessage"]),
-  },
-  methods: {
-    ...mapActions(useStore, ["closeSnackbar"]),
-  },
-});
+const store = useStore();
+const { snackbar, snackbarMessage } = storeToRefs(store);
 </script>
