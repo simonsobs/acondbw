@@ -10,7 +10,6 @@ declare module '@vue/runtime-core' {
     AppBar: typeof import('./src/components/layout/AppBar.vue')['default']
     Dashboard: typeof import('./src/components/product/Dashboard.vue')['default']
     DevToolLoadingStateMenu: typeof import('./src/components/utils/DevToolLoadingStateMenu.vue')['default']
-    DevToolLoadingStateOverridingMenu: typeof import('./src/components/utils/DevToolLoadingStateOverridingMenu.vue')['default']
     FormProductType: typeof import('./src/components/product-type/FormProductType.vue')['default']
     FormRelations: typeof import('./src/components/product/FormRelations.vue')['default']
     FormStart: typeof import('./src/components/product/FormStart.vue')['default']
