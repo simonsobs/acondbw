@@ -13,28 +13,43 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onBeforeMount } from "vue";
+import { ref, watch, watchEffect, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
+import { storeToRefs } from "pinia";
+import { provideClient } from "@urql/vue";
+
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
-import { provideClient } from "@urql/vue";
 import { client as urqlClient } from "@/plugins/urql";
 import { checkAuthForCurrentRoute } from "@/router";
+
 import Snackbar from "@/components/layout/Snackbar.vue";
 
+const route = useRoute();
+const router = useRouter();
 const store = useStore();
-const title = computed(() => store.webConfig.headTitle);
-watch(
-  title,
-  (val) => {
-    document.title = val || "loading...";
-  },
-  { immediate: true }
-);
+const authStore = useAuthStore();
+
+const { webConfig } = storeToRefs(store);
+watchEffect(() => {
+  document.title = webConfig.value.headTitle || "loading...";
+});
+
+provideClient(urqlClient);
+
+onBeforeMount(async () => {
+  await store.loadWebConfig(urqlClient);
+  await authStore.checkIfSignedIn(urqlClient);
+});
+
+const { isSignedIn } = storeToRefs(authStore);
+watchEffect(async () => {
+  if (isSignedIn.value) return;
+  await checkAuthForCurrentRoute(router);
+});
 
 const transitionName = ref("fade-app-across");
 const transitionMode = ref("out-in");
-const route = useRoute();
 watch(
   () => route.path,
   (to, from) => {
@@ -52,25 +67,6 @@ watch(
       transitionMode.value = "out-in";
     }
   }
-);
-
-provideClient(urqlClient);
-
-const authStore = useAuthStore();
-
-onBeforeMount(async () => {
-  await store.loadWebConfig(urqlClient);
-  await authStore.checkIfSignedIn(urqlClient);
-});
-
-const router = useRouter();
-watch(
-  () => authStore.isSignedIn,
-  async (val) => {
-    if (val) return;
-    await checkAuthForCurrentRoute(router);
-  },
-  { immediate: true }
 );
 </script>
 
