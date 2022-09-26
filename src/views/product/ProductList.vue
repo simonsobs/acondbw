@@ -195,201 +195,183 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
+<script setup lang="ts">
+import {
+  ref,
+  watch,
+  computed,
+  defineProps,
+  withDefaults,
+  Component,
+} from "vue";
 import { useRouter } from "vue-router/composables";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
-import QueryForProductList from "@/graphql/queries/QueryForProductList.gql";
 import {
-  QueryForProductListQuery,
-  QueryForProductListQueryVariables,
+  useQueryForProductListQuery,
+  ProductSortEnum,
 } from "@/generated/graphql";
 
 import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
 
-import { useQuery } from "@urql/vue";
-
 import { useQueryState } from "@/utils/query-state";
 
-export default defineComponent({
-  name: "ProductList",
-  components: {
-    ProductItemCard,
-    ProductTypeDeleteForm,
-  },
-  props: {
-    productTypeId: { type: String, required: true },
-    productItemCard: { default: "ProductItemCard" },
-    disableAdd: { type: Boolean, default: false },
-    disableEdit: { type: Boolean, default: false },
-    disableDelete: { type: Boolean, default: false },
-  },
-  setup(prop) {
-    const router = useRouter();
-    const sortItem = ref(0);
+const props = withDefaults(
+  defineProps<{
+    productTypeId: number;
+    productItemCard?: Component;
+    disableAdd?: boolean;
+    disableEdit?: boolean;
+    disableDelete?: boolean;
+  }>(),
+  {
+    productItemCard: () => ProductItemCard,
+    disableAdd: false,
+    disableEdit: false,
+    disableDelete: false,
+  }
+);
 
-    const sortItems = ref([
-      { text: "Recently posted", value: "TIME_POSTED_DESC" },
-      { text: "Recently updated", value: "TIME_UPDATED_DESC" },
-      // { text: "Recently produced", value: "DATE_PRODUCED_DESC" },
-      { text: "Name", value: "NAME_ASC" },
-    ]);
+const router = useRouter();
 
-    const nItemsInitialLoad = ref(10);
-    const first = ref(nItemsInitialLoad.value);
+const sortItem = ref(0);
 
-    const sort = computed(() => [sortItems.value[sortItem.value].value]);
+const sortItems = ref([
+  { text: "Recently posted", value: ProductSortEnum.TimePostedDesc },
+  { text: "Recently updated", value: ProductSortEnum.TimeUpdatedDesc },
+  { text: "Name", value: ProductSortEnum.NameAsc },
+]);
 
-    const query = useQuery<QueryForProductListQuery>({
-      query: QueryForProductList,
-      variables: {
-        typeId: prop.productTypeId,
-        sort: sort,
-        // first: nItemsInitialLoad,
-        first: first,
-        after: "",
-      },
-    });
+const nItemsInitialLoad = ref(10);
+const first = ref(nItemsInitialLoad.value);
 
-    type Query = typeof query;
+const sort = computed(() => [sortItems.value[sortItem.value].value]);
 
-    const productType = computed(() => query.data?.value?.productType);
-
-    function readEdges(query: Query) {
-      const edgesAndNulls = query.data?.value?.productType?.products?.edges;
-      if (!edgesAndNulls) return [];
-      return edgesAndNulls.flatMap((e) => (e ? [e] : []));
-    }
-    function readNodes(query: Query) {
-      return readEdges(query).flatMap((e) => (e.node ? e.node : []));
-    }
-
-    const queryState = useQueryState(query, {
-      isEmpty: () => readNodes(query).length === 0,
-    });
-
-    const { loading, error, empty, refresh: refresh_ } = queryState;
-
-    const refreshing = ref(false);
-
-    const edges = computed(() =>
-      refreshing.value || empty.value ? [] : readEdges(query)
-    );
-
-    const nodes = computed(() =>
-      refreshing.value || empty.value ? [] : readNodes(query)
-    );
-
-    watch(nodes, async () => {
-      collapseCards();
-      await loadAllFewRemainingItems();
-    });
-
-    async function loadAllFewRemainingItems() {
-      if (
-        nodes.value.length + nEtraItemsAutomaticLoad.value >=
-        nItemsTotal.value
-      ) {
-        await loadMore();
-      }
-    }
-
-    const nItemsTotal = computed(
-      () => productType.value?.products?.totalCount || 0
-    );
-
-    async function refresh() {
-      refreshing.value = true;
-      first.value = nItemsInitialLoad.value;
-      try {
-        await refresh_();
-      } finally {
-        areAllCardsCollapsed.value = true;
-        refreshing.value = false;
-      }
-    }
-
-    const isCardCollapsed = ref<{ [key: string]: boolean }>({});
-
-    function collapseCards() {
-      nodes.value.forEach((node) => {
-        const id = node.id;
-        if (id in isCardCollapsed.value) return;
-        isCardCollapsed.value = { ...isCardCollapsed.value, [id]: true };
-      });
-    }
-
-    const areAllCardsCollapsed = computed({
-      get: () => Object.values(isCardCollapsed.value).every((i) => i),
-      set: (v) => {
-        Object.keys(isCardCollapsed.value).forEach((k) => {
-          isCardCollapsed.value[k] = v;
-        });
-      },
-    });
-
-    const deleteDialog = ref(false);
-
-    function onDeleteFormCancelled() {
-      closeDeleteForm();
-    }
-
-    function onDeleteFormFinished() {
-      closeDeleteForm();
-      onDeleted();
-    }
-
-    function closeDeleteForm() {
-      deleteDialog.value = false;
-    }
-
-    function onDeleted() {
-      router.push({ name: "Dashboard" });
-    }
-
-    const loadingMore = ref(false);
-    const nEtraItemsAutomaticLoad = ref(2);
-
-    const showLoadMoreButton = computed(() => {
-      // if (loadingMore.value) return false;
-      return (
-        nItemsTotal.value >
-        nItemsInitialLoad.value + nEtraItemsAutomaticLoad.value
-      );
-    });
-
-    const nItemsPerLoad = ref(20);
-    async function loadMore() {
-      if (!productType.value?.products?.pageInfo?.hasNextPage) return;
-      first.value = first.value + nItemsPerLoad.value;
-    }
-
-    return {
-      ...queryState,
-      refresh,
-      sortItem,
-      sortItems,
-      productType,
-      edges,
-      nodes,
-      first,
-      nItemsTotal,
-      nItemsInitialLoad,
-      nEtraItemsAutomaticLoad,
-      isCardCollapsed,
-      collapseCards,
-      areAllCardsCollapsed,
-      deleteDialog,
-      onDeleteFormCancelled,
-      onDeleteFormFinished,
-      closeDeleteForm,
-      onDeleted,
-      loadingMore,
-      showLoadMoreButton,
-      loadMore,
-    };
+const query = useQueryForProductListQuery({
+  variables: {
+    typeId: props.productTypeId,
+    sort: sort,
+    first: first,
+    after: "",
   },
 });
+
+type Query = typeof query;
+
+const productType = computed(() => query.data?.value?.productType);
+
+function readEdges(query: Query) {
+  const edgesAndNulls = query.data?.value?.productType?.products?.edges;
+  if (!edgesAndNulls) return [];
+  return edgesAndNulls.flatMap((e) => (e ? [e] : []));
+}
+function readNodes(query: Query) {
+  return readEdges(query).flatMap((e) => (e.node ? e.node : []));
+}
+
+function isEmpty(query: Query) {
+  return readNodes(query).length === 0;
+}
+
+const queryState = useQueryState(query, { isEmpty });
+
+const {
+  loading,
+  loaded,
+  error,
+  empty,
+  devtoolState,
+  refresh: refresh_,
+} = queryState;
+
+const refreshing = ref(false);
+
+const edges = computed(() =>
+  refreshing.value || empty.value ? [] : readEdges(query)
+);
+
+const nodes = computed(() =>
+  refreshing.value || empty.value ? [] : readNodes(query)
+);
+
+watch(nodes, async () => {
+  collapseCards();
+  await loadAllFewRemainingItems();
+});
+
+async function loadAllFewRemainingItems() {
+  if (nodes.value.length + nExtraItemsAutomaticLoad.value >= nItemsTotal.value) {
+    await loadMore();
+  }
+}
+
+const nItemsTotal = computed(
+  () => productType.value?.products?.totalCount || 0
+);
+
+async function refresh() {
+  refreshing.value = true;
+  first.value = nItemsInitialLoad.value;
+  try {
+    await refresh_();
+  } finally {
+    areAllCardsCollapsed.value = true;
+    refreshing.value = false;
+  }
+}
+
+const isCardCollapsed = ref<{ [key: string]: boolean }>({});
+
+function collapseCards() {
+  nodes.value.forEach((node) => {
+    const id = node.id;
+    if (id in isCardCollapsed.value) return;
+    isCardCollapsed.value = { ...isCardCollapsed.value, [id]: true };
+  });
+}
+
+const areAllCardsCollapsed = computed({
+  get: () => Object.values(isCardCollapsed.value).every((i) => i),
+  set: (v) => {
+    Object.keys(isCardCollapsed.value).forEach((k) => {
+      isCardCollapsed.value[k] = v;
+    });
+  },
+});
+
+const deleteDialog = ref(false);
+
+function onDeleteFormCancelled() {
+  closeDeleteForm();
+}
+
+function onDeleteFormFinished() {
+  closeDeleteForm();
+  onDeleted();
+}
+
+function closeDeleteForm() {
+  deleteDialog.value = false;
+}
+
+function onDeleted() {
+  router.push({ name: "Dashboard" });
+}
+
+const loadingMore = ref(false);
+const nExtraItemsAutomaticLoad = ref(2);
+
+const showLoadMoreButton = computed(() => {
+  // if (loadingMore.value) return false;
+  return (
+    nItemsTotal.value > nItemsInitialLoad.value + nExtraItemsAutomaticLoad.value
+  );
+});
+
+const nItemsPerLoad = ref(20);
+async function loadMore() {
+  if (!productType.value?.products?.pageInfo?.hasNextPage) return;
+  first.value = first.value + nItemsPerLoad.value;
+}
 </script>
