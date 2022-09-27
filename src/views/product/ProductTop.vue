@@ -90,7 +90,6 @@ import {
   onBeforeRouteUpdate,
   onBeforeRouteLeave,
 } from "vue-router/composables";
-import { useStore } from "@/stores/main";
 
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 import { ProductTypeByNameQuery } from "@/generated/graphql";
@@ -98,8 +97,9 @@ import { ProductTypeByNameQuery } from "@/generated/graphql";
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 import { useQuery } from "@urql/vue";
 
-import { useQueryState } from "@/utils/query-state";
+import { useConfig } from "@/utils/config";
 
+import { useQueryState } from "@/utils/query-state";
 
 export default defineComponent({
   name: "ProductTop",
@@ -109,7 +109,6 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const store = useStore();
 
     const productTypeName = ref<string | null>(null);
     const itemName = ref<string | null>(null);
@@ -124,10 +123,15 @@ export default defineComponent({
       pause: !productTypeName,
     });
     const node = computed(() => query.data?.value?.productType);
-    const disableAdd = computed(() => !store.webConfig.productCreationDialog);
-    const disableEdit = computed(() => !store.webConfig.productUpdateDialog);
+    const config = useConfig();
+    const disableAdd = computed(
+      () => !config.config?.value.productCreationDialog
+    );
+    const disableEdit = computed(
+      () => !config.config?.value.productUpdateDialog
+    );
     const disableDelete = computed(
-      () => !store.webConfig.productDeletionDialog
+      () => !config.config?.value.productDeletionDialog
     );
     const editDialog = ref(false);
     function onEditFormCancelled() {
@@ -154,14 +158,14 @@ export default defineComponent({
       transitionName.value = "fade-product-top-update";
       transitionMode.value = "out-in";
       next();
-     });
+    });
     onBeforeRouteLeave((to, from, next) => {
       transitionName.value = "fade-product-top-leave";
       transitionMode.value = "out-in";
       next();
     });
     return {
-      ...useQueryState(query, { isNull: () => node.value === null}),
+      ...useQueryState(query, { isNull: () => node.value === null }),
       query,
       productTypeName,
       itemName,
