@@ -108,7 +108,6 @@ const urqlClientHandle = useClientHandle();
 const config = useConfig();
 
 const error = ref<any>(null);
-const first = ref(true);
 
 const webConfig = computed(() => config.config.value);
 const itemsInStore = computed(() => reshapeWebConfigToItems(webConfig.value));
@@ -150,8 +149,9 @@ function nestedCopy<T>(data: T): T {
   return JSON.parse(JSON.stringify(data));
 }
 
+const first = ref(true);
 watch(
-  () => store.webConfigLoaded,
+  config.loaded,
   (newValue) => {
     if (!newValue) return;
     if (!first.value) return;
