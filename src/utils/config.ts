@@ -9,7 +9,7 @@ interface Config {
   config: Ref<WebConfig>;
 }
 
-const injectionKey: InjectionKey<Config> = Symbol("config");
+export const injectionKey: InjectionKey<Config> = Symbol("config");
 
 export function provideConfig(urqlClient: Ref<Client>) {
   const store = useStore();
