@@ -1,3 +1,4 @@
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { Client } from "@urql/vue";
 
@@ -35,83 +36,92 @@ export interface WebConfig extends VuetifyTheme {
   productDeletionDialog?: boolean;
 }
 
-export const useStore = defineStore("main", {
-  state: () => {
-    return {
-      example: "abc",
-      snackbar: false,
-      snackbarMessage: null as string | null,
-      nApolloMutations: 0,
-      packageVersion: (import.meta.env.PACKAGE_VERSION as string) || "vx.x.x",
-      webConfig: {} as WebConfig,
-      webConfigLoaded: false,
-    };
-  },
-  getters: {
-    appVersion: (state) => state.packageVersion,
-    vuetifyTheme: (state) => {
-      const theme_fields_base = [
-        "primary",
-        "secondary",
-        "accent",
-        "error",
-        "info",
-        "success",
-        "warning",
-      ];
-      const theme_fields = [
-        ...theme_fields_base,
-        ...theme_fields_base.map((k) => `on-${k}`),
-      ];
-      return theme_fields
-        .filter((e) => e in state.webConfig && state.webConfig[e])
-        .reduce((a, e) => ({ ...a, ...{ [e]: state.webConfig[e] } }), {});
-    },
-  },
-  actions: {
-    async loadWebConfig(urqlClient: Client) {
-      try {
-        const { error, data } = await urqlClient
-          .query<WebConfigQuery>(WebConfigDocument, {})
-          .toPromise();
-        if (error) throw error;
-        this.webConfig = JSON.parse(data.webConfig.json);
-        this.webConfigLoaded = true;
-      } catch (error) {
-        // console.error(error);
-      }
-    },
-    setWebConfig(webConfig: WebConfig) {
-      this.webConfig = webConfig;
-    },
-    async uploadWebConfig(urqlClient: Client) {
-      try {
-        const { error, data } = await urqlClient
-          .mutation<SaveWebConfigMutation, SaveWebConfigMutationVariables>(
-            SaveWebConfigDocument,
-            {
-              json: JSON.stringify(this.webConfig),
-            }
-          )
-          .toPromise();
-        if (error) throw error;
-      } catch (e) {
-        // console.error(e);
-      }
-    },
-    loadExample() {
-      const example = "123";
-      this.example = example;
-    },
-    setSnackbarMessage(message: string) {
-      this.snackbarMessage = message;
-      this.snackbar = true;
-    },
-    closeSnackbar() {
-      this.snackbar = false;
-    },
-    apolloMutationCalled() {
-      this.nApolloMutations++;
-    },
-  },
+export const useStore = defineStore("main", () => {
+  const example = ref("abc");
+  const snackbar = ref(false);
+  const snackbarMessage = ref<string | null>(null);
+  const nApolloMutations = ref(0);
+  const packageVersion = ref(import.meta.env.PACKAGE_VERSION || "vx.x.x");
+  const webConfig = ref<WebConfig>({});
+  const webConfigLoaded = ref(false);
+  const appVersion = computed(() => packageVersion.value);
+  const vuetifyTheme = computed(() => {
+    const theme_fields_base = [
+      "primary",
+      "secondary",
+      "accent",
+      "error",
+      "info",
+      "success",
+      "warning",
+    ];
+    const theme_fields = [
+      ...theme_fields_base,
+      ...theme_fields_base.map((k) => `on-${k}`),
+    ];
+    return theme_fields
+      .filter((e) => e in webConfig.value && webConfig.value[e])
+      .reduce((a, e) => ({ ...a, ...{ [e]: webConfig.value[e] } }), {});
+  });
+  async function loadWebConfig(urqlClient: Client) {
+    try {
+      const { error, data } = await urqlClient
+        .query<WebConfigQuery>(WebConfigDocument, {})
+        .toPromise();
+      if (error) throw error;
+      webConfig.value = JSON.parse(data.webConfig.json);
+      webConfigLoaded.value = true;
+    } catch (error) {
+      // console.error(error);
+    }
+  }
+  function setWebConfig(val: WebConfig) {
+    webConfig.value = val;
+  }
+  async function uploadWebConfig(urqlClient: Client) {
+    try {
+      const { error, data } = await urqlClient
+        .mutation<SaveWebConfigMutation, SaveWebConfigMutationVariables>(
+          SaveWebConfigDocument,
+          {
+            json: JSON.stringify(webConfig.value),
+          }
+        )
+        .toPromise();
+      if (error) throw error;
+    } catch (e) {
+      // console.error(e);
+    }
+  }
+  function loadExample() {
+    example.value = "123";
+  }
+  function setSnackbarMessage(message: string) {
+    snackbarMessage.value = message;
+    snackbar.value = true;
+  }
+  function closeSnackbar() {
+    snackbar.value = false;
+  }
+  function apolloMutationCalled() {
+    nApolloMutations.value++;
+  }
+  return {
+    example,
+    snackbar,
+    snackbarMessage,
+    nApolloMutations,
+    packageVersion,
+    webConfig,
+    webConfigLoaded,
+    appVersion,
+    vuetifyTheme,
+    loadWebConfig,
+    setWebConfig,
+    uploadWebConfig,
+    loadExample,
+    setSnackbarMessage,
+    closeSnackbar,
+    apolloMutationCalled,
+  };
 });
