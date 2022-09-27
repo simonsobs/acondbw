@@ -10,7 +10,7 @@ exports[`ProductTop.vue > match snapshot item 1`] = `
       </vuecomponent-stub>
       <transition-stub data-v-8ec89bbf=\\"\\" name=\\"fade-product-top-leave\\" mode=\\"out-in\\">
         <keep-alive-stub data-v-8ec89bbf=\\"\\">
-          <router-view-stub data-v-8ec89bbf=\\"\\" name=\\"default\\" producttypeid=\\"1\\"></router-view-stub>
+          <router-view-stub data-v-8ec89bbf=\\"\\" name=\\"default\\" producttypeid=\\"1\\" disableadd=\\"true\\" disableedit=\\"true\\" disabledelete=\\"true\\"></router-view-stub>
         </keep-alive-stub>
       </transition-stub>
     </vuecomponent-stub>
@@ -30,7 +30,7 @@ exports[`ProductTop.vue > match snapshot list 1`] = `
       </vuecomponent-stub>
       <transition-stub data-v-8ec89bbf=\\"\\" name=\\"fade-product-top-leave\\" mode=\\"out-in\\">
         <keep-alive-stub data-v-8ec89bbf=\\"\\">
-          <router-view-stub data-v-8ec89bbf=\\"\\" name=\\"default\\" producttypeid=\\"1\\"></router-view-stub>
+          <router-view-stub data-v-8ec89bbf=\\"\\" name=\\"default\\" producttypeid=\\"1\\" disableadd=\\"true\\" disableedit=\\"true\\" disabledelete=\\"true\\"></router-view-stub>
         </keep-alive-stub>
       </transition-stub>
     </vuecomponent-stub>

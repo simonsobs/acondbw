@@ -83,7 +83,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent } from "vue";
+export default defineComponent({ name: "ProductTop" });
+</script>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
 import {
   useRoute,
   useRouter,
@@ -101,88 +106,64 @@ import { useConfig } from "@/utils/config";
 
 import { useQueryState } from "@/utils/query-state";
 
-export default defineComponent({
-  name: "ProductTop",
-  components: {
-    ProductTypeEditForm,
-  },
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
+const route = useRoute();
+const router = useRouter();
 
-    const productTypeName = ref<string | null>(null);
-    const itemName = ref<string | null>(null);
-    onMounted(() => {
-      productTypeName.value = route.params.productTypeName;
-      itemName.value = route.params.name;
-    });
-
-    const query = useQuery<ProductTypeByNameQuery>({
-      query: PRODUCT_TYPE_BY_NAME,
-      variables: { name: productTypeName },
-      pause: !productTypeName,
-    });
-    const node = computed(() => query.data?.value?.productType);
-    const config = useConfig();
-    const disableAdd = computed(
-      () => !config.config?.value.productCreationDialog
-    );
-    const disableEdit = computed(
-      () => !config.config?.value.productUpdateDialog
-    );
-    const disableDelete = computed(
-      () => !config.config?.value.productDeletionDialog
-    );
-    const editDialog = ref(false);
-    function onEditFormCancelled() {
-      closeEditForm();
-    }
-    function closeEditForm() {
-      editDialog.value = false;
-    }
-    function onEditFormFinished(event: string) {
-      closeEditForm();
-      if (event) onNameChanged(event);
-    }
-    function onNameChanged(event: string) {
-      router.push({
-        name: "ProductList",
-        params: {
-          productTypeName: event,
-        },
-      });
-    }
-    const transitionName = ref("fade-product-top-leave");
-    const transitionMode = ref("out-in");
-    onBeforeRouteUpdate((to, from, next) => {
-      transitionName.value = "fade-product-top-update";
-      transitionMode.value = "out-in";
-      next();
-    });
-    onBeforeRouteLeave((to, from, next) => {
-      transitionName.value = "fade-product-top-leave";
-      transitionMode.value = "out-in";
-      next();
-    });
-    return {
-      ...useQueryState(query, { isNull: () => node.value === null }),
-      query,
-      productTypeName,
-      itemName,
-      node,
-      disableAdd,
-      disableEdit,
-      disableDelete,
-      editDialog,
-      onEditFormCancelled,
-      closeEditForm,
-      onEditFormFinished,
-      onNameChanged,
-      transitionName,
-      transitionMode,
-    };
-  },
+const productTypeName = ref<string | null>(null);
+const itemName = ref<string | null>(null);
+onMounted(() => {
+  productTypeName.value = route.params.productTypeName;
+  itemName.value = route.params.name;
 });
+
+const query = useQuery<ProductTypeByNameQuery>({
+  query: PRODUCT_TYPE_BY_NAME,
+  variables: { name: productTypeName },
+  pause: !productTypeName,
+});
+const node = computed(() => query.data?.value?.productType);
+const config = useConfig();
+const disableAdd = computed(() => !config.config?.value.productCreationDialog);
+const disableEdit = computed(() => !config.config?.value.productUpdateDialog);
+const disableDelete = computed(
+  () => !config.config?.value.productDeletionDialog
+);
+const editDialog = ref(false);
+function onEditFormCancelled() {
+  closeEditForm();
+}
+function closeEditForm() {
+  editDialog.value = false;
+}
+function onEditFormFinished(event: string) {
+  closeEditForm();
+  if (event) onNameChanged(event);
+}
+function onNameChanged(event: string) {
+  router.push({
+    name: "ProductList",
+    params: {
+      productTypeName: event,
+    },
+  });
+}
+const transitionName = ref("fade-product-top-leave");
+const transitionMode = ref("out-in");
+onBeforeRouteUpdate((to, from, next) => {
+  transitionName.value = "fade-product-top-update";
+  transitionMode.value = "out-in";
+  next();
+});
+onBeforeRouteLeave((to, from, next) => {
+  transitionName.value = "fade-product-top-leave";
+  transitionMode.value = "out-in";
+  next();
+});
+
+const { loading, loaded, notFound, error, devtoolState } = useQueryState(
+  query,
+  { isNull: () => node.value === null }
+);
 </script>
 
 <style scoped>
