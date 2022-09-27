@@ -1,8 +1,13 @@
 import { defineStore } from "pinia";
 import { Client } from "@urql/vue";
 
-import QUERY_WEB_CONFIG from "@/graphql/queries/WebConfig.gql";
-import MUTATION_SAVE_WEB_CONFIG from "@/graphql/mutations/SaveWebConfig.gql";
+import {
+  WebConfigQuery,
+  WebConfigDocument,
+  SaveWebConfigMutation,
+  SaveWebConfigDocument,
+  SaveWebConfigMutationVariables,
+} from "@/generated/graphql";
 
 export interface VuetifyTheme {
   primary?: string;
@@ -67,7 +72,7 @@ export const useStore = defineStore("main", {
     async loadWebConfig(urqlClient: Client) {
       try {
         const { error, data } = await urqlClient
-          .query(QUERY_WEB_CONFIG, {})
+          .query<WebConfigQuery>(WebConfigDocument, {})
           .toPromise();
         if (error) throw error;
         this.webConfig = JSON.parse(data.webConfig.json);
@@ -82,9 +87,12 @@ export const useStore = defineStore("main", {
     async uploadWebConfig(urqlClient: Client) {
       try {
         const { error, data } = await urqlClient
-          .mutation(MUTATION_SAVE_WEB_CONFIG, {
-            json: JSON.stringify(this.webConfig),
-          })
+          .mutation<SaveWebConfigMutation, SaveWebConfigMutationVariables>(
+            SaveWebConfigDocument,
+            {
+              json: JSON.stringify(this.webConfig),
+            }
+          )
           .toPromise();
         if (error) throw error;
       } catch (e) {
