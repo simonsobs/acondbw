@@ -163,7 +163,7 @@ watch(
 
 function reset() {
   items.value = nestedCopy(itemsOriginal.value);
-  store.setWebConfig(webConfigOriginal.value);
+  config.set(webConfigOriginal.value);
   error.value = null;
 }
 
@@ -190,7 +190,7 @@ function save(item: Item) {
     return;
   }
 
-  store.setWebConfig(webConfig);
+  config.set(webConfig);
 }
 
 function cancel() {}
