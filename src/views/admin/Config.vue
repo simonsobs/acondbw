@@ -78,7 +78,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent } from "vue";
+export default defineComponent({ name: "Config" });
+</script>
+
+<script setup lang="ts">
+import { ref, computed, watch } from "vue";
 import { useClientHandle } from "@urql/vue";
 import { useStore } from "@/stores/main";
 
@@ -97,128 +102,101 @@ interface StringKeyObject {
   [key: string]: unknown;
 }
 
-export default defineComponent({
-  name: "Config",
-  setup() {
-    const store = useStore();
-    const urqlClientHandle = useClientHandle();
-    const error = ref<any>(null);
-    const first = ref(true);
+const store = useStore();
+const urqlClientHandle = useClientHandle();
+const error = ref<any>(null);
+const first = ref(true);
 
-    const webConfig = computed(() => store.webConfig);
-    const itemsInStore = computed(() =>
-      reshapeWebConfigToItems(webConfig.value)
-    );
+const webConfig = computed(() => store.webConfig);
+const itemsInStore = computed(() => reshapeWebConfigToItems(webConfig.value));
 
-    function reshapeWebConfigToItems(webConfig: StringKeyObject) {
-      return Object.entries(webConfig).map((e) => ({
-        key: e[0],
-        value: JSON.stringify(e[1]),
-        type: typeof e[1],
-      }));
-    }
+function reshapeWebConfigToItems(webConfig: StringKeyObject) {
+  return Object.entries(webConfig).map((e) => ({
+    key: e[0],
+    value: JSON.stringify(e[1]),
+    type: typeof e[1],
+  }));
+}
 
-    function reshapeItemsToWebConfig(items: Item[]) {
-      const webConfig = items.reduce(
-        (a, item) => ({
-          ...a,
-          ...{ [item.key]: JSON.parse(item.value) },
-        }),
-        {} as StringKeyObject
-      );
-      return webConfig;
-    }
+function reshapeItemsToWebConfig(items: Item[]) {
+  const webConfig = items.reduce(
+    (a, item) => ({
+      ...a,
+      ...{ [item.key]: JSON.parse(item.value) },
+    }),
+    {} as StringKeyObject
+  );
+  return webConfig;
+}
 
-    const webConfigOriginal = ref<typeof webConfig.value>({});
-    const itemsOriginal = ref<Item[]>([]);
-    const items = ref<Item[]>([]);
+const webConfigOriginal = ref<typeof webConfig.value>({});
+const itemsOriginal = ref<Item[]>([]);
+const items = ref<Item[]>([]);
 
-    const changed = computed(
-      () =>
-        !(JSON.stringify(items.value) === JSON.stringify(itemsOriginal.value))
-    );
+const changed = computed(
+  () => !(JSON.stringify(items.value) === JSON.stringify(itemsOriginal.value))
+);
 
-    function copyOriginal() {
-      webConfigOriginal.value = nestedCopy(webConfig.value);
-      itemsOriginal.value = reshapeWebConfigToItems(webConfigOriginal.value);
-      items.value = nestedCopy(itemsOriginal.value);
-    }
+function copyOriginal() {
+  webConfigOriginal.value = nestedCopy(webConfig.value);
+  itemsOriginal.value = reshapeWebConfigToItems(webConfigOriginal.value);
+  items.value = nestedCopy(itemsOriginal.value);
+}
 
-    function nestedCopy<T>(data: T): T {
-      return JSON.parse(JSON.stringify(data));
-    }
+function nestedCopy<T>(data: T): T {
+  return JSON.parse(JSON.stringify(data));
+}
 
-    watch(
-      () => store.webConfigLoaded,
-      (newValue) => {
-        if (!newValue) return;
-        if (!first.value) return;
-        copyOriginal();
-        first.value = false;
-      },
-      { immediate: true }
-    );
-
-    function reset() {
-      items.value = nestedCopy(itemsOriginal.value);
-      store.setWebConfig(webConfigOriginal.value);
-      error.value = null;
-    }
-
-    function saveToServer() {
-      store.uploadWebConfig(urqlClientHandle.client);
-      copyOriginal();
-    }
-
-    function save(item: Item) {
-      error.value = null;
-
-      try {
-        item.type = typeof JSON.parse(item.value);
-      } catch (e) {
-        error.value = e;
-        return;
-      }
-
-      let webConfig: StringKeyObject;
-      try {
-        webConfig = reshapeItemsToWebConfig(items.value);
-      } catch (e) {
-        error.value = e;
-        return;
-      }
-
-      store.setWebConfig(webConfig);
-    }
-
-    function cancel() {}
-    function open() {}
-    function close() {}
-
-    const headers = ref([
-      { text: "Key", value: "key" },
-      { text: "Value (stringified)", value: "value" },
-      { text: "Type", value: "type" },
-    ]);
-
-    return {
-      error,
-      first,
-      webConfig,
-      itemsInStore,
-      webConfigOriginal,
-      itemsOriginal,
-      items,
-      changed,
-      headers,
-      slotName: ref("item.key"),
-      reset,
-      saveToServer,
-      save,
-      cancel,
-      open,
-      close,
-    };
+watch(
+  () => store.webConfigLoaded,
+  (newValue) => {
+    if (!newValue) return;
+    if (!first.value) return;
+    copyOriginal();
+    first.value = false;
   },
-});
+  { immediate: true }
+);
+
+function reset() {
+  items.value = nestedCopy(itemsOriginal.value);
+  store.setWebConfig(webConfigOriginal.value);
+  error.value = null;
+}
+
+function saveToServer() {
+  store.uploadWebConfig(urqlClientHandle.client);
+  copyOriginal();
+}
+
+function save(item: Item) {
+  error.value = null;
+
+  try {
+    item.type = typeof JSON.parse(item.value);
+  } catch (e) {
+    error.value = e;
+    return;
+  }
+
+  let webConfig: StringKeyObject;
+  try {
+    webConfig = reshapeItemsToWebConfig(items.value);
+  } catch (e) {
+    error.value = e;
+    return;
+  }
+
+  store.setWebConfig(webConfig);
+}
+
+function cancel() {}
+function open() {}
+function close() {}
+
+const headers = ref([
+  { text: "Key", value: "key" },
+  { text: "Value (stringified)", value: "value" },
+  { text: "Type", value: "type" },
+]);
 </script>
