@@ -16,12 +16,13 @@
 import { ref, watch, watchEffect, onBeforeMount, Ref } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
 import { storeToRefs } from "pinia";
-import { provideClient, Client as UrqlClient } from "@urql/vue";
+import { provideClient } from "@urql/vue";
 
-import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 import { client } from "@/plugins/urql";
 import { checkAuthForCurrentRoute } from "@/router";
+
+import { useConfig } from "@/utils/config";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
 
@@ -29,16 +30,7 @@ const urqlClient = ref(client);
 
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
 const authStore = useAuthStore();
-
-function useConfig(urqlClient: Ref<UrqlClient>) {
-  const { webConfig } = storeToRefs(store);
-  watchEffect(async () => {
-    await store.loadWebConfig(urqlClient.value);
-  }) 
-  return { config: webConfig };
-}
 
 const config = useConfig(urqlClient);
 watchEffect(() => {
