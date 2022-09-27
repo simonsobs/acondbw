@@ -5,6 +5,6 @@ exports[`Frame.vue > match snapshot 1`] = `
   <vuecomponent-stub app=\\"true\\" mobilebreakpoint=\\"1264\\" clipped=\\"true\\" height=\\"100vh\\" minivariantwidth=\\"56\\" src=\\"\\" tag=\\"nav\\" width=\\"256\\">
     <anonymous-stub></anonymous-stub>
   </vuecomponent-stub>
-  <appbar-stub></appbar-stub>
+  <anonymous-stub></anonymous-stub>
 </div>"
 `;
