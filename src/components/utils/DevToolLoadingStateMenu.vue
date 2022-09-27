@@ -18,51 +18,56 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+<script setup lang="ts">
+import { withDefaults, ref, computed, watch } from "vue";
 import { useStore } from "@/stores/main";
 
 import State from "@/utils/LoadingState";
 
-export default defineComponent({
-  name: "DevToolLoadingStateMenu",
-  props: {
-    value: Number, // for v-model
-    top: { default: "-15px" },
-    right: { default: "-10px" },
-  },
-  setup(prop, { emit }) {
-    const store = useStore();
-    const buttonStyle = computed(() => ({
-      top: prop.top,
-      right: prop.right,
-    }));
+interface Props {
+  value?: Number;
+  top?: string;
+  right?: string;
+}
 
-    const menuItems = ref([
-      { text: "Init", value: State.INIT },
-      { text: "Loading", value: State.LOADING },
-      { text: "Error", value: State.ERROR },
-      { text: "Loaded", value: State.LOADED },
-      { text: "Empty", value: State.EMPTY },
-      { text: "None", value: State.NONE },
-      { text: "Off", value: null },
-    ]);
-
-    const enabled = computed(() => store.webConfig.devtoolLoadingstate);
-    watch(enabled, (val) => {
-      if (!val) state.value = null;
-    });
-    const state = ref<number | null>(null);
-    watch(state, (s) => {
-      emit("input", s); // for v-model
-    });
-    return {
-      buttonStyle,
-      menuItems,
-      enabled,
-      state,
-      State,
-    };
-  },
+const props = withDefaults(defineProps<Props>(), {
+  top: "-15px",
+  right: "-10px",
 });
+
+interface Emits {
+  (e: "input", value: number | null): void;
+}
+
+const emit = defineEmits<Emits>();
+
+const store = useStore();
+const buttonStyle = computed(() => ({
+  top: props.top,
+  right: props.right,
+}));
+
+const menuItems = ref([
+  { text: "Init", value: State.INIT },
+  { text: "Loading", value: State.LOADING },
+  { text: "Error", value: State.ERROR },
+  { text: "Loaded", value: State.LOADED },
+  { text: "Empty", value: State.EMPTY },
+  { text: "None", value: State.NONE },
+  { text: "Off", value: null },
+]);
+
+const enabled = computed(() => store.webConfig.devtoolLoadingstate);
+watch(enabled, (val) => {
+  if (!val) state.value = null;
+});
+const state = ref<number | null>(null);
+watch(state, (s) => {
+  emit("input", s); // for v-model
+});
+</script>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({ name: "DevToolLoadingStateMenu" });
 </script>
