@@ -8,6 +8,7 @@ type WebConfig = ReturnType<typeof useStore>["webConfig"];
 interface Config {
   config: Ref<WebConfig>;
   loaded: Ref<boolean>;
+  set: (config: WebConfig) => void;
 }
 
 export const injectionKey: InjectionKey<Config> = Symbol("config");
@@ -18,13 +19,23 @@ export function provideConfig(urqlClient: Ref<Client>) {
   watchEffect(async () => {
     await store.loadWebConfig(urqlClient.value);
   });
-  const config = { config: webConfig, loaded: webConfigLoaded };
+  const config = {
+    config: webConfig,
+    loaded: webConfigLoaded,
+    set: (config: WebConfig) => {
+      store.setWebConfig(config);
+    },
+  };
   provide(injectionKey, config);
   return config;
 }
 
 export function useConfig() {
-  const defaultValue = { config: ref({}), loaded: ref(false) }; // mainly for testing
+  const defaultValue: Config = {
+    config: ref({}),
+    loaded: ref(false),
+    set: () => {},
+  }; // mainly for testing
   const config = inject(injectionKey, defaultValue);
   return config;
 }
