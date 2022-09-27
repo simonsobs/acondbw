@@ -6,7 +6,7 @@ import { useStore } from "@/stores/main";
 
 type WebConfig = ReturnType<typeof useStore>["webConfig"];
 interface Config {
-  config: Ref<WebConfig>;
+  config?: Ref<WebConfig>;
 }
 
 export const injectionKey: InjectionKey<Config> = Symbol("config");
@@ -23,7 +23,6 @@ export function provideConfig(urqlClient: Ref<Client>) {
 }
 
 export function useConfig() {
-  const config = inject(injectionKey);
-  if (!config) throw new Error("useConfig() is called without provider.");
+  const config = inject(injectionKey, {});
   return config;
 }
