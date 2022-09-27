@@ -57,7 +57,7 @@ const menuItems = ref([
 ]);
 
 const config = useConfig();
-const enabled = computed(() => config.config.value.devtoolLoadingstate);
+const enabled = computed(() => config.config?.value.devtoolLoadingstate);
 watch(enabled, (val) => {
   if (!val) state.value = null;
 });
