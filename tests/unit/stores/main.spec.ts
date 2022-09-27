@@ -1,5 +1,6 @@
 import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
+import { fromValue, toPromise } from "wonka";
 import { useStore, VuetifyTheme, WebConfig } from "@/stores/main";
 
 describe("Main Store", () => {
@@ -24,18 +25,20 @@ describe("Main Store", () => {
     ...sampleVuetifyTheme,
   };
 
-  const mockUrqlClient: any = {
-    query: vi.fn().mockReturnValue({
-      toPromise: vi.fn().mockResolvedValue({
-        data: { webConfig: { json: JSON.stringify(sampleWebConfig) } },
-      }),
-    }),
-  };
+  const executeQuery = () =>
+    fromValue({
+      data: { webConfig: { json: JSON.stringify(sampleWebConfig) } },
+    });
+
+  const query = () => ({ toPromise: () => toPromise(executeQuery()) });
+
+  const mockUrqlClient = { executeQuery, query };
 
   it("loadWebConfig()", async () => {
     const store = useStore();
     expect(store.webConfigLoaded).toBe(false);
     expect(store.vuetifyTheme).toEqual({});
+    // @ts-ignore
     await store.loadWebConfig(mockUrqlClient);
     expect(store.webConfigLoaded).toBe(true);
     expect(store.webConfig).toEqual(sampleWebConfig);
