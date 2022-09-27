@@ -1,14 +1,24 @@
-import { watchEffect, Ref } from "vue";
+import { provide, inject, watchEffect, Ref, InjectionKey } from "vue";
 import { storeToRefs } from "pinia";
-import { Client as UrqlClient } from "@urql/vue";
+import { Client, useClientHandle } from "@urql/vue";
 
 import { useStore } from "@/stores/main";
 
-export function useConfig(urqlClient: Ref<UrqlClient>) {
+type WebConfig = ReturnType<typeof useStore>["webConfig"];
+interface Config {
+  config: Ref<WebConfig>;
+}
+
+const injectionKey: InjectionKey<Config> = Symbol("config");
+
+export function provideConfig(urqlClient: Ref<Client>) {
   const store = useStore();
   const { webConfig } = storeToRefs(store);
   watchEffect(async () => {
     await store.loadWebConfig(urqlClient.value);
   });
-  return { config: webConfig };
+  const config = { config: webConfig };
+  provide(injectionKey, config);
+  return config;
+}
 }

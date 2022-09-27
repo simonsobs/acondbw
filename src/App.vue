@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect, onBeforeMount, Ref } from "vue";
+import { ref, watch, watchEffect, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
 import { storeToRefs } from "pinia";
 import { provideClient } from "@urql/vue";
@@ -22,7 +22,7 @@ import { useAuthStore } from "@/stores/auth";
 import { client } from "@/plugins/urql";
 import { checkAuthForCurrentRoute } from "@/router";
 
-import { useConfig } from "@/utils/config";
+import { provideConfig } from "@/utils/config";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
 
@@ -32,7 +32,7 @@ const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 
-const config = useConfig(urqlClient);
+const config = provideConfig(urqlClient);
 watchEffect(() => {
   document.title = config.config.value.headTitle || "loading...";
 });
