@@ -1,9 +1,11 @@
-import Vue from "vue";
+import Vue, { ref } from "vue";
 import VueRouter from "vue-router";
 import { PiniaVuePlugin } from "pinia";
 import Vuetify from "vuetify";
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
+
+import { injectionKey } from "@/utils/config";
 
 import AppBar from "@/components/layout/AppBar.vue";
 import { createRouter } from "@/router";
@@ -11,8 +13,8 @@ import { createRouter } from "@/router";
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 
-describe("App.vue", () => {
-  const ENV_ORG = process.env;
+describe("one", () => {
+  // const ENV_ORG = process.env;
 
   let localVue: ReturnType<typeof createLocalVue>;
   let vuetify: Vuetify;
@@ -24,20 +26,14 @@ describe("App.vue", () => {
       vuetify,
       router,
       pinia: createTestingPinia(),
-      mocks: {
-        $store: {
-          state: {
-            webConfig: {
-              toolbarTitle: "Toolbar Title",
-            },
-          },
-        },
+      provide: {
+        [(injectionKey as any)]: { config: ref({ toolbarTitle: "Toolbar Title" }) },
       },
     });
   }
 
   beforeEach(() => {
-    process.env.VUE_APP_GRAPHQL_HTTP = "http://graphql.api:5000/graphql";
+    // process.env.VUE_APP_GRAPHQL_HTTP = "http://graphql.api:5000/graphql";
     localVue = createLocalVue();
     localVue.use(PiniaVuePlugin);
     vuetify = new Vuetify();
@@ -45,7 +41,7 @@ describe("App.vue", () => {
   });
 
   afterEach(() => {
-    process.env = ENV_ORG;
+    // process.env = ENV_ORG;
   });
 
   it("match snapshot", async () => {
