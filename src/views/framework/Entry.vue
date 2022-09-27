@@ -19,25 +19,12 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
-import { mapState } from "pinia";
-import { useStore } from "@/stores/main";
+<script setup lang="ts">
+import { computed } from "vue"
+import { useConfig } from "@/utils/config";
 
 import SignInCard from "@/components/auth/SignInCard.vue";
-import Dashboard from "@/components/product/Dashboard.vue";
 
-export default defineComponent({
-  name: "Home",
-  components: {
-    SignInCard,
-    Dashboard,
-  },
-  computed: {
-    title() {
-      return this.webConfig.toolbarTitle || "";
-    },
-    ...mapState(useStore, ["webConfig"]),
-  },
-});
+const config = useConfig();
+const title = computed(() => config.config?.value.toolbarTitle || "");
 </script>
