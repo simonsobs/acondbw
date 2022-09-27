@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { withDefaults, ref, computed, watch } from "vue";
-import { useStore } from "@/stores/main";
+import { useConfig } from "@/utils/config";
 
 import State from "@/utils/LoadingState";
 
@@ -41,7 +41,6 @@ interface Emits {
 
 const emit = defineEmits<Emits>();
 
-const store = useStore();
 const buttonStyle = computed(() => ({
   top: props.top,
   right: props.right,
@@ -57,7 +56,8 @@ const menuItems = ref([
   { text: "Off", value: null },
 ]);
 
-const enabled = computed(() => store.webConfig.devtoolLoadingstate);
+const config = useConfig();
+const enabled = computed(() => config.config.value.devtoolLoadingstate);
 watch(enabled, (val) => {
   if (!val) state.value = null;
 });
