@@ -21,4 +21,9 @@ export function provideConfig(urqlClient: Ref<Client>) {
   provide(injectionKey, config);
   return config;
 }
+
+export function useConfig() {
+  const config = inject(injectionKey);
+  if (!config) throw new Error("useConfig() is called without provider.");
+  return config;
 }
