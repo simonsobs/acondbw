@@ -86,6 +86,7 @@ export default defineComponent({ name: "Config" });
 import { ref, computed, watch } from "vue";
 import { useClientHandle } from "@urql/vue";
 import { useStore } from "@/stores/main";
+import { useConfig } from "@/utils/config";
 
 // https://stackoverflow.com/a/66430948/7309855
 let a_: any;
@@ -104,10 +105,12 @@ interface StringKeyObject {
 
 const store = useStore();
 const urqlClientHandle = useClientHandle();
+const config = useConfig();
+
 const error = ref<any>(null);
 const first = ref(true);
 
-const webConfig = computed(() => store.webConfig);
+const webConfig = computed(() => config.config?.value || {});
 const itemsInStore = computed(() => reshapeWebConfigToItems(webConfig.value));
 
 function reshapeWebConfigToItems(webConfig: StringKeyObject) {
