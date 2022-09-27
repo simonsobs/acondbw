@@ -13,33 +13,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect, onBeforeMount } from "vue";
+import { ref, watch, watchEffect, onBeforeMount, Ref } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
 import { storeToRefs } from "pinia";
-import { provideClient } from "@urql/vue";
+import { provideClient, Client as UrqlClient } from "@urql/vue";
 
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
-import { client as urqlClient } from "@/plugins/urql";
+import { client } from "@/plugins/urql";
 import { checkAuthForCurrentRoute } from "@/router";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
+
+const urqlClient = ref(client);
 
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
 const authStore = useAuthStore();
 
-const { webConfig } = storeToRefs(store);
+function useConfig(urqlClient: Ref<UrqlClient>) {
+  const { webConfig } = storeToRefs(store);
+  watchEffect(async () => {
+    await store.loadWebConfig(urqlClient.value);
+  }) 
+  return { config: webConfig };
+}
+
+const config = useConfig(urqlClient);
 watchEffect(() => {
-  document.title = webConfig.value.headTitle || "loading...";
+  document.title = config.config.value.headTitle || "loading...";
 });
 
 provideClient(urqlClient);
 
 onBeforeMount(async () => {
-  await store.loadWebConfig(urqlClient);
-  await authStore.checkIfSignedIn(urqlClient);
+  await authStore.checkIfSignedIn(urqlClient.value);
 });
 
 const { isSignedIn } = storeToRefs(authStore);
