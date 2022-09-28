@@ -36,8 +36,17 @@ export interface WebConfig extends VuetifyTheme {
   productDeletionDialog?: boolean;
 }
 
+const defaultWebConfig: WebConfig = {
+  headTitle: "",
+  toolbarTitle: "",
+  devtoolLoadingstate: false,
+  productCreationDialog: false,
+  productUpdateDialog: false,
+  productDeletionDialog: false,
+};
+
 export const useConfigStore = defineStore("config", () => {
-  const webConfig = ref<WebConfig>({});
+  const webConfig = ref(defaultWebConfig);
   const webConfigLoaded = ref(false);
   const vuetifyTheme = computed(() => {
     const theme_fields_base = [
