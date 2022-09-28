@@ -84,8 +84,6 @@ export default defineComponent({ name: "Config" });
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { useClientHandle } from "@urql/vue";
-import { useStore } from "@/stores/main";
 import { useConfig } from "@/utils/config";
 
 // https://stackoverflow.com/a/66430948/7309855
@@ -103,8 +101,6 @@ interface StringKeyObject {
   [key: string]: unknown;
 }
 
-const store = useStore();
-const urqlClientHandle = useClientHandle();
 const config = useConfig();
 
 const error = ref<any>(null);
@@ -167,8 +163,8 @@ function reset() {
   error.value = null;
 }
 
-function saveToServer() {
-  store.uploadWebConfig(urqlClientHandle.client);
+async function saveToServer() {
+  await config.upload();
   copyOriginal();
 }
 
