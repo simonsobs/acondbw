@@ -5,7 +5,7 @@ import { createRouter } from "./router";
 import vuetify from "./plugins/vuetify";
 // import InstantSearch from "vue-instantsearch";
 import pinia from "@/stores";
-import { useStore } from "@/stores/main";
+import { useConfigStore } from "@/stores/config";
 import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
 Vue.use(PiniaVuePlugin);
@@ -20,7 +20,7 @@ new Vue({
   vuetify,
   pinia,
   computed: {
-    ...mapState(useStore, ["vuetifyTheme"]),
+    ...mapState(useConfigStore, ["vuetifyTheme"]),
   },
   watch: {
     vuetifyTheme(newTheme) {
