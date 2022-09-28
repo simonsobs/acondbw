@@ -9,6 +9,7 @@ interface Config {
   config: Ref<WebConfig>;
   loaded: Ref<boolean>;
   set: (config: WebConfig) => void;
+  upload: () => Promise<void>;
 }
 
 export const injectionKey: InjectionKey<Config> = Symbol("config");
@@ -25,8 +26,11 @@ export function provideConfig(urqlClient: Ref<Client>) {
     set: (config: WebConfig) => {
       store.setWebConfig(config);
     },
+    upload: async () => {
+      await store.uploadWebConfig(urqlClient.value);
+    },
   };
-  provide(injectionKey, config);
+  provide<Config>(injectionKey, config);
   return config;
 }
 
@@ -35,7 +39,8 @@ export function useConfig() {
     config: ref({}),
     loaded: ref(false),
     set: () => {},
+    upload: async () => {},
   }; // mainly for testing
-  const config = inject(injectionKey, defaultValue);
+  const config = inject<Config>(injectionKey, defaultValue);
   return config;
 }
