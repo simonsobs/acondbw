@@ -14,7 +14,7 @@
     />
     <v-toolbar-title>
       <router-link
-        to="/"
+        :to="{ name: 'Entry' }"
         v-text="title"
         style="text-decoration: none; color: inherit"
       ></router-link>
