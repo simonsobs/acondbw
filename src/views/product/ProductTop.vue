@@ -102,7 +102,7 @@ import { ProductTypeByNameQuery } from "@/generated/graphql";
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 import { useQuery } from "@urql/vue";
 
-import { useConfig } from "@/utils/config";
+import { useConfigStore } from "@/stores/config";
 
 import { useQueryState } from "@/utils/query-state";
 
@@ -122,12 +122,10 @@ const query = useQuery<ProductTypeByNameQuery>({
   pause: !productTypeName,
 });
 const node = computed(() => query.data?.value?.productType);
-const config = useConfig();
-const disableAdd = computed(() => !config.config?.value.productCreationDialog);
-const disableEdit = computed(() => !config.config?.value.productUpdateDialog);
-const disableDelete = computed(
-  () => !config.config?.value.productDeletionDialog
-);
+const configStore = useConfigStore();
+const disableAdd = computed(() => !configStore.config.productCreationDialog);
+const disableEdit = computed(() => !configStore.config.productUpdateDialog);
+const disableDelete = computed(() => !configStore.config.productDeletionDialog);
 const editDialog = ref(false);
 function onEditFormCancelled() {
   closeEditForm();

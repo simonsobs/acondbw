@@ -59,12 +59,13 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useConfig } from "@/utils/config";
+import { useConfigStore } from "@/stores/config";
 
 import SearchWindow from "@/components/utils/SearchWindow.vue";
 import UserMenuButton from "@/components/auth/UserMenuButton.vue";
 
-const config = useConfig();
-const title = computed(() => config.config.value.toolbarTitle || "");
+const configStore = useConfigStore();
+const title = computed(() => configStore.config.toolbarTitle || "");
+
 // const graphiqlUrl = ref(import.meta.env.VITE_GRAPHQL_HTTP);
 </script>

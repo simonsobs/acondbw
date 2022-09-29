@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { withDefaults, ref, computed, watch } from "vue";
-import { useConfig } from "@/utils/config";
+import { useConfigStore } from "@/stores/config";
 
 import State from "@/utils/LoadingState";
 
@@ -56,8 +56,8 @@ const menuItems = ref([
   { text: "Off", value: null },
 ]);
 
-const config = useConfig();
-const enabled = computed(() => config.config?.value.devtoolLoadingstate);
+const configStore = useConfigStore();
+const enabled = computed(() => configStore.config.devtoolLoadingstate);
 watch(enabled, (val) => {
   if (!val) state.value = null;
 });

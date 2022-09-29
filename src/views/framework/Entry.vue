@@ -21,10 +21,10 @@
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { useConfig } from "@/utils/config";
+import { useConfigStore } from "@/stores/config";
 
 import SignInCard from "@/components/auth/SignInCard.vue";
 
-const config = useConfig();
-const title = computed(() => config.config?.value.toolbarTitle || "");
+const configStore = useConfigStore();
+const title = computed(() => configStore.config.toolbarTitle || "");
 </script>
