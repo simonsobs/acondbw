@@ -120,7 +120,19 @@ function reshapeWebConfigToItems(webConfig: StringKeyObject) {
   }));
 }
 
+function reshapeItemsToWebConfig(items: Item[]) {
+  const webConfig = items.reduce(
+    (a, item) => ({
+      ...a,
+      ...{ [item.key]: JSON.parse(item.value) },
+    }),
+    {} as StringKeyObject
+  );
+  return webConfig;
+}
+
 function save(item: Item) {
+  // webConfig.value = reshapeItemsToWebConfig(items.value);
   webConfig.value[item.key] = JSON.parse(item.value);
 }
 
