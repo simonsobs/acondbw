@@ -6,13 +6,11 @@
   </v-container>
 </template>
 
-<script>
-import Dashboard from "@/components/product/Dashboard.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({ name: "Home" });
+</script>
 
-export default {
-  name: "Home",
-  components: {
-    Dashboard,
-  },
-};
+<script setup lang="ts">
+import Dashboard from "@/components/product/Dashboard.vue";
 </script>
