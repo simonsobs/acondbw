@@ -10,6 +10,7 @@ import { createRouter } from "@/router";
 
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
+import { useConfigStore } from "@/stores/config";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -35,11 +36,10 @@ describe("App.vue", () => {
     });
     const store = useStore(pinia);
     const authStore = useAuthStore(pinia);
+    const configStore = useConfigStore(pinia);
     store.snackbar = false;
     store.snackbarMessage = null;
-    store.webConfig = {
-      headTitle: "Head Title",
-    };
+    configStore.config.headTitle = "Head Title";
     authStore.isSignedIn = true;
   });
 

@@ -5,10 +5,10 @@ import Vuetify from "vuetify";
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
-import { injectionKey } from "@/utils/config";
-
 import AppBar from "@/components/layout/AppBar.vue";
 import { createRouter } from "@/router";
+
+import { useConfigStore } from "@/stores/config";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -21,14 +21,14 @@ describe("one", () => {
   let router: ReturnType<typeof createRouter>;
 
   function createWrapper(loading = false) {
+    const pinia = createTestingPinia();
+    const configStore = useConfigStore(pinia);
+    configStore.config.toolbarTitle = "Toolbar Title";
     return shallowMount(AppBar, {
       localVue,
       vuetify,
       router,
-      pinia: createTestingPinia(),
-      provide: {
-        [(injectionKey as any)]: { config: ref({ toolbarTitle: "Toolbar Title" }) },
-      },
+      pinia,
     });
   }
 
