@@ -43,7 +43,7 @@ describe("Main Store", () => {
     
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    expect(store.webConfig).toEqual(sampleWebConfig);
+    expect(store.config).toEqual(sampleWebConfig);
     expect(store.vuetifyTheme).toEqual(sampleVuetifyTheme);
   });
 });

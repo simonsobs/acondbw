@@ -104,12 +104,12 @@ interface StringKeyObject {
 
 const configStore = useConfigStore();
 
-const { webConfig, saved, error } = storeToRefs(configStore);
+const { config, saved, error } = storeToRefs(configStore);
 const { saveToServer, reset } = configStore;
 
 const items = ref<Item[]>([]);
 watchEffect(() => {
-  items.value = reshapeWebConfigToItems(webConfig.value);
+  items.value = reshapeWebConfigToItems(config.value);
 });
 
 function reshapeWebConfigToItems(webConfig: StringKeyObject) {
@@ -133,7 +133,7 @@ function reshapeItemsToWebConfig(items: Item[]) {
 
 function save(item: Item) {
   // webConfig.value = reshapeItemsToWebConfig(items.value);
-  webConfig.value[item.key] = JSON.parse(item.value);
+  config.value[item.key] = JSON.parse(item.value);
 }
 
 function cancel() {}

@@ -83,8 +83,8 @@ export const useConfigStore = defineStore("config", () => {
   });
   writeToLocalStorage(configLocalStorage.value); // in case defaultConfig has added new properties
 
-  const webConfig = ref(deepCopy(configLocalStorage.value));
-  const webConfigJson = computed(() => JSON.stringify(webConfig.value));
+  const config = ref(deepCopy(configLocalStorage.value));
+  const configJson = computed(() => JSON.stringify(config.value));
 
   const configServerJson = ref<string | null>(null);
   const configServer = ref<WebConfig | null>(null);
@@ -111,8 +111,8 @@ export const useConfigStore = defineStore("config", () => {
       return;
     }
     configServer.value = { ...deepCopy(defaultConfig.value), ...parsed };
-    webConfig.value = deepCopy(configServer.value);
-    configLocalStorage.value = deepCopy(webConfig.value);
+    config.value = deepCopy(configServer.value);
+    configLocalStorage.value = deepCopy(config.value);
     writeToLocalStorage(configLocalStorage.value);
   });
 
@@ -134,14 +134,14 @@ export const useConfigStore = defineStore("config", () => {
   }
 
   const saved = computed(
-    () => !(webConfigJson.value === configServerJson.value)
+    () => !(configJson.value === configServerJson.value)
   );
 
   function reset() {
     if (configServer.value) {
-      webConfig.value = deepCopy(configServer.value);
+      config.value = deepCopy(configServer.value);
     } else {
-      webConfig.value = deepCopy(configLocalStorage.value);
+      config.value = deepCopy(configLocalStorage.value);
     }
   }
 
@@ -150,7 +150,7 @@ export const useConfigStore = defineStore("config", () => {
     const { error: combinedError, data } = await client.value
       .mutation<SaveWebConfigMutation, SaveWebConfigMutationVariables>(
         SaveWebConfigDocument,
-        { json: webConfigJson.value }
+        { json: configJson.value }
       )
       .toPromise();
     if (combinedError) {
@@ -175,8 +175,8 @@ export const useConfigStore = defineStore("config", () => {
       ...theme_fields_base.map((k) => `on-${k}`),
     ];
     return theme_fields
-      .filter((e) => e in webConfig.value && webConfig.value[e])
-      .reduce((a, e) => ({ ...a, ...{ [e]: webConfig.value[e] } }), {});
+      .filter((e) => e in config.value && config.value[e])
+      .reduce((a, e) => ({ ...a, ...{ [e]: config.value[e] } }), {});
   });
 
 
@@ -184,8 +184,8 @@ export const useConfigStore = defineStore("config", () => {
     error,
     defaultConfig,
     configLocalStorage,
-    webConfig,
-    webConfigJson,
+    config,
+    configJson,
     configServer,
     configServerJson,
     client,

@@ -32,10 +32,10 @@ const router = useRouter();
 const authStore = useAuthStore();
 const configStore = useConfigStore();
 
-const { webConfig, client: clientInConfigStore } = storeToRefs(configStore);
+const { config, client: clientInConfigStore } = storeToRefs(configStore);
 
 watchEffect(() => {
-  document.title = webConfig.value.headTitle || "loading...";
+  document.title = config.value.headTitle || "loading...";
 });
 
 provideClient(urqlClient);
