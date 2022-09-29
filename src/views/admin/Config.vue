@@ -16,7 +16,7 @@
             <!-- <template v-slot:[slotName]="{ item }">
                 {{ item }}
             </template> -->
-            <template v-slot:item.key="{ item }">
+            <!-- <template v-slot:item.key="{ item }">
               <v-edit-dialog
                 :return-value.sync="item.key"
                 large
@@ -35,7 +35,7 @@
                   ></v-text-field>
                 </template>
               </v-edit-dialog>
-            </template>
+            </template> -->
             <template v-slot:item.value="{ item }">
               <v-edit-dialog
                 :return-value.sync="item.value"
