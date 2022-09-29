@@ -36,11 +36,13 @@ describe("Main Store", () => {
 
   it("loadWebConfig()", async () => {
     const store = useConfigStore();
-    expect(store.webConfigLoaded).toBe(false);
     expect(store.vuetifyTheme).toEqual({});
+    //
     // @ts-ignore
-    await store.loadWebConfig(mockUrqlClient);
-    expect(store.webConfigLoaded).toBe(true);
+    store.client = mockUrqlClient;
+    
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
     expect(store.webConfig).toEqual(sampleWebConfig);
     expect(store.vuetifyTheme).toEqual(sampleVuetifyTheme);
   });

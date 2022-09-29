@@ -16,7 +16,7 @@
             <!-- <template v-slot:[slotName]="{ item }">
                 {{ item }}
             </template> -->
-            <template v-slot:[`item.key`]="{ item }">
+            <template v-slot:item.key="{ item }">
               <v-edit-dialog
                 :return-value.sync="item.key"
                 large
@@ -36,7 +36,7 @@
                 </template>
               </v-edit-dialog>
             </template>
-            <template v-slot:[`item.value`]="{ item }">
+            <template v-slot:item.value="{ item }">
               <v-edit-dialog
                 :return-value.sync="item.value"
                 large
@@ -59,13 +59,13 @@
           </v-data-table>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="secondary" text :disabled="!changed" @click="reset()">
+            <v-btn color="secondary" text :disabled="!saved" @click="reset()">
               Reset
             </v-btn>
             <v-btn
               color="primary"
               text
-              :disabled="!changed || !!error"
+              :disabled="!saved || !!error"
               @click="saveToServer()"
             >
               Save to server
@@ -79,12 +79,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { storeToRefs } from "pinia";
 export default defineComponent({ name: "Config" });
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useConfig } from "@/utils/config";
+import { ref, watchEffect } from "vue";
+import { useConfigStore } from "@/stores/config";
 
 // https://stackoverflow.com/a/66430948/7309855
 let a_: any;
@@ -101,12 +102,15 @@ interface StringKeyObject {
   [key: string]: unknown;
 }
 
-const config = useConfig();
+const configStore = useConfigStore();
 
-const error = ref<any>(null);
+const { webConfig, saved, error } = storeToRefs(configStore);
+const { saveToServer, reset } = configStore;
 
-const webConfig = computed(() => config.config.value);
-const itemsInStore = computed(() => reshapeWebConfigToItems(webConfig.value));
+const items = ref<Item[]>([]);
+watchEffect(() => {
+  items.value = reshapeWebConfigToItems(webConfig.value);
+});
 
 function reshapeWebConfigToItems(webConfig: StringKeyObject) {
   return Object.entries(webConfig).map((e) => ({
@@ -116,77 +120,8 @@ function reshapeWebConfigToItems(webConfig: StringKeyObject) {
   }));
 }
 
-function reshapeItemsToWebConfig(items: Item[]) {
-  const webConfig = items.reduce(
-    (a, item) => ({
-      ...a,
-      ...{ [item.key]: JSON.parse(item.value) },
-    }),
-    {} as StringKeyObject
-  );
-  return webConfig;
-}
-
-const webConfigOriginal = ref<typeof webConfig.value>({});
-const itemsOriginal = ref<Item[]>([]);
-const items = ref<Item[]>([]);
-
-const changed = computed(
-  () => !(JSON.stringify(items.value) === JSON.stringify(itemsOriginal.value))
-);
-
-function copyOriginal() {
-  webConfigOriginal.value = nestedCopy(webConfig.value);
-  itemsOriginal.value = reshapeWebConfigToItems(webConfigOriginal.value);
-  items.value = nestedCopy(itemsOriginal.value);
-}
-
-function nestedCopy<T>(data: T): T {
-  return JSON.parse(JSON.stringify(data));
-}
-
-const first = ref(true);
-watch(
-  config.loaded,
-  (newValue) => {
-    if (!newValue) return;
-    if (!first.value) return;
-    copyOriginal();
-    first.value = false;
-  },
-  { immediate: true }
-);
-
-function reset() {
-  items.value = nestedCopy(itemsOriginal.value);
-  config.set(webConfigOriginal.value);
-  error.value = null;
-}
-
-async function saveToServer() {
-  await config.upload();
-  copyOriginal();
-}
-
 function save(item: Item) {
-  error.value = null;
-
-  try {
-    item.type = typeof JSON.parse(item.value);
-  } catch (e) {
-    error.value = e;
-    return;
-  }
-
-  let webConfig: StringKeyObject;
-  try {
-    webConfig = reshapeItemsToWebConfig(items.value);
-  } catch (e) {
-    error.value = e;
-    return;
-  }
-
-  config.set(webConfig);
+  webConfig.value[item.key] = JSON.parse(item.value);
 }
 
 function cancel() {}

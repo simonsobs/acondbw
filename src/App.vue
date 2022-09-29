@@ -19,10 +19,9 @@ import { storeToRefs } from "pinia";
 import { provideClient } from "@urql/vue";
 
 import { useAuthStore } from "@/stores/auth";
+import { useConfigStore } from "@/stores/config";
 import { client } from "@/plugins/urql";
 import { checkAuthForCurrentRoute } from "@/router";
-
-import { provideConfig } from "@/utils/config";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
 
@@ -31,13 +30,16 @@ const urqlClient = ref(client);
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const configStore = useConfigStore();
 
-const config = provideConfig(urqlClient);
+const { webConfig, client: clientInConfigStore } = storeToRefs(configStore);
+
 watchEffect(() => {
-  document.title = config.config.value.headTitle || "loading...";
+  document.title = webConfig.value.headTitle || "loading...";
 });
 
 provideClient(urqlClient);
+clientInConfigStore.value = urqlClient.value;
 
 onBeforeMount(async () => {
   await authStore.checkIfSignedIn(urqlClient.value);
