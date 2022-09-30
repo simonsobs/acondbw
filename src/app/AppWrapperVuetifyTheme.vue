@@ -1,12 +1,11 @@
 <template>
-  <app v-if="!waiting"> </app>
+  <app> </app>
 </template>
 
 <script lang="ts">
 // Use Options API to set Vuetify theme in Vuetify 2 because not clear how to
 // access $vuetify in Composition API.
-import { defineComponent } from "vue";
-import { mapState } from "pinia";
+import { defineComponent, computed } from "vue";
 
 import { useConfigStore } from "@/stores/config";
 
@@ -14,28 +13,27 @@ import App from "./App.vue";
 
 export default defineComponent({
   components: { App },
-  data() {
+  setup() {
+    const configStore = useConfigStore();
     return {
-      waiting: true,
+      vuetifyTheme: computed(() => configStore.vuetifyTheme),
     };
   },
-  computed: {
-    ...mapState(useConfigStore, ["vuetifyTheme"]),
-  },
   watch: {
-    vuetifyTheme(newTheme) {
-      this.waiting = false;
-      this.$vuetify.theme.themes.light = {
-        ...this.$vuetify.theme.themes.light,
-        ...newTheme,
-      };
+    vuetifyTheme() {
+      this.setVuetifyTheme();
     },
   },
-  mounted() {
-    // in case waiting is still true
-    setTimeout(() => {
-      this.waiting = false;
-    }, 100);
+  beforeMount() {
+    this.setVuetifyTheme();
+  },
+  methods: {
+    setVuetifyTheme() {
+      this.$vuetify.theme.themes.light = {
+        ...this.$vuetify.theme.themes.light,
+        ...this.vuetifyTheme,
+      };
+    },
   },
 });
 </script>
