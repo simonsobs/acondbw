@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { useConfigStore } from "@/stores/config";
-import App from "./App.vue";
+import App from "./AppWrapperAuth.vue";
 const configStore = useConfigStore();
 configStore.setup();
 </script>
