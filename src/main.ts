@@ -8,6 +8,9 @@ import pinia from "@/stores";
 import { useConfigStore } from "@/stores/config";
 import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
+// https://github.com/sindresorhus/github-markdown-css
+import "../node_modules/github-markdown-css/github-markdown-light.css";
+
 Vue.use(PiniaVuePlugin);
 // Vue.use(InstantSearch);
 

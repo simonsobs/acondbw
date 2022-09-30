@@ -73,10 +73,7 @@ watch(
 );
 </script>
 
-<!-- https://github.com/sindresorhus/github-markdown-css -->
 <style>
-@import "../node_modules/github-markdown-css/github-markdown-light.css";
-
 .capitalize {
   text-transform: capitalize;
 }
