@@ -82,4 +82,8 @@ const client = createClient({
   ],
 });
 
-export { client };
+function createUrqlClient() {
+  return client;
+}
+
+export { createUrqlClient };

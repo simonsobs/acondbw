@@ -5,8 +5,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { provideClient } from "@urql/vue";
-import { client } from "@/plugins/urql";
+import { createUrqlClient } from "@/plugins/urql";
 import App from "./AppWrapperLoadConfig.vue";
-const urqlClient = ref(client);
+const urqlClient = ref(createUrqlClient());
 provideClient(urqlClient);
 </script>
