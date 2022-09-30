@@ -196,14 +196,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  watch,
-  computed,
-  defineProps,
-  withDefaults,
-  Component,
-} from "vue";
+import { ref, watch, computed, withDefaults, Component } from "vue";
 import { useRouter } from "vue-router/composables";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
