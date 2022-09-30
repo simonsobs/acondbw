@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { PiniaVuePlugin, mapState } from "pinia";
-import App from "./App.vue";
+import App from "./app/App.vue";
 import { createRouter } from "./router";
 import vuetify from "./plugins/vuetify";
 // import InstantSearch from "vue-instantsearch";
