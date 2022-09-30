@@ -11,6 +11,7 @@ const url = path.join(import.meta.env.VITE_PUBLIC_PATH, "config.json");
 const loading = ref(true);
 watchEffect(async () => {
   const response = await axios.get(url);
+  console.log("response", response);
   loading.value = false;
 });
 </script>
