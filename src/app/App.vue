@@ -35,8 +35,6 @@ watchEffect(() => {
   document.title = configStore.config.headTitle || "loading...";
 });
 
-configStore.setup();
-
 onBeforeMount(async () => {
   await authStore.checkIfSignedIn(urqlClient);
 });

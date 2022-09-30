@@ -6,7 +6,7 @@
 import { ref } from "vue";
 import { provideClient } from "@urql/vue";
 import { client } from "@/plugins/urql";
-import App from "./App.vue";
+import App from "./AppWrapperLoadConfig.vue";
 const urqlClient = ref(client);
 provideClient(urqlClient);
 </script>
