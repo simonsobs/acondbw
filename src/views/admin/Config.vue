@@ -59,13 +59,13 @@
           </v-data-table>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="secondary" text :disabled="!saved" @click="reset()">
+            <v-btn color="secondary" text :disabled="saved" @click="reset()">
               Reset
             </v-btn>
             <v-btn
               color="primary"
               text
-              :disabled="!saved || !!error"
+              :disabled="saved || !!error"
               @click="saveToServer()"
             >
               Save to server
