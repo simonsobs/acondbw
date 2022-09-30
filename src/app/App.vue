@@ -31,13 +31,11 @@ const router = useRouter();
 const authStore = useAuthStore();
 const configStore = useConfigStore();
 
-const { config, client: clientInConfigStore } = storeToRefs(configStore);
-
 watchEffect(() => {
-  document.title = config.value.headTitle || "loading...";
+  document.title = configStore.config.headTitle || "loading...";
 });
 
-clientInConfigStore.value = urqlClient;
+configStore.setup();
 
 onBeforeMount(async () => {
   await authStore.checkIfSignedIn(urqlClient);

@@ -1,6 +1,6 @@
 import { ref, computed, watch, watchEffect } from "vue";
 import { defineStore } from "pinia";
-import { Client } from "@urql/vue";
+import { Client, useClientHandle } from "@urql/vue";
 
 const localStorageKey = "config";
 
@@ -117,6 +117,10 @@ export const useConfigStore = defineStore("config", () => {
   });
 
   const client = ref<Client | null>(null);
+  function setup() {
+    const clientHandle = useClientHandle();
+    client.value = clientHandle.client;
+  }
   watchEffect(async () => {
     await loadFromServer();
   });
@@ -179,7 +183,6 @@ export const useConfigStore = defineStore("config", () => {
       .reduce((a, e) => ({ ...a, ...{ [e]: config.value[e] } }), {});
   });
 
-
   return {
     error,
     defaultConfig,
@@ -189,6 +192,7 @@ export const useConfigStore = defineStore("config", () => {
     configServer,
     configServerJson,
     client,
+    setup,
     saved,
     reset,
     loadFromServer,
