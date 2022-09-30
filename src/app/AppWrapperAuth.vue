@@ -8,7 +8,7 @@ import { useRouter } from "vue-router/composables";
 import { useClientHandle } from "@urql/vue";
 import { useAuthStore } from "@/stores/auth";
 import { checkAuthForCurrentRoute } from "@/router";
-import App from "./App.vue";
+import App from "./AppWrapperVuetifyTheme.vue";
 const router = useRouter();
 const authStore = useAuthStore();
 const urqlClient = useClientHandle().client;
