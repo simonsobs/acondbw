@@ -16,16 +16,15 @@
 import { ref, watch, watchEffect, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router/composables";
 import { storeToRefs } from "pinia";
-import { provideClient } from "@urql/vue";
+import { useClientHandle } from "@urql/vue";
 
 import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
-import { client } from "@/plugins/urql";
 import { checkAuthForCurrentRoute } from "@/router";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
 
-const urqlClient = ref(client);
+const urqlClient = useClientHandle().client;
 
 const route = useRoute();
 const router = useRouter();
@@ -38,11 +37,10 @@ watchEffect(() => {
   document.title = config.value.headTitle || "loading...";
 });
 
-provideClient(urqlClient);
-clientInConfigStore.value = urqlClient.value;
+clientInConfigStore.value = urqlClient;
 
 onBeforeMount(async () => {
-  await authStore.checkIfSignedIn(urqlClient.value);
+  await authStore.checkIfSignedIn(urqlClient);
 });
 
 const { isSignedIn } = storeToRefs(authStore);
