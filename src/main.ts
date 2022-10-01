@@ -1,11 +1,10 @@
 import Vue from "vue";
-import { PiniaVuePlugin, mapState } from "pinia";
-import App from "./App.vue";
+import { PiniaVuePlugin } from "pinia";
+import App from "./app/AppWrapperLoadPreConfig.vue";
 import { createRouter } from "./router";
 import vuetify from "./plugins/vuetify";
 // import InstantSearch from "vue-instantsearch";
 import pinia from "@/stores";
-import { useConfigStore } from "@/stores/config";
 import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
 // https://github.com/sindresorhus/github-markdown-css
@@ -22,16 +21,5 @@ new Vue({
   router: createRouter(),
   vuetify,
   pinia,
-  computed: {
-    ...mapState(useConfigStore, ["vuetifyTheme"]),
-  },
-  watch: {
-    vuetifyTheme(newTheme) {
-      this.$vuetify.theme.themes.light = {
-        ...this.$vuetify.theme.themes.light,
-        ...newTheme,
-      };
-    },
-  },
   render: (h) => h(App),
 }).$mount("#app");

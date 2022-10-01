@@ -15,9 +15,6 @@ import { AUTH_TOKEN } from "@/vue-apollo";
 // https://formidable.com/open-source/urql/docs/api/auth-exchange/
 // https://formidable.com/open-source/urql/docs/advanced/authentication/
 
-const httpEndpoint =
-  import.meta.env.VITE_GRAPHQL_HTTP || "http://localhost:4000/graphql";
-
 function readTokenFromLocalStorage() {
   const tokenJson = localStorage.getItem(AUTH_TOKEN);
   return tokenJson && (JSON.parse(tokenJson) as string);
@@ -66,20 +63,22 @@ const addAuthToOperation = ({ authState, operation }) => {
   });
 };
 
-const client = createClient({
-  url: httpEndpoint,
-  exchanges: [
-    devtoolsExchange,
-    dedupExchange,
-    cacheExchange, // default document cache
-    // cacheExchange({ // for graphcache, not clear how to initialize it
-    //   resolvers: {
-    //     productType: { products: relayPagination() },
-    //   },
-    // }),
-    authExchange({ getAuth, addAuthToOperation }),
-    fetchExchange,
-  ],
-});
+function createUrqlClient(url: string) {
+  return createClient({
+    url,
+    exchanges: [
+      devtoolsExchange,
+      dedupExchange,
+      cacheExchange, // default document cache
+      // cacheExchange({ // for graphcache, not clear how to initialize it
+      //   resolvers: {
+      //     productType: { products: relayPagination() },
+      //   },
+      // }),
+      authExchange({ getAuth, addAuthToOperation }),
+      fetchExchange,
+    ],
+  });
+}
 
-export { client };
+export { createUrqlClient };

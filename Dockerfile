@@ -1,17 +1,22 @@
 FROM node:16.17-alpine as build
 
+COPY ./ app
 WORKDIR /app
-COPY ./ acondbw
-WORKDIR /app/acondbw
-RUN yarn install
+RUN yarn
 COPY docker/env.local .env.local
 RUN yarn build
 
+
 #
-FROM nginx:1.19
-COPY --from=build /app/acondbw/dist /usr/share/nginx/html
-COPY docker/etc-nginx-conf.d-default.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-COPY docker/cmd.sh /
-RUN chmod +x /cmd.sh
-CMD [ "/cmd.sh" ]
+FROM nginx:1.21
+
+RUN apt-get update && apt-get install -y jq
+
+WORKDIR /app
+COPY --from=build /app/dist dist
+COPY docker/entrypoint.sh .
+COPY docker/setup.sh /docker-entrypoint.d/99-app-setup.sh
+COPY docker/nginx-default.conf.template /etc/nginx/templates/default.conf.template
+
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

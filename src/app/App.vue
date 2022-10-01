@@ -13,42 +13,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect, onBeforeMount } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
-import { storeToRefs } from "pinia";
-import { provideClient } from "@urql/vue";
+import { ref, watch, watchEffect } from "vue";
+import { useRoute } from "vue-router/composables";
 
-import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
-import { client } from "@/plugins/urql";
-import { checkAuthForCurrentRoute } from "@/router";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
 
-const urqlClient = ref(client);
 
 const route = useRoute();
-const router = useRouter();
-const authStore = useAuthStore();
 const configStore = useConfigStore();
 
-const { config, client: clientInConfigStore } = storeToRefs(configStore);
-
 watchEffect(() => {
-  document.title = config.value.headTitle || "loading...";
-});
-
-provideClient(urqlClient);
-clientInConfigStore.value = urqlClient.value;
-
-onBeforeMount(async () => {
-  await authStore.checkIfSignedIn(urqlClient.value);
-});
-
-const { isSignedIn } = storeToRefs(authStore);
-watchEffect(async () => {
-  if (isSignedIn.value) return;
-  await checkAuthForCurrentRoute(router);
+  document.title = configStore.config.headTitle || "loading...";
 });
 
 const transitionName = ref("fade-app-across");

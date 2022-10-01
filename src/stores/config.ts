@@ -1,16 +1,12 @@
 import { ref, computed, watch, watchEffect } from "vue";
 import { defineStore } from "pinia";
-import { Client } from "@urql/vue";
-
-const localStorageKey = "config";
 
 import {
-  WebConfigQuery,
-  WebConfigDocument,
-  SaveWebConfigMutation,
-  SaveWebConfigDocument,
-  SaveWebConfigMutationVariables,
+  useWebConfigQuery,
+  useSaveWebConfigMutation,
 } from "@/generated/graphql";
+
+const localStorageKey = "config";
 
 export interface VuetifyTheme {
   primary?: string;
@@ -68,6 +64,17 @@ function writeToLocalStorage(data: unknown) {
 export const useConfigStore = defineStore("config", () => {
   const error = ref<unknown | null>(null);
 
+  const query = ref(useWebConfigQuery());
+  const mutation = ref(useSaveWebConfigMutation());
+  // Note: ref() seems necessary inside defineStore(). Without ref(), the
+  // automatic unwrapping happens inconsistently. For example, query.fetching is
+  // originally a Ref<boolean>. But it will be unref-ed and become a boolean
+  // when updated. With ref(), query.value.fetching is always a boolean.
+
+  function refetch() {
+    query.value.executeQuery({ requestPolicy: "network-only" });
+  }
+
   const defaultConfig = ref<WebConfig>({
     headTitle: "",
     toolbarTitle: "",
@@ -86,14 +93,42 @@ export const useConfigStore = defineStore("config", () => {
   const config = ref(deepCopy(configLocalStorage.value));
   const configJson = computed(() => JSON.stringify(config.value));
 
-  const configServerJson = ref<string | null>(null);
+  let configServerJson = ref<string | null | undefined>();
+
+  watchEffect(() => {
+    if (!query.value?.error) return;
+    error.value = query.value.error;
+  });
+
+  watchEffect(() => {
+    // set configServerJson from a query response
+    if (query.value?.fetching) return;
+    const data = query.value?.data;
+    if (!data) return;
+    const json = data.webConfig?.json;
+    if (json === undefined || json === null) {
+      const stringified = JSON.stringify(data);
+      error.value = new Error(
+        `The server returned undefined or null for webConfig.json: data = ${stringified}`
+      );
+      return;
+    }
+    configServerJson.value = json;
+  });
+
   const configServer = ref<WebConfig | null>(null);
-  watch(configServerJson, (newValue) => {
+
+  watchEffect(() => {
+    // set configServer from configServerJson
     configServer.value = null;
-    if (newValue === null) return;
+    if (configServerJson.value === undefined) return;
+    if (configServerJson.value === null) {
+      error.value = new Error("The server returned null for the config.");
+      return;
+    }
     let parsed: unknown;
     try {
-      parsed = JSON.parse(newValue);
+      parsed = JSON.parse(configServerJson.value);
     } catch (e) {
       error.value = e;
       return;
@@ -111,31 +146,20 @@ export const useConfigStore = defineStore("config", () => {
       return;
     }
     configServer.value = { ...deepCopy(defaultConfig.value), ...parsed };
-    config.value = deepCopy(configServer.value);
-    configLocalStorage.value = deepCopy(config.value);
-    writeToLocalStorage(configLocalStorage.value);
   });
 
-  const client = ref<Client | null>(null);
-  watchEffect(async () => {
-    await loadFromServer();
-  });
-
-  async function loadFromServer() {
-    if (client.value === null) return;
-    const { error: combinedError, data } = await client.value
-      .query<WebConfigQuery>(WebConfigDocument, {})
-      .toPromise();
-    if (combinedError) {
-      error.value = combinedError;
-      return;
-    }
-    configServerJson.value = data?.webConfig?.json || null;
-  }
-
-  const saved = computed(
-    () => !(configJson.value === configServerJson.value)
+  watch(
+    configServer,
+    (val) => {
+      if (val === null) return;
+      config.value = deepCopy(val);
+      configLocalStorage.value = deepCopy(config.value);
+      writeToLocalStorage(configLocalStorage.value);
+    },
+    { deep: true, immediate: true }
   );
+
+  const saved = computed(() => configJson.value === configServerJson.value);
 
   function reset() {
     if (configServer.value) {
@@ -146,18 +170,15 @@ export const useConfigStore = defineStore("config", () => {
   }
 
   async function saveToServer() {
-    if (client.value === null) return;
-    const { error: combinedError, data } = await client.value
-      .mutation<SaveWebConfigMutation, SaveWebConfigMutationVariables>(
-        SaveWebConfigDocument,
-        { json: configJson.value }
-      )
-      .toPromise();
+    if (!mutation.value) return;
+    const { error: combinedError } = await mutation.value.executeMutation({
+      json: configJson.value,
+    });
     if (combinedError) {
       error.value = combinedError;
       return;
     }
-    await loadFromServer();
+    refetch();
   }
 
   const vuetifyTheme = computed(() => {
@@ -179,7 +200,6 @@ export const useConfigStore = defineStore("config", () => {
       .reduce((a, e) => ({ ...a, ...{ [e]: config.value[e] } }), {});
   });
 
-
   return {
     error,
     defaultConfig,
@@ -188,10 +208,9 @@ export const useConfigStore = defineStore("config", () => {
     configJson,
     configServer,
     configServerJson,
-    client,
     saved,
     reset,
-    loadFromServer,
+    loadFromServer: refetch,
     saveToServer,
     vuetifyTheme,
   };
