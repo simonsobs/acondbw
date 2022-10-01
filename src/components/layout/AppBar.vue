@@ -60,6 +60,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useConfigStore } from "@/stores/config";
+// import { usePreConfigStore } from "@/stores/pre-config";
 
 import SearchWindow from "@/components/utils/SearchWindow.vue";
 import UserMenuButton from "@/components/auth/UserMenuButton.vue";
@@ -67,5 +68,6 @@ import UserMenuButton from "@/components/auth/UserMenuButton.vue";
 const configStore = useConfigStore();
 const title = computed(() => configStore.config.toolbarTitle || "");
 
-// const graphiqlUrl = ref(import.meta.env.VITE_GRAPHQL_HTTP);
+// const preConfigStore = usePreConfigStore();
+// const graphiqlUrl = computed(() => preConfigStore.preConfig?.graphqlHttp);
 </script>
