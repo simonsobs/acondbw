@@ -1,16 +1,11 @@
 <template>
-  <app v-if="!loading"> </app>
+  <app v-if="!(loading || error)"> </app>
+  <div v-else-if="error">{{ error }}</div>
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
-import axios from "axios";
-import * as path from "path";
+import { storeToRefs } from "pinia";
+import { usePreConfigStore } from "@/stores/pre-config";
 import App from "./AppWrapperProvideUrqlClient.vue";
-const url = path.join(import.meta.env.VITE_PUBLIC_PATH, "config.json");
-const loading = ref(true);
-watchEffect(async () => {
-  const response = await axios.get(url);
-  loading.value = false;
-});
+const { loading, error } = storeToRefs(usePreConfigStore());
 </script>
