@@ -1,4 +1,4 @@
-import { ref, computed, watch, watchEffect, UnwrapRef } from "vue";
+import { ref, computed, watch, watchEffect } from "vue";
 import { defineStore } from "pinia";
 
 import {
@@ -64,23 +64,15 @@ function writeToLocalStorage(data: unknown) {
 export const useConfigStore = defineStore("config", () => {
   const error = ref<unknown | null>(null);
 
-  type QueryResponse = ReturnType<typeof useWebConfigQuery>;
-  type MutationResponse = ReturnType<typeof useSaveWebConfigMutation>;
-  let query = ref<UnwrapRef<QueryResponse> | undefined>();
-  let mutation = ref<UnwrapRef<MutationResponse> | undefined>();
-
-  function setup() {
-    // This function needs to be called from the setup() function of a component
-    // in which a urql client can be injected.
-
-    // @ts-ignore  because automatically unwrapped, not sure how to type correctly
-    query.value = useWebConfigQuery();
-    // @ts-ignore
-    mutation.value = useSaveWebConfigMutation();
-  }
+  const query = ref(useWebConfigQuery());
+  const mutation = ref(useSaveWebConfigMutation());
+  // Note: ref() seems necessary inside defineStore(). Without ref(), the
+  // automatic unwrapping happens inconsistently. For example, query.fetching is
+  // originally a Ref<boolean>. But it will be unref-ed and become a boolean
+  // when updated. With ref(), query.value.fetching is always a boolean.
 
   function refetch() {
-    query.value?.executeQuery({ requestPolicy: "network-only" });
+    query.value.executeQuery({ requestPolicy: "network-only" });
   }
 
   const defaultConfig = ref<WebConfig>({
@@ -113,7 +105,7 @@ export const useConfigStore = defineStore("config", () => {
     if (query.value?.fetching) return;
     const data = query.value?.data;
     if (!data) return;
-    const json = data?.webConfig?.json;
+    const json = data.webConfig?.json;
     if (json === undefined || json === null) {
       const stringified = JSON.stringify(data);
       error.value = new Error(
@@ -216,7 +208,6 @@ export const useConfigStore = defineStore("config", () => {
     configJson,
     configServer,
     configServerJson,
-    setup,
     saved,
     reset,
     loadFromServer: refetch,
