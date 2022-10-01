@@ -66,24 +66,22 @@ const addAuthToOperation = ({ authState, operation }) => {
   });
 };
 
-const client = createClient({
-  url: httpEndpoint,
-  exchanges: [
-    devtoolsExchange,
-    dedupExchange,
-    cacheExchange, // default document cache
-    // cacheExchange({ // for graphcache, not clear how to initialize it
-    //   resolvers: {
-    //     productType: { products: relayPagination() },
-    //   },
-    // }),
-    authExchange({ getAuth, addAuthToOperation }),
-    fetchExchange,
-  ],
-});
-
-function createUrqlClient() {
-  return client;
+function createUrqlClient(url: string) {
+  return createClient({
+    url,
+    exchanges: [
+      devtoolsExchange,
+      dedupExchange,
+      cacheExchange, // default document cache
+      // cacheExchange({ // for graphcache, not clear how to initialize it
+      //   resolvers: {
+      //     productType: { products: relayPagination() },
+      //   },
+      // }),
+      authExchange({ getAuth, addAuthToOperation }),
+      fetchExchange,
+    ],
+  });
 }
 
 export { createUrqlClient };
