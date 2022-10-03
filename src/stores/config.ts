@@ -1,4 +1,4 @@
-import { ref, computed, watch, watchEffect } from "vue";
+import { ref, computed, watch, watchEffect, getCurrentInstance } from "vue";
 import { defineStore } from "pinia";
 
 import {
@@ -61,18 +61,25 @@ function writeToLocalStorage(data: unknown) {
   localStorage.setItem(localStorageKey, JSON.stringify(data));
 }
 
+function isInSetup() {
+  // https://github.com/FormidableLabs/urql/blob/9beb07e6f44c2108dbfa44d4/packages/vue-urql/src/useClient.ts#L27
+  return process.env.NODE_ENV === "production" || getCurrentInstance() !== null;
+}
+
 export const useConfigStore = defineStore("config", () => {
   const error = ref<unknown | null>(null);
+  
+  const inSetup = isInSetup() || undefined;
 
-  const query = ref(useWebConfigQuery());
-  const mutation = ref(useSaveWebConfigMutation());
+  const query = ref(inSetup && useWebConfigQuery());
+  const mutation = ref(inSetup && useSaveWebConfigMutation());
   // Note: ref() seems necessary inside defineStore(). Without ref(), the
   // automatic unwrapping happens inconsistently. For example, query.fetching is
   // originally a Ref<boolean>. But it will be unref-ed and become a boolean
   // when updated. With ref(), query.value.fetching is always a boolean.
 
   function refetch() {
-    query.value.executeQuery({ requestPolicy: "network-only" });
+    query.value?.executeQuery({ requestPolicy: "network-only" });
   }
 
   const defaultConfig = ref<WebConfig>({
