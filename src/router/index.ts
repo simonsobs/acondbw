@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 
-import { default as defaultPinia } from "@/stores";
 import { useAuthStore } from "@/stores/auth";
 
 import Frame from "@/components/layout/Frame.vue";
@@ -36,21 +35,15 @@ const Config = () => import("@/views/admin/Config.vue");
 const Theme = () => import("@/views/admin/Theme.vue");
 const User = () => import("@/views/admin/User.vue");
 const AdminAppAuth = () => import("@/views/admin-token/AdminAppAuth.vue");
-const AdminAppTokenError = () =>
-  import("@/views/admin-token/AdminAppTokenError.vue");
+const AdminAppTokenError = () => import("@/views/admin-token/AdminAppTokenError.vue");
 
+import { PiniaVuePlugin } from "pinia";
+
+// Pinia must be plugged in before the router.
+// https://github.com/vuejs/pinia/discussions/723#discussioncomment-2110660
+// Plugging in pinia here in case it has not been plugged in yet.
+Vue.use(PiniaVuePlugin);
 Vue.use(VueRouter);
-
-let pinia = defaultPinia;
-
-function setPinia(val: typeof pinia) {
-  // because not sure how to monkey patch pinia for tests
-  pinia = val;
-}
-
-function setDefaultPinia() {
-  setPinia(defaultPinia);
-}
 
 const routes: Array<RouteConfig> = [
   {
@@ -61,7 +54,7 @@ const routes: Array<RouteConfig> = [
       frame: NullFrame,
     },
     beforeEnter: (to, from, next) => {
-      const auth = useAuthStore(pinia);
+      const auth = useAuthStore();
       const signedIn = auth.isSignedIn;
       if (signedIn) {
         next({ name: "Dashboard" });
@@ -79,7 +72,7 @@ const routes: Array<RouteConfig> = [
     },
     // meta: { requiresAuth: true },
     beforeEnter: (to, from, next) => {
-      const auth = useAuthStore(pinia);
+      const auth = useAuthStore();
       const signedIn = auth.isSignedIn;
       if (signedIn) {
         next();
@@ -222,7 +215,7 @@ function createRouter() {
       return;
     }
 
-    const auth = useAuthStore(pinia);
+    const auth = useAuthStore();
 
     const isSignedIn = auth.isSignedIn;
     if (authRequired && !isSignedIn) {
@@ -246,11 +239,11 @@ async function checkAuthForCurrentRoute(router: VueRouter) {
   const authRequired = router.currentRoute.matched.some(
     (record) => record.meta.requiresAuth
   );
-  const auth = useAuthStore(pinia);
+  const auth = useAuthStore();
   const signedIn = auth.isSignedIn;
   if (authRequired && !signedIn) {
     await router.push({ name: "Entry" });
   }
 }
 
-export { createRouter, checkAuthForCurrentRoute, setPinia, setDefaultPinia };
+export { createRouter, checkAuthForCurrentRoute };

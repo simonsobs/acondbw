@@ -2,7 +2,7 @@ import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import moxios from "moxios";
 
-import { createRouter, setPinia, setDefaultPinia } from "@/router";
+import { createRouter } from "@/router";
 import { useAuthStore } from "@/stores/auth";
 
 describe("router", () => {
@@ -12,7 +12,6 @@ describe("router", () => {
   beforeEach(() => {
     const pinia = createPinia();
     setActivePinia(pinia);
-    setPinia(pinia);
     moxios.install();
 
     authStore = useAuthStore();
@@ -23,7 +22,6 @@ describe("router", () => {
   });
 
   afterEach(() => {
-    setDefaultPinia();
     moxios.uninstall();
   });
 
