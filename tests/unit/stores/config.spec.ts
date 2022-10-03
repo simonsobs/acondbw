@@ -1,7 +1,28 @@
+import { defineComponent, ref } from "vue";
+import { mount, createLocalVue } from "@vue/test-utils";
 import { describe, expect, beforeEach, it } from "vitest";
-import { setActivePinia, createPinia } from "pinia";
+import { PiniaVuePlugin, setActivePinia, createPinia } from "pinia";
 import { fromValue, toPromise } from "wonka";
 import { useConfigStore, VuetifyTheme, WebConfig } from "@/stores/config";
+
+function callInSetup<T>(fn: () => T, urqlClient) {
+  let ret: T | undefined;
+  const dummyComponent = defineComponent({
+    setup() {
+      ret = fn();
+    },
+    render() {},
+  });
+  const localVue = createLocalVue();
+  localVue.use(PiniaVuePlugin);
+  mount(dummyComponent, {
+    localVue,
+    pinia: createPinia(),
+    provide: { $urql: ref(urqlClient) },
+  });
+  if (ret === undefined) throw new Error("return value is undefined");
+  return ret;
+}
 
 describe("Main Store", () => {
   beforeEach(() => {
@@ -35,14 +56,8 @@ describe("Main Store", () => {
   const mockUrqlClient = { executeQuery, query };
 
   it("loadWebConfig()", async () => {
-    const store = useConfigStore();
-    expect(store.vuetifyTheme).toEqual({});
-    //
-    // @ts-ignore
-    store.client = mockUrqlClient;
-    
-    await new Promise((resolve) => setTimeout(resolve, 10));
-
+    const store = callInSetup(useConfigStore, mockUrqlClient);
+    // await new Promise((resolve) => setTimeout(resolve, 10));
     expect(store.config).toEqual(sampleWebConfig);
     expect(store.vuetifyTheme).toEqual(sampleVuetifyTheme);
   });
