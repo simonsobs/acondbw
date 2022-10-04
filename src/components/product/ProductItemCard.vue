@@ -290,7 +290,6 @@ export default defineComponent({ name: "ProductItemCard" });
 
 <script setup lang="ts">
 import { ref, computed, withDefaults } from "vue";
-import _ from "lodash";
 
 import { marked } from "marked";
 
