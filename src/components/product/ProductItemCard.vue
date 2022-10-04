@@ -305,7 +305,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent } from "vue";
+export default defineComponent({ name: "ProductItemCard" });
+</script>
+
+<script setup lang="ts">
+import { ref, computed, withDefaults } from "vue";
 import _ from "lodash";
 
 import { marked } from "marked";
@@ -329,157 +334,140 @@ interface Attributes {
   [key: string]: Attribute;
 }
 
-export default defineComponent({
-  name: "ProductItemCard",
-  components: {
-    ProductEditForm,
-    ProductUpdateRelationsForm,
-    ProductConvertTypeForm,
-    ProductDeleteForm,
-  },
-  props: {
-    productId: { type: Number, required: true }, // node.productId not node.id
-    collapsed: { type: Boolean, default: false },
-    collapsible: { type: Boolean, default: false },
-    disableEdit: { type: Boolean, default: false },
-    disableDelete: { type: Boolean, default: false },
-  },
-  setup(prop, { emit }) {
-    const query = useProductQuery({ variables: { productId: prop.productId } });
-    const node = computed(() => query.data?.value?.product);
-    const timePosted = computed(() => formatDateTime(node.value?.timePosted));
-    const timeUpdated = computed(() => formatDateTime(node.value?.timeUpdated));
-    const note = computed(() => marked.parse(node.value?.note ?? ""));
-    const relations = computed(() =>
-      node.value?.relations?.edges
-        ? _.groupBy(node.value.relations.edges, "node.type_.typeId")
-        : null
-    );
-    const attributes = computed<Attributes | null>(() => {
-      if (!node.value) return null;
-      const thisNode = node.value;
+const props = withDefaults(
+  defineProps<{
+    productId: number;
+    collapsed?: boolean;
+    collapsible?: boolean;
+    disableEdit?: boolean;
+    disableDelete?: boolean;
+  }>(),
+  {
+    collapsed: false,
+    collapsible: false,
+    disableEdit: false,
+    disableDelete: false,
+  }
+);
 
-      const keys = [
-        "attributesUnicodeText",
-        "attributesBoolean",
-        "attributesInteger",
-        "attributesFloat",
-        "attributesDate",
-        "attributesDateTime",
-        "attributesTime",
-      ].filter((k) => k in thisNode);
+interface Emits {
+  (e: "nameChanged", value: string | null): void;
+  (e: "typeChanged", value: string | null): void;
+  (e: "deleted", value: void): void;
+  (e: "expand", value: void): void;
+  (e: "collapse", value: void): void;
+}
 
-      const ret = keys.reduce(
-        (a, key) => ({
-          ...a,
-          ...thisNode[key].edges.reduce(
-            (r, { node }) => ({
-              ...r,
-              ...{
-                [node.field.name]: {
-                  fieldId: node.fieldId,
-                  name: node.field.name,
-                  value: node.value,
-                },
-              },
-            }),
-            {}
-          ),
+const emit = defineEmits<Emits>();
+
+const query = useProductQuery({ variables: { productId: props.productId } });
+const node = computed(() => query.data?.value?.product);
+const timePosted = computed(() => formatDateTime(node.value?.timePosted));
+const timeUpdated = computed(() => formatDateTime(node.value?.timeUpdated));
+const note = computed(() => marked.parse(node.value?.note ?? ""));
+const relations = computed(() =>
+  node.value?.relations?.edges
+    ? _.groupBy(node.value.relations.edges, "node.type_.typeId")
+    : null
+);
+const attributes = computed<Attributes | null>(() => {
+  if (!node.value) return null;
+  const thisNode = node.value;
+
+  const keys = [
+    "attributesUnicodeText",
+    "attributesBoolean",
+    "attributesInteger",
+    "attributesFloat",
+    "attributesDate",
+    "attributesDateTime",
+    "attributesTime",
+  ].filter((k) => k in thisNode);
+
+  const ret = keys.reduce(
+    (a, key) => ({
+      ...a,
+      ...thisNode[key].edges.reduce(
+        (r, { node }) => ({
+          ...r,
+          ...{
+            [node.field.name]: {
+              fieldId: node.fieldId,
+              name: node.field.name,
+              value: node.value,
+            },
+          },
         }),
-        {} as Attributes
-      );
-      return ret;
-    });
-    function formatDateTime(dateTime: string | undefined | null) {
-      if (!dateTime) return null;
-      const sinceEpoch = Date.parse(dateTime);
-      const format = Intl.DateTimeFormat("default", {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        hour12: false,
-      });
-      return format.format(sinceEpoch);
-    }
-    const menu = ref(false);
-    const editDialog = ref(false);
-    function onEditFormCancelled() {
-      closeEditForm();
-    }
-    function onEditFormFinished(event: string | undefined) {
-      closeEditForm();
-      if (event) emit("nameChanged", event);
-    }
-    function closeEditForm() {
-      editDialog.value = false;
-      menu.value = false;
-    }
-    const updateRelationsDialog = ref(false);
-    function onUpdateRelationsFormCancelled() {
-      closeUpdateRelationsForm();
-    }
-    function onUpdateRelationsFormFinished() {
-      closeUpdateRelationsForm();
-    }
-    function closeUpdateRelationsForm() {
-      updateRelationsDialog.value = false;
-      menu.value = false;
-    }
-    const convertTypeDialog = ref(false);
-    function onConvertTypeFormCancelled() {
-      closeConvertTypeForm();
-    }
-    function onConvertTypeFormFinished(event: string) {
-      closeConvertTypeForm();
-      if (event) emit("typeChanged", event);
-    }
-    function closeConvertTypeForm() {
-      convertTypeDialog.value = false;
-      menu.value = false;
-    }
-    const deleteDialog = ref(false);
-    function onDeleteFormCancelled() {
-      closeDeleteForm();
-    }
-    function onDeleteFormFinished() {
-      closeDeleteForm();
-      emit("deleted");
-    }
-    function closeDeleteForm() {
-      deleteDialog.value = false;
-      menu.value = false;
-    }
-    return {
-      ...useQueryState(query, { isNull: () => node.value === null }),
-      query,
-      node,
-      timePosted,
-      timeUpdated,
-      note,
-      relations,
-      attributes,
-      formatDateTime,
-      menu,
-      editDialog,
-      onEditFormCancelled,
-      onEditFormFinished,
-      closeEditForm,
-      updateRelationsDialog,
-      onUpdateRelationsFormCancelled,
-      onUpdateRelationsFormFinished,
-      closeUpdateRelationsForm,
-      convertTypeDialog,
-      onConvertTypeFormCancelled,
-      onConvertTypeFormFinished,
-      closeConvertTypeForm,
-      deleteDialog,
-      onDeleteFormCancelled,
-      onDeleteFormFinished,
-      closeDeleteForm,
-    };
-  },
+        {}
+      ),
+    }),
+    {} as Attributes
+  );
+  return ret;
 });
+function formatDateTime(dateTime: string | undefined | null) {
+  if (!dateTime) return null;
+  const sinceEpoch = Date.parse(dateTime);
+  const format = Intl.DateTimeFormat("default", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+  });
+  return format.format(sinceEpoch);
+}
+const menu = ref(false);
+const editDialog = ref(false);
+function onEditFormCancelled() {
+  closeEditForm();
+}
+function onEditFormFinished(event: string | undefined) {
+  closeEditForm();
+  if (event) emit("nameChanged", event);
+}
+function closeEditForm() {
+  editDialog.value = false;
+  menu.value = false;
+}
+const updateRelationsDialog = ref(false);
+function onUpdateRelationsFormCancelled() {
+  closeUpdateRelationsForm();
+}
+function onUpdateRelationsFormFinished() {
+  closeUpdateRelationsForm();
+}
+function closeUpdateRelationsForm() {
+  updateRelationsDialog.value = false;
+  menu.value = false;
+}
+const convertTypeDialog = ref(false);
+function onConvertTypeFormCancelled() {
+  closeConvertTypeForm();
+}
+function onConvertTypeFormFinished(event: string) {
+  closeConvertTypeForm();
+  if (event) emit("typeChanged", event);
+}
+function closeConvertTypeForm() {
+  convertTypeDialog.value = false;
+  menu.value = false;
+}
+const deleteDialog = ref(false);
+function onDeleteFormCancelled() {
+  closeDeleteForm();
+}
+function onDeleteFormFinished() {
+  closeDeleteForm();
+  emit("deleted");
+}
+function closeDeleteForm() {
+  deleteDialog.value = false;
+  menu.value = false;
+}
+
+const queryState = useQueryState(query, { isNull: () => node.value === null });
+const { loading, loaded, notFound, error, devtoolState } = queryState;
 </script>
