@@ -212,53 +212,32 @@
           <v-row>
             <v-col cols="12" md="8" offset-md="4">
               <div class="caption grey--text">Relations</div>
-              <div v-if="relations && Object.keys(relations).length > 0">
-                <div v-for="(redges, typeId) in relations" :key="typeId">
-                  <span class="capitalize subtitle-2 primary--text">
-                    <span v-if="redges.length > 1">
-                      {{
-                        redges[0] &&
-                        redges[0].node &&
-                        redges[0].node.type_ &&
-                        redges[0].node.type_.plural
-                      }}
-                    </span>
-                    <span v-else>
-                      {{
-                        redges[0] &&
-                        redges[0].node &&
-                        redges[0].node.type_ &&
-                        redges[0].node.type_.singular
-                      }} </span
-                    >:
+              <div
+                v-if="relations && Object.keys(relations).length > 0"
+              ></div>
+              <div v-else class="body-2 grey--text">None</div>
+              <div v-for="(r, key) in relations" :key="key">
+                <span
+                  class="capitalize subtitle-2 grey--text text--darken-2 ml-3"
+                >
+                  {{ r.relationType }}:
+                </span>
+                <div v-for="(t, key_) in r.types" :key="key_">
+                  <span
+                    class="capitalize subtitle-2 grey--text text--darken-2 ml-6"
+                  >
+                    {{ t.type }}:
                   </span>
-                  <span v-for="(redge, index) in redges" :key="index">
-                    <template
-                      v-if="
-                        redge &&
-                        redge.node &&
-                        redge.node.other &&
-                        redge.node.other.type_
-                      "
-                    >
-                      <router-link
-                        class="font-weight-bold primary--text"
-                        :to="{
-                          name: 'ProductItem',
-                          params: {
-                            productTypeName: redge.node.other.type_.name,
-                            name: redge.node.other.name,
-                          },
-                        }"
-                        v-text="redge.node.other.name"
-                      ></router-link>
-                      ({{ redge.node.other.type_.name }})
-                      <span v-if="index != redges.length - 1">, </span>
-                    </template>
+                  <span v-for="(n, i) in t.nodes" :key="i">
+                    <router-link
+                      class="font-weight-bold primary--text"
+                      :to="n.to"
+                      v-text="n.name"
+                    ></router-link>
+                    <span v-if="i != t.nodes.length - 1">, </span>
                   </span>
                 </div>
               </div>
-              <div v-else class="body-2 grey--text">None</div>
             </v-col>
           </v-row>
           <v-row>
@@ -366,10 +345,47 @@ const timePosted = computed(() => formatDateTime(node.value?.timePosted));
 const timeUpdated = computed(() => formatDateTime(node.value?.timeUpdated));
 const note = computed(() => marked.parse(node.value?.note ?? ""));
 const relations = computed(() =>
-  node.value?.relations?.edges
-    ? _.groupBy(node.value.relations.edges, "node.type_.typeId")
-    : null
+  node.value?.relations?.edges.reduce((acc, cur) => {
+    const relationType = cur?.node?.type_;
+    if (!relationType) return acc;
+    const other = cur?.node?.other;
+    if (!other) return acc;
+    if (!other.type_) return acc;
+    if (acc === null) acc = {};
+    if (!(relationType.typeId in acc)) {
+      acc[relationType.typeId] = {
+        relationType: relationType.singular || relationType.name,
+        types: {},
+      };
+    } else {
+      acc[relationType.typeId].relationType =
+        relationType.plural || relationType.name;
+    }
+    if (!(other.typeId in acc[relationType.typeId].types)) {
+      acc[relationType.typeId].types[other.typeId] = {
+        type: other.type_.singular || other.type_.name,
+        nodes: [],
+      };
+    } else {
+      acc[relationType.typeId].types[other.typeId].type =
+        other.type_.plural || other.type_.name;
+    }
+    const node = {
+      name: other.name,
+      to: {
+        name: "ProductItem",
+        params: {
+          productTypeName: other.type_.name,
+          name: other.name,
+        },
+      },
+      type: other.type_.name,
+    };
+    acc[relationType.typeId].types[other.typeId].nodes.push(node);
+    return acc;
+  }, {} as { [key: string]: { relationType: string; types: { [key: string]: { type: string; nodes: { name: string; to: any }[] } } } })
 );
+
 const attributes = computed<Attributes | null>(() => {
   if (!node.value) return null;
   const thisNode = node.value;
