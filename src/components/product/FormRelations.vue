@@ -192,7 +192,7 @@ export default defineComponent({
         }, [] as Relation[])
         .sort(
           (a, b) =>
-            a.typeId - b.typeId || a.productId.localeCompare(b.productId)
+            a.typeId - b.typeId || a.productId - b.productId
         )
     );
     watch(

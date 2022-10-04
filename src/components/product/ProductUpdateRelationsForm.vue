@@ -1,6 +1,5 @@
 <template>
   <v-card>
-  <pre>{{ relations }}</pre>
     <v-card-title class="primary--text">
       <span>
         Update the relations of
