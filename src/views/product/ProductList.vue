@@ -353,7 +353,11 @@ function onDeleted() {
 }
 
 const loadingMore = ref(false);
-const nExtraItemsAutomaticLoad = ref(2);
+
+// Set temporarily to 0 for the error
+// https://actcollaboration.slack.com/archives/C7WJA7X45/p1686667739493689
+// const nExtraItemsAutomaticLoad = ref(2);
+const nExtraItemsAutomaticLoad = ref(0);
 
 const showLoadMoreButton = computed(() => {
   // if (loadingMore.value) return false;
