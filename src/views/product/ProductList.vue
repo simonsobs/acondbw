@@ -356,6 +356,7 @@ const loadingMore = ref(false);
 
 // Set temporarily to 0 for the error
 // https://actcollaboration.slack.com/archives/C7WJA7X45/p1686667739493689
+// Note: The error doesn't occur in local development environment.
 // const nExtraItemsAutomaticLoad = ref(2);
 const nExtraItemsAutomaticLoad = ref(0);
 
