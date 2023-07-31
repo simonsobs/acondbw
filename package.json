@@ -9,7 +9,7 @@
     "lint": "eslint src",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "gql-gen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@meilisearch/instant-meilisearch": "^0.5.6",
