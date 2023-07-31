@@ -1,417 +1,413 @@
-import gql from "graphql-tag";
-import * as Urql from "@urql/vue";
+import gql from 'graphql-tag';
+import * as Urql from '@urql/vue';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  Date: any;
-  DateTime: any;
-  Time: any;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
+  DateTime: { input: any; output: any; }
+  Time: { input: any; output: any; }
 };
 
 /** Add a token for a GitHub Admin App */
 export type AddGitHubAdminAppToken = {
-  __typename?: "AddGitHubAdminAppToken";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'AddGitHubAdminAppToken';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type AddGitHubOrg = {
-  __typename?: "AddGitHubOrg";
+  __typename?: 'AddGitHubOrg';
   gitHubOrg?: Maybe<GitHubOrg>;
-  ok?: Maybe<Scalars["Boolean"]>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** A boolean attribute of a product */
 export type AttributeBoolean = Node & {
-  __typename?: "AttributeBoolean";
+  __typename?: 'AttributeBoolean';
   field?: Maybe<Field>;
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  iid: Scalars["ID"];
+  id: Scalars['ID']['output'];
+  iid: Scalars['ID']['output'];
   product?: Maybe<Product>;
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['output'];
   typeFieldAssociation?: Maybe<TypeFieldAssociation>;
-  typeFieldAssociationIid: Scalars["Int"];
-  value?: Maybe<Scalars["Boolean"]>;
+  typeFieldAssociationIid: Scalars['Int']['output'];
+  value?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type AttributeBooleanConnection = {
-  __typename?: "AttributeBooleanConnection";
+  __typename?: 'AttributeBooleanConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<AttributeBooleanEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `AttributeBoolean` and its cursor. */
 export type AttributeBooleanEdge = {
-  __typename?: "AttributeBooleanEdge";
+  __typename?: 'AttributeBooleanEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<AttributeBoolean>;
 };
 
 export type AttributeBooleanInputFields = {
   /** The field ID of the attribute */
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['input'];
   /** The value of the attribute */
-  value?: InputMaybe<Scalars["Boolean"]>;
+  value?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** An enumeration. */
 export enum AttributeBooleanSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  IidAsc = "IID_ASC",
-  IidDesc = "IID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
-  TypeFieldAssociationIidAsc = "TYPE_FIELD_ASSOCIATION_IID_ASC",
-  TypeFieldAssociationIidDesc = "TYPE_FIELD_ASSOCIATION_IID_DESC",
-  ValueAsc = "VALUE_ASC",
-  ValueDesc = "VALUE_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IidAsc = 'IID_ASC',
+  IidDesc = 'IID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  TypeFieldAssociationIidAsc = 'TYPE_FIELD_ASSOCIATION_IID_ASC',
+  TypeFieldAssociationIidDesc = 'TYPE_FIELD_ASSOCIATION_IID_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
 }
 
 /** A date attribute of a product */
 export type AttributeDate = Node & {
-  __typename?: "AttributeDate";
+  __typename?: 'AttributeDate';
   field?: Maybe<Field>;
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  iid: Scalars["ID"];
+  id: Scalars['ID']['output'];
+  iid: Scalars['ID']['output'];
   product?: Maybe<Product>;
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['output'];
   typeFieldAssociation?: Maybe<TypeFieldAssociation>;
-  typeFieldAssociationIid: Scalars["Int"];
-  value?: Maybe<Scalars["String"]>;
+  typeFieldAssociationIid: Scalars['Int']['output'];
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 export type AttributeDateConnection = {
-  __typename?: "AttributeDateConnection";
+  __typename?: 'AttributeDateConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<AttributeDateEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `AttributeDate` and its cursor. */
 export type AttributeDateEdge = {
-  __typename?: "AttributeDateEdge";
+  __typename?: 'AttributeDateEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<AttributeDate>;
 };
 
 export type AttributeDateInputFields = {
   /** The field ID of the attribute */
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['input'];
   /** The value of the attribute */
-  value?: InputMaybe<Scalars["Date"]>;
+  value?: InputMaybe<Scalars['Date']['input']>;
 };
 
 /** An enumeration. */
 export enum AttributeDateSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  IidAsc = "IID_ASC",
-  IidDesc = "IID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
-  TypeFieldAssociationIidAsc = "TYPE_FIELD_ASSOCIATION_IID_ASC",
-  TypeFieldAssociationIidDesc = "TYPE_FIELD_ASSOCIATION_IID_DESC",
-  ValueAsc = "VALUE_ASC",
-  ValueDesc = "VALUE_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IidAsc = 'IID_ASC',
+  IidDesc = 'IID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  TypeFieldAssociationIidAsc = 'TYPE_FIELD_ASSOCIATION_IID_ASC',
+  TypeFieldAssociationIidDesc = 'TYPE_FIELD_ASSOCIATION_IID_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
 }
 
 /** A date time attribute of a product */
 export type AttributeDateTime = Node & {
-  __typename?: "AttributeDateTime";
+  __typename?: 'AttributeDateTime';
   field?: Maybe<Field>;
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  iid: Scalars["ID"];
+  id: Scalars['ID']['output'];
+  iid: Scalars['ID']['output'];
   product?: Maybe<Product>;
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['output'];
   typeFieldAssociation?: Maybe<TypeFieldAssociation>;
-  typeFieldAssociationIid: Scalars["Int"];
-  value?: Maybe<Scalars["DateTime"]>;
+  typeFieldAssociationIid: Scalars['Int']['output'];
+  value?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type AttributeDateTimeConnection = {
-  __typename?: "AttributeDateTimeConnection";
+  __typename?: 'AttributeDateTimeConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<AttributeDateTimeEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `AttributeDateTime` and its cursor. */
 export type AttributeDateTimeEdge = {
-  __typename?: "AttributeDateTimeEdge";
+  __typename?: 'AttributeDateTimeEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<AttributeDateTime>;
 };
 
 export type AttributeDateTimeInputFields = {
   /** The field ID of the attribute */
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['input'];
   /** The value of the attribute */
-  value?: InputMaybe<Scalars["DateTime"]>;
+  value?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 /** An enumeration. */
 export enum AttributeDateTimeSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  IidAsc = "IID_ASC",
-  IidDesc = "IID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
-  TypeFieldAssociationIidAsc = "TYPE_FIELD_ASSOCIATION_IID_ASC",
-  TypeFieldAssociationIidDesc = "TYPE_FIELD_ASSOCIATION_IID_DESC",
-  ValueAsc = "VALUE_ASC",
-  ValueDesc = "VALUE_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IidAsc = 'IID_ASC',
+  IidDesc = 'IID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  TypeFieldAssociationIidAsc = 'TYPE_FIELD_ASSOCIATION_IID_ASC',
+  TypeFieldAssociationIidDesc = 'TYPE_FIELD_ASSOCIATION_IID_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
 }
 
 /** A float attribute of a product */
 export type AttributeFloat = Node & {
-  __typename?: "AttributeFloat";
+  __typename?: 'AttributeFloat';
   field?: Maybe<Field>;
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  iid: Scalars["ID"];
+  id: Scalars['ID']['output'];
+  iid: Scalars['ID']['output'];
   product?: Maybe<Product>;
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['output'];
   typeFieldAssociation?: Maybe<TypeFieldAssociation>;
-  typeFieldAssociationIid: Scalars["Int"];
-  value?: Maybe<Scalars["Float"]>;
+  typeFieldAssociationIid: Scalars['Int']['output'];
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 export type AttributeFloatConnection = {
-  __typename?: "AttributeFloatConnection";
+  __typename?: 'AttributeFloatConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<AttributeFloatEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `AttributeFloat` and its cursor. */
 export type AttributeFloatEdge = {
-  __typename?: "AttributeFloatEdge";
+  __typename?: 'AttributeFloatEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<AttributeFloat>;
 };
 
 export type AttributeFloatInputFields = {
   /** The field ID of the attribute */
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['input'];
   /** The value of the attribute */
-  value?: InputMaybe<Scalars["Float"]>;
+  value?: InputMaybe<Scalars['Float']['input']>;
 };
 
 /** An enumeration. */
 export enum AttributeFloatSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  IidAsc = "IID_ASC",
-  IidDesc = "IID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
-  TypeFieldAssociationIidAsc = "TYPE_FIELD_ASSOCIATION_IID_ASC",
-  TypeFieldAssociationIidDesc = "TYPE_FIELD_ASSOCIATION_IID_DESC",
-  ValueAsc = "VALUE_ASC",
-  ValueDesc = "VALUE_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IidAsc = 'IID_ASC',
+  IidDesc = 'IID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  TypeFieldAssociationIidAsc = 'TYPE_FIELD_ASSOCIATION_IID_ASC',
+  TypeFieldAssociationIidDesc = 'TYPE_FIELD_ASSOCIATION_IID_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
 }
 
 /** An integer attribute of a product */
 export type AttributeInteger = Node & {
-  __typename?: "AttributeInteger";
+  __typename?: 'AttributeInteger';
   field?: Maybe<Field>;
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  iid: Scalars["ID"];
+  id: Scalars['ID']['output'];
+  iid: Scalars['ID']['output'];
   product?: Maybe<Product>;
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['output'];
   typeFieldAssociation?: Maybe<TypeFieldAssociation>;
-  typeFieldAssociationIid: Scalars["Int"];
-  value?: Maybe<Scalars["Int"]>;
+  typeFieldAssociationIid: Scalars['Int']['output'];
+  value?: Maybe<Scalars['Int']['output']>;
 };
 
 export type AttributeIntegerConnection = {
-  __typename?: "AttributeIntegerConnection";
+  __typename?: 'AttributeIntegerConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<AttributeIntegerEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `AttributeInteger` and its cursor. */
 export type AttributeIntegerEdge = {
-  __typename?: "AttributeIntegerEdge";
+  __typename?: 'AttributeIntegerEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<AttributeInteger>;
 };
 
 export type AttributeIntegerInputFields = {
   /** The field ID of the attribute */
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['input'];
   /** The value of the attribute */
-  value?: InputMaybe<Scalars["Int"]>;
+  value?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** An enumeration. */
 export enum AttributeIntegerSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  IidAsc = "IID_ASC",
-  IidDesc = "IID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
-  TypeFieldAssociationIidAsc = "TYPE_FIELD_ASSOCIATION_IID_ASC",
-  TypeFieldAssociationIidDesc = "TYPE_FIELD_ASSOCIATION_IID_DESC",
-  ValueAsc = "VALUE_ASC",
-  ValueDesc = "VALUE_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IidAsc = 'IID_ASC',
+  IidDesc = 'IID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  TypeFieldAssociationIidAsc = 'TYPE_FIELD_ASSOCIATION_IID_ASC',
+  TypeFieldAssociationIidDesc = 'TYPE_FIELD_ASSOCIATION_IID_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
 }
 
 /** A time attribute of a product */
 export type AttributeTime = Node & {
-  __typename?: "AttributeTime";
+  __typename?: 'AttributeTime';
   field?: Maybe<Field>;
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  iid: Scalars["ID"];
+  id: Scalars['ID']['output'];
+  iid: Scalars['ID']['output'];
   product?: Maybe<Product>;
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['output'];
   typeFieldAssociation?: Maybe<TypeFieldAssociation>;
-  typeFieldAssociationIid: Scalars["Int"];
-  value?: Maybe<Scalars["String"]>;
+  typeFieldAssociationIid: Scalars['Int']['output'];
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 export type AttributeTimeConnection = {
-  __typename?: "AttributeTimeConnection";
+  __typename?: 'AttributeTimeConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<AttributeTimeEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `AttributeTime` and its cursor. */
 export type AttributeTimeEdge = {
-  __typename?: "AttributeTimeEdge";
+  __typename?: 'AttributeTimeEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<AttributeTime>;
 };
 
 export type AttributeTimeInputFields = {
   /** The field ID of the attribute */
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['input'];
   /** The value of the attribute */
-  value?: InputMaybe<Scalars["Time"]>;
+  value?: InputMaybe<Scalars['Time']['input']>;
 };
 
 /** An enumeration. */
 export enum AttributeTimeSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  IidAsc = "IID_ASC",
-  IidDesc = "IID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
-  TypeFieldAssociationIidAsc = "TYPE_FIELD_ASSOCIATION_IID_ASC",
-  TypeFieldAssociationIidDesc = "TYPE_FIELD_ASSOCIATION_IID_DESC",
-  ValueAsc = "VALUE_ASC",
-  ValueDesc = "VALUE_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IidAsc = 'IID_ASC',
+  IidDesc = 'IID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  TypeFieldAssociationIidAsc = 'TYPE_FIELD_ASSOCIATION_IID_ASC',
+  TypeFieldAssociationIidDesc = 'TYPE_FIELD_ASSOCIATION_IID_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
 }
 
 /** A unicode text attribute of a product */
 export type AttributeUnicodeText = Node & {
-  __typename?: "AttributeUnicodeText";
+  __typename?: 'AttributeUnicodeText';
   field?: Maybe<Field>;
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  iid: Scalars["ID"];
+  id: Scalars['ID']['output'];
+  iid: Scalars['ID']['output'];
   product?: Maybe<Product>;
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['output'];
   typeFieldAssociation?: Maybe<TypeFieldAssociation>;
-  typeFieldAssociationIid: Scalars["Int"];
-  value?: Maybe<Scalars["String"]>;
+  typeFieldAssociationIid: Scalars['Int']['output'];
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 export type AttributeUnicodeTextConnection = {
-  __typename?: "AttributeUnicodeTextConnection";
+  __typename?: 'AttributeUnicodeTextConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<AttributeUnicodeTextEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `AttributeUnicodeText` and its cursor. */
 export type AttributeUnicodeTextEdge = {
-  __typename?: "AttributeUnicodeTextEdge";
+  __typename?: 'AttributeUnicodeTextEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<AttributeUnicodeText>;
 };
 
 export type AttributeUnicodeTextInputFields = {
   /** The field ID of the attribute */
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['input'];
   /** The value of the attribute */
-  value?: InputMaybe<Scalars["String"]>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** An enumeration. */
 export enum AttributeUnicodeTextSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  IidAsc = "IID_ASC",
-  IidDesc = "IID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
-  TypeFieldAssociationIidAsc = "TYPE_FIELD_ASSOCIATION_IID_ASC",
-  TypeFieldAssociationIidDesc = "TYPE_FIELD_ASSOCIATION_IID_DESC",
-  ValueAsc = "VALUE_ASC",
-  ValueDesc = "VALUE_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IidAsc = 'IID_ASC',
+  IidDesc = 'IID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  TypeFieldAssociationIidAsc = 'TYPE_FIELD_ASSOCIATION_IID_ASC',
+  TypeFieldAssociationIidDesc = 'TYPE_FIELD_ASSOCIATION_IID_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
 }
 
 export type AttributesInputFields = {
@@ -432,69 +428,69 @@ export type AttributesInputFields = {
 };
 
 export type AuthPayload = {
-  __typename?: "AuthPayload";
-  token?: Maybe<Scalars["String"]>;
+  __typename?: 'AuthPayload';
+  token?: Maybe<Scalars['String']['output']>;
 };
 
 export type AuthenticateWithGitHub = {
-  __typename?: "AuthenticateWithGitHub";
+  __typename?: 'AuthenticateWithGitHub';
   authPayload?: Maybe<AuthPayload>;
 };
 
 /** Convert the product type of a product */
 export type ConvertProductType = {
-  __typename?: "ConvertProductType";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'ConvertProductType';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   product?: Maybe<Product>;
 };
 
 /** Create a field */
 export type CreateField = {
-  __typename?: "CreateField";
+  __typename?: 'CreateField';
   field?: Maybe<Field>;
-  ok?: Maybe<Scalars["Boolean"]>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Input to createField() */
 export type CreateFieldInput = {
   /** The name of the field */
-  name: Scalars["String"];
+  name: Scalars['String']['input'];
   type_?: InputMaybe<FieldType>;
 };
 
 /** Create a log */
 export type CreateLog = {
-  __typename?: "CreateLog";
+  __typename?: 'CreateLog';
   log?: Maybe<Log>;
-  ok?: Maybe<Scalars["Boolean"]>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Input to createLog() */
 export type CreateLogInput = {
-  id_?: InputMaybe<Scalars["Int"]>;
+  id_?: InputMaybe<Scalars['Int']['input']>;
   /** The log level */
-  level?: InputMaybe<Scalars["String"]>;
+  level?: InputMaybe<Scalars['String']['input']>;
   /** The message */
-  message?: InputMaybe<Scalars["String"]>;
+  message?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Create a product */
 export type CreateProduct = {
-  __typename?: "CreateProduct";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'CreateProduct';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   product?: Maybe<Product>;
 };
 
 export type CreateProductFilePath = {
-  __typename?: "CreateProductFilePath";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'CreateProductFilePath';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   productFilePath?: Maybe<ProductFilePath>;
 };
 
 export type CreateProductFilePathInput = {
-  note?: InputMaybe<Scalars["String"]>;
-  path?: InputMaybe<Scalars["String"]>;
-  productId?: InputMaybe<Scalars["Int"]>;
+  note?: InputMaybe<Scalars['String']['input']>;
+  path?: InputMaybe<Scalars['String']['input']>;
+  productId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** Input to createProduct() */
@@ -502,15 +498,15 @@ export type CreateProductInput = {
   /** Attributes */
   attributes?: InputMaybe<AttributesInputFields>;
   /** The name of the product */
-  name: Scalars["String"];
+  name: Scalars['String']['input'];
   /** Note about the product in MarkDown. */
-  note?: InputMaybe<Scalars["String"]>;
+  note?: InputMaybe<Scalars['String']['input']>;
   /** Paths to the products. e.g., nersc:/go/to/my/product_v3 */
-  paths?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  paths?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Relations to other products */
   relations?: InputMaybe<Array<InputMaybe<RelationInputFields>>>;
   /** The product type ID */
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['input'];
 };
 
 /**
@@ -518,119 +514,119 @@ export type CreateProductInput = {
  * from one product to the other. The reverse relation will be also added.
  */
 export type CreateProductRelation = {
-  __typename?: "CreateProductRelation";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'CreateProductRelation';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   productRelation?: Maybe<ProductRelation>;
 };
 
 /** An input to createProductRelation() */
 export type CreateProductRelationInput = {
   /** The productId of the other product */
-  otherProductId: Scalars["Int"];
+  otherProductId: Scalars['Int']['input'];
   /** The productId of the self product */
-  selfProductId: Scalars["Int"];
+  selfProductId: Scalars['Int']['input'];
   /** The typeId of the product relation type of the relation from "self" to the "other" */
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['input'];
 };
 
 /** An input to createProductRelationTypes() */
 export type CreateProductRelationTypeInput = {
   /** The indefinite article placed before the singular noun "i.e., "a" or "an".  */
-  indefArticle?: InputMaybe<Scalars["String"]>;
+  indefArticle?: InputMaybe<Scalars['String']['input']>;
   /** The name of the relation type */
-  name: Scalars["String"];
+  name: Scalars['String']['input'];
   /** The plural noun, the relation type name in plural. */
-  plural?: InputMaybe<Scalars["String"]>;
+  plural?: InputMaybe<Scalars['String']['input']>;
   /** The singular noun, the relation type name in singular. */
-  singular?: InputMaybe<Scalars["String"]>;
+  singular?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Create a pair of product relation types */
 export type CreateProductRelationTypes = {
-  __typename?: "CreateProductRelationTypes";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'CreateProductRelationTypes';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   productRelationType?: Maybe<ProductRelationType>;
 };
 
 /** Create a product type */
 export type CreateProductType = {
-  __typename?: "CreateProductType";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'CreateProductType';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   productType?: Maybe<ProductType>;
 };
 
 /** Input to createProductType() */
 export type CreateProductTypeInput = {
   /** The field IDs */
-  fieldIds?: InputMaybe<Array<InputMaybe<Scalars["Int"]>>>;
+  fieldIds?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   /** A name of the icon from https://materialdesignicons.com/ */
-  icon?: InputMaybe<Scalars["String"]>;
+  icon?: InputMaybe<Scalars['String']['input']>;
   /** The indefinite article placed before the singular noun "i.e., "a" or "an".  */
-  indefArticle?: InputMaybe<Scalars["String"]>;
+  indefArticle?: InputMaybe<Scalars['String']['input']>;
   /** The name of the product type */
-  name: Scalars["String"];
+  name: Scalars['String']['input'];
   /** The order in which the type is displayed, for example, in navigation bars. */
-  order?: InputMaybe<Scalars["Int"]>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   /** The plural noun, the product type name in plural. */
-  plural?: InputMaybe<Scalars["String"]>;
+  plural?: InputMaybe<Scalars['String']['input']>;
   /** The singular noun, the product type name in singular. */
-  singular?: InputMaybe<Scalars["String"]>;
+  singular?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Delete a field */
 export type DeleteField = {
-  __typename?: "DeleteField";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteField';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Delete a token for a GitHub Admin App */
 export type DeleteGitHubAdminAppToken = {
-  __typename?: "DeleteGitHubAdminAppToken";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteGitHubAdminAppToken';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type DeleteGitHubOrg = {
-  __typename?: "DeleteGitHubOrg";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteGitHubOrg';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Delete a log */
 export type DeleteLog = {
-  __typename?: "DeleteLog";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteLog';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Delete a product */
 export type DeleteProduct = {
-  __typename?: "DeleteProduct";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteProduct';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type DeleteProductFilePath = {
-  __typename?: "DeleteProductFilePath";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteProductFilePath';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Remove relations from two products. */
 export type DeleteProductRelation = {
-  __typename?: "DeleteProductRelation";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteProductRelation';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Delete a pair of product relation types */
 export type DeleteProductRelationTypes = {
-  __typename?: "DeleteProductRelationTypes";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteProductRelationTypes';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Delete a product type */
 export type DeleteProductType = {
-  __typename?: "DeleteProductType";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'DeleteProductType';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type Field = Node & {
-  __typename?: "Field";
+  __typename?: 'Field';
   attributesBoolean?: Maybe<AttributeBooleanConnection>;
   attributesDate?: Maybe<AttributeDateConnection>;
   attributesDateTime?: Maybe<AttributeDateTimeConnection>;
@@ -639,238 +635,247 @@ export type Field = Node & {
   attributesTime?: Maybe<AttributeTimeConnection>;
   attributesUnicodeText?: Maybe<AttributeUnicodeTextConnection>;
   entryTypes?: Maybe<TypeFieldAssociationConnection>;
-  fieldId: Scalars["ID"];
+  fieldId: Scalars['ID']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
   type_?: Maybe<FieldType>;
 };
 
+
 export type FieldAttributesBooleanArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeBooleanSortEnum>>>;
 };
 
+
 export type FieldAttributesDateArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeDateSortEnum>>>;
 };
 
+
 export type FieldAttributesDateTimeArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeDateTimeSortEnum>>>;
 };
 
+
 export type FieldAttributesFloatArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeFloatSortEnum>>>;
 };
 
+
 export type FieldAttributesIntegerArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeIntegerSortEnum>>>;
 };
 
+
 export type FieldAttributesTimeArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeTimeSortEnum>>>;
 };
 
+
 export type FieldAttributesUnicodeTextArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeUnicodeTextSortEnum>>>;
 };
 
+
 export type FieldEntryTypesArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<TypeFieldAssociationSortEnum>>>;
 };
 
 export type FieldConnection = {
-  __typename?: "FieldConnection";
+  __typename?: 'FieldConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<FieldEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `Field` and its cursor. */
 export type FieldEdge = {
-  __typename?: "FieldEdge";
+  __typename?: 'FieldEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<Field>;
 };
 
 /** An enumeration. */
 export enum FieldSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC'
 }
 
 /** An enumeration. */
 export enum FieldType {
-  Boolean = "BOOLEAN",
-  Date = "DATE",
-  DateTime = "DATE_TIME",
-  Float = "FLOAT",
-  Integer = "INTEGER",
-  Time = "TIME",
-  UnicodeText = "UNICODE_TEXT",
+  Boolean = 'BOOLEAN',
+  Date = 'DATE',
+  DateTime = 'DATE_TIME',
+  Float = 'FLOAT',
+  Integer = 'INTEGER',
+  Time = 'TIME',
+  UnicodeText = 'UNICODE_TEXT'
 }
 
 export type GitHubOAuthAppInfo = {
-  __typename?: "GitHubOAuthAppInfo";
-  authorizeUrl?: Maybe<Scalars["String"]>;
-  clientId?: Maybe<Scalars["String"]>;
-  redirectUri?: Maybe<Scalars["String"]>;
+  __typename?: 'GitHubOAuthAppInfo';
+  authorizeUrl?: Maybe<Scalars['String']['output']>;
+  clientId?: Maybe<Scalars['String']['output']>;
+  redirectUri?: Maybe<Scalars['String']['output']>;
 };
 
 export type GitHubOrg = Node & {
-  __typename?: "GitHubOrg";
-  avatarUrl?: Maybe<Scalars["String"]>;
-  gitHubId: Scalars["String"];
+  __typename?: 'GitHubOrg';
+  avatarUrl?: Maybe<Scalars['String']['output']>;
+  gitHubId: Scalars['String']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  login: Scalars["String"];
+  id: Scalars['ID']['output'];
+  login: Scalars['String']['output'];
   memberships?: Maybe<GitHubOrgMembershipConnection>;
-  orgId: Scalars["ID"];
-  url?: Maybe<Scalars["String"]>;
+  orgId: Scalars['ID']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
+
 export type GitHubOrgMembershipsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<GitHubOrgMembershipSortEnum>>>;
 };
 
 export type GitHubOrgConnection = {
-  __typename?: "GitHubOrgConnection";
+  __typename?: 'GitHubOrgConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<GitHubOrgEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `GitHubOrg` and its cursor. */
 export type GitHubOrgEdge = {
-  __typename?: "GitHubOrgEdge";
+  __typename?: 'GitHubOrgEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<GitHubOrg>;
 };
 
 export type GitHubOrgMembership = Node & {
-  __typename?: "GitHubOrgMembership";
-  entryId: Scalars["ID"];
+  __typename?: 'GitHubOrgMembership';
+  entryId: Scalars['ID']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
+  id: Scalars['ID']['output'];
   member?: Maybe<GitHubUser>;
-  memberId: Scalars["Int"];
+  memberId: Scalars['Int']['output'];
   org?: Maybe<GitHubOrg>;
-  orgId: Scalars["Int"];
+  orgId: Scalars['Int']['output'];
 };
 
 export type GitHubOrgMembershipConnection = {
-  __typename?: "GitHubOrgMembershipConnection";
+  __typename?: 'GitHubOrgMembershipConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<GitHubOrgMembershipEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `GitHubOrgMembership` and its cursor. */
 export type GitHubOrgMembershipEdge = {
-  __typename?: "GitHubOrgMembershipEdge";
+  __typename?: 'GitHubOrgMembershipEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<GitHubOrgMembership>;
 };
 
 /** An enumeration. */
 export enum GitHubOrgMembershipSortEnum {
-  EntryIdAsc = "ENTRY_ID_ASC",
-  EntryIdDesc = "ENTRY_ID_DESC",
-  MemberIdAsc = "MEMBER_ID_ASC",
-  MemberIdDesc = "MEMBER_ID_DESC",
-  OrgIdAsc = "ORG_ID_ASC",
-  OrgIdDesc = "ORG_ID_DESC",
+  EntryIdAsc = 'ENTRY_ID_ASC',
+  EntryIdDesc = 'ENTRY_ID_DESC',
+  MemberIdAsc = 'MEMBER_ID_ASC',
+  MemberIdDesc = 'MEMBER_ID_DESC',
+  OrgIdAsc = 'ORG_ID_ASC',
+  OrgIdDesc = 'ORG_ID_DESC'
 }
 
 /** An enumeration. */
 export enum GitHubOrgSortEnum {
-  AvatarUrlAsc = "AVATAR_URL_ASC",
-  AvatarUrlDesc = "AVATAR_URL_DESC",
-  GitHubIdAsc = "GIT_HUB_ID_ASC",
-  GitHubIdDesc = "GIT_HUB_ID_DESC",
-  LoginAsc = "LOGIN_ASC",
-  LoginDesc = "LOGIN_DESC",
-  OrgIdAsc = "ORG_ID_ASC",
-  OrgIdDesc = "ORG_ID_DESC",
-  UrlAsc = "URL_ASC",
-  UrlDesc = "URL_DESC",
+  AvatarUrlAsc = 'AVATAR_URL_ASC',
+  AvatarUrlDesc = 'AVATAR_URL_DESC',
+  GitHubIdAsc = 'GIT_HUB_ID_ASC',
+  GitHubIdDesc = 'GIT_HUB_ID_DESC',
+  LoginAsc = 'LOGIN_ASC',
+  LoginDesc = 'LOGIN_DESC',
+  OrgIdAsc = 'ORG_ID_ASC',
+  OrgIdDesc = 'ORG_ID_DESC',
+  UrlAsc = 'URL_ASC',
+  UrlDesc = 'URL_DESC'
 }
 
 export type GitHubToken = Node & {
-  __typename?: "GitHubToken";
+  __typename?: 'GitHubToken';
   /** The ID of the object. */
-  id: Scalars["ID"];
-  scope?: Maybe<Scalars["String"]>;
-  timeCreated?: Maybe<Scalars["DateTime"]>;
-  tokenId: Scalars["ID"];
-  tokenMasked?: Maybe<Scalars["String"]>;
+  id: Scalars['ID']['output'];
+  scope?: Maybe<Scalars['String']['output']>;
+  timeCreated?: Maybe<Scalars['DateTime']['output']>;
+  tokenId: Scalars['ID']['output'];
+  tokenMasked?: Maybe<Scalars['String']['output']>;
   user?: Maybe<GitHubUser>;
-  userId: Scalars["Int"];
+  userId: Scalars['Int']['output'];
 };
 
 export type GitHubTokenConnection = {
-  __typename?: "GitHubTokenConnection";
+  __typename?: 'GitHubTokenConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<GitHubTokenEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `GitHubToken` and its cursor. */
 export type GitHubTokenEdge = {
-  __typename?: "GitHubTokenEdge";
+  __typename?: 'GitHubTokenEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<GitHubToken>;
 };
@@ -883,86 +888,90 @@ export type GitHubTokenFilter = {
   /** Conjunction of filters joined by ``OR``. */
   or?: InputMaybe<Array<GitHubTokenFilter>>;
   /** Case-insensitive containment test. */
-  scopeIlike?: InputMaybe<Scalars["String"]>;
+  scopeIlike?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** An enumeration. */
 export enum GitHubTokenSortEnum {
-  ScopeAsc = "SCOPE_ASC",
-  ScopeDesc = "SCOPE_DESC",
-  TimeCreatedAsc = "TIME_CREATED_ASC",
-  TimeCreatedDesc = "TIME_CREATED_DESC",
-  TokenIdAsc = "TOKEN_ID_ASC",
-  TokenIdDesc = "TOKEN_ID_DESC",
-  UserIdAsc = "USER_ID_ASC",
-  UserIdDesc = "USER_ID_DESC",
+  ScopeAsc = 'SCOPE_ASC',
+  ScopeDesc = 'SCOPE_DESC',
+  TimeCreatedAsc = 'TIME_CREATED_ASC',
+  TimeCreatedDesc = 'TIME_CREATED_DESC',
+  TokenIdAsc = 'TOKEN_ID_ASC',
+  TokenIdDesc = 'TOKEN_ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
 }
 
 export type GitHubUser = Node & {
-  __typename?: "GitHubUser";
-  avatarUrl?: Maybe<Scalars["String"]>;
-  gitHubId: Scalars["String"];
+  __typename?: 'GitHubUser';
+  avatarUrl?: Maybe<Scalars['String']['output']>;
+  gitHubId: Scalars['String']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  login: Scalars["String"];
+  id: Scalars['ID']['output'];
+  login: Scalars['String']['output'];
   memberships?: Maybe<GitHubOrgMembershipConnection>;
-  name?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars['String']['output']>;
   postedProducts?: Maybe<ProductConnection>;
   tokens?: Maybe<GitHubTokenConnection>;
   updatedProducts?: Maybe<ProductConnection>;
-  url?: Maybe<Scalars["String"]>;
-  userId: Scalars["ID"];
+  url?: Maybe<Scalars['String']['output']>;
+  userId: Scalars['ID']['output'];
 };
 
+
 export type GitHubUserMembershipsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<GitHubOrgMembershipSortEnum>>>;
 };
 
+
 export type GitHubUserPostedProductsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
   filters?: InputMaybe<ProductFilter>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductSortEnum>>>;
 };
 
+
 export type GitHubUserTokensArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
   filters?: InputMaybe<GitHubTokenFilter>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<GitHubTokenSortEnum>>>;
 };
 
+
 export type GitHubUserUpdatedProductsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
   filters?: InputMaybe<ProductFilter>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductSortEnum>>>;
 };
 
 export type GitHubUserConnection = {
-  __typename?: "GitHubUserConnection";
+  __typename?: 'GitHubUserConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<GitHubUserEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `GitHubUser` and its cursor. */
 export type GitHubUserEdge = {
-  __typename?: "GitHubUserEdge";
+  __typename?: 'GitHubUserEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<GitHubUser>;
 };
@@ -974,68 +983,68 @@ export type GitHubUserFilter = {
   not?: InputMaybe<GitHubUserFilter>;
   /** Conjunction of filters joined by ``OR``. */
   or?: InputMaybe<Array<GitHubUserFilter>>;
-  orgMember?: InputMaybe<Scalars["Boolean"]>;
+  orgMember?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** An enumeration. */
 export enum GitHubUserSortEnum {
-  AvatarUrlAsc = "AVATAR_URL_ASC",
-  AvatarUrlDesc = "AVATAR_URL_DESC",
-  GitHubIdAsc = "GIT_HUB_ID_ASC",
-  GitHubIdDesc = "GIT_HUB_ID_DESC",
-  LoginAsc = "LOGIN_ASC",
-  LoginDesc = "LOGIN_DESC",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  UrlAsc = "URL_ASC",
-  UrlDesc = "URL_DESC",
-  UserIdAsc = "USER_ID_ASC",
-  UserIdDesc = "USER_ID_DESC",
+  AvatarUrlAsc = 'AVATAR_URL_ASC',
+  AvatarUrlDesc = 'AVATAR_URL_DESC',
+  GitHubIdAsc = 'GIT_HUB_ID_ASC',
+  GitHubIdDesc = 'GIT_HUB_ID_DESC',
+  LoginAsc = 'LOGIN_ASC',
+  LoginDesc = 'LOGIN_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  UrlAsc = 'URL_ASC',
+  UrlDesc = 'URL_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
 }
 
 /** Record of errors, etc. */
 export type Log = Node & {
-  __typename?: "Log";
+  __typename?: 'Log';
   /** The ID of the object. */
-  id: Scalars["ID"];
-  id_: Scalars["ID"];
-  level?: Maybe<Scalars["String"]>;
-  message?: Maybe<Scalars["String"]>;
-  time?: Maybe<Scalars["DateTime"]>;
+  id: Scalars['ID']['output'];
+  id_: Scalars['ID']['output'];
+  level?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  time?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type LogConnection = {
-  __typename?: "LogConnection";
+  __typename?: 'LogConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<LogEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `Log` and its cursor. */
 export type LogEdge = {
-  __typename?: "LogEdge";
+  __typename?: 'LogEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<Log>;
 };
 
 /** An enumeration. */
 export enum LogSortEnum {
-  IdAsc = "ID__ASC",
-  IdDesc = "ID__DESC",
-  LevelAsc = "LEVEL_ASC",
-  LevelDesc = "LEVEL_DESC",
-  MessageAsc = "MESSAGE_ASC",
-  MessageDesc = "MESSAGE_DESC",
-  TimeAsc = "TIME_ASC",
-  TimeDesc = "TIME_DESC",
+  IdAsc = 'ID__ASC',
+  IdDesc = 'ID__DESC',
+  LevelAsc = 'LEVEL_ASC',
+  LevelDesc = 'LEVEL_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  TimeAsc = 'TIME_ASC',
+  TimeDesc = 'TIME_DESC'
 }
 
 export type MutationAdmin = {
-  __typename?: "MutationAdmin";
+  __typename?: 'MutationAdmin';
   /** Add a token for a GitHub Admin App */
   addGitHubAdminAppToken?: Maybe<AddGitHubAdminAppToken>;
   addGitHubOrg?: Maybe<AddGitHubOrg>;
@@ -1094,139 +1103,165 @@ export type MutationAdmin = {
   updateProductType?: Maybe<UpdateProductType>;
 };
 
+
 export type MutationAdminAddGitHubAdminAppTokenArgs = {
-  code: Scalars["String"];
+  code: Scalars['String']['input'];
 };
+
 
 export type MutationAdminAddGitHubOrgArgs = {
-  login: Scalars["String"];
+  login: Scalars['String']['input'];
 };
+
 
 export type MutationAdminAuthenticateWithGitHubArgs = {
-  code: Scalars["String"];
+  code: Scalars['String']['input'];
 };
 
+
 export type MutationAdminConvertProductTypeArgs = {
-  productId: Scalars["Int"];
-  typeId: Scalars["Int"];
+  productId: Scalars['Int']['input'];
+  typeId: Scalars['Int']['input'];
 };
+
 
 export type MutationAdminCreateFieldArgs = {
   input: CreateFieldInput;
 };
 
+
 export type MutationAdminCreateLogArgs = {
   input: CreateLogInput;
 };
+
 
 export type MutationAdminCreateProductArgs = {
   input: CreateProductInput;
 };
 
+
 export type MutationAdminCreateProductFilePathArgs = {
   input: CreateProductFilePathInput;
 };
+
 
 export type MutationAdminCreateProductRelationArgs = {
   input: CreateProductRelationInput;
 };
 
+
 export type MutationAdminCreateProductRelationTypesArgs = {
   reverse?: InputMaybe<CreateProductRelationTypeInput>;
-  selfReverse?: InputMaybe<Scalars["Boolean"]>;
+  selfReverse?: InputMaybe<Scalars['Boolean']['input']>;
   type: CreateProductRelationTypeInput;
 };
+
 
 export type MutationAdminCreateProductTypeArgs = {
   input: CreateProductTypeInput;
 };
 
+
 export type MutationAdminDeleteFieldArgs = {
-  fieldId?: InputMaybe<Scalars["Int"]>;
+  fieldId?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type MutationAdminDeleteGitHubAdminAppTokenArgs = {
-  tokenId: Scalars["Int"];
+  tokenId: Scalars['Int']['input'];
 };
+
 
 export type MutationAdminDeleteGitHubOrgArgs = {
-  login: Scalars["String"];
+  login: Scalars['String']['input'];
 };
+
 
 export type MutationAdminDeleteLogArgs = {
-  id_?: InputMaybe<Scalars["Int"]>;
+  id_?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type MutationAdminDeleteProductArgs = {
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['input'];
 };
+
 
 export type MutationAdminDeleteProductFilePathArgs = {
-  pathId?: InputMaybe<Scalars["Int"]>;
+  pathId?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type MutationAdminDeleteProductRelationArgs = {
-  relationId: Scalars["Int"];
+  relationId: Scalars['Int']['input'];
 };
+
 
 export type MutationAdminDeleteProductRelationTypesArgs = {
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['input'];
 };
+
 
 export type MutationAdminDeleteProductTypeArgs = {
-  typeId?: InputMaybe<Scalars["Int"]>;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type MutationAdminSaveWebConfigArgs = {
-  json: Scalars["String"];
+  json: Scalars['String']['input'];
 };
 
+
 export type MutationAdminUpdateFieldArgs = {
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['input'];
   input: UpdateFieldInput;
 };
 
+
 export type MutationAdminUpdateProductArgs = {
   input: UpdateProductInput;
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['input'];
 };
+
 
 export type MutationAdminUpdateProductFilePathArgs = {
   input: UpdateProductFilePathInput;
-  pathId?: InputMaybe<Scalars["Int"]>;
+  pathId?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type MutationAdminUpdateProductRelationTypeArgs = {
   input: UpdateProductRelationTypeInput;
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['input'];
 };
+
 
 export type MutationAdminUpdateProductTypeArgs = {
   input: UpdateProductTypeInput;
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['input'];
 };
 
 /** An object with an ID */
 export type Node = {
   /** The ID of the object. */
-  id: Scalars["ID"];
+  id: Scalars['ID']['output'];
 };
 
 /** The Relay compliant `PageInfo` type, containing data necessary to paginate this connection. */
 export type PageInfo = {
-  __typename?: "PageInfo";
+  __typename?: 'PageInfo';
   /** When paginating forwards, the cursor to continue. */
-  endCursor?: Maybe<Scalars["String"]>;
+  endCursor?: Maybe<Scalars['String']['output']>;
   /** When paginating forwards, are there more items? */
-  hasNextPage: Scalars["Boolean"];
+  hasNextPage: Scalars['Boolean']['output'];
   /** When paginating backwards, are there more items? */
-  hasPreviousPage: Scalars["Boolean"];
+  hasPreviousPage: Scalars['Boolean']['output'];
   /** When paginating backwards, the cursor to continue. */
-  startCursor?: Maybe<Scalars["String"]>;
+  startCursor?: Maybe<Scalars['String']['output']>;
 };
 
 export type Product = Node & {
-  __typename?: "Product";
+  __typename?: 'Product';
   attributesBoolean?: Maybe<AttributeBooleanConnection>;
   attributesDate?: Maybe<AttributeDateConnection>;
   attributesDateTime?: Maybe<AttributeDateTimeConnection>;
@@ -1235,151 +1270,160 @@ export type Product = Node & {
   attributesTime?: Maybe<AttributeTimeConnection>;
   attributesUnicodeText?: Maybe<AttributeUnicodeTextConnection>;
   /** The ID of the object. */
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  note?: Maybe<Scalars["String"]>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  note?: Maybe<Scalars['String']['output']>;
   paths?: Maybe<ProductFilePathConnection>;
   postingGitHubUser?: Maybe<GitHubUser>;
-  postingGitHubUserId?: Maybe<Scalars["Int"]>;
-  productId: Scalars["ID"];
+  postingGitHubUserId?: Maybe<Scalars['Int']['output']>;
+  productId: Scalars['ID']['output'];
   relations?: Maybe<ProductRelationConnection>;
-  timePosted?: Maybe<Scalars["DateTime"]>;
-  timeUpdated?: Maybe<Scalars["DateTime"]>;
-  typeId: Scalars["Int"];
+  timePosted?: Maybe<Scalars['DateTime']['output']>;
+  timeUpdated?: Maybe<Scalars['DateTime']['output']>;
+  typeId: Scalars['Int']['output'];
   type_?: Maybe<ProductType>;
   updatingGitHubUser?: Maybe<GitHubUser>;
-  updatingGitHubUserId?: Maybe<Scalars["Int"]>;
+  updatingGitHubUserId?: Maybe<Scalars['Int']['output']>;
 };
 
+
 export type ProductAttributesBooleanArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeBooleanSortEnum>>>;
 };
 
+
 export type ProductAttributesDateArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeDateSortEnum>>>;
 };
 
+
 export type ProductAttributesDateTimeArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeDateTimeSortEnum>>>;
 };
 
+
 export type ProductAttributesFloatArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeFloatSortEnum>>>;
 };
 
+
 export type ProductAttributesIntegerArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeIntegerSortEnum>>>;
 };
 
+
 export type ProductAttributesTimeArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeTimeSortEnum>>>;
 };
 
+
 export type ProductAttributesUnicodeTextArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeUnicodeTextSortEnum>>>;
 };
 
+
 export type ProductPathsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductFilePathSortEnum>>>;
 };
 
+
 export type ProductRelationsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductRelationSortEnum>>>;
 };
 
 export type ProductConnection = {
-  __typename?: "ProductConnection";
+  __typename?: 'ProductConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<ProductEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `Product` and its cursor. */
 export type ProductEdge = {
-  __typename?: "ProductEdge";
+  __typename?: 'ProductEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<Product>;
 };
 
 export type ProductFilePath = Node & {
-  __typename?: "ProductFilePath";
+  __typename?: 'ProductFilePath';
   /** The ID of the object. */
-  id: Scalars["ID"];
-  note?: Maybe<Scalars["String"]>;
-  path?: Maybe<Scalars["String"]>;
-  pathId: Scalars["ID"];
+  id: Scalars['ID']['output'];
+  note?: Maybe<Scalars['String']['output']>;
+  path?: Maybe<Scalars['String']['output']>;
+  pathId: Scalars['ID']['output'];
   product?: Maybe<Product>;
-  productId?: Maybe<Scalars["Int"]>;
+  productId?: Maybe<Scalars['Int']['output']>;
 };
 
 export type ProductFilePathConnection = {
-  __typename?: "ProductFilePathConnection";
+  __typename?: 'ProductFilePathConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<ProductFilePathEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `ProductFilePath` and its cursor. */
 export type ProductFilePathEdge = {
-  __typename?: "ProductFilePathEdge";
+  __typename?: 'ProductFilePathEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<ProductFilePath>;
 };
 
 /** An enumeration. */
 export enum ProductFilePathSortEnum {
-  NoteAsc = "NOTE_ASC",
-  NoteDesc = "NOTE_DESC",
-  PathAsc = "PATH_ASC",
-  PathDesc = "PATH_DESC",
-  PathIdAsc = "PATH_ID_ASC",
-  PathIdDesc = "PATH_ID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
+  NoteAsc = 'NOTE_ASC',
+  NoteDesc = 'NOTE_DESC',
+  PathAsc = 'PATH_ASC',
+  PathDesc = 'PATH_DESC',
+  PathIdAsc = 'PATH_ID_ASC',
+  PathIdDesc = 'PATH_ID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC'
 }
 
 export type ProductFilter = {
@@ -1390,185 +1434,188 @@ export type ProductFilter = {
   /** Conjunction of filters joined by ``OR``. */
   or?: InputMaybe<Array<ProductFilter>>;
   /** Exact match. */
-  typeId?: InputMaybe<Scalars["Int"]>;
-  typeName?: InputMaybe<Scalars["String"]>;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
+  typeName?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** A relation from one product to another */
 export type ProductRelation = Node & {
-  __typename?: "ProductRelation";
+  __typename?: 'ProductRelation';
   /** The ID of the object. */
-  id: Scalars["ID"];
+  id: Scalars['ID']['output'];
   other?: Maybe<Product>;
-  otherProductId: Scalars["Int"];
-  relationId: Scalars["ID"];
+  otherProductId: Scalars['Int']['output'];
+  relationId: Scalars['ID']['output'];
   reverse?: Maybe<ProductRelation>;
-  reverseRelationId?: Maybe<Scalars["Int"]>;
-  selfProductId: Scalars["Int"];
+  reverseRelationId?: Maybe<Scalars['Int']['output']>;
+  selfProductId: Scalars['Int']['output'];
   self_?: Maybe<Product>;
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['output'];
   type_?: Maybe<ProductRelationType>;
 };
 
 export type ProductRelationConnection = {
-  __typename?: "ProductRelationConnection";
+  __typename?: 'ProductRelationConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<ProductRelationEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `ProductRelation` and its cursor. */
 export type ProductRelationEdge = {
-  __typename?: "ProductRelationEdge";
+  __typename?: 'ProductRelationEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<ProductRelation>;
 };
 
 /** An enumeration. */
 export enum ProductRelationSortEnum {
-  OtherProductIdAsc = "OTHER_PRODUCT_ID_ASC",
-  OtherProductIdDesc = "OTHER_PRODUCT_ID_DESC",
-  RelationIdAsc = "RELATION_ID_ASC",
-  RelationIdDesc = "RELATION_ID_DESC",
-  ReverseRelationIdAsc = "REVERSE_RELATION_ID_ASC",
-  ReverseRelationIdDesc = "REVERSE_RELATION_ID_DESC",
-  SelfProductIdAsc = "SELF_PRODUCT_ID_ASC",
-  SelfProductIdDesc = "SELF_PRODUCT_ID_DESC",
-  TypeIdAsc = "TYPE_ID_ASC",
-  TypeIdDesc = "TYPE_ID_DESC",
+  OtherProductIdAsc = 'OTHER_PRODUCT_ID_ASC',
+  OtherProductIdDesc = 'OTHER_PRODUCT_ID_DESC',
+  RelationIdAsc = 'RELATION_ID_ASC',
+  RelationIdDesc = 'RELATION_ID_DESC',
+  ReverseRelationIdAsc = 'REVERSE_RELATION_ID_ASC',
+  ReverseRelationIdDesc = 'REVERSE_RELATION_ID_DESC',
+  SelfProductIdAsc = 'SELF_PRODUCT_ID_ASC',
+  SelfProductIdDesc = 'SELF_PRODUCT_ID_DESC',
+  TypeIdAsc = 'TYPE_ID_ASC',
+  TypeIdDesc = 'TYPE_ID_DESC'
 }
 
 /** A type of relations between products */
 export type ProductRelationType = Node & {
-  __typename?: "ProductRelationType";
+  __typename?: 'ProductRelationType';
   /** The ID of the object. */
-  id: Scalars["ID"];
-  indefArticle?: Maybe<Scalars["String"]>;
-  name: Scalars["String"];
-  plural?: Maybe<Scalars["String"]>;
+  id: Scalars['ID']['output'];
+  indefArticle?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  plural?: Maybe<Scalars['String']['output']>;
   relations?: Maybe<ProductRelationConnection>;
   reverse?: Maybe<ProductRelationType>;
-  reverseTypeId?: Maybe<Scalars["Int"]>;
-  singular?: Maybe<Scalars["String"]>;
-  typeId: Scalars["ID"];
+  reverseTypeId?: Maybe<Scalars['Int']['output']>;
+  singular?: Maybe<Scalars['String']['output']>;
+  typeId: Scalars['ID']['output'];
 };
+
 
 /** A type of relations between products */
 export type ProductRelationTypeRelationsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductRelationSortEnum>>>;
 };
 
 export type ProductRelationTypeConnection = {
-  __typename?: "ProductRelationTypeConnection";
+  __typename?: 'ProductRelationTypeConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<ProductRelationTypeEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `ProductRelationType` and its cursor. */
 export type ProductRelationTypeEdge = {
-  __typename?: "ProductRelationTypeEdge";
+  __typename?: 'ProductRelationTypeEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<ProductRelationType>;
 };
 
 /** An enumeration. */
 export enum ProductRelationTypeSortEnum {
-  IndefArticleAsc = "INDEF_ARTICLE_ASC",
-  IndefArticleDesc = "INDEF_ARTICLE_DESC",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  PluralAsc = "PLURAL_ASC",
-  PluralDesc = "PLURAL_DESC",
-  ReverseTypeIdAsc = "REVERSE_TYPE_ID_ASC",
-  ReverseTypeIdDesc = "REVERSE_TYPE_ID_DESC",
-  SingularAsc = "SINGULAR_ASC",
-  SingularDesc = "SINGULAR_DESC",
-  TypeIdAsc = "TYPE_ID_ASC",
-  TypeIdDesc = "TYPE_ID_DESC",
+  IndefArticleAsc = 'INDEF_ARTICLE_ASC',
+  IndefArticleDesc = 'INDEF_ARTICLE_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  PluralAsc = 'PLURAL_ASC',
+  PluralDesc = 'PLURAL_DESC',
+  ReverseTypeIdAsc = 'REVERSE_TYPE_ID_ASC',
+  ReverseTypeIdDesc = 'REVERSE_TYPE_ID_DESC',
+  SingularAsc = 'SINGULAR_ASC',
+  SingularDesc = 'SINGULAR_DESC',
+  TypeIdAsc = 'TYPE_ID_ASC',
+  TypeIdDesc = 'TYPE_ID_DESC'
 }
 
 /** An enumeration. */
 export enum ProductSortEnum {
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  NoteAsc = "NOTE_ASC",
-  NoteDesc = "NOTE_DESC",
-  PostingGitHubUserIdAsc = "POSTING_GIT_HUB_USER_ID_ASC",
-  PostingGitHubUserIdDesc = "POSTING_GIT_HUB_USER_ID_DESC",
-  ProductIdAsc = "PRODUCT_ID_ASC",
-  ProductIdDesc = "PRODUCT_ID_DESC",
-  TimePostedAsc = "TIME_POSTED_ASC",
-  TimePostedDesc = "TIME_POSTED_DESC",
-  TimeUpdatedAsc = "TIME_UPDATED_ASC",
-  TimeUpdatedDesc = "TIME_UPDATED_DESC",
-  TypeIdAsc = "TYPE_ID_ASC",
-  TypeIdDesc = "TYPE_ID_DESC",
-  UpdatingGitHubUserIdAsc = "UPDATING_GIT_HUB_USER_ID_ASC",
-  UpdatingGitHubUserIdDesc = "UPDATING_GIT_HUB_USER_ID_DESC",
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  NoteAsc = 'NOTE_ASC',
+  NoteDesc = 'NOTE_DESC',
+  PostingGitHubUserIdAsc = 'POSTING_GIT_HUB_USER_ID_ASC',
+  PostingGitHubUserIdDesc = 'POSTING_GIT_HUB_USER_ID_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  TimePostedAsc = 'TIME_POSTED_ASC',
+  TimePostedDesc = 'TIME_POSTED_DESC',
+  TimeUpdatedAsc = 'TIME_UPDATED_ASC',
+  TimeUpdatedDesc = 'TIME_UPDATED_DESC',
+  TypeIdAsc = 'TYPE_ID_ASC',
+  TypeIdDesc = 'TYPE_ID_DESC',
+  UpdatingGitHubUserIdAsc = 'UPDATING_GIT_HUB_USER_ID_ASC',
+  UpdatingGitHubUserIdDesc = 'UPDATING_GIT_HUB_USER_ID_DESC'
 }
 
 /** A product type */
 export type ProductType = Node & {
-  __typename?: "ProductType";
+  __typename?: 'ProductType';
   fields?: Maybe<TypeFieldAssociationConnection>;
-  icon?: Maybe<Scalars["String"]>;
+  icon?: Maybe<Scalars['String']['output']>;
   /** The ID of the object. */
-  id: Scalars["ID"];
-  indefArticle?: Maybe<Scalars["String"]>;
-  name: Scalars["String"];
-  order?: Maybe<Scalars["Int"]>;
-  plural?: Maybe<Scalars["String"]>;
+  id: Scalars['ID']['output'];
+  indefArticle?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  order?: Maybe<Scalars['Int']['output']>;
+  plural?: Maybe<Scalars['String']['output']>;
   products?: Maybe<ProductConnection>;
-  singular?: Maybe<Scalars["String"]>;
-  typeId: Scalars["ID"];
+  singular?: Maybe<Scalars['String']['output']>;
+  typeId: Scalars['ID']['output'];
 };
+
 
 /** A product type */
 export type ProductTypeFieldsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<TypeFieldAssociationSortEnum>>>;
 };
 
+
 /** A product type */
 export type ProductTypeProductsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
   filters?: InputMaybe<ProductFilter>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductSortEnum>>>;
 };
 
 export type ProductTypeConnection = {
-  __typename?: "ProductTypeConnection";
+  __typename?: 'ProductTypeConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<ProductTypeEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `ProductType` and its cursor. */
 export type ProductTypeEdge = {
-  __typename?: "ProductTypeEdge";
+  __typename?: 'ProductTypeEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<ProductType>;
 };
@@ -1584,26 +1631,26 @@ export type ProductTypeFilter = {
 
 /** An enumeration. */
 export enum ProductTypeSortEnum {
-  IconAsc = "ICON_ASC",
-  IconDesc = "ICON_DESC",
-  IndefArticleAsc = "INDEF_ARTICLE_ASC",
-  IndefArticleDesc = "INDEF_ARTICLE_DESC",
-  NameAsc = "NAME_ASC",
-  NameDesc = "NAME_DESC",
-  OrderAsc = "ORDER_ASC",
-  OrderDesc = "ORDER_DESC",
-  PluralAsc = "PLURAL_ASC",
-  PluralDesc = "PLURAL_DESC",
-  SingularAsc = "SINGULAR_ASC",
-  SingularDesc = "SINGULAR_DESC",
-  TypeIdAsc = "TYPE_ID_ASC",
-  TypeIdDesc = "TYPE_ID_DESC",
+  IconAsc = 'ICON_ASC',
+  IconDesc = 'ICON_DESC',
+  IndefArticleAsc = 'INDEF_ARTICLE_ASC',
+  IndefArticleDesc = 'INDEF_ARTICLE_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  OrderAsc = 'ORDER_ASC',
+  OrderDesc = 'ORDER_DESC',
+  PluralAsc = 'PLURAL_ASC',
+  PluralDesc = 'PLURAL_DESC',
+  SingularAsc = 'SINGULAR_ASC',
+  SingularDesc = 'SINGULAR_DESC',
+  TypeIdAsc = 'TYPE_ID_ASC',
+  TypeIdDesc = 'TYPE_ID_DESC'
 }
 
 export type QueryAdmin = {
-  __typename?: "QueryAdmin";
+  __typename?: 'QueryAdmin';
   /** The version of Alembic migration */
-  alembicVersion?: Maybe<Scalars["String"]>;
+  alembicVersion?: Maybe<Scalars['String']['output']>;
   allFields?: Maybe<FieldConnection>;
   allGitHubOrgs?: Maybe<GitHubOrgConnection>;
   allGitHubTokens?: Maybe<GitHubTokenConnection>;
@@ -1617,8 +1664,8 @@ export type QueryAdmin = {
   field?: Maybe<Field>;
   gitHubOAuthAppInfo?: Maybe<GitHubOAuthAppInfo>;
   gitHubViewer?: Maybe<GitHubUser>;
-  isAdmin?: Maybe<Scalars["Boolean"]>;
-  isSignedIn?: Maybe<Scalars["Boolean"]>;
+  isAdmin?: Maybe<Scalars['Boolean']['output']>;
+  isSignedIn?: Maybe<Scalars['Boolean']['output']>;
   log?: Maybe<Log>;
   node?: Maybe<Node>;
   product?: Maybe<Product>;
@@ -1626,143 +1673,160 @@ export type QueryAdmin = {
   productRelationType?: Maybe<ProductRelationType>;
   productType?: Maybe<ProductType>;
   /** The version of Acondbs */
-  version?: Maybe<Scalars["String"]>;
+  version?: Maybe<Scalars['String']['output']>;
   webConfig?: Maybe<WebConfig>;
 };
 
+
 export type QueryAdminAllFieldsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<FieldSortEnum>>>;
 };
 
+
 export type QueryAdminAllGitHubOrgsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<GitHubOrgSortEnum>>>;
 };
 
+
 export type QueryAdminAllGitHubTokensArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
   filters?: InputMaybe<GitHubTokenFilter>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<GitHubTokenSortEnum>>>;
 };
 
+
 export type QueryAdminAllGitHubUsersArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
   filters?: InputMaybe<GitHubUserFilter>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<GitHubUserSortEnum>>>;
 };
 
+
 export type QueryAdminAllLogsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<LogSortEnum>>>;
 };
 
+
 export type QueryAdminAllProductFilePathsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductFilePathSortEnum>>>;
 };
 
+
 export type QueryAdminAllProductRelationTypesArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductRelationTypeSortEnum>>>;
 };
 
+
 export type QueryAdminAllProductRelationsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductRelationSortEnum>>>;
 };
 
+
 export type QueryAdminAllProductTypesArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
   filters?: InputMaybe<ProductTypeFilter>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductTypeSortEnum>>>;
 };
 
+
 export type QueryAdminAllProductsArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
   filters?: InputMaybe<ProductFilter>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<ProductSortEnum>>>;
 };
 
+
 export type QueryAdminFieldArgs = {
-  fieldId?: InputMaybe<Scalars["Int"]>;
-  name?: InputMaybe<Scalars["String"]>;
+  fieldId?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
+
 
 export type QueryAdminLogArgs = {
-  id_?: InputMaybe<Scalars["Int"]>;
+  id_?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type QueryAdminNodeArgs = {
-  id: Scalars["ID"];
+  id: Scalars['ID']['input'];
 };
+
 
 export type QueryAdminProductArgs = {
-  name?: InputMaybe<Scalars["String"]>;
-  productId?: InputMaybe<Scalars["Int"]>;
-  typeId?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  productId?: InputMaybe<Scalars['Int']['input']>;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type QueryAdminProductRelationArgs = {
-  relationId?: InputMaybe<Scalars["Int"]>;
+  relationId?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type QueryAdminProductRelationTypeArgs = {
-  name?: InputMaybe<Scalars["String"]>;
-  typeId?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
 export type QueryAdminProductTypeArgs = {
-  name?: InputMaybe<Scalars["String"]>;
-  typeId?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** A relation to another product */
 export type RelationInputFields = {
   /** The product ID of the other product */
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['input'];
   /** The relation type ID */
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['input'];
 };
 
 export type SaveWebconfig = {
-  __typename?: "SaveWebconfig";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'SaveWebconfig';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   webConfig?: Maybe<WebConfig>;
 };
 
 export type TypeFieldAssociation = Node & {
-  __typename?: "TypeFieldAssociation";
+  __typename?: 'TypeFieldAssociation';
   attributesBoolean?: Maybe<AttributeBooleanConnection>;
   attributesDate?: Maybe<AttributeDateConnection>;
   attributesDateTime?: Maybe<AttributeDateTimeConnection>;
@@ -1771,118 +1835,125 @@ export type TypeFieldAssociation = Node & {
   attributesTime?: Maybe<AttributeTimeConnection>;
   attributesUnicodeText?: Maybe<AttributeUnicodeTextConnection>;
   field?: Maybe<Field>;
-  fieldId: Scalars["Int"];
+  fieldId: Scalars['Int']['output'];
   /** The ID of the object. */
-  id: Scalars["ID"];
-  iid: Scalars["ID"];
-  order?: Maybe<Scalars["Int"]>;
-  typeId: Scalars["Int"];
+  id: Scalars['ID']['output'];
+  iid: Scalars['ID']['output'];
+  order?: Maybe<Scalars['Int']['output']>;
+  typeId: Scalars['Int']['output'];
   type_?: Maybe<ProductType>;
 };
 
+
 export type TypeFieldAssociationAttributesBooleanArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeBooleanSortEnum>>>;
 };
 
+
 export type TypeFieldAssociationAttributesDateArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeDateSortEnum>>>;
 };
 
+
 export type TypeFieldAssociationAttributesDateTimeArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeDateTimeSortEnum>>>;
 };
 
+
 export type TypeFieldAssociationAttributesFloatArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeFloatSortEnum>>>;
 };
 
+
 export type TypeFieldAssociationAttributesIntegerArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeIntegerSortEnum>>>;
 };
 
+
 export type TypeFieldAssociationAttributesTimeArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeTimeSortEnum>>>;
 };
 
+
 export type TypeFieldAssociationAttributesUnicodeTextArgs = {
-  after?: InputMaybe<Scalars["String"]>;
-  before?: InputMaybe<Scalars["String"]>;
-  first?: InputMaybe<Scalars["Int"]>;
-  last?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Array<InputMaybe<AttributeUnicodeTextSortEnum>>>;
 };
 
 export type TypeFieldAssociationConnection = {
-  __typename?: "TypeFieldAssociationConnection";
+  __typename?: 'TypeFieldAssociationConnection';
   /** Contains the nodes in this connection. */
   edges: Array<Maybe<TypeFieldAssociationEdge>>;
   /** Pagination data for this connection. */
   pageInfo: PageInfo;
-  totalCount: Scalars["Int"];
+  totalCount: Scalars['Int']['output'];
 };
 
 /** A Relay edge containing a `TypeFieldAssociation` and its cursor. */
 export type TypeFieldAssociationEdge = {
-  __typename?: "TypeFieldAssociationEdge";
+  __typename?: 'TypeFieldAssociationEdge';
   /** A cursor for use in pagination */
-  cursor: Scalars["String"];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge */
   node?: Maybe<TypeFieldAssociation>;
 };
 
 /** An enumeration. */
 export enum TypeFieldAssociationSortEnum {
-  FieldIdAsc = "FIELD_ID_ASC",
-  FieldIdDesc = "FIELD_ID_DESC",
-  IidAsc = "IID_ASC",
-  IidDesc = "IID_DESC",
-  OrderAsc = "ORDER_ASC",
-  OrderDesc = "ORDER_DESC",
-  TypeIdAsc = "TYPE_ID_ASC",
-  TypeIdDesc = "TYPE_ID_DESC",
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IidAsc = 'IID_ASC',
+  IidDesc = 'IID_DESC',
+  OrderAsc = 'ORDER_ASC',
+  OrderDesc = 'ORDER_DESC',
+  TypeIdAsc = 'TYPE_ID_ASC',
+  TypeIdDesc = 'TYPE_ID_DESC'
 }
 
 /** Update a field */
 export type UpdateField = {
-  __typename?: "UpdateField";
+  __typename?: 'UpdateField';
   field?: Maybe<Field>;
-  ok?: Maybe<Scalars["Boolean"]>;
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /** Input to updateField() */
 export type UpdateFieldInput = {
   /** The name of the field */
-  name: Scalars["String"];
+  name: Scalars['String']['input'];
 };
 
 /** Update the member lists of GitHub organizations */
 export type UpdateGitHubOrgMemberLists = {
-  __typename?: "UpdateGitHubOrgMemberLists";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'UpdateGitHubOrgMemberLists';
+  ok?: Maybe<Scalars['Boolean']['output']>;
 };
 
 /**
@@ -1893,20 +1964,20 @@ export type UpdateGitHubOrgMemberLists = {
  * createProduct()
  */
 export type UpdateProduct = {
-  __typename?: "UpdateProduct";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'UpdateProduct';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   product?: Maybe<Product>;
 };
 
 export type UpdateProductFilePath = {
-  __typename?: "UpdateProductFilePath";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'UpdateProductFilePath';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   productFilePath?: Maybe<ProductFilePath>;
 };
 
 export type UpdateProductFilePathInput = {
-  note?: InputMaybe<Scalars["String"]>;
-  path?: InputMaybe<Scalars["String"]>;
+  note?: InputMaybe<Scalars['String']['input']>;
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Input to updateProduct() */
@@ -1914,3469 +1985,354 @@ export type UpdateProductInput = {
   /** Attributes */
   attributes?: InputMaybe<AttributesInputFields>;
   /** The name of the product */
-  name?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** Note about the product in MarkDown. */
-  note?: InputMaybe<Scalars["String"]>;
+  note?: InputMaybe<Scalars['String']['input']>;
   /** Paths to the products. e.g., nersc:/go/to/my/product_v3 */
-  paths?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  paths?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Relations to other products */
   relations?: InputMaybe<Array<InputMaybe<RelationInputFields>>>;
 };
 
 /** Update a product relation type */
 export type UpdateProductRelationType = {
-  __typename?: "UpdateProductRelationType";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'UpdateProductRelationType';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   productRelationType?: Maybe<ProductRelationType>;
 };
 
 /** An input to updateProductRelationType() */
 export type UpdateProductRelationTypeInput = {
   /** The indefinite article placed before the singular noun "i.e., "a" or "an".  */
-  indefArticle?: InputMaybe<Scalars["String"]>;
+  indefArticle?: InputMaybe<Scalars['String']['input']>;
   /** The plural noun, the relation type name in plural. */
-  plural?: InputMaybe<Scalars["String"]>;
+  plural?: InputMaybe<Scalars['String']['input']>;
   /** The singular noun, the relation type name in singular. */
-  singular?: InputMaybe<Scalars["String"]>;
+  singular?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Update a product type */
 export type UpdateProductType = {
-  __typename?: "UpdateProductType";
-  ok?: Maybe<Scalars["Boolean"]>;
+  __typename?: 'UpdateProductType';
+  ok?: Maybe<Scalars['Boolean']['output']>;
   productType?: Maybe<ProductType>;
 };
 
 /** Input to updateProductType() */
 export type UpdateProductTypeInput = {
   /** The field IDs */
-  fieldIds?: InputMaybe<Array<InputMaybe<Scalars["Int"]>>>;
+  fieldIds?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   /** A name of the icon from https://materialdesignicons.com/ */
-  icon?: InputMaybe<Scalars["String"]>;
+  icon?: InputMaybe<Scalars['String']['input']>;
   /** The indefinite article placed before the singular noun "i.e., "a" or "an".  */
-  indefArticle?: InputMaybe<Scalars["String"]>;
+  indefArticle?: InputMaybe<Scalars['String']['input']>;
   /** The name of the product type */
-  name?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** The order in which the type is displayed, for example, in navigation bars. */
-  order?: InputMaybe<Scalars["Int"]>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   /** The plural noun, the product type name in plural. */
-  plural?: InputMaybe<Scalars["String"]>;
+  plural?: InputMaybe<Scalars['String']['input']>;
   /** The singular noun, the product type name in singular. */
-  singular?: InputMaybe<Scalars["String"]>;
+  singular?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Web configuration */
 export type WebConfig = Node & {
-  __typename?: "WebConfig";
+  __typename?: 'WebConfig';
   /** The ID of the object. */
-  id: Scalars["ID"];
-  id_: Scalars["ID"];
-  json?: Maybe<Scalars["String"]>;
+  id: Scalars['ID']['output'];
+  id_: Scalars['ID']['output'];
+  json?: Maybe<Scalars['String']['output']>;
 };
 
-export type GitHubTokenFragmentFragment = {
-  __typename?: "GitHubToken";
-  id: string;
-  tokenId: string;
-  tokenMasked?: string | null;
-  scope?: string | null;
-  timeCreated?: any | null;
-  user?: {
-    __typename?: "GitHubUser";
-    id: string;
-    login: string;
-    avatarUrl?: string | null;
-    url?: string | null;
-  } | null;
-};
+export type GitHubTokenFragmentFragment = { __typename?: 'GitHubToken', id: string, tokenId: string, tokenMasked?: string | null, scope?: string | null, timeCreated?: any | null, user?: { __typename?: 'GitHubUser', id: string, login: string, avatarUrl?: string | null, url?: string | null } | null };
 
-export type ProductFragmentFragment = {
-  __typename?: "Product";
-  id: string;
-  productId: string;
-  typeId: number;
-  name: string;
-  timePosted?: any | null;
-  timeUpdated?: any | null;
-  note?: string | null;
-  type_?: {
-    __typename?: "ProductType";
-    id: string;
-    typeId: string;
-    name: string;
-    order?: number | null;
-    indefArticle?: string | null;
-    singular?: string | null;
-    plural?: string | null;
-    icon?: string | null;
-    fields?: {
-      __typename?: "TypeFieldAssociationConnection";
-      edges: Array<{
-        __typename?: "TypeFieldAssociationEdge";
-        node?: {
-          __typename?: "TypeFieldAssociation";
-          id: string;
-          typeId: number;
-          fieldId: number;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            fieldId: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-  } | null;
-  postingGitHubUser?: {
-    __typename?: "GitHubUser";
-    id: string;
-    login: string;
-  } | null;
-  updatingGitHubUser?: {
-    __typename?: "GitHubUser";
-    id: string;
-    login: string;
-  } | null;
-  paths?: {
-    __typename?: "ProductFilePathConnection";
-    edges: Array<{
-      __typename?: "ProductFilePathEdge";
-      node?: {
-        __typename?: "ProductFilePath";
-        id: string;
-        pathId: string;
-        path?: string | null;
-        note?: string | null;
-      } | null;
-    } | null>;
-  } | null;
-  relations?: {
-    __typename?: "ProductRelationConnection";
-    edges: Array<{
-      __typename?: "ProductRelationEdge";
-      node?: {
-        __typename?: "ProductRelation";
-        id: string;
-        relationId: string;
-        typeId: number;
-        otherProductId: number;
-        reverseRelationId?: number | null;
-        type_?: {
-          __typename?: "ProductRelationType";
-          id: string;
-          typeId: string;
-          name: string;
-          indefArticle?: string | null;
-          singular?: string | null;
-          plural?: string | null;
-        } | null;
-        other?: {
-          __typename?: "Product";
-          id: string;
-          productId: string;
-          typeId: number;
-          name: string;
-          type_?: {
-            __typename?: "ProductType";
-            id: string;
-            typeId: string;
-            name: string;
-            order?: number | null;
-            indefArticle?: string | null;
-            singular?: string | null;
-            plural?: string | null;
-            icon?: string | null;
-            fields?: {
-              __typename?: "TypeFieldAssociationConnection";
-              edges: Array<{
-                __typename?: "TypeFieldAssociationEdge";
-                node?: {
-                  __typename?: "TypeFieldAssociation";
-                  id: string;
-                  typeId: number;
-                  fieldId: number;
-                  field?: {
-                    __typename?: "Field";
-                    id: string;
-                    fieldId: string;
-                    name: string;
-                    type_?: FieldType | null;
-                  } | null;
-                } | null;
-              } | null>;
-            } | null;
-          } | null;
-        } | null;
-        reverse?: {
-          __typename?: "ProductRelation";
-          id: string;
-          relationId: string;
-          typeId: number;
-          type_?: {
-            __typename?: "ProductRelationType";
-            id: string;
-            typeId: string;
-            name: string;
-          } | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-  attributesUnicodeText?: {
-    __typename?: "AttributeUnicodeTextConnection";
-    edges: Array<{
-      __typename?: "AttributeUnicodeTextEdge";
-      node?: {
-        __typename?: "AttributeUnicodeText";
-        id: string;
-        fieldId: number;
-        value?: string | null;
-        field?: {
-          __typename?: "Field";
-          id: string;
-          name: string;
-          type_?: FieldType | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-  attributesBoolean?: {
-    __typename?: "AttributeBooleanConnection";
-    edges: Array<{
-      __typename?: "AttributeBooleanEdge";
-      node?: {
-        __typename?: "AttributeBoolean";
-        id: string;
-        fieldId: number;
-        value?: boolean | null;
-        field?: {
-          __typename?: "Field";
-          id: string;
-          name: string;
-          type_?: FieldType | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-  attributesInteger?: {
-    __typename?: "AttributeIntegerConnection";
-    edges: Array<{
-      __typename?: "AttributeIntegerEdge";
-      node?: {
-        __typename?: "AttributeInteger";
-        id: string;
-        fieldId: number;
-        value?: number | null;
-        field?: {
-          __typename?: "Field";
-          id: string;
-          name: string;
-          type_?: FieldType | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-  attributesFloat?: {
-    __typename?: "AttributeFloatConnection";
-    edges: Array<{
-      __typename?: "AttributeFloatEdge";
-      node?: {
-        __typename?: "AttributeFloat";
-        id: string;
-        fieldId: number;
-        value?: number | null;
-        field?: {
-          __typename?: "Field";
-          id: string;
-          name: string;
-          type_?: FieldType | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-  attributesDate?: {
-    __typename?: "AttributeDateConnection";
-    edges: Array<{
-      __typename?: "AttributeDateEdge";
-      node?: {
-        __typename?: "AttributeDate";
-        id: string;
-        fieldId: number;
-        value?: string | null;
-        field?: {
-          __typename?: "Field";
-          id: string;
-          name: string;
-          type_?: FieldType | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-  attributesDateTime?: {
-    __typename?: "AttributeDateTimeConnection";
-    edges: Array<{
-      __typename?: "AttributeDateTimeEdge";
-      node?: {
-        __typename?: "AttributeDateTime";
-        id: string;
-        fieldId: number;
-        value?: any | null;
-        field?: {
-          __typename?: "Field";
-          id: string;
-          name: string;
-          type_?: FieldType | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-  attributesTime?: {
-    __typename?: "AttributeTimeConnection";
-    edges: Array<{
-      __typename?: "AttributeTimeEdge";
-      node?: {
-        __typename?: "AttributeTime";
-        id: string;
-        fieldId: number;
-        value?: string | null;
-        field?: {
-          __typename?: "Field";
-          id: string;
-          name: string;
-          type_?: FieldType | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type ProductFragmentFragment = { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, timePosted?: any | null, timeUpdated?: any | null, note?: string | null, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null, postingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, updatingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, paths?: { __typename?: 'ProductFilePathConnection', edges: Array<{ __typename?: 'ProductFilePathEdge', node?: { __typename?: 'ProductFilePath', id: string, pathId: string, path?: string | null, note?: string | null } | null } | null> } | null, relations?: { __typename?: 'ProductRelationConnection', edges: Array<{ __typename?: 'ProductRelationEdge', node?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, otherProductId: number, reverseRelationId?: number | null, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string, indefArticle?: string | null, singular?: string | null, plural?: string | null } | null, other?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null, reverse?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string } | null } | null } | null } | null> } | null, attributesUnicodeText?: { __typename?: 'AttributeUnicodeTextConnection', edges: Array<{ __typename?: 'AttributeUnicodeTextEdge', node?: { __typename?: 'AttributeUnicodeText', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesBoolean?: { __typename?: 'AttributeBooleanConnection', edges: Array<{ __typename?: 'AttributeBooleanEdge', node?: { __typename?: 'AttributeBoolean', id: string, fieldId: number, value?: boolean | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesInteger?: { __typename?: 'AttributeIntegerConnection', edges: Array<{ __typename?: 'AttributeIntegerEdge', node?: { __typename?: 'AttributeInteger', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesFloat?: { __typename?: 'AttributeFloatConnection', edges: Array<{ __typename?: 'AttributeFloatEdge', node?: { __typename?: 'AttributeFloat', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDate?: { __typename?: 'AttributeDateConnection', edges: Array<{ __typename?: 'AttributeDateEdge', node?: { __typename?: 'AttributeDate', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDateTime?: { __typename?: 'AttributeDateTimeConnection', edges: Array<{ __typename?: 'AttributeDateTimeEdge', node?: { __typename?: 'AttributeDateTime', id: string, fieldId: number, value?: any | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesTime?: { __typename?: 'AttributeTimeConnection', edges: Array<{ __typename?: 'AttributeTimeEdge', node?: { __typename?: 'AttributeTime', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null };
 
-export type ProductTypeFragmentFragment = {
-  __typename?: "ProductType";
-  id: string;
-  typeId: string;
-  name: string;
-  order?: number | null;
-  indefArticle?: string | null;
-  singular?: string | null;
-  plural?: string | null;
-  icon?: string | null;
-  fields?: {
-    __typename?: "TypeFieldAssociationConnection";
-    edges: Array<{
-      __typename?: "TypeFieldAssociationEdge";
-      node?: {
-        __typename?: "TypeFieldAssociation";
-        id: string;
-        typeId: number;
-        fieldId: number;
-        field?: {
-          __typename?: "Field";
-          id: string;
-          fieldId: string;
-          name: string;
-          type_?: FieldType | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type ProductTypeFragmentFragment = { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null };
 
 export type AddGitHubAdminAppTokenMutationVariables = Exact<{
-  code: Scalars["String"];
+  code: Scalars['String']['input'];
 }>;
 
-export type AddGitHubAdminAppTokenMutation = {
-  __typename?: "MutationAdmin";
-  addGitHubAdminAppToken?: {
-    __typename?: "AddGitHubAdminAppToken";
-    ok?: boolean | null;
-  } | null;
-};
+
+export type AddGitHubAdminAppTokenMutation = { __typename?: 'MutationAdmin', addGitHubAdminAppToken?: { __typename?: 'AddGitHubAdminAppToken', ok?: boolean | null } | null };
 
 export type AddGitHubOrgMutationVariables = Exact<{
-  login: Scalars["String"];
+  login: Scalars['String']['input'];
 }>;
 
-export type AddGitHubOrgMutation = {
-  __typename?: "MutationAdmin";
-  addGitHubOrg?: { __typename?: "AddGitHubOrg"; ok?: boolean | null } | null;
-};
+
+export type AddGitHubOrgMutation = { __typename?: 'MutationAdmin', addGitHubOrg?: { __typename?: 'AddGitHubOrg', ok?: boolean | null } | null };
 
 export type AuthenticateWithGitHubMutationVariables = Exact<{
-  code: Scalars["String"];
+  code: Scalars['String']['input'];
 }>;
 
-export type AuthenticateWithGitHubMutation = {
-  __typename?: "MutationAdmin";
-  authenticateWithGitHub?: {
-    __typename?: "AuthenticateWithGitHub";
-    authPayload?: { __typename?: "AuthPayload"; token?: string | null } | null;
-  } | null;
-};
+
+export type AuthenticateWithGitHubMutation = { __typename?: 'MutationAdmin', authenticateWithGitHub?: { __typename?: 'AuthenticateWithGitHub', authPayload?: { __typename?: 'AuthPayload', token?: string | null } | null } | null };
 
 export type ConvertProductTypeMutationVariables = Exact<{
-  productId: Scalars["Int"];
-  typeId: Scalars["Int"];
+  productId: Scalars['Int']['input'];
+  typeId: Scalars['Int']['input'];
 }>;
 
-export type ConvertProductTypeMutation = {
-  __typename?: "MutationAdmin";
-  convertProductType?: {
-    __typename?: "ConvertProductType";
-    ok?: boolean | null;
-    product?: {
-      __typename?: "Product";
-      id: string;
-      productId: string;
-      typeId: number;
-      name: string;
-      timePosted?: any | null;
-      timeUpdated?: any | null;
-      note?: string | null;
-      type_?: {
-        __typename?: "ProductType";
-        id: string;
-        typeId: string;
-        name: string;
-        order?: number | null;
-        indefArticle?: string | null;
-        singular?: string | null;
-        plural?: string | null;
-        icon?: string | null;
-        fields?: {
-          __typename?: "TypeFieldAssociationConnection";
-          edges: Array<{
-            __typename?: "TypeFieldAssociationEdge";
-            node?: {
-              __typename?: "TypeFieldAssociation";
-              id: string;
-              typeId: number;
-              fieldId: number;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                fieldId: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-      } | null;
-      postingGitHubUser?: {
-        __typename?: "GitHubUser";
-        id: string;
-        login: string;
-      } | null;
-      updatingGitHubUser?: {
-        __typename?: "GitHubUser";
-        id: string;
-        login: string;
-      } | null;
-      paths?: {
-        __typename?: "ProductFilePathConnection";
-        edges: Array<{
-          __typename?: "ProductFilePathEdge";
-          node?: {
-            __typename?: "ProductFilePath";
-            id: string;
-            pathId: string;
-            path?: string | null;
-            note?: string | null;
-          } | null;
-        } | null>;
-      } | null;
-      relations?: {
-        __typename?: "ProductRelationConnection";
-        edges: Array<{
-          __typename?: "ProductRelationEdge";
-          node?: {
-            __typename?: "ProductRelation";
-            id: string;
-            relationId: string;
-            typeId: number;
-            otherProductId: number;
-            reverseRelationId?: number | null;
-            type_?: {
-              __typename?: "ProductRelationType";
-              id: string;
-              typeId: string;
-              name: string;
-              indefArticle?: string | null;
-              singular?: string | null;
-              plural?: string | null;
-            } | null;
-            other?: {
-              __typename?: "Product";
-              id: string;
-              productId: string;
-              typeId: number;
-              name: string;
-              type_?: {
-                __typename?: "ProductType";
-                id: string;
-                typeId: string;
-                name: string;
-                order?: number | null;
-                indefArticle?: string | null;
-                singular?: string | null;
-                plural?: string | null;
-                icon?: string | null;
-                fields?: {
-                  __typename?: "TypeFieldAssociationConnection";
-                  edges: Array<{
-                    __typename?: "TypeFieldAssociationEdge";
-                    node?: {
-                      __typename?: "TypeFieldAssociation";
-                      id: string;
-                      typeId: number;
-                      fieldId: number;
-                      field?: {
-                        __typename?: "Field";
-                        id: string;
-                        fieldId: string;
-                        name: string;
-                        type_?: FieldType | null;
-                      } | null;
-                    } | null;
-                  } | null>;
-                } | null;
-              } | null;
-            } | null;
-            reverse?: {
-              __typename?: "ProductRelation";
-              id: string;
-              relationId: string;
-              typeId: number;
-              type_?: {
-                __typename?: "ProductRelationType";
-                id: string;
-                typeId: string;
-                name: string;
-              } | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesUnicodeText?: {
-        __typename?: "AttributeUnicodeTextConnection";
-        edges: Array<{
-          __typename?: "AttributeUnicodeTextEdge";
-          node?: {
-            __typename?: "AttributeUnicodeText";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesBoolean?: {
-        __typename?: "AttributeBooleanConnection";
-        edges: Array<{
-          __typename?: "AttributeBooleanEdge";
-          node?: {
-            __typename?: "AttributeBoolean";
-            id: string;
-            fieldId: number;
-            value?: boolean | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesInteger?: {
-        __typename?: "AttributeIntegerConnection";
-        edges: Array<{
-          __typename?: "AttributeIntegerEdge";
-          node?: {
-            __typename?: "AttributeInteger";
-            id: string;
-            fieldId: number;
-            value?: number | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesFloat?: {
-        __typename?: "AttributeFloatConnection";
-        edges: Array<{
-          __typename?: "AttributeFloatEdge";
-          node?: {
-            __typename?: "AttributeFloat";
-            id: string;
-            fieldId: number;
-            value?: number | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesDate?: {
-        __typename?: "AttributeDateConnection";
-        edges: Array<{
-          __typename?: "AttributeDateEdge";
-          node?: {
-            __typename?: "AttributeDate";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesDateTime?: {
-        __typename?: "AttributeDateTimeConnection";
-        edges: Array<{
-          __typename?: "AttributeDateTimeEdge";
-          node?: {
-            __typename?: "AttributeDateTime";
-            id: string;
-            fieldId: number;
-            value?: any | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesTime?: {
-        __typename?: "AttributeTimeConnection";
-        edges: Array<{
-          __typename?: "AttributeTimeEdge";
-          node?: {
-            __typename?: "AttributeTime";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-    } | null;
-  } | null;
-};
+
+export type ConvertProductTypeMutation = { __typename?: 'MutationAdmin', convertProductType?: { __typename?: 'ConvertProductType', ok?: boolean | null, product?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, timePosted?: any | null, timeUpdated?: any | null, note?: string | null, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null, postingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, updatingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, paths?: { __typename?: 'ProductFilePathConnection', edges: Array<{ __typename?: 'ProductFilePathEdge', node?: { __typename?: 'ProductFilePath', id: string, pathId: string, path?: string | null, note?: string | null } | null } | null> } | null, relations?: { __typename?: 'ProductRelationConnection', edges: Array<{ __typename?: 'ProductRelationEdge', node?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, otherProductId: number, reverseRelationId?: number | null, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string, indefArticle?: string | null, singular?: string | null, plural?: string | null } | null, other?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null, reverse?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string } | null } | null } | null } | null> } | null, attributesUnicodeText?: { __typename?: 'AttributeUnicodeTextConnection', edges: Array<{ __typename?: 'AttributeUnicodeTextEdge', node?: { __typename?: 'AttributeUnicodeText', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesBoolean?: { __typename?: 'AttributeBooleanConnection', edges: Array<{ __typename?: 'AttributeBooleanEdge', node?: { __typename?: 'AttributeBoolean', id: string, fieldId: number, value?: boolean | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesInteger?: { __typename?: 'AttributeIntegerConnection', edges: Array<{ __typename?: 'AttributeIntegerEdge', node?: { __typename?: 'AttributeInteger', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesFloat?: { __typename?: 'AttributeFloatConnection', edges: Array<{ __typename?: 'AttributeFloatEdge', node?: { __typename?: 'AttributeFloat', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDate?: { __typename?: 'AttributeDateConnection', edges: Array<{ __typename?: 'AttributeDateEdge', node?: { __typename?: 'AttributeDate', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDateTime?: { __typename?: 'AttributeDateTimeConnection', edges: Array<{ __typename?: 'AttributeDateTimeEdge', node?: { __typename?: 'AttributeDateTime', id: string, fieldId: number, value?: any | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesTime?: { __typename?: 'AttributeTimeConnection', edges: Array<{ __typename?: 'AttributeTimeEdge', node?: { __typename?: 'AttributeTime', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null };
 
 export type CreateProductMutationVariables = Exact<{
   input: CreateProductInput;
 }>;
 
-export type CreateProductMutation = {
-  __typename?: "MutationAdmin";
-  createProduct?: {
-    __typename?: "CreateProduct";
-    ok?: boolean | null;
-    product?: {
-      __typename?: "Product";
-      id: string;
-      productId: string;
-      typeId: number;
-      name: string;
-      timePosted?: any | null;
-      timeUpdated?: any | null;
-      note?: string | null;
-      type_?: {
-        __typename?: "ProductType";
-        id: string;
-        typeId: string;
-        name: string;
-        order?: number | null;
-        indefArticle?: string | null;
-        singular?: string | null;
-        plural?: string | null;
-        icon?: string | null;
-        fields?: {
-          __typename?: "TypeFieldAssociationConnection";
-          edges: Array<{
-            __typename?: "TypeFieldAssociationEdge";
-            node?: {
-              __typename?: "TypeFieldAssociation";
-              id: string;
-              typeId: number;
-              fieldId: number;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                fieldId: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-      } | null;
-      postingGitHubUser?: {
-        __typename?: "GitHubUser";
-        id: string;
-        login: string;
-      } | null;
-      updatingGitHubUser?: {
-        __typename?: "GitHubUser";
-        id: string;
-        login: string;
-      } | null;
-      paths?: {
-        __typename?: "ProductFilePathConnection";
-        edges: Array<{
-          __typename?: "ProductFilePathEdge";
-          node?: {
-            __typename?: "ProductFilePath";
-            id: string;
-            pathId: string;
-            path?: string | null;
-            note?: string | null;
-          } | null;
-        } | null>;
-      } | null;
-      relations?: {
-        __typename?: "ProductRelationConnection";
-        edges: Array<{
-          __typename?: "ProductRelationEdge";
-          node?: {
-            __typename?: "ProductRelation";
-            id: string;
-            relationId: string;
-            typeId: number;
-            otherProductId: number;
-            reverseRelationId?: number | null;
-            type_?: {
-              __typename?: "ProductRelationType";
-              id: string;
-              typeId: string;
-              name: string;
-              indefArticle?: string | null;
-              singular?: string | null;
-              plural?: string | null;
-            } | null;
-            other?: {
-              __typename?: "Product";
-              id: string;
-              productId: string;
-              typeId: number;
-              name: string;
-              type_?: {
-                __typename?: "ProductType";
-                id: string;
-                typeId: string;
-                name: string;
-                order?: number | null;
-                indefArticle?: string | null;
-                singular?: string | null;
-                plural?: string | null;
-                icon?: string | null;
-                fields?: {
-                  __typename?: "TypeFieldAssociationConnection";
-                  edges: Array<{
-                    __typename?: "TypeFieldAssociationEdge";
-                    node?: {
-                      __typename?: "TypeFieldAssociation";
-                      id: string;
-                      typeId: number;
-                      fieldId: number;
-                      field?: {
-                        __typename?: "Field";
-                        id: string;
-                        fieldId: string;
-                        name: string;
-                        type_?: FieldType | null;
-                      } | null;
-                    } | null;
-                  } | null>;
-                } | null;
-              } | null;
-            } | null;
-            reverse?: {
-              __typename?: "ProductRelation";
-              id: string;
-              relationId: string;
-              typeId: number;
-              type_?: {
-                __typename?: "ProductRelationType";
-                id: string;
-                typeId: string;
-                name: string;
-              } | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesUnicodeText?: {
-        __typename?: "AttributeUnicodeTextConnection";
-        edges: Array<{
-          __typename?: "AttributeUnicodeTextEdge";
-          node?: {
-            __typename?: "AttributeUnicodeText";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesBoolean?: {
-        __typename?: "AttributeBooleanConnection";
-        edges: Array<{
-          __typename?: "AttributeBooleanEdge";
-          node?: {
-            __typename?: "AttributeBoolean";
-            id: string;
-            fieldId: number;
-            value?: boolean | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesInteger?: {
-        __typename?: "AttributeIntegerConnection";
-        edges: Array<{
-          __typename?: "AttributeIntegerEdge";
-          node?: {
-            __typename?: "AttributeInteger";
-            id: string;
-            fieldId: number;
-            value?: number | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesFloat?: {
-        __typename?: "AttributeFloatConnection";
-        edges: Array<{
-          __typename?: "AttributeFloatEdge";
-          node?: {
-            __typename?: "AttributeFloat";
-            id: string;
-            fieldId: number;
-            value?: number | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesDate?: {
-        __typename?: "AttributeDateConnection";
-        edges: Array<{
-          __typename?: "AttributeDateEdge";
-          node?: {
-            __typename?: "AttributeDate";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesDateTime?: {
-        __typename?: "AttributeDateTimeConnection";
-        edges: Array<{
-          __typename?: "AttributeDateTimeEdge";
-          node?: {
-            __typename?: "AttributeDateTime";
-            id: string;
-            fieldId: number;
-            value?: any | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesTime?: {
-        __typename?: "AttributeTimeConnection";
-        edges: Array<{
-          __typename?: "AttributeTimeEdge";
-          node?: {
-            __typename?: "AttributeTime";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-    } | null;
-  } | null;
-};
+
+export type CreateProductMutation = { __typename?: 'MutationAdmin', createProduct?: { __typename?: 'CreateProduct', ok?: boolean | null, product?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, timePosted?: any | null, timeUpdated?: any | null, note?: string | null, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null, postingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, updatingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, paths?: { __typename?: 'ProductFilePathConnection', edges: Array<{ __typename?: 'ProductFilePathEdge', node?: { __typename?: 'ProductFilePath', id: string, pathId: string, path?: string | null, note?: string | null } | null } | null> } | null, relations?: { __typename?: 'ProductRelationConnection', edges: Array<{ __typename?: 'ProductRelationEdge', node?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, otherProductId: number, reverseRelationId?: number | null, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string, indefArticle?: string | null, singular?: string | null, plural?: string | null } | null, other?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null, reverse?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string } | null } | null } | null } | null> } | null, attributesUnicodeText?: { __typename?: 'AttributeUnicodeTextConnection', edges: Array<{ __typename?: 'AttributeUnicodeTextEdge', node?: { __typename?: 'AttributeUnicodeText', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesBoolean?: { __typename?: 'AttributeBooleanConnection', edges: Array<{ __typename?: 'AttributeBooleanEdge', node?: { __typename?: 'AttributeBoolean', id: string, fieldId: number, value?: boolean | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesInteger?: { __typename?: 'AttributeIntegerConnection', edges: Array<{ __typename?: 'AttributeIntegerEdge', node?: { __typename?: 'AttributeInteger', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesFloat?: { __typename?: 'AttributeFloatConnection', edges: Array<{ __typename?: 'AttributeFloatEdge', node?: { __typename?: 'AttributeFloat', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDate?: { __typename?: 'AttributeDateConnection', edges: Array<{ __typename?: 'AttributeDateEdge', node?: { __typename?: 'AttributeDate', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDateTime?: { __typename?: 'AttributeDateTimeConnection', edges: Array<{ __typename?: 'AttributeDateTimeEdge', node?: { __typename?: 'AttributeDateTime', id: string, fieldId: number, value?: any | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesTime?: { __typename?: 'AttributeTimeConnection', edges: Array<{ __typename?: 'AttributeTimeEdge', node?: { __typename?: 'AttributeTime', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null };
 
 export type CreateProductTypeMutationVariables = Exact<{
   input: CreateProductTypeInput;
 }>;
 
-export type CreateProductTypeMutation = {
-  __typename?: "MutationAdmin";
-  createProductType?: {
-    __typename?: "CreateProductType";
-    ok?: boolean | null;
-    productType?: {
-      __typename?: "ProductType";
-      id: string;
-      typeId: string;
-      name: string;
-      order?: number | null;
-      indefArticle?: string | null;
-      singular?: string | null;
-      plural?: string | null;
-      icon?: string | null;
-      fields?: {
-        __typename?: "TypeFieldAssociationConnection";
-        edges: Array<{
-          __typename?: "TypeFieldAssociationEdge";
-          node?: {
-            __typename?: "TypeFieldAssociation";
-            id: string;
-            typeId: number;
-            fieldId: number;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              fieldId: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-    } | null;
-  } | null;
-};
+
+export type CreateProductTypeMutation = { __typename?: 'MutationAdmin', createProductType?: { __typename?: 'CreateProductType', ok?: boolean | null, productType?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null };
 
 export type DeleteGitHubOrgMutationVariables = Exact<{
-  login: Scalars["String"];
+  login: Scalars['String']['input'];
 }>;
 
-export type DeleteGitHubOrgMutation = {
-  __typename?: "MutationAdmin";
-  deleteGitHubOrg?: {
-    __typename?: "DeleteGitHubOrg";
-    ok?: boolean | null;
-  } | null;
-};
+
+export type DeleteGitHubOrgMutation = { __typename?: 'MutationAdmin', deleteGitHubOrg?: { __typename?: 'DeleteGitHubOrg', ok?: boolean | null } | null };
 
 export type DeleteGitHubTokenMutationVariables = Exact<{
-  tokenId: Scalars["Int"];
+  tokenId: Scalars['Int']['input'];
 }>;
 
-export type DeleteGitHubTokenMutation = {
-  __typename?: "MutationAdmin";
-  deleteGitHubAdminAppToken?: {
-    __typename?: "DeleteGitHubAdminAppToken";
-    ok?: boolean | null;
-  } | null;
-};
+
+export type DeleteGitHubTokenMutation = { __typename?: 'MutationAdmin', deleteGitHubAdminAppToken?: { __typename?: 'DeleteGitHubAdminAppToken', ok?: boolean | null } | null };
 
 export type DeleteLogMutationVariables = Exact<{
-  id_: Scalars["Int"];
+  id_: Scalars['Int']['input'];
 }>;
 
-export type DeleteLogMutation = {
-  __typename?: "MutationAdmin";
-  deleteLog?: { __typename?: "DeleteLog"; ok?: boolean | null } | null;
-};
+
+export type DeleteLogMutation = { __typename?: 'MutationAdmin', deleteLog?: { __typename?: 'DeleteLog', ok?: boolean | null } | null };
 
 export type DeleteProductMutationVariables = Exact<{
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['input'];
 }>;
 
-export type DeleteProductMutation = {
-  __typename?: "MutationAdmin";
-  deleteProduct?: { __typename?: "DeleteProduct"; ok?: boolean | null } | null;
-};
+
+export type DeleteProductMutation = { __typename?: 'MutationAdmin', deleteProduct?: { __typename?: 'DeleteProduct', ok?: boolean | null } | null };
 
 export type DeleteProductTypeMutationVariables = Exact<{
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['input'];
 }>;
 
-export type DeleteProductTypeMutation = {
-  __typename?: "MutationAdmin";
-  deleteProductType?: {
-    __typename?: "DeleteProductType";
-    ok?: boolean | null;
-  } | null;
-};
+
+export type DeleteProductTypeMutation = { __typename?: 'MutationAdmin', deleteProductType?: { __typename?: 'DeleteProductType', ok?: boolean | null } | null };
 
 export type SaveWebConfigMutationVariables = Exact<{
-  json: Scalars["String"];
+  json: Scalars['String']['input'];
 }>;
 
-export type SaveWebConfigMutation = {
-  __typename?: "MutationAdmin";
-  saveWebConfig?: {
-    __typename?: "SaveWebconfig";
-    ok?: boolean | null;
-    webConfig?: {
-      __typename?: "WebConfig";
-      id_: string;
-      json?: string | null;
-    } | null;
-  } | null;
-};
 
-export type UpdateGitHubOrgMemberListsMutationVariables = Exact<{
-  [key: string]: never;
-}>;
+export type SaveWebConfigMutation = { __typename?: 'MutationAdmin', saveWebConfig?: { __typename?: 'SaveWebconfig', ok?: boolean | null, webConfig?: { __typename?: 'WebConfig', id_: string, json?: string | null } | null } | null };
 
-export type UpdateGitHubOrgMemberListsMutation = {
-  __typename?: "MutationAdmin";
-  updateGitHubOrgMemberLists?: {
-    __typename?: "UpdateGitHubOrgMemberLists";
-    ok?: boolean | null;
-  } | null;
-};
+export type UpdateGitHubOrgMemberListsMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UpdateGitHubOrgMemberListsMutation = { __typename?: 'MutationAdmin', updateGitHubOrgMemberLists?: { __typename?: 'UpdateGitHubOrgMemberLists', ok?: boolean | null } | null };
 
 export type UpdateProductMutationVariables = Exact<{
-  productId: Scalars["Int"];
+  productId: Scalars['Int']['input'];
   input: UpdateProductInput;
 }>;
 
-export type UpdateProductMutation = {
-  __typename?: "MutationAdmin";
-  updateProduct?: {
-    __typename?: "UpdateProduct";
-    ok?: boolean | null;
-    product?: {
-      __typename?: "Product";
-      id: string;
-      productId: string;
-      typeId: number;
-      name: string;
-      timePosted?: any | null;
-      timeUpdated?: any | null;
-      note?: string | null;
-      type_?: {
-        __typename?: "ProductType";
-        id: string;
-        typeId: string;
-        name: string;
-        order?: number | null;
-        indefArticle?: string | null;
-        singular?: string | null;
-        plural?: string | null;
-        icon?: string | null;
-        fields?: {
-          __typename?: "TypeFieldAssociationConnection";
-          edges: Array<{
-            __typename?: "TypeFieldAssociationEdge";
-            node?: {
-              __typename?: "TypeFieldAssociation";
-              id: string;
-              typeId: number;
-              fieldId: number;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                fieldId: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-      } | null;
-      postingGitHubUser?: {
-        __typename?: "GitHubUser";
-        id: string;
-        login: string;
-      } | null;
-      updatingGitHubUser?: {
-        __typename?: "GitHubUser";
-        id: string;
-        login: string;
-      } | null;
-      paths?: {
-        __typename?: "ProductFilePathConnection";
-        edges: Array<{
-          __typename?: "ProductFilePathEdge";
-          node?: {
-            __typename?: "ProductFilePath";
-            id: string;
-            pathId: string;
-            path?: string | null;
-            note?: string | null;
-          } | null;
-        } | null>;
-      } | null;
-      relations?: {
-        __typename?: "ProductRelationConnection";
-        edges: Array<{
-          __typename?: "ProductRelationEdge";
-          node?: {
-            __typename?: "ProductRelation";
-            id: string;
-            relationId: string;
-            typeId: number;
-            otherProductId: number;
-            reverseRelationId?: number | null;
-            type_?: {
-              __typename?: "ProductRelationType";
-              id: string;
-              typeId: string;
-              name: string;
-              indefArticle?: string | null;
-              singular?: string | null;
-              plural?: string | null;
-            } | null;
-            other?: {
-              __typename?: "Product";
-              id: string;
-              productId: string;
-              typeId: number;
-              name: string;
-              type_?: {
-                __typename?: "ProductType";
-                id: string;
-                typeId: string;
-                name: string;
-                order?: number | null;
-                indefArticle?: string | null;
-                singular?: string | null;
-                plural?: string | null;
-                icon?: string | null;
-                fields?: {
-                  __typename?: "TypeFieldAssociationConnection";
-                  edges: Array<{
-                    __typename?: "TypeFieldAssociationEdge";
-                    node?: {
-                      __typename?: "TypeFieldAssociation";
-                      id: string;
-                      typeId: number;
-                      fieldId: number;
-                      field?: {
-                        __typename?: "Field";
-                        id: string;
-                        fieldId: string;
-                        name: string;
-                        type_?: FieldType | null;
-                      } | null;
-                    } | null;
-                  } | null>;
-                } | null;
-              } | null;
-            } | null;
-            reverse?: {
-              __typename?: "ProductRelation";
-              id: string;
-              relationId: string;
-              typeId: number;
-              type_?: {
-                __typename?: "ProductRelationType";
-                id: string;
-                typeId: string;
-                name: string;
-              } | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesUnicodeText?: {
-        __typename?: "AttributeUnicodeTextConnection";
-        edges: Array<{
-          __typename?: "AttributeUnicodeTextEdge";
-          node?: {
-            __typename?: "AttributeUnicodeText";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesBoolean?: {
-        __typename?: "AttributeBooleanConnection";
-        edges: Array<{
-          __typename?: "AttributeBooleanEdge";
-          node?: {
-            __typename?: "AttributeBoolean";
-            id: string;
-            fieldId: number;
-            value?: boolean | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesInteger?: {
-        __typename?: "AttributeIntegerConnection";
-        edges: Array<{
-          __typename?: "AttributeIntegerEdge";
-          node?: {
-            __typename?: "AttributeInteger";
-            id: string;
-            fieldId: number;
-            value?: number | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesFloat?: {
-        __typename?: "AttributeFloatConnection";
-        edges: Array<{
-          __typename?: "AttributeFloatEdge";
-          node?: {
-            __typename?: "AttributeFloat";
-            id: string;
-            fieldId: number;
-            value?: number | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesDate?: {
-        __typename?: "AttributeDateConnection";
-        edges: Array<{
-          __typename?: "AttributeDateEdge";
-          node?: {
-            __typename?: "AttributeDate";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesDateTime?: {
-        __typename?: "AttributeDateTimeConnection";
-        edges: Array<{
-          __typename?: "AttributeDateTimeEdge";
-          node?: {
-            __typename?: "AttributeDateTime";
-            id: string;
-            fieldId: number;
-            value?: any | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-      attributesTime?: {
-        __typename?: "AttributeTimeConnection";
-        edges: Array<{
-          __typename?: "AttributeTimeEdge";
-          node?: {
-            __typename?: "AttributeTime";
-            id: string;
-            fieldId: number;
-            value?: string | null;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-    } | null;
-  } | null;
-};
+
+export type UpdateProductMutation = { __typename?: 'MutationAdmin', updateProduct?: { __typename?: 'UpdateProduct', ok?: boolean | null, product?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, timePosted?: any | null, timeUpdated?: any | null, note?: string | null, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null, postingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, updatingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, paths?: { __typename?: 'ProductFilePathConnection', edges: Array<{ __typename?: 'ProductFilePathEdge', node?: { __typename?: 'ProductFilePath', id: string, pathId: string, path?: string | null, note?: string | null } | null } | null> } | null, relations?: { __typename?: 'ProductRelationConnection', edges: Array<{ __typename?: 'ProductRelationEdge', node?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, otherProductId: number, reverseRelationId?: number | null, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string, indefArticle?: string | null, singular?: string | null, plural?: string | null } | null, other?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null, reverse?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string } | null } | null } | null } | null> } | null, attributesUnicodeText?: { __typename?: 'AttributeUnicodeTextConnection', edges: Array<{ __typename?: 'AttributeUnicodeTextEdge', node?: { __typename?: 'AttributeUnicodeText', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesBoolean?: { __typename?: 'AttributeBooleanConnection', edges: Array<{ __typename?: 'AttributeBooleanEdge', node?: { __typename?: 'AttributeBoolean', id: string, fieldId: number, value?: boolean | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesInteger?: { __typename?: 'AttributeIntegerConnection', edges: Array<{ __typename?: 'AttributeIntegerEdge', node?: { __typename?: 'AttributeInteger', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesFloat?: { __typename?: 'AttributeFloatConnection', edges: Array<{ __typename?: 'AttributeFloatEdge', node?: { __typename?: 'AttributeFloat', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDate?: { __typename?: 'AttributeDateConnection', edges: Array<{ __typename?: 'AttributeDateEdge', node?: { __typename?: 'AttributeDate', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDateTime?: { __typename?: 'AttributeDateTimeConnection', edges: Array<{ __typename?: 'AttributeDateTimeEdge', node?: { __typename?: 'AttributeDateTime', id: string, fieldId: number, value?: any | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesTime?: { __typename?: 'AttributeTimeConnection', edges: Array<{ __typename?: 'AttributeTimeEdge', node?: { __typename?: 'AttributeTime', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null };
 
 export type UpdateProductTypeMutationVariables = Exact<{
-  typeId: Scalars["Int"];
+  typeId: Scalars['Int']['input'];
   input: UpdateProductTypeInput;
 }>;
 
-export type UpdateProductTypeMutation = {
-  __typename?: "MutationAdmin";
-  updateProductType?: {
-    __typename?: "UpdateProductType";
-    ok?: boolean | null;
-    productType?: {
-      __typename?: "ProductType";
-      id: string;
-      typeId: string;
-      name: string;
-      order?: number | null;
-      indefArticle?: string | null;
-      singular?: string | null;
-      plural?: string | null;
-      icon?: string | null;
-      fields?: {
-        __typename?: "TypeFieldAssociationConnection";
-        edges: Array<{
-          __typename?: "TypeFieldAssociationEdge";
-          node?: {
-            __typename?: "TypeFieldAssociation";
-            id: string;
-            typeId: number;
-            fieldId: number;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              fieldId: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-    } | null;
-  } | null;
-};
 
-export type AllFieldsQueryVariables = Exact<{ [key: string]: never }>;
+export type UpdateProductTypeMutation = { __typename?: 'MutationAdmin', updateProductType?: { __typename?: 'UpdateProductType', ok?: boolean | null, productType?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null };
 
-export type AllFieldsQuery = {
-  __typename?: "QueryAdmin";
-  allFields?: {
-    __typename?: "FieldConnection";
-    edges: Array<{
-      __typename?: "FieldEdge";
-      node?: {
-        __typename?: "Field";
-        id: string;
-        fieldId: string;
-        name: string;
-        type_?: FieldType | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type AllFieldsQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type AllGitHubOrgsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type AllGitHubOrgsQuery = {
-  __typename?: "QueryAdmin";
-  allGitHubOrgs?: {
-    __typename?: "GitHubOrgConnection";
-    totalCount: number;
-    edges: Array<{
-      __typename?: "GitHubOrgEdge";
-      node?: {
-        __typename?: "GitHubOrg";
-        id: string;
-        login: string;
-        avatarUrl?: string | null;
-        url?: string | null;
-        memberships?: {
-          __typename?: "GitHubOrgMembershipConnection";
-          totalCount: number;
-          edges: Array<{
-            __typename?: "GitHubOrgMembershipEdge";
-            node?: {
-              __typename?: "GitHubOrgMembership";
-              id: string;
-              member?: {
-                __typename?: "GitHubUser";
-                id: string;
-                login: string;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type AllFieldsQuery = { __typename?: 'QueryAdmin', allFields?: { __typename?: 'FieldConnection', edges: Array<{ __typename?: 'FieldEdge', node?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null> } | null };
 
-export type AllGitHubTokensQueryVariables = Exact<{ [key: string]: never }>;
+export type AllGitHubOrgsQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type AllGitHubTokensQuery = {
-  __typename?: "QueryAdmin";
-  allGitHubTokens?: {
-    __typename?: "GitHubTokenConnection";
-    totalCount: number;
-    edges: Array<{
-      __typename?: "GitHubTokenEdge";
-      node?: {
-        __typename?: "GitHubToken";
-        id: string;
-        tokenId: string;
-        tokenMasked?: string | null;
-        scope?: string | null;
-        timeCreated?: any | null;
-        user?: {
-          __typename?: "GitHubUser";
-          id: string;
-          login: string;
-          avatarUrl?: string | null;
-          url?: string | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
 
-export type AllGitHubTokensWithOrgAccessQueryVariables = Exact<{
-  [key: string]: never;
-}>;
+export type AllGitHubOrgsQuery = { __typename?: 'QueryAdmin', allGitHubOrgs?: { __typename?: 'GitHubOrgConnection', totalCount: number, edges: Array<{ __typename?: 'GitHubOrgEdge', node?: { __typename?: 'GitHubOrg', id: string, login: string, avatarUrl?: string | null, url?: string | null, memberships?: { __typename?: 'GitHubOrgMembershipConnection', totalCount: number, edges: Array<{ __typename?: 'GitHubOrgMembershipEdge', node?: { __typename?: 'GitHubOrgMembership', id: string, member?: { __typename?: 'GitHubUser', id: string, login: string } | null } | null } | null> } | null } | null } | null> } | null };
 
-export type AllGitHubTokensWithOrgAccessQuery = {
-  __typename?: "QueryAdmin";
-  allGitHubTokens?: {
-    __typename?: "GitHubTokenConnection";
-    totalCount: number;
-    edges: Array<{
-      __typename?: "GitHubTokenEdge";
-      node?: {
-        __typename?: "GitHubToken";
-        id: string;
-        tokenId: string;
-        tokenMasked?: string | null;
-        scope?: string | null;
-        timeCreated?: any | null;
-        user?: {
-          __typename?: "GitHubUser";
-          id: string;
-          login: string;
-          avatarUrl?: string | null;
-          url?: string | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type AllGitHubTokensQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllGitHubTokensQuery = { __typename?: 'QueryAdmin', allGitHubTokens?: { __typename?: 'GitHubTokenConnection', totalCount: number, edges: Array<{ __typename?: 'GitHubTokenEdge', node?: { __typename?: 'GitHubToken', id: string, tokenId: string, tokenMasked?: string | null, scope?: string | null, timeCreated?: any | null, user?: { __typename?: 'GitHubUser', id: string, login: string, avatarUrl?: string | null, url?: string | null } | null } | null } | null> } | null };
+
+export type AllGitHubTokensWithOrgAccessQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllGitHubTokensWithOrgAccessQuery = { __typename?: 'QueryAdmin', allGitHubTokens?: { __typename?: 'GitHubTokenConnection', totalCount: number, edges: Array<{ __typename?: 'GitHubTokenEdge', node?: { __typename?: 'GitHubToken', id: string, tokenId: string, tokenMasked?: string | null, scope?: string | null, timeCreated?: any | null, user?: { __typename?: 'GitHubUser', id: string, login: string, avatarUrl?: string | null, url?: string | null } | null } | null } | null> } | null };
 
 export type AllGitHubUsersQueryVariables = Exact<{
-  orgMember?: InputMaybe<Scalars["Boolean"]>;
+  orgMember?: InputMaybe<Scalars['Boolean']['input']>;
 }>;
 
-export type AllGitHubUsersQuery = {
-  __typename?: "QueryAdmin";
-  allGitHubUsers?: {
-    __typename?: "GitHubUserConnection";
-    totalCount: number;
-    edges: Array<{
-      __typename?: "GitHubUserEdge";
-      node?: {
-        __typename?: "GitHubUser";
-        id: string;
-        login: string;
-        name?: string | null;
-        avatarUrl?: string | null;
-      } | null;
-    } | null>;
-  } | null;
-};
 
-export type AllLogsQueryVariables = Exact<{ [key: string]: never }>;
+export type AllGitHubUsersQuery = { __typename?: 'QueryAdmin', allGitHubUsers?: { __typename?: 'GitHubUserConnection', totalCount: number, edges: Array<{ __typename?: 'GitHubUserEdge', node?: { __typename?: 'GitHubUser', id: string, login: string, name?: string | null, avatarUrl?: string | null } | null } | null> } | null };
 
-export type AllLogsQuery = {
-  __typename?: "QueryAdmin";
-  allLogs?: {
-    __typename?: "LogConnection";
-    totalCount: number;
-    edges: Array<{
-      __typename?: "LogEdge";
-      node?: {
-        __typename?: "Log";
-        id: string;
-        id_: string;
-        time?: any | null;
-        level?: string | null;
-        message?: string | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type AllLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type AllProductTypesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type AllProductTypesQuery = {
-  __typename?: "QueryAdmin";
-  allProductTypes?: {
-    __typename?: "ProductTypeConnection";
-    edges: Array<{
-      __typename?: "ProductTypeEdge";
-      node?: {
-        __typename?: "ProductType";
-        id: string;
-        typeId: string;
-        name: string;
-        order?: number | null;
-        indefArticle?: string | null;
-        singular?: string | null;
-        plural?: string | null;
-        icon?: string | null;
-        products?: {
-          __typename?: "ProductConnection";
-          totalCount: number;
-        } | null;
-        fields?: {
-          __typename?: "TypeFieldAssociationConnection";
-          edges: Array<{
-            __typename?: "TypeFieldAssociationEdge";
-            node?: {
-              __typename?: "TypeFieldAssociation";
-              id: string;
-              typeId: number;
-              fieldId: number;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                fieldId: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type AllLogsQuery = { __typename?: 'QueryAdmin', allLogs?: { __typename?: 'LogConnection', totalCount: number, edges: Array<{ __typename?: 'LogEdge', node?: { __typename?: 'Log', id: string, id_: string, time?: any | null, level?: string | null, message?: string | null } | null } | null> } | null };
+
+export type AllProductTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllProductTypesQuery = { __typename?: 'QueryAdmin', allProductTypes?: { __typename?: 'ProductTypeConnection', edges: Array<{ __typename?: 'ProductTypeEdge', node?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, products?: { __typename?: 'ProductConnection', totalCount: number } | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null> } | null };
 
 export type AllProductsByTypeIdQueryVariables = Exact<{
-  typeId?: InputMaybe<Scalars["Int"]>;
-  sort?: InputMaybe<
-    Array<InputMaybe<ProductSortEnum>> | InputMaybe<ProductSortEnum>
-  >;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Array<InputMaybe<ProductSortEnum>> | InputMaybe<ProductSortEnum>>;
 }>;
 
-export type AllProductsByTypeIdQuery = {
-  __typename?: "QueryAdmin";
-  allProducts?: {
-    __typename?: "ProductConnection";
-    edges: Array<{
-      __typename?: "ProductEdge";
-      node?: {
-        __typename?: "Product";
-        id: string;
-        productId: string;
-        typeId: number;
-        name: string;
-        timePosted?: any | null;
-        timeUpdated?: any | null;
-        note?: string | null;
-        type_?: {
-          __typename?: "ProductType";
-          id: string;
-          typeId: string;
-          name: string;
-          order?: number | null;
-          indefArticle?: string | null;
-          singular?: string | null;
-          plural?: string | null;
-          icon?: string | null;
-          fields?: {
-            __typename?: "TypeFieldAssociationConnection";
-            edges: Array<{
-              __typename?: "TypeFieldAssociationEdge";
-              node?: {
-                __typename?: "TypeFieldAssociation";
-                id: string;
-                typeId: number;
-                fieldId: number;
-                field?: {
-                  __typename?: "Field";
-                  id: string;
-                  fieldId: string;
-                  name: string;
-                  type_?: FieldType | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-        } | null;
-        postingGitHubUser?: {
-          __typename?: "GitHubUser";
-          id: string;
-          login: string;
-        } | null;
-        updatingGitHubUser?: {
-          __typename?: "GitHubUser";
-          id: string;
-          login: string;
-        } | null;
-        paths?: {
-          __typename?: "ProductFilePathConnection";
-          edges: Array<{
-            __typename?: "ProductFilePathEdge";
-            node?: {
-              __typename?: "ProductFilePath";
-              id: string;
-              pathId: string;
-              path?: string | null;
-              note?: string | null;
-            } | null;
-          } | null>;
-        } | null;
-        relations?: {
-          __typename?: "ProductRelationConnection";
-          edges: Array<{
-            __typename?: "ProductRelationEdge";
-            node?: {
-              __typename?: "ProductRelation";
-              id: string;
-              relationId: string;
-              typeId: number;
-              otherProductId: number;
-              reverseRelationId?: number | null;
-              type_?: {
-                __typename?: "ProductRelationType";
-                id: string;
-                typeId: string;
-                name: string;
-                indefArticle?: string | null;
-                singular?: string | null;
-                plural?: string | null;
-              } | null;
-              other?: {
-                __typename?: "Product";
-                id: string;
-                productId: string;
-                typeId: number;
-                name: string;
-                type_?: {
-                  __typename?: "ProductType";
-                  id: string;
-                  typeId: string;
-                  name: string;
-                  order?: number | null;
-                  indefArticle?: string | null;
-                  singular?: string | null;
-                  plural?: string | null;
-                  icon?: string | null;
-                  fields?: {
-                    __typename?: "TypeFieldAssociationConnection";
-                    edges: Array<{
-                      __typename?: "TypeFieldAssociationEdge";
-                      node?: {
-                        __typename?: "TypeFieldAssociation";
-                        id: string;
-                        typeId: number;
-                        fieldId: number;
-                        field?: {
-                          __typename?: "Field";
-                          id: string;
-                          fieldId: string;
-                          name: string;
-                          type_?: FieldType | null;
-                        } | null;
-                      } | null;
-                    } | null>;
-                  } | null;
-                } | null;
-              } | null;
-              reverse?: {
-                __typename?: "ProductRelation";
-                id: string;
-                relationId: string;
-                typeId: number;
-                type_?: {
-                  __typename?: "ProductRelationType";
-                  id: string;
-                  typeId: string;
-                  name: string;
-                } | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-        attributesUnicodeText?: {
-          __typename?: "AttributeUnicodeTextConnection";
-          edges: Array<{
-            __typename?: "AttributeUnicodeTextEdge";
-            node?: {
-              __typename?: "AttributeUnicodeText";
-              id: string;
-              fieldId: number;
-              value?: string | null;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-        attributesBoolean?: {
-          __typename?: "AttributeBooleanConnection";
-          edges: Array<{
-            __typename?: "AttributeBooleanEdge";
-            node?: {
-              __typename?: "AttributeBoolean";
-              id: string;
-              fieldId: number;
-              value?: boolean | null;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-        attributesInteger?: {
-          __typename?: "AttributeIntegerConnection";
-          edges: Array<{
-            __typename?: "AttributeIntegerEdge";
-            node?: {
-              __typename?: "AttributeInteger";
-              id: string;
-              fieldId: number;
-              value?: number | null;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-        attributesFloat?: {
-          __typename?: "AttributeFloatConnection";
-          edges: Array<{
-            __typename?: "AttributeFloatEdge";
-            node?: {
-              __typename?: "AttributeFloat";
-              id: string;
-              fieldId: number;
-              value?: number | null;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-        attributesDate?: {
-          __typename?: "AttributeDateConnection";
-          edges: Array<{
-            __typename?: "AttributeDateEdge";
-            node?: {
-              __typename?: "AttributeDate";
-              id: string;
-              fieldId: number;
-              value?: string | null;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-        attributesDateTime?: {
-          __typename?: "AttributeDateTimeConnection";
-          edges: Array<{
-            __typename?: "AttributeDateTimeEdge";
-            node?: {
-              __typename?: "AttributeDateTime";
-              id: string;
-              fieldId: number;
-              value?: any | null;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-        attributesTime?: {
-          __typename?: "AttributeTimeConnection";
-          edges: Array<{
-            __typename?: "AttributeTimeEdge";
-            node?: {
-              __typename?: "AttributeTime";
-              id: string;
-              fieldId: number;
-              value?: string | null;
-              field?: {
-                __typename?: "Field";
-                id: string;
-                name: string;
-                type_?: FieldType | null;
-              } | null;
-            } | null;
-          } | null>;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
 
-export type GitHubOAuthAppInfoQueryVariables = Exact<{ [key: string]: never }>;
+export type AllProductsByTypeIdQuery = { __typename?: 'QueryAdmin', allProducts?: { __typename?: 'ProductConnection', edges: Array<{ __typename?: 'ProductEdge', node?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, timePosted?: any | null, timeUpdated?: any | null, note?: string | null, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null, postingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, updatingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, paths?: { __typename?: 'ProductFilePathConnection', edges: Array<{ __typename?: 'ProductFilePathEdge', node?: { __typename?: 'ProductFilePath', id: string, pathId: string, path?: string | null, note?: string | null } | null } | null> } | null, relations?: { __typename?: 'ProductRelationConnection', edges: Array<{ __typename?: 'ProductRelationEdge', node?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, otherProductId: number, reverseRelationId?: number | null, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string, indefArticle?: string | null, singular?: string | null, plural?: string | null } | null, other?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null, reverse?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string } | null } | null } | null } | null> } | null, attributesUnicodeText?: { __typename?: 'AttributeUnicodeTextConnection', edges: Array<{ __typename?: 'AttributeUnicodeTextEdge', node?: { __typename?: 'AttributeUnicodeText', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesBoolean?: { __typename?: 'AttributeBooleanConnection', edges: Array<{ __typename?: 'AttributeBooleanEdge', node?: { __typename?: 'AttributeBoolean', id: string, fieldId: number, value?: boolean | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesInteger?: { __typename?: 'AttributeIntegerConnection', edges: Array<{ __typename?: 'AttributeIntegerEdge', node?: { __typename?: 'AttributeInteger', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesFloat?: { __typename?: 'AttributeFloatConnection', edges: Array<{ __typename?: 'AttributeFloatEdge', node?: { __typename?: 'AttributeFloat', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDate?: { __typename?: 'AttributeDateConnection', edges: Array<{ __typename?: 'AttributeDateEdge', node?: { __typename?: 'AttributeDate', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDateTime?: { __typename?: 'AttributeDateTimeConnection', edges: Array<{ __typename?: 'AttributeDateTimeEdge', node?: { __typename?: 'AttributeDateTime', id: string, fieldId: number, value?: any | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesTime?: { __typename?: 'AttributeTimeConnection', edges: Array<{ __typename?: 'AttributeTimeEdge', node?: { __typename?: 'AttributeTime', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null> } | null };
 
-export type GitHubOAuthAppInfoQuery = {
-  __typename?: "QueryAdmin";
-  gitHubOAuthAppInfo?: {
-    __typename?: "GitHubOAuthAppInfo";
-    clientId?: string | null;
-    authorizeUrl?: string | null;
-    redirectUri?: string | null;
-  } | null;
-};
+export type GitHubOAuthAppInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type GitHubViewerQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GitHubViewerQuery = {
-  __typename?: "QueryAdmin";
-  gitHubViewer?: {
-    __typename?: "GitHubUser";
-    id: string;
-    login: string;
-    name?: string | null;
-    avatarUrl?: string | null;
-  } | null;
-};
+export type GitHubOAuthAppInfoQuery = { __typename?: 'QueryAdmin', gitHubOAuthAppInfo?: { __typename?: 'GitHubOAuthAppInfo', clientId?: string | null, authorizeUrl?: string | null, redirectUri?: string | null } | null };
 
-export type IsSignedInQueryVariables = Exact<{ [key: string]: never }>;
+export type GitHubViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type IsSignedInQuery = {
-  __typename?: "QueryAdmin";
-  isSignedIn?: boolean | null;
-};
+
+export type GitHubViewerQuery = { __typename?: 'QueryAdmin', gitHubViewer?: { __typename?: 'GitHubUser', id: string, login: string, name?: string | null, avatarUrl?: string | null } | null };
+
+export type IsSignedInQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IsSignedInQuery = { __typename?: 'QueryAdmin', isSignedIn?: boolean | null };
 
 export type ProductQueryVariables = Exact<{
-  productId?: InputMaybe<Scalars["Int"]>;
+  productId?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type ProductQuery = {
-  __typename?: "QueryAdmin";
-  product?: {
-    __typename?: "Product";
-    id: string;
-    productId: string;
-    typeId: number;
-    name: string;
-    timePosted?: any | null;
-    timeUpdated?: any | null;
-    note?: string | null;
-    type_?: {
-      __typename?: "ProductType";
-      id: string;
-      typeId: string;
-      name: string;
-      order?: number | null;
-      indefArticle?: string | null;
-      singular?: string | null;
-      plural?: string | null;
-      icon?: string | null;
-      fields?: {
-        __typename?: "TypeFieldAssociationConnection";
-        edges: Array<{
-          __typename?: "TypeFieldAssociationEdge";
-          node?: {
-            __typename?: "TypeFieldAssociation";
-            id: string;
-            typeId: number;
-            fieldId: number;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              fieldId: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-    } | null;
-    postingGitHubUser?: {
-      __typename?: "GitHubUser";
-      id: string;
-      login: string;
-    } | null;
-    updatingGitHubUser?: {
-      __typename?: "GitHubUser";
-      id: string;
-      login: string;
-    } | null;
-    paths?: {
-      __typename?: "ProductFilePathConnection";
-      edges: Array<{
-        __typename?: "ProductFilePathEdge";
-        node?: {
-          __typename?: "ProductFilePath";
-          id: string;
-          pathId: string;
-          path?: string | null;
-          note?: string | null;
-        } | null;
-      } | null>;
-    } | null;
-    relations?: {
-      __typename?: "ProductRelationConnection";
-      edges: Array<{
-        __typename?: "ProductRelationEdge";
-        node?: {
-          __typename?: "ProductRelation";
-          id: string;
-          relationId: string;
-          typeId: number;
-          otherProductId: number;
-          reverseRelationId?: number | null;
-          type_?: {
-            __typename?: "ProductRelationType";
-            id: string;
-            typeId: string;
-            name: string;
-            indefArticle?: string | null;
-            singular?: string | null;
-            plural?: string | null;
-          } | null;
-          other?: {
-            __typename?: "Product";
-            id: string;
-            productId: string;
-            typeId: number;
-            name: string;
-            type_?: {
-              __typename?: "ProductType";
-              id: string;
-              typeId: string;
-              name: string;
-              order?: number | null;
-              indefArticle?: string | null;
-              singular?: string | null;
-              plural?: string | null;
-              icon?: string | null;
-              fields?: {
-                __typename?: "TypeFieldAssociationConnection";
-                edges: Array<{
-                  __typename?: "TypeFieldAssociationEdge";
-                  node?: {
-                    __typename?: "TypeFieldAssociation";
-                    id: string;
-                    typeId: number;
-                    fieldId: number;
-                    field?: {
-                      __typename?: "Field";
-                      id: string;
-                      fieldId: string;
-                      name: string;
-                      type_?: FieldType | null;
-                    } | null;
-                  } | null;
-                } | null>;
-              } | null;
-            } | null;
-          } | null;
-          reverse?: {
-            __typename?: "ProductRelation";
-            id: string;
-            relationId: string;
-            typeId: number;
-            type_?: {
-              __typename?: "ProductRelationType";
-              id: string;
-              typeId: string;
-              name: string;
-            } | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesUnicodeText?: {
-      __typename?: "AttributeUnicodeTextConnection";
-      edges: Array<{
-        __typename?: "AttributeUnicodeTextEdge";
-        node?: {
-          __typename?: "AttributeUnicodeText";
-          id: string;
-          fieldId: number;
-          value?: string | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesBoolean?: {
-      __typename?: "AttributeBooleanConnection";
-      edges: Array<{
-        __typename?: "AttributeBooleanEdge";
-        node?: {
-          __typename?: "AttributeBoolean";
-          id: string;
-          fieldId: number;
-          value?: boolean | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesInteger?: {
-      __typename?: "AttributeIntegerConnection";
-      edges: Array<{
-        __typename?: "AttributeIntegerEdge";
-        node?: {
-          __typename?: "AttributeInteger";
-          id: string;
-          fieldId: number;
-          value?: number | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesFloat?: {
-      __typename?: "AttributeFloatConnection";
-      edges: Array<{
-        __typename?: "AttributeFloatEdge";
-        node?: {
-          __typename?: "AttributeFloat";
-          id: string;
-          fieldId: number;
-          value?: number | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesDate?: {
-      __typename?: "AttributeDateConnection";
-      edges: Array<{
-        __typename?: "AttributeDateEdge";
-        node?: {
-          __typename?: "AttributeDate";
-          id: string;
-          fieldId: number;
-          value?: string | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesDateTime?: {
-      __typename?: "AttributeDateTimeConnection";
-      edges: Array<{
-        __typename?: "AttributeDateTimeEdge";
-        node?: {
-          __typename?: "AttributeDateTime";
-          id: string;
-          fieldId: number;
-          value?: any | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesTime?: {
-      __typename?: "AttributeTimeConnection";
-      edges: Array<{
-        __typename?: "AttributeTimeEdge";
-        node?: {
-          __typename?: "AttributeTime";
-          id: string;
-          fieldId: number;
-          value?: string | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-  } | null;
-};
+
+export type ProductQuery = { __typename?: 'QueryAdmin', product?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, timePosted?: any | null, timeUpdated?: any | null, note?: string | null, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null, postingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, updatingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, paths?: { __typename?: 'ProductFilePathConnection', edges: Array<{ __typename?: 'ProductFilePathEdge', node?: { __typename?: 'ProductFilePath', id: string, pathId: string, path?: string | null, note?: string | null } | null } | null> } | null, relations?: { __typename?: 'ProductRelationConnection', edges: Array<{ __typename?: 'ProductRelationEdge', node?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, otherProductId: number, reverseRelationId?: number | null, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string, indefArticle?: string | null, singular?: string | null, plural?: string | null } | null, other?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null, reverse?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string } | null } | null } | null } | null> } | null, attributesUnicodeText?: { __typename?: 'AttributeUnicodeTextConnection', edges: Array<{ __typename?: 'AttributeUnicodeTextEdge', node?: { __typename?: 'AttributeUnicodeText', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesBoolean?: { __typename?: 'AttributeBooleanConnection', edges: Array<{ __typename?: 'AttributeBooleanEdge', node?: { __typename?: 'AttributeBoolean', id: string, fieldId: number, value?: boolean | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesInteger?: { __typename?: 'AttributeIntegerConnection', edges: Array<{ __typename?: 'AttributeIntegerEdge', node?: { __typename?: 'AttributeInteger', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesFloat?: { __typename?: 'AttributeFloatConnection', edges: Array<{ __typename?: 'AttributeFloatEdge', node?: { __typename?: 'AttributeFloat', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDate?: { __typename?: 'AttributeDateConnection', edges: Array<{ __typename?: 'AttributeDateEdge', node?: { __typename?: 'AttributeDate', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDateTime?: { __typename?: 'AttributeDateTimeConnection', edges: Array<{ __typename?: 'AttributeDateTimeEdge', node?: { __typename?: 'AttributeDateTime', id: string, fieldId: number, value?: any | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesTime?: { __typename?: 'AttributeTimeConnection', edges: Array<{ __typename?: 'AttributeTimeEdge', node?: { __typename?: 'AttributeTime', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null };
 
 export type ProductByTypeIdAndNameQueryVariables = Exact<{
-  typeId: Scalars["Int"];
-  name: Scalars["String"];
+  typeId: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
 }>;
 
-export type ProductByTypeIdAndNameQuery = {
-  __typename?: "QueryAdmin";
-  product?: {
-    __typename?: "Product";
-    id: string;
-    productId: string;
-    typeId: number;
-    name: string;
-    timePosted?: any | null;
-    timeUpdated?: any | null;
-    note?: string | null;
-    type_?: {
-      __typename?: "ProductType";
-      id: string;
-      typeId: string;
-      name: string;
-      order?: number | null;
-      indefArticle?: string | null;
-      singular?: string | null;
-      plural?: string | null;
-      icon?: string | null;
-      fields?: {
-        __typename?: "TypeFieldAssociationConnection";
-        edges: Array<{
-          __typename?: "TypeFieldAssociationEdge";
-          node?: {
-            __typename?: "TypeFieldAssociation";
-            id: string;
-            typeId: number;
-            fieldId: number;
-            field?: {
-              __typename?: "Field";
-              id: string;
-              fieldId: string;
-              name: string;
-              type_?: FieldType | null;
-            } | null;
-          } | null;
-        } | null>;
-      } | null;
-    } | null;
-    postingGitHubUser?: {
-      __typename?: "GitHubUser";
-      id: string;
-      login: string;
-    } | null;
-    updatingGitHubUser?: {
-      __typename?: "GitHubUser";
-      id: string;
-      login: string;
-    } | null;
-    paths?: {
-      __typename?: "ProductFilePathConnection";
-      edges: Array<{
-        __typename?: "ProductFilePathEdge";
-        node?: {
-          __typename?: "ProductFilePath";
-          id: string;
-          pathId: string;
-          path?: string | null;
-          note?: string | null;
-        } | null;
-      } | null>;
-    } | null;
-    relations?: {
-      __typename?: "ProductRelationConnection";
-      edges: Array<{
-        __typename?: "ProductRelationEdge";
-        node?: {
-          __typename?: "ProductRelation";
-          id: string;
-          relationId: string;
-          typeId: number;
-          otherProductId: number;
-          reverseRelationId?: number | null;
-          type_?: {
-            __typename?: "ProductRelationType";
-            id: string;
-            typeId: string;
-            name: string;
-            indefArticle?: string | null;
-            singular?: string | null;
-            plural?: string | null;
-          } | null;
-          other?: {
-            __typename?: "Product";
-            id: string;
-            productId: string;
-            typeId: number;
-            name: string;
-            type_?: {
-              __typename?: "ProductType";
-              id: string;
-              typeId: string;
-              name: string;
-              order?: number | null;
-              indefArticle?: string | null;
-              singular?: string | null;
-              plural?: string | null;
-              icon?: string | null;
-              fields?: {
-                __typename?: "TypeFieldAssociationConnection";
-                edges: Array<{
-                  __typename?: "TypeFieldAssociationEdge";
-                  node?: {
-                    __typename?: "TypeFieldAssociation";
-                    id: string;
-                    typeId: number;
-                    fieldId: number;
-                    field?: {
-                      __typename?: "Field";
-                      id: string;
-                      fieldId: string;
-                      name: string;
-                      type_?: FieldType | null;
-                    } | null;
-                  } | null;
-                } | null>;
-              } | null;
-            } | null;
-          } | null;
-          reverse?: {
-            __typename?: "ProductRelation";
-            id: string;
-            relationId: string;
-            typeId: number;
-            type_?: {
-              __typename?: "ProductRelationType";
-              id: string;
-              typeId: string;
-              name: string;
-            } | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesUnicodeText?: {
-      __typename?: "AttributeUnicodeTextConnection";
-      edges: Array<{
-        __typename?: "AttributeUnicodeTextEdge";
-        node?: {
-          __typename?: "AttributeUnicodeText";
-          id: string;
-          fieldId: number;
-          value?: string | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesBoolean?: {
-      __typename?: "AttributeBooleanConnection";
-      edges: Array<{
-        __typename?: "AttributeBooleanEdge";
-        node?: {
-          __typename?: "AttributeBoolean";
-          id: string;
-          fieldId: number;
-          value?: boolean | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesInteger?: {
-      __typename?: "AttributeIntegerConnection";
-      edges: Array<{
-        __typename?: "AttributeIntegerEdge";
-        node?: {
-          __typename?: "AttributeInteger";
-          id: string;
-          fieldId: number;
-          value?: number | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesFloat?: {
-      __typename?: "AttributeFloatConnection";
-      edges: Array<{
-        __typename?: "AttributeFloatEdge";
-        node?: {
-          __typename?: "AttributeFloat";
-          id: string;
-          fieldId: number;
-          value?: number | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesDate?: {
-      __typename?: "AttributeDateConnection";
-      edges: Array<{
-        __typename?: "AttributeDateEdge";
-        node?: {
-          __typename?: "AttributeDate";
-          id: string;
-          fieldId: number;
-          value?: string | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesDateTime?: {
-      __typename?: "AttributeDateTimeConnection";
-      edges: Array<{
-        __typename?: "AttributeDateTimeEdge";
-        node?: {
-          __typename?: "AttributeDateTime";
-          id: string;
-          fieldId: number;
-          value?: any | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    attributesTime?: {
-      __typename?: "AttributeTimeConnection";
-      edges: Array<{
-        __typename?: "AttributeTimeEdge";
-        node?: {
-          __typename?: "AttributeTime";
-          id: string;
-          fieldId: number;
-          value?: string | null;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-  } | null;
-};
+
+export type ProductByTypeIdAndNameQuery = { __typename?: 'QueryAdmin', product?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, timePosted?: any | null, timeUpdated?: any | null, note?: string | null, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null, postingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, updatingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, paths?: { __typename?: 'ProductFilePathConnection', edges: Array<{ __typename?: 'ProductFilePathEdge', node?: { __typename?: 'ProductFilePath', id: string, pathId: string, path?: string | null, note?: string | null } | null } | null> } | null, relations?: { __typename?: 'ProductRelationConnection', edges: Array<{ __typename?: 'ProductRelationEdge', node?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, otherProductId: number, reverseRelationId?: number | null, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string, indefArticle?: string | null, singular?: string | null, plural?: string | null } | null, other?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null, reverse?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string } | null } | null } | null } | null> } | null, attributesUnicodeText?: { __typename?: 'AttributeUnicodeTextConnection', edges: Array<{ __typename?: 'AttributeUnicodeTextEdge', node?: { __typename?: 'AttributeUnicodeText', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesBoolean?: { __typename?: 'AttributeBooleanConnection', edges: Array<{ __typename?: 'AttributeBooleanEdge', node?: { __typename?: 'AttributeBoolean', id: string, fieldId: number, value?: boolean | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesInteger?: { __typename?: 'AttributeIntegerConnection', edges: Array<{ __typename?: 'AttributeIntegerEdge', node?: { __typename?: 'AttributeInteger', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesFloat?: { __typename?: 'AttributeFloatConnection', edges: Array<{ __typename?: 'AttributeFloatEdge', node?: { __typename?: 'AttributeFloat', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDate?: { __typename?: 'AttributeDateConnection', edges: Array<{ __typename?: 'AttributeDateEdge', node?: { __typename?: 'AttributeDate', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDateTime?: { __typename?: 'AttributeDateTimeConnection', edges: Array<{ __typename?: 'AttributeDateTimeEdge', node?: { __typename?: 'AttributeDateTime', id: string, fieldId: number, value?: any | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesTime?: { __typename?: 'AttributeTimeConnection', edges: Array<{ __typename?: 'AttributeTimeEdge', node?: { __typename?: 'AttributeTime', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null };
 
 export type ProductTypeQueryVariables = Exact<{
-  typeId?: InputMaybe<Scalars["Int"]>;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type ProductTypeQuery = {
-  __typename?: "QueryAdmin";
-  productType?: {
-    __typename?: "ProductType";
-    id: string;
-    typeId: string;
-    name: string;
-    order?: number | null;
-    indefArticle?: string | null;
-    singular?: string | null;
-    plural?: string | null;
-    icon?: string | null;
-    fields?: {
-      __typename?: "TypeFieldAssociationConnection";
-      edges: Array<{
-        __typename?: "TypeFieldAssociationEdge";
-        node?: {
-          __typename?: "TypeFieldAssociation";
-          id: string;
-          typeId: number;
-          fieldId: number;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            fieldId: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-  } | null;
-};
+
+export type ProductTypeQuery = { __typename?: 'QueryAdmin', productType?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null };
 
 export type ProductTypeByNameQueryVariables = Exact<{
-  name: Scalars["String"];
+  name: Scalars['String']['input'];
 }>;
 
-export type ProductTypeByNameQuery = {
-  __typename?: "QueryAdmin";
-  productType?: {
-    __typename?: "ProductType";
-    id: string;
-    typeId: string;
-    name: string;
-    order?: number | null;
-    indefArticle?: string | null;
-    singular?: string | null;
-    plural?: string | null;
-    icon?: string | null;
-    fields?: {
-      __typename?: "TypeFieldAssociationConnection";
-      edges: Array<{
-        __typename?: "TypeFieldAssociationEdge";
-        node?: {
-          __typename?: "TypeFieldAssociation";
-          id: string;
-          typeId: number;
-          fieldId: number;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            fieldId: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-  } | null;
-};
 
-export type QueryForFormRelationsQueryVariables = Exact<{
-  [key: string]: never;
-}>;
+export type ProductTypeByNameQuery = { __typename?: 'QueryAdmin', productType?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null };
 
-export type QueryForFormRelationsQuery = {
-  __typename?: "QueryAdmin";
-  allProductRelationTypes?: {
-    __typename?: "ProductRelationTypeConnection";
-    edges: Array<{
-      __typename?: "ProductRelationTypeEdge";
-      node?: {
-        __typename?: "ProductRelationType";
-        id: string;
-        typeId: string;
-        indefArticle?: string | null;
-        singular?: string | null;
-        plural?: string | null;
-        reverse?: {
-          __typename?: "ProductRelationType";
-          id: string;
-          typeId: string;
-          indefArticle?: string | null;
-          singular?: string | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-  allProducts?: {
-    __typename?: "ProductConnection";
-    edges: Array<{
-      __typename?: "ProductEdge";
-      node?: {
-        __typename?: "Product";
-        productId: string;
-        name: string;
-        type_?: {
-          __typename?: "ProductType";
-          typeId: string;
-          singular?: string | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type QueryForFormRelationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryForFormRelationsQuery = { __typename?: 'QueryAdmin', allProductRelationTypes?: { __typename?: 'ProductRelationTypeConnection', edges: Array<{ __typename?: 'ProductRelationTypeEdge', node?: { __typename?: 'ProductRelationType', id: string, typeId: string, indefArticle?: string | null, singular?: string | null, plural?: string | null, reverse?: { __typename?: 'ProductRelationType', id: string, typeId: string, indefArticle?: string | null, singular?: string | null } | null } | null } | null> } | null, allProducts?: { __typename?: 'ProductConnection', edges: Array<{ __typename?: 'ProductEdge', node?: { __typename?: 'Product', productId: string, name: string, type_?: { __typename?: 'ProductType', typeId: string, singular?: string | null } | null } | null } | null> } | null };
 
 export type QueryForProductAddFormQueryVariables = Exact<{
-  typeId?: InputMaybe<Scalars["Int"]>;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type QueryForProductAddFormQuery = {
-  __typename?: "QueryAdmin";
-  productType?: {
-    __typename?: "ProductType";
-    id: string;
-    typeId: string;
-    name: string;
-    order?: number | null;
-    indefArticle?: string | null;
-    singular?: string | null;
-    plural?: string | null;
-    icon?: string | null;
-    fields?: {
-      __typename?: "TypeFieldAssociationConnection";
-      edges: Array<{
-        __typename?: "TypeFieldAssociationEdge";
-        node?: {
-          __typename?: "TypeFieldAssociation";
-          id: string;
-          typeId: number;
-          fieldId: number;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            fieldId: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-  } | null;
-};
+
+export type QueryForProductAddFormQuery = { __typename?: 'QueryAdmin', productType?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null };
 
 export type QueryForProductAddFormRelationsPreviewQueryVariables = Exact<{
-  productRelationTypeId: Scalars["Int"];
-  productId: Scalars["Int"];
+  productRelationTypeId: Scalars['Int']['input'];
+  productId: Scalars['Int']['input'];
 }>;
 
-export type QueryForProductAddFormRelationsPreviewQuery = {
-  __typename?: "QueryAdmin";
-  productRelationType?: {
-    __typename?: "ProductRelationType";
-    id: string;
-    typeId: string;
-    singular?: string | null;
-  } | null;
-  product?: {
-    __typename?: "Product";
-    id: string;
-    productId: string;
-    name: string;
-    type_?: {
-      __typename?: "ProductType";
-      id: string;
-      typeId: string;
-      singular?: string | null;
-    } | null;
-  } | null;
-};
+
+export type QueryForProductAddFormRelationsPreviewQuery = { __typename?: 'QueryAdmin', productRelationType?: { __typename?: 'ProductRelationType', id: string, typeId: string, singular?: string | null } | null, product?: { __typename?: 'Product', id: string, productId: string, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, singular?: string | null } | null } | null };
 
 export type QueryForProductListQueryVariables = Exact<{
-  typeId?: InputMaybe<Scalars["Int"]>;
-  sort?: InputMaybe<
-    Array<InputMaybe<ProductSortEnum>> | InputMaybe<ProductSortEnum>
-  >;
-  first?: InputMaybe<Scalars["Int"]>;
-  after?: InputMaybe<Scalars["String"]>;
+  typeId?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Array<InputMaybe<ProductSortEnum>> | InputMaybe<ProductSortEnum>>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
 }>;
 
-export type QueryForProductListQuery = {
-  __typename?: "QueryAdmin";
-  productType?: {
-    __typename?: "ProductType";
-    id: string;
-    typeId: string;
-    name: string;
-    order?: number | null;
-    indefArticle?: string | null;
-    singular?: string | null;
-    plural?: string | null;
-    icon?: string | null;
-    products?: {
-      __typename?: "ProductConnection";
-      totalCount: number;
-      pageInfo: {
-        __typename?: "PageInfo";
-        startCursor?: string | null;
-        endCursor?: string | null;
-        hasPreviousPage: boolean;
-        hasNextPage: boolean;
-      };
-      edges: Array<{
-        __typename?: "ProductEdge";
-        node?: {
-          __typename?: "Product";
-          id: string;
-          productId: string;
-          typeId: number;
-          name: string;
-          timePosted?: any | null;
-          timeUpdated?: any | null;
-          note?: string | null;
-          type_?: {
-            __typename?: "ProductType";
-            id: string;
-            typeId: string;
-            name: string;
-            order?: number | null;
-            indefArticle?: string | null;
-            singular?: string | null;
-            plural?: string | null;
-            icon?: string | null;
-            fields?: {
-              __typename?: "TypeFieldAssociationConnection";
-              edges: Array<{
-                __typename?: "TypeFieldAssociationEdge";
-                node?: {
-                  __typename?: "TypeFieldAssociation";
-                  id: string;
-                  typeId: number;
-                  fieldId: number;
-                  field?: {
-                    __typename?: "Field";
-                    id: string;
-                    fieldId: string;
-                    name: string;
-                    type_?: FieldType | null;
-                  } | null;
-                } | null;
-              } | null>;
-            } | null;
-          } | null;
-          postingGitHubUser?: {
-            __typename?: "GitHubUser";
-            id: string;
-            login: string;
-          } | null;
-          updatingGitHubUser?: {
-            __typename?: "GitHubUser";
-            id: string;
-            login: string;
-          } | null;
-          paths?: {
-            __typename?: "ProductFilePathConnection";
-            edges: Array<{
-              __typename?: "ProductFilePathEdge";
-              node?: {
-                __typename?: "ProductFilePath";
-                id: string;
-                pathId: string;
-                path?: string | null;
-                note?: string | null;
-              } | null;
-            } | null>;
-          } | null;
-          relations?: {
-            __typename?: "ProductRelationConnection";
-            edges: Array<{
-              __typename?: "ProductRelationEdge";
-              node?: {
-                __typename?: "ProductRelation";
-                id: string;
-                relationId: string;
-                typeId: number;
-                otherProductId: number;
-                reverseRelationId?: number | null;
-                type_?: {
-                  __typename?: "ProductRelationType";
-                  id: string;
-                  typeId: string;
-                  name: string;
-                  indefArticle?: string | null;
-                  singular?: string | null;
-                  plural?: string | null;
-                } | null;
-                other?: {
-                  __typename?: "Product";
-                  id: string;
-                  productId: string;
-                  typeId: number;
-                  name: string;
-                  type_?: {
-                    __typename?: "ProductType";
-                    id: string;
-                    typeId: string;
-                    name: string;
-                    order?: number | null;
-                    indefArticle?: string | null;
-                    singular?: string | null;
-                    plural?: string | null;
-                    icon?: string | null;
-                    fields?: {
-                      __typename?: "TypeFieldAssociationConnection";
-                      edges: Array<{
-                        __typename?: "TypeFieldAssociationEdge";
-                        node?: {
-                          __typename?: "TypeFieldAssociation";
-                          id: string;
-                          typeId: number;
-                          fieldId: number;
-                          field?: {
-                            __typename?: "Field";
-                            id: string;
-                            fieldId: string;
-                            name: string;
-                            type_?: FieldType | null;
-                          } | null;
-                        } | null;
-                      } | null>;
-                    } | null;
-                  } | null;
-                } | null;
-                reverse?: {
-                  __typename?: "ProductRelation";
-                  id: string;
-                  relationId: string;
-                  typeId: number;
-                  type_?: {
-                    __typename?: "ProductRelationType";
-                    id: string;
-                    typeId: string;
-                    name: string;
-                  } | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-          attributesUnicodeText?: {
-            __typename?: "AttributeUnicodeTextConnection";
-            edges: Array<{
-              __typename?: "AttributeUnicodeTextEdge";
-              node?: {
-                __typename?: "AttributeUnicodeText";
-                id: string;
-                fieldId: number;
-                value?: string | null;
-                field?: {
-                  __typename?: "Field";
-                  id: string;
-                  name: string;
-                  type_?: FieldType | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-          attributesBoolean?: {
-            __typename?: "AttributeBooleanConnection";
-            edges: Array<{
-              __typename?: "AttributeBooleanEdge";
-              node?: {
-                __typename?: "AttributeBoolean";
-                id: string;
-                fieldId: number;
-                value?: boolean | null;
-                field?: {
-                  __typename?: "Field";
-                  id: string;
-                  name: string;
-                  type_?: FieldType | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-          attributesInteger?: {
-            __typename?: "AttributeIntegerConnection";
-            edges: Array<{
-              __typename?: "AttributeIntegerEdge";
-              node?: {
-                __typename?: "AttributeInteger";
-                id: string;
-                fieldId: number;
-                value?: number | null;
-                field?: {
-                  __typename?: "Field";
-                  id: string;
-                  name: string;
-                  type_?: FieldType | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-          attributesFloat?: {
-            __typename?: "AttributeFloatConnection";
-            edges: Array<{
-              __typename?: "AttributeFloatEdge";
-              node?: {
-                __typename?: "AttributeFloat";
-                id: string;
-                fieldId: number;
-                value?: number | null;
-                field?: {
-                  __typename?: "Field";
-                  id: string;
-                  name: string;
-                  type_?: FieldType | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-          attributesDate?: {
-            __typename?: "AttributeDateConnection";
-            edges: Array<{
-              __typename?: "AttributeDateEdge";
-              node?: {
-                __typename?: "AttributeDate";
-                id: string;
-                fieldId: number;
-                value?: string | null;
-                field?: {
-                  __typename?: "Field";
-                  id: string;
-                  name: string;
-                  type_?: FieldType | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-          attributesDateTime?: {
-            __typename?: "AttributeDateTimeConnection";
-            edges: Array<{
-              __typename?: "AttributeDateTimeEdge";
-              node?: {
-                __typename?: "AttributeDateTime";
-                id: string;
-                fieldId: number;
-                value?: any | null;
-                field?: {
-                  __typename?: "Field";
-                  id: string;
-                  name: string;
-                  type_?: FieldType | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-          attributesTime?: {
-            __typename?: "AttributeTimeConnection";
-            edges: Array<{
-              __typename?: "AttributeTimeEdge";
-              node?: {
-                __typename?: "AttributeTime";
-                id: string;
-                fieldId: number;
-                value?: string | null;
-                field?: {
-                  __typename?: "Field";
-                  id: string;
-                  name: string;
-                  type_?: FieldType | null;
-                } | null;
-              } | null;
-            } | null>;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-    fields?: {
-      __typename?: "TypeFieldAssociationConnection";
-      edges: Array<{
-        __typename?: "TypeFieldAssociationEdge";
-        node?: {
-          __typename?: "TypeFieldAssociation";
-          id: string;
-          typeId: number;
-          fieldId: number;
-          field?: {
-            __typename?: "Field";
-            id: string;
-            fieldId: string;
-            name: string;
-            type_?: FieldType | null;
-          } | null;
-        } | null;
-      } | null>;
-    } | null;
-  } | null;
-};
 
-export type QueryForSearchWindowQueryVariables = Exact<{
-  [key: string]: never;
-}>;
+export type QueryForProductListQuery = { __typename?: 'QueryAdmin', productType?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, products?: { __typename?: 'ProductConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', startCursor?: string | null, endCursor?: string | null, hasPreviousPage: boolean, hasNextPage: boolean }, edges: Array<{ __typename?: 'ProductEdge', node?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, timePosted?: any | null, timeUpdated?: any | null, note?: string | null, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null, postingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, updatingGitHubUser?: { __typename?: 'GitHubUser', id: string, login: string } | null, paths?: { __typename?: 'ProductFilePathConnection', edges: Array<{ __typename?: 'ProductFilePathEdge', node?: { __typename?: 'ProductFilePath', id: string, pathId: string, path?: string | null, note?: string | null } | null } | null> } | null, relations?: { __typename?: 'ProductRelationConnection', edges: Array<{ __typename?: 'ProductRelationEdge', node?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, otherProductId: number, reverseRelationId?: number | null, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string, indefArticle?: string | null, singular?: string | null, plural?: string | null } | null, other?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string, type_?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null, reverse?: { __typename?: 'ProductRelation', id: string, relationId: string, typeId: number, type_?: { __typename?: 'ProductRelationType', id: string, typeId: string, name: string } | null } | null } | null } | null> } | null, attributesUnicodeText?: { __typename?: 'AttributeUnicodeTextConnection', edges: Array<{ __typename?: 'AttributeUnicodeTextEdge', node?: { __typename?: 'AttributeUnicodeText', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesBoolean?: { __typename?: 'AttributeBooleanConnection', edges: Array<{ __typename?: 'AttributeBooleanEdge', node?: { __typename?: 'AttributeBoolean', id: string, fieldId: number, value?: boolean | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesInteger?: { __typename?: 'AttributeIntegerConnection', edges: Array<{ __typename?: 'AttributeIntegerEdge', node?: { __typename?: 'AttributeInteger', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesFloat?: { __typename?: 'AttributeFloatConnection', edges: Array<{ __typename?: 'AttributeFloatEdge', node?: { __typename?: 'AttributeFloat', id: string, fieldId: number, value?: number | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDate?: { __typename?: 'AttributeDateConnection', edges: Array<{ __typename?: 'AttributeDateEdge', node?: { __typename?: 'AttributeDate', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesDateTime?: { __typename?: 'AttributeDateTimeConnection', edges: Array<{ __typename?: 'AttributeDateTimeEdge', node?: { __typename?: 'AttributeDateTime', id: string, fieldId: number, value?: any | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null, attributesTime?: { __typename?: 'AttributeTimeConnection', edges: Array<{ __typename?: 'AttributeTimeEdge', node?: { __typename?: 'AttributeTime', id: string, fieldId: number, value?: string | null, field?: { __typename?: 'Field', id: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null> } | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null };
 
-export type QueryForSearchWindowQuery = {
-  __typename?: "QueryAdmin";
-  allProducts?: {
-    __typename?: "ProductConnection";
-    edges: Array<{
-      __typename?: "ProductEdge";
-      node?: {
-        __typename?: "Product";
-        id: string;
-        name: string;
-        type_?: {
-          __typename?: "ProductType";
-          id: string;
-          name: string;
-          singular?: string | null;
-        } | null;
-      } | null;
-    } | null>;
-  } | null;
-};
+export type QueryForSearchWindowQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type SignInInfoQueryVariables = Exact<{ [key: string]: never }>;
 
-export type SignInInfoQuery = {
-  __typename?: "QueryAdmin";
-  isSignedIn?: boolean | null;
-  isAdmin?: boolean | null;
-  gitHubViewer?: {
-    __typename?: "GitHubUser";
-    id: string;
-    login: string;
-    name?: string | null;
-    avatarUrl?: string | null;
-  } | null;
-};
+export type QueryForSearchWindowQuery = { __typename?: 'QueryAdmin', allProducts?: { __typename?: 'ProductConnection', edges: Array<{ __typename?: 'ProductEdge', node?: { __typename?: 'Product', id: string, name: string, type_?: { __typename?: 'ProductType', id: string, name: string, singular?: string | null } | null } | null } | null> } | null };
 
-export type VersionQueryVariables = Exact<{ [key: string]: never }>;
+export type SignInInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type VersionQuery = {
-  __typename?: "QueryAdmin";
-  version?: string | null;
-};
 
-export type VersionsQueryVariables = Exact<{ [key: string]: never }>;
+export type SignInInfoQuery = { __typename?: 'QueryAdmin', isSignedIn?: boolean | null, isAdmin?: boolean | null, gitHubViewer?: { __typename?: 'GitHubUser', id: string, login: string, name?: string | null, avatarUrl?: string | null } | null };
 
-export type VersionsQuery = {
-  __typename?: "QueryAdmin";
-  version?: string | null;
-  alembicVersion?: string | null;
-};
+export type VersionQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type WebConfigQueryVariables = Exact<{ [key: string]: never }>;
 
-export type WebConfigQuery = {
-  __typename?: "QueryAdmin";
-  webConfig?: {
-    __typename?: "WebConfig";
-    id: string;
-    id_: string;
-    json?: string | null;
-  } | null;
-};
+export type VersionQuery = { __typename?: 'QueryAdmin', version?: string | null };
+
+export type VersionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type VersionsQuery = { __typename?: 'QueryAdmin', version?: string | null, alembicVersion?: string | null };
+
+export type WebConfigQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WebConfigQuery = { __typename?: 'QueryAdmin', webConfig?: { __typename?: 'WebConfig', id: string, id_: string, json?: string | null } | null };
 
 export const GitHubTokenFragmentFragmentDoc = gql`
-  fragment GitHubTokenFragment on GitHubToken {
+    fragment GitHubTokenFragment on GitHubToken {
+  id
+  tokenId
+  tokenMasked
+  scope
+  timeCreated
+  user {
     id
-    tokenId
-    tokenMasked
-    scope
-    timeCreated
-    user {
-      id
-      login
-      avatarUrl
-      url
-    }
+    login
+    avatarUrl
+    url
   }
-`;
+}
+    `;
 export const ProductTypeFragmentFragmentDoc = gql`
-  fragment productTypeFragment on ProductType {
-    id
-    typeId
-    name
-    order
-    indefArticle
-    singular
-    plural
-    icon
-    fields {
-      edges {
-        node {
-          id
-          typeId
-          fieldId
-          field {
-            id
-            fieldId
-            name
-            type_
-          }
-        }
-      }
-    }
-  }
-`;
-export const ProductFragmentFragmentDoc = gql`
-  fragment productFragment on Product {
-    id
-    productId
-    typeId
-    type_ {
-      ...productTypeFragment
-    }
-    name
-    timePosted
-    postingGitHubUser {
-      id
-      login
-    }
-    timeUpdated
-    updatingGitHubUser {
-      id
-      login
-    }
-    paths {
-      edges {
-        node {
-          id
-          pathId
-          path
-          note
-        }
-      }
-    }
-    relations {
-      edges {
-        node {
-          id
-          relationId
-          typeId
-          type_ {
-            id
-            typeId
-            name
-            indefArticle
-            singular
-            plural
-          }
-          otherProductId
-          other {
-            id
-            productId
-            typeId
-            type_ {
-              ...productTypeFragment
-            }
-            name
-          }
-          reverseRelationId
-          reverse {
-            id
-            relationId
-            typeId
-            type_ {
-              id
-              typeId
-              name
-            }
-          }
-        }
-      }
-    }
-    note
-    attributesUnicodeText {
-      edges {
-        node {
-          id
-          fieldId
-          field {
-            id
-            name
-            type_
-          }
-          value
-        }
-      }
-    }
-    attributesBoolean {
-      edges {
-        node {
-          id
-          fieldId
-          field {
-            id
-            name
-            type_
-          }
-          value
-        }
-      }
-    }
-    attributesInteger {
-      edges {
-        node {
-          id
-          fieldId
-          field {
-            id
-            name
-            type_
-          }
-          value
-        }
-      }
-    }
-    attributesFloat {
-      edges {
-        node {
-          id
-          fieldId
-          field {
-            id
-            name
-            type_
-          }
-          value
-        }
-      }
-    }
-    attributesDate {
-      edges {
-        node {
-          id
-          fieldId
-          field {
-            id
-            name
-            type_
-          }
-          value
-        }
-      }
-    }
-    attributesDateTime {
-      edges {
-        node {
-          id
-          fieldId
-          field {
-            id
-            name
-            type_
-          }
-          value
-        }
-      }
-    }
-    attributesTime {
-      edges {
-        node {
-          id
-          fieldId
-          field {
-            id
-            name
-            type_
-          }
-          value
-        }
-      }
-    }
-  }
-  ${ProductTypeFragmentFragmentDoc}
-`;
-export const AddGitHubAdminAppTokenDocument = gql`
-  mutation AddGitHubAdminAppToken($code: String!) {
-    addGitHubAdminAppToken(code: $code) {
-      ok
-    }
-  }
-`;
-
-export function useAddGitHubAdminAppTokenMutation() {
-  return Urql.useMutation<
-    AddGitHubAdminAppTokenMutation,
-    AddGitHubAdminAppTokenMutationVariables
-  >(AddGitHubAdminAppTokenDocument);
-}
-export const AddGitHubOrgDocument = gql`
-  mutation AddGitHubOrg($login: String!) {
-    addGitHubOrg(login: $login) {
-      ok
-    }
-  }
-`;
-
-export function useAddGitHubOrgMutation() {
-  return Urql.useMutation<AddGitHubOrgMutation, AddGitHubOrgMutationVariables>(
-    AddGitHubOrgDocument
-  );
-}
-export const AuthenticateWithGitHubDocument = gql`
-  mutation AuthenticateWithGitHub($code: String!) {
-    authenticateWithGitHub(code: $code) {
-      authPayload {
-        token
-      }
-    }
-  }
-`;
-
-export function useAuthenticateWithGitHubMutation() {
-  return Urql.useMutation<
-    AuthenticateWithGitHubMutation,
-    AuthenticateWithGitHubMutationVariables
-  >(AuthenticateWithGitHubDocument);
-}
-export const ConvertProductTypeDocument = gql`
-  mutation ConvertProductType($productId: Int!, $typeId: Int!) {
-    convertProductType(productId: $productId, typeId: $typeId) {
-      ok
-      product {
-        ...productFragment
-      }
-    }
-  }
-  ${ProductFragmentFragmentDoc}
-`;
-
-export function useConvertProductTypeMutation() {
-  return Urql.useMutation<
-    ConvertProductTypeMutation,
-    ConvertProductTypeMutationVariables
-  >(ConvertProductTypeDocument);
-}
-export const CreateProductDocument = gql`
-  mutation CreateProduct($input: CreateProductInput!) {
-    createProduct(input: $input) {
-      ok
-      product {
-        ...productFragment
-      }
-    }
-  }
-  ${ProductFragmentFragmentDoc}
-`;
-
-export function useCreateProductMutation() {
-  return Urql.useMutation<
-    CreateProductMutation,
-    CreateProductMutationVariables
-  >(CreateProductDocument);
-}
-export const CreateProductTypeDocument = gql`
-  mutation CreateProductType($input: CreateProductTypeInput!) {
-    createProductType(input: $input) {
-      ok
-      productType {
-        ...productTypeFragment
-      }
-    }
-  }
-  ${ProductTypeFragmentFragmentDoc}
-`;
-
-export function useCreateProductTypeMutation() {
-  return Urql.useMutation<
-    CreateProductTypeMutation,
-    CreateProductTypeMutationVariables
-  >(CreateProductTypeDocument);
-}
-export const DeleteGitHubOrgDocument = gql`
-  mutation DeleteGitHubOrg($login: String!) {
-    deleteGitHubOrg(login: $login) {
-      ok
-    }
-  }
-`;
-
-export function useDeleteGitHubOrgMutation() {
-  return Urql.useMutation<
-    DeleteGitHubOrgMutation,
-    DeleteGitHubOrgMutationVariables
-  >(DeleteGitHubOrgDocument);
-}
-export const DeleteGitHubTokenDocument = gql`
-  mutation DeleteGitHubToken($tokenId: Int!) {
-    deleteGitHubAdminAppToken(tokenId: $tokenId) {
-      ok
-    }
-  }
-`;
-
-export function useDeleteGitHubTokenMutation() {
-  return Urql.useMutation<
-    DeleteGitHubTokenMutation,
-    DeleteGitHubTokenMutationVariables
-  >(DeleteGitHubTokenDocument);
-}
-export const DeleteLogDocument = gql`
-  mutation DeleteLog($id_: Int!) {
-    deleteLog(id_: $id_) {
-      ok
-    }
-  }
-`;
-
-export function useDeleteLogMutation() {
-  return Urql.useMutation<DeleteLogMutation, DeleteLogMutationVariables>(
-    DeleteLogDocument
-  );
-}
-export const DeleteProductDocument = gql`
-  mutation DeleteProduct($productId: Int!) {
-    deleteProduct(productId: $productId) {
-      ok
-    }
-  }
-`;
-
-export function useDeleteProductMutation() {
-  return Urql.useMutation<
-    DeleteProductMutation,
-    DeleteProductMutationVariables
-  >(DeleteProductDocument);
-}
-export const DeleteProductTypeDocument = gql`
-  mutation DeleteProductType($typeId: Int!) {
-    deleteProductType(typeId: $typeId) {
-      ok
-    }
-  }
-`;
-
-export function useDeleteProductTypeMutation() {
-  return Urql.useMutation<
-    DeleteProductTypeMutation,
-    DeleteProductTypeMutationVariables
-  >(DeleteProductTypeDocument);
-}
-export const SaveWebConfigDocument = gql`
-  mutation SaveWebConfig($json: String!) {
-    saveWebConfig(json: $json) {
-      ok
-      webConfig {
-        id_
-        json
-      }
-    }
-  }
-`;
-
-export function useSaveWebConfigMutation() {
-  return Urql.useMutation<
-    SaveWebConfigMutation,
-    SaveWebConfigMutationVariables
-  >(SaveWebConfigDocument);
-}
-export const UpdateGitHubOrgMemberListsDocument = gql`
-  mutation UpdateGitHubOrgMemberLists {
-    updateGitHubOrgMemberLists {
-      ok
-    }
-  }
-`;
-
-export function useUpdateGitHubOrgMemberListsMutation() {
-  return Urql.useMutation<
-    UpdateGitHubOrgMemberListsMutation,
-    UpdateGitHubOrgMemberListsMutationVariables
-  >(UpdateGitHubOrgMemberListsDocument);
-}
-export const UpdateProductDocument = gql`
-  mutation UpdateProduct($productId: Int!, $input: UpdateProductInput!) {
-    updateProduct(productId: $productId, input: $input) {
-      ok
-      product {
-        ...productFragment
-      }
-    }
-  }
-  ${ProductFragmentFragmentDoc}
-`;
-
-export function useUpdateProductMutation() {
-  return Urql.useMutation<
-    UpdateProductMutation,
-    UpdateProductMutationVariables
-  >(UpdateProductDocument);
-}
-export const UpdateProductTypeDocument = gql`
-  mutation UpdateProductType($typeId: Int!, $input: UpdateProductTypeInput!) {
-    updateProductType(typeId: $typeId, input: $input) {
-      ok
-      productType {
-        ...productTypeFragment
-      }
-    }
-  }
-  ${ProductTypeFragmentFragmentDoc}
-`;
-
-export function useUpdateProductTypeMutation() {
-  return Urql.useMutation<
-    UpdateProductTypeMutation,
-    UpdateProductTypeMutationVariables
-  >(UpdateProductTypeDocument);
-}
-export const AllFieldsDocument = gql`
-  query AllFields {
-    allFields {
-      edges {
-        node {
+    fragment productTypeFragment on ProductType {
+  id
+  typeId
+  name
+  order
+  indefArticle
+  singular
+  plural
+  icon
+  fields {
+    edges {
+      node {
+        id
+        typeId
+        fieldId
+        field {
           id
           fieldId
           name
@@ -5385,35 +2341,398 @@ export const AllFieldsDocument = gql`
       }
     }
   }
-`;
-
-export function useAllFieldsQuery(
-  options: Omit<Urql.UseQueryArgs<never, AllFieldsQueryVariables>, "query"> = {}
-) {
-  return Urql.useQuery<AllFieldsQuery>({
-    query: AllFieldsDocument,
-    ...options,
-  });
 }
-export const AllGitHubOrgsDocument = gql`
-  query AllGitHubOrgs {
-    allGitHubOrgs {
-      totalCount
-      edges {
-        node {
+    `;
+export const ProductFragmentFragmentDoc = gql`
+    fragment productFragment on Product {
+  id
+  productId
+  typeId
+  type_ {
+    ...productTypeFragment
+  }
+  name
+  timePosted
+  postingGitHubUser {
+    id
+    login
+  }
+  timeUpdated
+  updatingGitHubUser {
+    id
+    login
+  }
+  paths {
+    edges {
+      node {
+        id
+        pathId
+        path
+        note
+      }
+    }
+  }
+  relations {
+    edges {
+      node {
+        id
+        relationId
+        typeId
+        type_ {
           id
-          login
-          avatarUrl
-          url
-          memberships {
-            totalCount
-            edges {
-              node {
+          typeId
+          name
+          indefArticle
+          singular
+          plural
+        }
+        otherProductId
+        other {
+          id
+          productId
+          typeId
+          type_ {
+            ...productTypeFragment
+          }
+          name
+        }
+        reverseRelationId
+        reverse {
+          id
+          relationId
+          typeId
+          type_ {
+            id
+            typeId
+            name
+          }
+        }
+      }
+    }
+  }
+  note
+  attributesUnicodeText {
+    edges {
+      node {
+        id
+        fieldId
+        field {
+          id
+          name
+          type_
+        }
+        value
+      }
+    }
+  }
+  attributesBoolean {
+    edges {
+      node {
+        id
+        fieldId
+        field {
+          id
+          name
+          type_
+        }
+        value
+      }
+    }
+  }
+  attributesInteger {
+    edges {
+      node {
+        id
+        fieldId
+        field {
+          id
+          name
+          type_
+        }
+        value
+      }
+    }
+  }
+  attributesFloat {
+    edges {
+      node {
+        id
+        fieldId
+        field {
+          id
+          name
+          type_
+        }
+        value
+      }
+    }
+  }
+  attributesDate {
+    edges {
+      node {
+        id
+        fieldId
+        field {
+          id
+          name
+          type_
+        }
+        value
+      }
+    }
+  }
+  attributesDateTime {
+    edges {
+      node {
+        id
+        fieldId
+        field {
+          id
+          name
+          type_
+        }
+        value
+      }
+    }
+  }
+  attributesTime {
+    edges {
+      node {
+        id
+        fieldId
+        field {
+          id
+          name
+          type_
+        }
+        value
+      }
+    }
+  }
+}
+    ${ProductTypeFragmentFragmentDoc}`;
+export const AddGitHubAdminAppTokenDocument = gql`
+    mutation AddGitHubAdminAppToken($code: String!) {
+  addGitHubAdminAppToken(code: $code) {
+    ok
+  }
+}
+    `;
+
+export function useAddGitHubAdminAppTokenMutation() {
+  return Urql.useMutation<AddGitHubAdminAppTokenMutation, AddGitHubAdminAppTokenMutationVariables>(AddGitHubAdminAppTokenDocument);
+};
+export const AddGitHubOrgDocument = gql`
+    mutation AddGitHubOrg($login: String!) {
+  addGitHubOrg(login: $login) {
+    ok
+  }
+}
+    `;
+
+export function useAddGitHubOrgMutation() {
+  return Urql.useMutation<AddGitHubOrgMutation, AddGitHubOrgMutationVariables>(AddGitHubOrgDocument);
+};
+export const AuthenticateWithGitHubDocument = gql`
+    mutation AuthenticateWithGitHub($code: String!) {
+  authenticateWithGitHub(code: $code) {
+    authPayload {
+      token
+    }
+  }
+}
+    `;
+
+export function useAuthenticateWithGitHubMutation() {
+  return Urql.useMutation<AuthenticateWithGitHubMutation, AuthenticateWithGitHubMutationVariables>(AuthenticateWithGitHubDocument);
+};
+export const ConvertProductTypeDocument = gql`
+    mutation ConvertProductType($productId: Int!, $typeId: Int!) {
+  convertProductType(productId: $productId, typeId: $typeId) {
+    ok
+    product {
+      ...productFragment
+    }
+  }
+}
+    ${ProductFragmentFragmentDoc}`;
+
+export function useConvertProductTypeMutation() {
+  return Urql.useMutation<ConvertProductTypeMutation, ConvertProductTypeMutationVariables>(ConvertProductTypeDocument);
+};
+export const CreateProductDocument = gql`
+    mutation CreateProduct($input: CreateProductInput!) {
+  createProduct(input: $input) {
+    ok
+    product {
+      ...productFragment
+    }
+  }
+}
+    ${ProductFragmentFragmentDoc}`;
+
+export function useCreateProductMutation() {
+  return Urql.useMutation<CreateProductMutation, CreateProductMutationVariables>(CreateProductDocument);
+};
+export const CreateProductTypeDocument = gql`
+    mutation CreateProductType($input: CreateProductTypeInput!) {
+  createProductType(input: $input) {
+    ok
+    productType {
+      ...productTypeFragment
+    }
+  }
+}
+    ${ProductTypeFragmentFragmentDoc}`;
+
+export function useCreateProductTypeMutation() {
+  return Urql.useMutation<CreateProductTypeMutation, CreateProductTypeMutationVariables>(CreateProductTypeDocument);
+};
+export const DeleteGitHubOrgDocument = gql`
+    mutation DeleteGitHubOrg($login: String!) {
+  deleteGitHubOrg(login: $login) {
+    ok
+  }
+}
+    `;
+
+export function useDeleteGitHubOrgMutation() {
+  return Urql.useMutation<DeleteGitHubOrgMutation, DeleteGitHubOrgMutationVariables>(DeleteGitHubOrgDocument);
+};
+export const DeleteGitHubTokenDocument = gql`
+    mutation DeleteGitHubToken($tokenId: Int!) {
+  deleteGitHubAdminAppToken(tokenId: $tokenId) {
+    ok
+  }
+}
+    `;
+
+export function useDeleteGitHubTokenMutation() {
+  return Urql.useMutation<DeleteGitHubTokenMutation, DeleteGitHubTokenMutationVariables>(DeleteGitHubTokenDocument);
+};
+export const DeleteLogDocument = gql`
+    mutation DeleteLog($id_: Int!) {
+  deleteLog(id_: $id_) {
+    ok
+  }
+}
+    `;
+
+export function useDeleteLogMutation() {
+  return Urql.useMutation<DeleteLogMutation, DeleteLogMutationVariables>(DeleteLogDocument);
+};
+export const DeleteProductDocument = gql`
+    mutation DeleteProduct($productId: Int!) {
+  deleteProduct(productId: $productId) {
+    ok
+  }
+}
+    `;
+
+export function useDeleteProductMutation() {
+  return Urql.useMutation<DeleteProductMutation, DeleteProductMutationVariables>(DeleteProductDocument);
+};
+export const DeleteProductTypeDocument = gql`
+    mutation DeleteProductType($typeId: Int!) {
+  deleteProductType(typeId: $typeId) {
+    ok
+  }
+}
+    `;
+
+export function useDeleteProductTypeMutation() {
+  return Urql.useMutation<DeleteProductTypeMutation, DeleteProductTypeMutationVariables>(DeleteProductTypeDocument);
+};
+export const SaveWebConfigDocument = gql`
+    mutation SaveWebConfig($json: String!) {
+  saveWebConfig(json: $json) {
+    ok
+    webConfig {
+      id_
+      json
+    }
+  }
+}
+    `;
+
+export function useSaveWebConfigMutation() {
+  return Urql.useMutation<SaveWebConfigMutation, SaveWebConfigMutationVariables>(SaveWebConfigDocument);
+};
+export const UpdateGitHubOrgMemberListsDocument = gql`
+    mutation UpdateGitHubOrgMemberLists {
+  updateGitHubOrgMemberLists {
+    ok
+  }
+}
+    `;
+
+export function useUpdateGitHubOrgMemberListsMutation() {
+  return Urql.useMutation<UpdateGitHubOrgMemberListsMutation, UpdateGitHubOrgMemberListsMutationVariables>(UpdateGitHubOrgMemberListsDocument);
+};
+export const UpdateProductDocument = gql`
+    mutation UpdateProduct($productId: Int!, $input: UpdateProductInput!) {
+  updateProduct(productId: $productId, input: $input) {
+    ok
+    product {
+      ...productFragment
+    }
+  }
+}
+    ${ProductFragmentFragmentDoc}`;
+
+export function useUpdateProductMutation() {
+  return Urql.useMutation<UpdateProductMutation, UpdateProductMutationVariables>(UpdateProductDocument);
+};
+export const UpdateProductTypeDocument = gql`
+    mutation UpdateProductType($typeId: Int!, $input: UpdateProductTypeInput!) {
+  updateProductType(typeId: $typeId, input: $input) {
+    ok
+    productType {
+      ...productTypeFragment
+    }
+  }
+}
+    ${ProductTypeFragmentFragmentDoc}`;
+
+export function useUpdateProductTypeMutation() {
+  return Urql.useMutation<UpdateProductTypeMutation, UpdateProductTypeMutationVariables>(UpdateProductTypeDocument);
+};
+export const AllFieldsDocument = gql`
+    query AllFields {
+  allFields {
+    edges {
+      node {
+        id
+        fieldId
+        name
+        type_
+      }
+    }
+  }
+}
+    `;
+
+export function useAllFieldsQuery(options: Omit<Urql.UseQueryArgs<never, AllFieldsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AllFieldsQuery>({ query: AllFieldsDocument, ...options });
+};
+export const AllGitHubOrgsDocument = gql`
+    query AllGitHubOrgs {
+  allGitHubOrgs {
+    totalCount
+    edges {
+      node {
+        id
+        login
+        avatarUrl
+        url
+        memberships {
+          totalCount
+          edges {
+            node {
+              id
+              member {
                 id
-                member {
-                  id
-                  login
-                }
+                login
               }
             }
           }
@@ -5421,151 +2740,279 @@ export const AllGitHubOrgsDocument = gql`
       }
     }
   }
-`;
-
-export function useAllGitHubOrgsQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, AllGitHubOrgsQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<AllGitHubOrgsQuery>({
-    query: AllGitHubOrgsDocument,
-    ...options,
-  });
 }
+    `;
+
+export function useAllGitHubOrgsQuery(options: Omit<Urql.UseQueryArgs<never, AllGitHubOrgsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AllGitHubOrgsQuery>({ query: AllGitHubOrgsDocument, ...options });
+};
 export const AllGitHubTokensDocument = gql`
-  query AllGitHubTokens {
-    allGitHubTokens {
-      totalCount
-      edges {
-        node {
-          ...GitHubTokenFragment
-        }
+    query AllGitHubTokens {
+  allGitHubTokens {
+    totalCount
+    edges {
+      node {
+        ...GitHubTokenFragment
       }
     }
   }
-  ${GitHubTokenFragmentFragmentDoc}
-`;
-
-export function useAllGitHubTokensQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, AllGitHubTokensQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<AllGitHubTokensQuery>({
-    query: AllGitHubTokensDocument,
-    ...options,
-  });
 }
+    ${GitHubTokenFragmentFragmentDoc}`;
+
+export function useAllGitHubTokensQuery(options: Omit<Urql.UseQueryArgs<never, AllGitHubTokensQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AllGitHubTokensQuery>({ query: AllGitHubTokensDocument, ...options });
+};
 export const AllGitHubTokensWithOrgAccessDocument = gql`
-  query AllGitHubTokensWithOrgAccess {
-    allGitHubTokens(filters: { scopeIlike: "%read:org%" }) {
-      totalCount
-      edges {
-        node {
-          ...GitHubTokenFragment
-        }
+    query AllGitHubTokensWithOrgAccess {
+  allGitHubTokens(filters: {scopeIlike: "%read:org%"}) {
+    totalCount
+    edges {
+      node {
+        ...GitHubTokenFragment
       }
     }
   }
-  ${GitHubTokenFragmentFragmentDoc}
-`;
-
-export function useAllGitHubTokensWithOrgAccessQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, AllGitHubTokensWithOrgAccessQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<AllGitHubTokensWithOrgAccessQuery>({
-    query: AllGitHubTokensWithOrgAccessDocument,
-    ...options,
-  });
 }
+    ${GitHubTokenFragmentFragmentDoc}`;
+
+export function useAllGitHubTokensWithOrgAccessQuery(options: Omit<Urql.UseQueryArgs<never, AllGitHubTokensWithOrgAccessQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AllGitHubTokensWithOrgAccessQuery>({ query: AllGitHubTokensWithOrgAccessDocument, ...options });
+};
 export const AllGitHubUsersDocument = gql`
-  query AllGitHubUsers($orgMember: Boolean = false) {
-    allGitHubUsers(filters: { orgMember: $orgMember }) {
-      totalCount
-      edges {
-        node {
-          id
-          login
-          name
-          avatarUrl
-        }
+    query AllGitHubUsers($orgMember: Boolean = false) {
+  allGitHubUsers(filters: {orgMember: $orgMember}) {
+    totalCount
+    edges {
+      node {
+        id
+        login
+        name
+        avatarUrl
       }
     }
   }
-`;
-
-export function useAllGitHubUsersQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, AllGitHubUsersQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<AllGitHubUsersQuery>({
-    query: AllGitHubUsersDocument,
-    ...options,
-  });
 }
+    `;
+
+export function useAllGitHubUsersQuery(options: Omit<Urql.UseQueryArgs<never, AllGitHubUsersQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AllGitHubUsersQuery>({ query: AllGitHubUsersDocument, ...options });
+};
 export const AllLogsDocument = gql`
-  query AllLogs {
-    allLogs {
-      totalCount
-      edges {
-        node {
-          id
-          id_
-          time
-          level
-          message
-        }
+    query AllLogs {
+  allLogs {
+    totalCount
+    edges {
+      node {
+        id
+        id_
+        time
+        level
+        message
       }
     }
   }
-`;
+}
+    `;
 
-export function useAllLogsQuery(
-  options: Omit<Urql.UseQueryArgs<never, AllLogsQueryVariables>, "query"> = {}
-) {
+export function useAllLogsQuery(options: Omit<Urql.UseQueryArgs<never, AllLogsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<AllLogsQuery>({ query: AllLogsDocument, ...options });
-}
+};
 export const AllProductTypesDocument = gql`
-  query AllProductTypes {
-    allProductTypes(sort: ORDER_ASC) {
-      edges {
-        node {
-          ...productTypeFragment
-          products {
-            totalCount
-          }
+    query AllProductTypes {
+  allProductTypes(sort: ORDER_ASC) {
+    edges {
+      node {
+        ...productTypeFragment
+        products {
+          totalCount
         }
       }
     }
   }
-  ${ProductTypeFragmentFragmentDoc}
-`;
-
-export function useAllProductTypesQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, AllProductTypesQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<AllProductTypesQuery>({
-    query: AllProductTypesDocument,
-    ...options,
-  });
 }
+    ${ProductTypeFragmentFragmentDoc}`;
+
+export function useAllProductTypesQuery(options: Omit<Urql.UseQueryArgs<never, AllProductTypesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AllProductTypesQuery>({ query: AllProductTypesDocument, ...options });
+};
 export const AllProductsByTypeIdDocument = gql`
-  query allProductsByTypeId(
-    $typeId: Int
-    $sort: [ProductSortEnum] = [TIME_POSTED_DESC]
-  ) {
-    allProducts(filters: { typeId: $typeId }, sort: $sort) {
+    query allProductsByTypeId($typeId: Int, $sort: [ProductSortEnum] = [TIME_POSTED_DESC]) {
+  allProducts(filters: {typeId: $typeId}, sort: $sort) {
+    edges {
+      node {
+        ...productFragment
+      }
+    }
+  }
+}
+    ${ProductFragmentFragmentDoc}`;
+
+export function useAllProductsByTypeIdQuery(options: Omit<Urql.UseQueryArgs<never, AllProductsByTypeIdQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AllProductsByTypeIdQuery>({ query: AllProductsByTypeIdDocument, ...options });
+};
+export const GitHubOAuthAppInfoDocument = gql`
+    query GitHubOAuthAppInfo {
+  gitHubOAuthAppInfo {
+    clientId
+    authorizeUrl
+    redirectUri
+  }
+}
+    `;
+
+export function useGitHubOAuthAppInfoQuery(options: Omit<Urql.UseQueryArgs<never, GitHubOAuthAppInfoQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GitHubOAuthAppInfoQuery>({ query: GitHubOAuthAppInfoDocument, ...options });
+};
+export const GitHubViewerDocument = gql`
+    query GitHubViewer {
+  gitHubViewer {
+    id
+    login
+    name
+    avatarUrl
+  }
+}
+    `;
+
+export function useGitHubViewerQuery(options: Omit<Urql.UseQueryArgs<never, GitHubViewerQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GitHubViewerQuery>({ query: GitHubViewerDocument, ...options });
+};
+export const IsSignedInDocument = gql`
+    query IsSignedIn {
+  isSignedIn
+}
+    `;
+
+export function useIsSignedInQuery(options: Omit<Urql.UseQueryArgs<never, IsSignedInQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<IsSignedInQuery>({ query: IsSignedInDocument, ...options });
+};
+export const ProductDocument = gql`
+    query Product($productId: Int) {
+  product(productId: $productId) {
+    ...productFragment
+  }
+}
+    ${ProductFragmentFragmentDoc}`;
+
+export function useProductQuery(options: Omit<Urql.UseQueryArgs<never, ProductQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ProductQuery>({ query: ProductDocument, ...options });
+};
+export const ProductByTypeIdAndNameDocument = gql`
+    query ProductByTypeIdAndName($typeId: Int!, $name: String!) {
+  product(typeId: $typeId, name: $name) {
+    ...productFragment
+  }
+}
+    ${ProductFragmentFragmentDoc}`;
+
+export function useProductByTypeIdAndNameQuery(options: Omit<Urql.UseQueryArgs<never, ProductByTypeIdAndNameQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ProductByTypeIdAndNameQuery>({ query: ProductByTypeIdAndNameDocument, ...options });
+};
+export const ProductTypeDocument = gql`
+    query ProductType($typeId: Int) {
+  productType(typeId: $typeId) {
+    ...productTypeFragment
+  }
+}
+    ${ProductTypeFragmentFragmentDoc}`;
+
+export function useProductTypeQuery(options: Omit<Urql.UseQueryArgs<never, ProductTypeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ProductTypeQuery>({ query: ProductTypeDocument, ...options });
+};
+export const ProductTypeByNameDocument = gql`
+    query ProductTypeByName($name: String!) {
+  productType(name: $name) {
+    ...productTypeFragment
+  }
+}
+    ${ProductTypeFragmentFragmentDoc}`;
+
+export function useProductTypeByNameQuery(options: Omit<Urql.UseQueryArgs<never, ProductTypeByNameQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ProductTypeByNameQuery>({ query: ProductTypeByNameDocument, ...options });
+};
+export const QueryForFormRelationsDocument = gql`
+    query QueryForFormRelations {
+  allProductRelationTypes {
+    edges {
+      node {
+        id
+        typeId
+        indefArticle
+        singular
+        plural
+        reverse {
+          id
+          typeId
+          indefArticle
+          singular
+        }
+      }
+    }
+  }
+  allProducts(sort: NAME_ASC) {
+    edges {
+      node {
+        productId
+        name
+        type_ {
+          typeId
+          singular
+        }
+      }
+    }
+  }
+}
+    `;
+
+export function useQueryForFormRelationsQuery(options: Omit<Urql.UseQueryArgs<never, QueryForFormRelationsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QueryForFormRelationsQuery>({ query: QueryForFormRelationsDocument, ...options });
+};
+export const QueryForProductAddFormDocument = gql`
+    query QueryForProductAddForm($typeId: Int) {
+  productType(typeId: $typeId) {
+    ...productTypeFragment
+  }
+}
+    ${ProductTypeFragmentFragmentDoc}`;
+
+export function useQueryForProductAddFormQuery(options: Omit<Urql.UseQueryArgs<never, QueryForProductAddFormQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QueryForProductAddFormQuery>({ query: QueryForProductAddFormDocument, ...options });
+};
+export const QueryForProductAddFormRelationsPreviewDocument = gql`
+    query QueryForProductAddFormRelationsPreview($productRelationTypeId: Int!, $productId: Int!) {
+  productRelationType(typeId: $productRelationTypeId) {
+    id
+    typeId
+    singular
+  }
+  product(productId: $productId) {
+    id
+    productId
+    name
+    type_ {
+      id
+      typeId
+      singular
+    }
+  }
+}
+    `;
+
+export function useQueryForProductAddFormRelationsPreviewQuery(options: Omit<Urql.UseQueryArgs<never, QueryForProductAddFormRelationsPreviewQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QueryForProductAddFormRelationsPreviewQuery>({ query: QueryForProductAddFormRelationsPreviewDocument, ...options });
+};
+export const QueryForProductListDocument = gql`
+    query QueryForProductList($typeId: Int, $sort: [ProductSortEnum] = [TIME_POSTED_DESC], $first: Int = 10, $after: String = "") {
+  productType(typeId: $typeId) {
+    ...productTypeFragment
+    products(sort: $sort, first: $first, after: $after) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
       edges {
         node {
           ...productFragment
@@ -5573,387 +3020,79 @@ export const AllProductsByTypeIdDocument = gql`
       }
     }
   }
-  ${ProductFragmentFragmentDoc}
-`;
-
-export function useAllProductsByTypeIdQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, AllProductsByTypeIdQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<AllProductsByTypeIdQuery>({
-    query: AllProductsByTypeIdDocument,
-    ...options,
-  });
 }
-export const GitHubOAuthAppInfoDocument = gql`
-  query GitHubOAuthAppInfo {
-    gitHubOAuthAppInfo {
-      clientId
-      authorizeUrl
-      redirectUri
-    }
-  }
-`;
+    ${ProductTypeFragmentFragmentDoc}
+${ProductFragmentFragmentDoc}`;
 
-export function useGitHubOAuthAppInfoQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, GitHubOAuthAppInfoQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<GitHubOAuthAppInfoQuery>({
-    query: GitHubOAuthAppInfoDocument,
-    ...options,
-  });
-}
-export const GitHubViewerDocument = gql`
-  query GitHubViewer {
-    gitHubViewer {
-      id
-      login
-      name
-      avatarUrl
-    }
-  }
-`;
-
-export function useGitHubViewerQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, GitHubViewerQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<GitHubViewerQuery>({
-    query: GitHubViewerDocument,
-    ...options,
-  });
-}
-export const IsSignedInDocument = gql`
-  query IsSignedIn {
-    isSignedIn
-  }
-`;
-
-export function useIsSignedInQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, IsSignedInQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<IsSignedInQuery>({
-    query: IsSignedInDocument,
-    ...options,
-  });
-}
-export const ProductDocument = gql`
-  query Product($productId: Int) {
-    product(productId: $productId) {
-      ...productFragment
-    }
-  }
-  ${ProductFragmentFragmentDoc}
-`;
-
-export function useProductQuery(
-  options: Omit<Urql.UseQueryArgs<never, ProductQueryVariables>, "query"> = {}
-) {
-  return Urql.useQuery<ProductQuery>({ query: ProductDocument, ...options });
-}
-export const ProductByTypeIdAndNameDocument = gql`
-  query ProductByTypeIdAndName($typeId: Int!, $name: String!) {
-    product(typeId: $typeId, name: $name) {
-      ...productFragment
-    }
-  }
-  ${ProductFragmentFragmentDoc}
-`;
-
-export function useProductByTypeIdAndNameQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, ProductByTypeIdAndNameQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<ProductByTypeIdAndNameQuery>({
-    query: ProductByTypeIdAndNameDocument,
-    ...options,
-  });
-}
-export const ProductTypeDocument = gql`
-  query ProductType($typeId: Int) {
-    productType(typeId: $typeId) {
-      ...productTypeFragment
-    }
-  }
-  ${ProductTypeFragmentFragmentDoc}
-`;
-
-export function useProductTypeQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, ProductTypeQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<ProductTypeQuery>({
-    query: ProductTypeDocument,
-    ...options,
-  });
-}
-export const ProductTypeByNameDocument = gql`
-  query ProductTypeByName($name: String!) {
-    productType(name: $name) {
-      ...productTypeFragment
-    }
-  }
-  ${ProductTypeFragmentFragmentDoc}
-`;
-
-export function useProductTypeByNameQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, ProductTypeByNameQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<ProductTypeByNameQuery>({
-    query: ProductTypeByNameDocument,
-    ...options,
-  });
-}
-export const QueryForFormRelationsDocument = gql`
-  query QueryForFormRelations {
-    allProductRelationTypes {
-      edges {
-        node {
-          id
-          typeId
-          indefArticle
-          singular
-          plural
-          reverse {
-            id
-            typeId
-            indefArticle
-            singular
-          }
-        }
-      }
-    }
-    allProducts(sort: NAME_ASC) {
-      edges {
-        node {
-          productId
-          name
-          type_ {
-            typeId
-            singular
-          }
-        }
-      }
-    }
-  }
-`;
-
-export function useQueryForFormRelationsQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, QueryForFormRelationsQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<QueryForFormRelationsQuery>({
-    query: QueryForFormRelationsDocument,
-    ...options,
-  });
-}
-export const QueryForProductAddFormDocument = gql`
-  query QueryForProductAddForm($typeId: Int) {
-    productType(typeId: $typeId) {
-      ...productTypeFragment
-    }
-  }
-  ${ProductTypeFragmentFragmentDoc}
-`;
-
-export function useQueryForProductAddFormQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, QueryForProductAddFormQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<QueryForProductAddFormQuery>({
-    query: QueryForProductAddFormDocument,
-    ...options,
-  });
-}
-export const QueryForProductAddFormRelationsPreviewDocument = gql`
-  query QueryForProductAddFormRelationsPreview(
-    $productRelationTypeId: Int!
-    $productId: Int!
-  ) {
-    productRelationType(typeId: $productRelationTypeId) {
-      id
-      typeId
-      singular
-    }
-    product(productId: $productId) {
-      id
-      productId
-      name
-      type_ {
-        id
-        typeId
-        singular
-      }
-    }
-  }
-`;
-
-export function useQueryForProductAddFormRelationsPreviewQuery(
-  options: Omit<
-    Urql.UseQueryArgs<
-      never,
-      QueryForProductAddFormRelationsPreviewQueryVariables
-    >,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<QueryForProductAddFormRelationsPreviewQuery>({
-    query: QueryForProductAddFormRelationsPreviewDocument,
-    ...options,
-  });
-}
-export const QueryForProductListDocument = gql`
-  query QueryForProductList(
-    $typeId: Int
-    $sort: [ProductSortEnum] = [TIME_POSTED_DESC]
-    $first: Int = 10
-    $after: String = ""
-  ) {
-    productType(typeId: $typeId) {
-      ...productTypeFragment
-      products(sort: $sort, first: $first, after: $after) {
-        totalCount
-        pageInfo {
-          startCursor
-          endCursor
-          hasPreviousPage
-          hasNextPage
-        }
-        edges {
-          node {
-            ...productFragment
-          }
-        }
-      }
-    }
-  }
-  ${ProductTypeFragmentFragmentDoc}
-  ${ProductFragmentFragmentDoc}
-`;
-
-export function useQueryForProductListQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, QueryForProductListQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<QueryForProductListQuery>({
-    query: QueryForProductListDocument,
-    ...options,
-  });
-}
+export function useQueryForProductListQuery(options: Omit<Urql.UseQueryArgs<never, QueryForProductListQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QueryForProductListQuery>({ query: QueryForProductListDocument, ...options });
+};
 export const QueryForSearchWindowDocument = gql`
-  query QueryForSearchWindow {
-    allProducts(sort: TIME_POSTED_DESC) {
-      edges {
-        node {
+    query QueryForSearchWindow {
+  allProducts(sort: TIME_POSTED_DESC) {
+    edges {
+      node {
+        id
+        name
+        type_ {
           id
           name
-          type_ {
-            id
-            name
-            singular
-          }
+          singular
         }
       }
     }
   }
-`;
-
-export function useQueryForSearchWindowQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, QueryForSearchWindowQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<QueryForSearchWindowQuery>({
-    query: QueryForSearchWindowDocument,
-    ...options,
-  });
 }
+    `;
+
+export function useQueryForSearchWindowQuery(options: Omit<Urql.UseQueryArgs<never, QueryForSearchWindowQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QueryForSearchWindowQuery>({ query: QueryForSearchWindowDocument, ...options });
+};
 export const SignInInfoDocument = gql`
-  query SignInInfo {
-    isSignedIn
-    isAdmin
-    gitHubViewer {
-      id
-      login
-      name
-      avatarUrl
-    }
+    query SignInInfo {
+  isSignedIn
+  isAdmin
+  gitHubViewer {
+    id
+    login
+    name
+    avatarUrl
   }
-`;
-
-export function useSignInInfoQuery(
-  options: Omit<
-    Urql.UseQueryArgs<never, SignInInfoQueryVariables>,
-    "query"
-  > = {}
-) {
-  return Urql.useQuery<SignInInfoQuery>({
-    query: SignInInfoDocument,
-    ...options,
-  });
 }
+    `;
+
+export function useSignInInfoQuery(options: Omit<Urql.UseQueryArgs<never, SignInInfoQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<SignInInfoQuery>({ query: SignInInfoDocument, ...options });
+};
 export const VersionDocument = gql`
-  query version {
-    version
-  }
-`;
+    query version {
+  version
+}
+    `;
 
-export function useVersionQuery(
-  options: Omit<Urql.UseQueryArgs<never, VersionQueryVariables>, "query"> = {}
-) {
+export function useVersionQuery(options: Omit<Urql.UseQueryArgs<never, VersionQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<VersionQuery>({ query: VersionDocument, ...options });
-}
+};
 export const VersionsDocument = gql`
-  query Versions {
-    version
-    alembicVersion
-  }
-`;
+    query Versions {
+  version
+  alembicVersion
+}
+    `;
 
-export function useVersionsQuery(
-  options: Omit<Urql.UseQueryArgs<never, VersionsQueryVariables>, "query"> = {}
-) {
+export function useVersionsQuery(options: Omit<Urql.UseQueryArgs<never, VersionsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<VersionsQuery>({ query: VersionsDocument, ...options });
-}
+};
 export const WebConfigDocument = gql`
-  query WebConfig {
-    webConfig {
-      id
-      id_
-      json
-    }
+    query WebConfig {
+  webConfig {
+    id
+    id_
+    json
   }
-`;
-
-export function useWebConfigQuery(
-  options: Omit<Urql.UseQueryArgs<never, WebConfigQueryVariables>, "query"> = {}
-) {
-  return Urql.useQuery<WebConfigQuery>({
-    query: WebConfigDocument,
-    ...options,
-  });
 }
+    `;
+
+export function useWebConfigQuery(options: Omit<Urql.UseQueryArgs<never, WebConfigQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<WebConfigQuery>({ query: WebConfigDocument, ...options });
+};
