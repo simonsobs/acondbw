@@ -1,26 +1,21 @@
-import Vue from "vue";
+import { createApp, h } from "vue";
 
-import vuetify from "./plugins/vuetify";
 import pinia from "@/stores";
-import { createRouter } from "@/router";
-
-// import InstantSearch from "vue-instantsearch";
-
-import App from "./app/AppWrapperLoadPreConfig.vue";
+import { createRouter_ } from "@/router";
+import vuetify from "@/plugins/vuetify";
+import App from "@/app/AppWrapperLoadPreConfig.vue";
 import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
 // https://github.com/sindresorhus/github-markdown-css
 import "../node_modules/github-markdown-css/github-markdown-light.css";
 
-// Vue.use(InstantSearch);
+const router = createRouter_();
 
-Vue.component("DevToolLoadingStateMenu", DevToolLoadingStateMenu);
-
-Vue.config.productionTip = false;
-
-new Vue({
-  router: createRouter(),
-  vuetify,
-  pinia,
-  render: (h) => h(App),
-}).$mount("#app");
+const app = createApp({
+  render: () => h(App),
+});
+app.component("DevToolLoadingStateMenu", DevToolLoadingStateMenu);
+app.use(pinia);
+app.use(router);
+app.use(vuetify);
+app.mount("#app");
