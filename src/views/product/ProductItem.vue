@@ -67,8 +67,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, withDefaults, Component, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { ref, computed, withDefaults, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import { useProductByTypeIdAndNameQuery } from "@/generated/graphql";
 
@@ -76,10 +76,11 @@ import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
 import { useQueryState } from "@/utils/query-state";
 
+// Use any for productItemCard because Component causes an error for unknown reason.
 const props = withDefaults(
   defineProps<{
     productTypeId: number;
-    productItemCard?: Component;
+    productItemCard?: any;
     disableEdit?: boolean;
     disableDelete?: boolean;
   }>(),

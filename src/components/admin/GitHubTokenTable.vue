@@ -75,7 +75,7 @@
 // https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
 
 import { defineComponent, ref, watch, nextTick } from "vue";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import { v4 as uuidv4 } from "uuid";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";

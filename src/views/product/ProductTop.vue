@@ -94,7 +94,7 @@ import {
   useRouter,
   onBeforeRouteUpdate,
   onBeforeRouteLeave,
-} from "vue-router/composables";
+} from "vue-router";
 
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
 import { ProductTypeByNameQuery } from "@/generated/graphql";

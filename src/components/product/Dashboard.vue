@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import { useQuery } from "@urql/vue";
 
 import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";

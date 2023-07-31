@@ -196,8 +196,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, withDefaults, Component } from "vue";
-import { useRouter } from "vue-router/composables";
+import { ref, watch, computed, withDefaults } from "vue";
+import { useRouter } from "vue-router";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
@@ -210,10 +210,11 @@ import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteFo
 
 import { useQueryState } from "@/utils/query-state";
 
+// Use any for productItemCard because Component causes an error for unknown reason.
 const props = withDefaults(
   defineProps<{
     productTypeId: number;
-    productItemCard?: Component;
+    productItemCard?: any;
     disableAdd?: boolean;
     disableEdit?: boolean;
     disableDelete?: boolean;

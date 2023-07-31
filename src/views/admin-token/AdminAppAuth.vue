@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useClientHandle } from "@urql/vue";
 import { useStore } from "@/stores/main";
 

@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed } from "vue";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import { Location, RawLocation } from "vue-router";
 import { useClientHandle } from "@urql/vue";
 import { useAuthStore } from "@/stores/auth";

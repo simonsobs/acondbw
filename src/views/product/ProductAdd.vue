@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, computed, nextTick } from "vue";
-import { useRoute, useRouter } from "vue-router/composables";
+import { useRoute, useRouter } from "vue-router";
 import { useQuery } from "@urql/vue";
 
 import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";

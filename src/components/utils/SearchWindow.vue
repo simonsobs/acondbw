@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, nextTick } from "vue";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 
 import { useQueryForSearchWindowQuery } from "@/generated/graphql";
 

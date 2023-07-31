@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { watchEffect, onBeforeMount } from "vue";
-import { useRouter } from "vue-router/composables";
+import { useRouter } from "vue-router";
 import { useClientHandle } from "@urql/vue";
 import { useAuthStore } from "@/stores/auth";
 import { checkAuthForCurrentRoute } from "@/router";
