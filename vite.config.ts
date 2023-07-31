@@ -1,9 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
-import vue from "@vitejs/plugin-vue2";
+import vue from "@vitejs/plugin-vue";
 import loadVersion from "vite-plugin-package-version";
 import graphql from "@rollup/plugin-graphql";
-import { VuetifyResolver } from "unplugin-vue-components/resolvers";
-import Components from "unplugin-vue-components/vite";
 import path from "path-browserify";
 import { defaultExclude } from "vitest/config";
 
@@ -18,9 +16,6 @@ export default ({ mode }) => {
       loadVersion(),
       // @ts-ignore
       graphql(),
-      Components({
-        resolvers: [VuetifyResolver()],
-      }),
     ],
     base: process.env.VITE_PUBLIC_PATH,
     resolve: {
