@@ -1,10 +1,11 @@
 export default {
-  INIT: 0,
-  LOADING: 1,
-  ERROR: 2,
-  LOADED: 3,
-  EMPTY: 4, // e.g., empty list
-  NONE: 5, // i.e., not found
+  OFF: 0,
+  INIT: 1,
+  LOADING: 2,
+  ERROR: 3,
+  LOADED: 4,
+  EMPTY: 5, // e.g., empty list
+  NONE: 6, // i.e., not found
 };
 
 // INIT -+-> LOADING -+-> ERROR  -+
