@@ -24,7 +24,7 @@ import { useConfigStore } from "@/stores/config";
 import State from "@/utils/LoadingState";
 
 interface Props {
-  modelValue: number;
+  modelValue: number | null;
   top?: string;
   right?: string;
 }
@@ -37,7 +37,6 @@ const props = withDefaults(defineProps<Props>(), {
 interface Emits {
   (e: "update:modelValue", value: number | null): void;
 }
-
 
 const emit = defineEmits<Emits>();
 
