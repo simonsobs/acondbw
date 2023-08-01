@@ -24,7 +24,7 @@ import { useConfigStore } from "@/stores/config";
 import State from "@/utils/LoadingState";
 
 interface Props {
-  modelValue: number | null;
+  modelValue: number;
   top?: string;
   right?: string;
 }

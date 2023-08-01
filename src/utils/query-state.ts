@@ -24,14 +24,14 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     error.value = e?.message || null;
   });
 
-  const devtoolState = ref<number | null>(null);
+  const devtoolState = ref<number>(State.OFF);
   watch(devtoolState, (val) => {
     if (val) init.value = val === State.INIT;
     error.value = val === State.ERROR ? "Error from Dev Tools" : null;
   });
 
   const state = computed(() => {
-    if (devtoolState.value !== null) return devtoolState.value;
+    if (devtoolState.value !== State.OFF) return devtoolState.value;
     if (refreshing.value) return State.LOADING;
     if (query.fetching.value) return State.LOADING;
     if (error.value) return State.ERROR;
