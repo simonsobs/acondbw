@@ -1,21 +1,19 @@
 <template>
-  <div class="g-container">
-    <div class="dashboard" style="position: relative">
-      <v-data-table :headers="headers" :items="items" :loading="loading" :items-per-page="-1"
-        @click:row="clickRow" class="elevation-1">
-        <template v-slot:[`item.plural`]="{ item }">
-          <router-link :to="{ name: 'ProductList', params: { productTypeName: item.selectable.name } }">
-            <span class="capitalize font-weight-bold text-primary">
-              {{ item.selectable.plural }}
-            </span>
-          </router-link>
-        </template>
-        <template #bottom></template>
-      </v-data-table>
-      <v-alert v-if="error" type="error" style="width: 100%"> {{ error }} </v-alert>
-      <dev-tool-loading-state-menu top="-30px" right="-10px" v-model="devtoolState">
-      </dev-tool-loading-state-menu>
-    </div>
+  <div class="dashboard" style="position: relative">
+    <v-data-table :headers="headers" :items="items" :loading="loading" :items-per-page="-1"
+      @click:row="clickRow" class="elevation-1">
+      <template v-slot:[`item.plural`]="{ item }">
+        <router-link :to="{ name: 'ProductList', params: { productTypeName: item.selectable.name } }">
+          <span class="capitalize font-weight-bold text-primary">
+            {{ item.selectable.plural }}
+          </span>
+        </router-link>
+      </template>
+      <template #bottom></template>
+    </v-data-table>
+    <v-alert v-if="error" type="error" style="width: 100%"> {{ error }} </v-alert>
+    <dev-tool-loading-state-menu top="-30px" right="-10px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </div>
 </template>
 
@@ -76,11 +74,5 @@ function clickRow(event: Event, { item }) {
 
 .dashboard>>>tbody tr :hover {
   cursor: pointer;
-}
-
-.g-container {
-  display: grid;
-  block-size: 100%;
-  place-items: center;
 }
 </style>
