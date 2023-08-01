@@ -1,9 +1,5 @@
 <template>
-  <v-container fill-height fluid>
-    <v-row align="center" justify="center">
-      <dashboard></dashboard>
-    </v-row>
-  </v-container>
+  <dashboard></dashboard>
 </template>
 
 <script lang="ts">
