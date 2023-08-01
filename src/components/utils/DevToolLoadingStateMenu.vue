@@ -24,7 +24,7 @@ import { useConfigStore } from "@/stores/config";
 import State from "@/utils/LoadingState";
 
 interface Props {
-  modelValue: number;
+  modelValue: State;
   top?: string;
   right?: string;
 }
@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 interface Emits {
-  (e: "update:modelValue", value: number | null): void;
+  (e: "update:modelValue", value: State): void;
 }
 
 const emit = defineEmits<Emits>();
@@ -56,7 +56,7 @@ const menuItems = ref([
   { text: "Off", value: State.OFF },
 ]);
 
-const selected = ref<number[]>([State.OFF]);
+const selected = ref([State.OFF]);
 const state = computed(() => selected.value[0]);
 
 const configStore = useConfigStore();

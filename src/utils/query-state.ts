@@ -24,7 +24,7 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     error.value = e?.message || null;
   });
 
-  const devtoolState = ref<number>(State.OFF);
+  const devtoolState = ref(State.OFF);
   watch(devtoolState, (val) => {
     if (val) init.value = val === State.INIT;
     error.value = val === State.ERROR ? "Error from Dev Tools" : null;
