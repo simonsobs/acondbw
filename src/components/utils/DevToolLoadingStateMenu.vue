@@ -47,16 +47,16 @@ const buttonStyle = computed(() => ({
 }));
 
 const menuItems = ref([
-  { text: "Init", value: State.INIT },
-  { text: "Loading", value: State.LOADING },
-  { text: "Error", value: State.ERROR },
-  { text: "Loaded", value: State.LOADED },
-  { text: "Empty", value: State.EMPTY },
-  { text: "None", value: State.NONE },
-  { text: "Off", value: State.OFF },
+  { text: "Init", value: State.Init },
+  { text: "Loading", value: State.Loading },
+  { text: "Error", value: State.Error },
+  { text: "Loaded", value: State.Loaded },
+  { text: "Empty", value: State.Empty },
+  { text: "None", value: State.None },
+  { text: "Off", value: State.Off },
 ]);
 
-const selected = ref([State.OFF]);
+const selected = ref([State.Off]);
 const state = computed(() => selected.value[0]);
 
 const configStore = useConfigStore();
@@ -64,7 +64,7 @@ const configStore = useConfigStore();
 const enabled = computed(() => configStore.config.devtoolLoadingstate);
 
 watch(enabled, (val) => {
-  if (!val) selected.value = [State.OFF];
+  if (!val) selected.value = [State.Off];
 });
 
 watch(state, (s) => {
