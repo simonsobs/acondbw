@@ -12,8 +12,6 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-list-item :title="state"></v-list-item>
-    <pre>{{ selected }}</pre>
   </div>
 </template>
 
