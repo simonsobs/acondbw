@@ -1,16 +1,13 @@
 <template>
-  <v-progress-circular
-    v-if="loading"
-    indeterminate
-    :size="18"
-    :width="3"
-    color="secondary"
-  ></v-progress-circular>
+  <v-progress-circular v-if="loading" indeterminate :size="18" :width="3"
+    color="secondary"></v-progress-circular>
   <v-card flat v-else>
-    <slot name="title"> <v-card-title>Sign In</v-card-title> </slot>
+    <div class="text-center">
+      <slot name="title"> <v-card-title> Sign In </v-card-title> </slot>
+    </div>
     <v-card-actions>
-      <v-btn block outlined @click="signIn">
-        <v-icon left>mdi-github</v-icon>Sign In with GitHub
+      <v-btn block variant="outlined" @click="signIn" prepend-icon="mdi-github">
+        Sign In with GitHub
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -18,8 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import { Location, RawLocation } from "vue-router";
+import { useRouter, RouteLocationRaw } from "vue-router";
 import { useClientHandle } from "@urql/vue";
 import { useAuthStore } from "@/stores/auth";
 
@@ -34,8 +30,8 @@ export default defineComponent({
   name: "SignInCard",
   props: {
     path: {
-      type: [String, Object] as PropType<RawLocation>,
-      default: () => ({ name: "Dashboard" } as RawLocation),
+      type: [String, Object] as PropType<RouteLocationRaw>,
+      default: () => ({ name: "Dashboard" } as RouteLocationRaw),
     },
   },
   setup(prop) {
@@ -52,7 +48,7 @@ export default defineComponent({
       return JSON.stringify(rawOption);
     });
 
-    const redirect = ref<Location>({ name: "Auth" });
+    const redirect = ref<RouteLocationRaw>({ name: "Auth" });
 
     const rawState = computed<UnencodedState>(() => ({
       redirect: redirect.value,
