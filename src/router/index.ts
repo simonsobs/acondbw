@@ -37,7 +37,6 @@ const AdminAppAuth = () => import("@/views/admin-token/AdminAppAuth.vue");
 const AdminAppTokenError = () =>
   import("@/views/admin-token/AdminAppTokenError.vue");
 
-import { PiniaVuePlugin } from "pinia";
 
 const routes: RouteRecordRaw[] = [
   {
