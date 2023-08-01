@@ -2,11 +2,13 @@
   <v-app>
     <router-view name="frame"></router-view>
     <v-main>
-      <transition :name="transitionName" :mode="transitionMode">
-        <keep-alive>
-          <router-view :key="route.fullPath"></router-view>
-        </keep-alive>
-      </transition>
+      <router-view :key="route.fullPath" v-slot="{ Component }">
+        <transition :name="transitionName" :mode="transitionMode">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </transition>
+      </router-view>
     </v-main>
     <snackbar></snackbar>
   </v-app>
@@ -14,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, watch, watchEffect } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 import { useConfigStore } from "@/stores/config";
 
@@ -79,7 +81,8 @@ body,
 }
 
 .v-main {
-  height: calc(100% - 48px); /* 48px: the height of the app bar */
+  height: calc(100% - 48px);
+  /* 48px: the height of the app bar */
 }
 </style>
 
