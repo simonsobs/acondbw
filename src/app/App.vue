@@ -74,11 +74,13 @@ watch(
 
 html,
 body,
+#app,
 .v-application,
-.v-application--wrap,
+.v-application__wrap,
 .v-main__wrap {
   height: 100%;
 }
+
 
 .v-main {
   height: calc(100% - 48px);
