@@ -3,7 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, computed } from "vue";
+import { computed, onBeforeMount } from "vue";
+import { useTheme } from "vuetify";
 
 import { useConfigStore } from "@/stores/config";
 
@@ -13,29 +14,16 @@ const configStore = useConfigStore();
 
 const vuetifyTheme = computed(() => configStore.vuetifyTheme);
 
-// export default defineComponent({
-//   components: { App },
-//   setup() {
-//     const configStore = useConfigStore();
-//     return {
-//       vuetifyTheme: computed(() => configStore.vuetifyTheme),
-//     };
-//   },
-//   watch: {
-//     vuetifyTheme() {
-//       this.setVuetifyTheme();
-//     },
-//   },
-//   beforeMount() {
-//     this.setVuetifyTheme();
-//   },
-//   methods: {
-//     setVuetifyTheme() {
-//       this.$vuetify.theme.themes.light = {
-//         ...this.$vuetify.theme.themes.light,
-//         ...this.vuetifyTheme,
-//       };
-//     },
-//   },
-// });
+const theme = useTheme();
+
+onBeforeMount(() => {
+  setVuetifyTheme();
+});
+
+function setVuetifyTheme() {
+  theme.themes.value.light.colors = {
+    ...theme.themes.value.light.colors,
+    ...vuetifyTheme.value,
+  };
+}
 </script>
