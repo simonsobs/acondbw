@@ -9,14 +9,14 @@
     </v-row>
     <v-row v-for="k in keys" :key="k">
       <v-col cols="6">
-        <v-card flat outlined>
+        <v-card variant="outlined">
           <v-card-title :class="`text-${k}`">
             {{ k }}: {{ colors[k] }}
           </v-card-title>
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card flat :class="`bg-${k}`">
+        <v-card :class="`bg-${k}`" variant="outlined">
           <v-card-title :class="`bg-on-${k}`">
             {{ `on-${k}` }}: {{ colors[`on-${k}`] }}
           </v-card-title>
