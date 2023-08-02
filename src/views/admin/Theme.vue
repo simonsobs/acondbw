@@ -7,17 +7,17 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row v-for="k in keys" :key="k">
+    <v-row v-for="(c, k) in bgColors" :key="k">
       <v-col cols="6">
         <v-card variant="outlined">
-          <v-card-title :class="`text-${k}`">
+          <v-card-title :class="`bg-${k}`">
             {{ k }}: {{ colors[k] }}
           </v-card-title>
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card :class="`bg-${k}`" variant="outlined">
-          <v-card-title :class="`bg-on-${k}`">
+        <v-card variant="outlined" v-if="`on-${k}` in colors">
+          <v-card-title :class="`bg-${k} text-on-${k}`">
             {{ `on-${k}` }}: {{ colors[`on-${k}`] }}
           </v-card-title>
         </v-card>
@@ -30,27 +30,13 @@
 import { ref, computed } from "vue";
 import { useTheme } from "vuetify";
 
-const keys = ref([
-  "primary",
-  "secondary",
-  "accent",
-  "error",
-  "info",
-  "success",
-  "warning",
-]);
-
-const keysWithOn = computed(() => [
-  ...keys.value,
-  ...keys.value.map((k) => `on-${k}`),
-]);
-
 const theme = useTheme();
 
-const colors = computed(() =>
-  keysWithOn.value.reduce(
-    (a, k) => ({ ...a, ...{ [k]: theme.themes.value.light.colors[k] } }),
-    {}
+const colors = computed(() => theme.current.value.colors);
+
+const bgColors = computed(() =>
+  Object.fromEntries(
+    Object.entries(colors.value).filter(([k, v]) => !k.startsWith("on-"))
   )
 );
 </script>

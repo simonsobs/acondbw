@@ -8,6 +8,7 @@ import {
 
 const localStorageKey = "config";
 
+// To be deleted -- switching to dynamic colors
 export interface VuetifyTheme {
   primary?: string;
   "on-primary"?: string;
@@ -28,6 +29,7 @@ export interface VuetifyTheme {
 export interface WebConfig extends VuetifyTheme {
   headTitle: string;
   toolbarTitle: string;
+  materialDynamicColorSource: string;
   devtoolLoadingstate: boolean;
   productCreationDialog: boolean;
   productUpdateDialog: boolean;
@@ -85,6 +87,7 @@ export const useConfigStore = defineStore("config", () => {
   const defaultConfig = ref<WebConfig>({
     headTitle: "",
     toolbarTitle: "",
+    materialDynamicColorSource: "#607D8B", // blue grey
     devtoolLoadingstate: false,
     productCreationDialog: false,
     productUpdateDialog: false,
