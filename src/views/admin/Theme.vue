@@ -10,14 +10,14 @@
     <v-row v-for="k in keys" :key="k">
       <v-col cols="6">
         <v-card flat outlined>
-          <v-card-title :class="`${k}--text`">
+          <v-card-title :class="`text-${k}`">
             {{ k }}: {{ colors[k] }}
           </v-card-title>
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card flat :class="k">
-          <v-card-title :class="`on-${k}--text`">
+        <v-card flat :class="`bg-${k}`">
+          <v-card-title :class="`bg-on-${k}`">
             {{ `on-${k}` }}: {{ colors[`on-${k}`] }}
           </v-card-title>
         </v-card>
@@ -26,8 +26,11 @@
   </v-container>
 </template>
 
-<script>
-const KEYS = [
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { useTheme } from "vuetify";
+
+const keys = ref([
   "primary",
   "secondary",
   "accent",
@@ -35,18 +38,19 @@ const KEYS = [
   "info",
   "success",
   "warning",
-];
+]);
 
-export default {
-  name: "Theme",
-  data: () => ({ keys: KEYS }),
-  computed: {
-    colors() {
-      const theme = this.$vuetify.theme.themes.light;
-      const keys = [...this.keys, ...this.keys.map((k) => `on-${k}`)];
-      const ret = keys.reduce((a, k) => ({ ...a, ...{ [k]: theme[k] } }), {});
-      return ret;
-    },
-  },
-};
+const keysWithOn = computed(() => [
+  ...keys.value,
+  ...keys.value.map((k) => `on-${k}`),
+]);
+
+const theme = useTheme();
+
+const colors = computed(() =>
+  keysWithOn.value.reduce(
+    (a, k) => ({ ...a, ...{ [k]: theme.themes.value.light.colors[k] } }),
+    {}
+  )
+);
 </script>
