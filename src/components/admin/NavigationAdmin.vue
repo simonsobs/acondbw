@@ -1,22 +1,8 @@
 <template>
   <div class="navigation" style="position: relative">
     <v-list shaped>
-      <v-list-item
-        link
-        router
-        v-for="(link, index) in links"
-        :key="index"
-        :to="link.to"
-      >
-        <v-list-item-action>
-          <v-icon v-text="link.icon"></v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title
-            v-text="link.title"
-            class="capitalize condensed-font"
-          ></v-list-item-title>
-        </v-list-item-content>
+      <v-list-item v-for="(link, index) in links" :key="index" :to="link.to" :prepend-icon="link.icon">
+        <v-list-item-title v-text="link.title" class="capitalize condensed-font"></v-list-item-title>
       </v-list-item>
     </v-list>
   </div>
