@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" permanent>
+  <v-navigation-drawer v-model="drawer">
     <v-list v-if="loaded" nav>
       <v-list-item v-for="node in nodes" :key="node.typeId" :to="{
         name: 'ProductList',
@@ -47,7 +47,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+// https://vuetifyjs.com/en/components/navigation-drawers/
+
+import { computed, ref, watch, watchEffect } from "vue";
 import { useStore } from "@/stores/main";
 
 import { useAllProductTypesQuery } from "@/generated/graphql";
@@ -64,9 +66,9 @@ interface Emits {
 }
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
-const drawer = ref(true);
-watch(props, (val) => {
-  drawer.value = val.modelValue;
+const drawer = ref(props.modelValue);
+watchEffect(() => {
+  drawer.value = props.modelValue;
 });
 watch(drawer, (val) => {
   emit("update:modelValue", val);

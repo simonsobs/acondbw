@@ -1,26 +1,20 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" app clipped>
-      <navigation></navigation>
-    </v-navigation-drawer>
+    <navigation v-model="drawer"></navigation>
     <app-bar @drawer="drawer = !drawer"></app-bar>
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, watchEffect } from "vue";
+import { useDisplay } from "vuetify";
 import AppBar from "./AppBar.vue";
 import Navigation from "./Navigation.vue";
 
-export default {
-  name: "Frame",
-  components: {
-    AppBar,
-    Navigation,
-  },
-  data() {
-    return {
-      drawer: ["lg", "xl"].includes(this.$vuetify.breakpoint.name),
-    };
-  },
-};
+// https://vuetifyjs.com/en/features/display-and-platform/
+const display = useDisplay();
+const drawer = ref<boolean>(!display.mobile.value);
+watchEffect(() => {
+  drawer.value = !display.mobile.value;
+});
 </script>
