@@ -7,23 +7,43 @@
     <v-data-table :headers="headers" :items="items" :items-per-page="-1">
       <template v-slot:item.value="{ item }">
         {{ item.raw.value }}
-        <v-icon size="x-small" icon="mdi-pencil" class="mx-1" @click="edit(item.raw)"></v-icon>
+        <v-icon
+          size="x-small"
+          icon="mdi-pencil"
+          class="mx-1"
+          @click="edit(item.raw)"
+        ></v-icon>
       </template>
       <template #bottom></template>
     </v-data-table>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" variant="text" :disabled="saved" @click="reset()">
+      <v-btn
+        color="secondary"
+        variant="text"
+        :disabled="saved"
+        @click="reset()"
+      >
         Reset
       </v-btn>
-      <v-btn color="primary" variant="text" :disabled="saved || !!error" @click="saveToServer()">
+      <v-btn
+        color="primary"
+        variant="text"
+        :disabled="saved || !!error"
+        @click="saveToServer()"
+      >
         Save to server
       </v-btn>
     </v-card-actions>
     <v-dialog v-model="dialog" max-width="500" :close-on-content-click="false">
       <v-card>
         <v-card-text>
-          <v-text-field v-model="edited" label="Edit" single-line counter></v-text-field>
+          <v-text-field
+            v-model="edited"
+            label="Edit"
+            single-line
+            counter
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -77,7 +97,6 @@ function reshapeWebConfigToItems(webConfig: StringKeyObject) {
     type: typeof e[1],
   }));
 }
-
 
 const headers = ref([
   { title: "Key", key: "key" },
