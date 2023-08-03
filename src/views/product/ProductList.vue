@@ -31,16 +31,18 @@
                       <v-icon>mdi-sort-variant</v-icon>
                     </v-btn>
                   </template>
-                  <v-list flat dense>
+                  <v-list flat dense v-model:selected="sortSelected">
                     <v-list-item title="Sort"> </v-list-item>
                     <!-- <v-list-item-group v-model="sortItem" color="primary"> -->
                     <v-list-item
                       v-for="(item, i) in sortItems"
                       :key="i"
-                      :title="item.text"
+                      :value="item"
+                      :title="item.title"
                     >
                       <template v-slot:prepend>
-                        <v-icon v-if="i == sortItem" icon="mdi-check"> </v-icon>
+                        <v-icon v-if="item == sortItem" icon="mdi-check">
+                        </v-icon>
                         <v-icon v-else> </v-icon>
                       </template>
                     </v-list-item>
@@ -77,15 +79,19 @@
           <span v-if="loaded || empty">
             <v-btn
               :disabled="disableAdd"
-              fab
-              class="ml-3 secondary"
+              icon
+              variant="flat"
+              size="large"
+              color="tertiary"
+              elevation="8"
+              class="ml-3"
               :to="{
                 name: 'ProductAdd',
                 params: { productTypeName: productType.name },
               }"
               v-if="productType"
             >
-              <v-icon class="on-secondary--text">mdi-plus-thick</v-icon>
+              <v-icon icon="mdi-plus-thick"></v-icon>
             </v-btn>
           </span>
         </v-card-actions>
@@ -128,9 +134,8 @@
           <v-btn
             v-if="productType && productType.products"
             :disabled="!productType.products.pageInfo.hasNextPage"
-            outlined
+            variant="outlined"
             color="secondary"
-            text
             @click="loadMore()"
           >
             Load more
@@ -224,18 +229,19 @@ const props = withDefaults(
 
 const router = useRouter();
 
-const sortItem = ref(0);
-
 const sortItems = ref([
-  { text: "Recently posted", value: ProductSortEnum.TimePostedDesc },
-  { text: "Recently updated", value: ProductSortEnum.TimeUpdatedDesc },
-  { text: "Name", value: ProductSortEnum.NameAsc },
+  { title: "Recently posted", value: ProductSortEnum.TimePostedDesc },
+  { title: "Recently updated", value: ProductSortEnum.TimeUpdatedDesc },
+  { title: "Name", value: ProductSortEnum.NameAsc },
 ]);
+
+const sortSelected = ref([sortItems.value[0]]);
+const sortItem = computed(() => sortSelected.value[0]);
 
 const nItemsInitialLoad = ref(10);
 const first = ref(nItemsInitialLoad.value);
 
-const sort = computed(() => [sortItems.value[sortItem.value].value]);
+const sort = computed(() => [sortItem.value.value]);
 
 const query = useQueryForProductListQuery({
   variables: {
