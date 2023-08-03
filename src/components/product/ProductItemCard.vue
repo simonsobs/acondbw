@@ -1,5 +1,10 @@
 <template>
-  <v-card outlined hover class="product-item-card" style="position: relative">
+  <v-card
+    variant="outlined"
+    hover
+    class="product-item-card"
+    style="position: relative"
+  >
     <v-card-text v-if="loading">
       <v-progress-circular
         indeterminate
@@ -54,16 +59,20 @@
             <v-row justify="end">
               <v-col v-if="collapsible" style="flex: 0" class="pa-0">
                 <v-tooltip bottom open-delay="800">
-                  <template v-slot:activator="{ on }">
+                  <template v-slot:activator="{ props }">
                     <v-btn
+                      v-bind="props"
+                      variant="plain"
                       icon
                       @click.stop="
                         collapsed ? $emit('expand') : $emit('collapse')
                       "
-                      v-on="on"
                     >
-                      <v-icon>
-                        {{ collapsed ? "mdi-chevron-down" : "mdi-chevron-up" }}
+                      <v-icon
+                        :icon="
+                          collapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'
+                        "
+                      >
                       </v-icon>
                     </v-btn>
                   </template>
@@ -78,24 +87,20 @@
                   v-model="menu"
                   :close-on-content-click="false"
                 >
-                  <template v-slot:activator="{ on: menu }">
-                    <v-btn icon v-on="{ ...menu }">
-                      <v-icon>mdi-dots-vertical</v-icon>
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" variant="plain" icon>
+                      <v-icon icon="mdi-dots-vertical"></v-icon>
                     </v-btn>
                   </template>
                   <v-list dense>
                     <v-dialog v-model="editDialog" max-width="800">
-                      <template v-slot:activator="{ on: editDialog }">
+                      <template v-slot:activator="{ props }">
                         <v-list-item
+                          v-bind="props"
                           :disabled="disableEdit"
-                          v-on="{ ...editDialog }"
+                          prepend-icon="mdi-pencil"
+                          title="Edit"
                         >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Edit</v-list-item-title>
-                          </v-list-item-content>
                         </v-list-item>
                       </template>
                       <product-edit-form
@@ -107,23 +112,13 @@
                       ></product-edit-form>
                     </v-dialog>
                     <v-dialog v-model="updateRelationsDialog" max-width="800">
-                      <template
-                        v-slot:activator="{ on: updateRelationsDialog }"
-                      >
+                      <template v-slot:activator="{ props }">
                         <v-list-item
+                          v-bind="props"
                           :disabled="disableEdit"
-                          v-on="{ ...updateRelationsDialog }"
+                          prepend-icon="mdi-relation-many-to-many"
+                          title="Update relations"
                         >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit"
-                              >mdi-relation-many-to-many</v-icon
-                            >
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              Update relations
-                            </v-list-item-title>
-                          </v-list-item-content>
                         </v-list-item>
                       </template>
                       <product-update-relations-form
@@ -134,17 +129,13 @@
                       ></product-update-relations-form>
                     </v-dialog>
                     <v-dialog v-model="convertTypeDialog" max-width="800">
-                      <template v-slot:activator="{ on: convertTypeDialog }">
+                      <template v-slot:activator="{ props }">
                         <v-list-item
+                          v-bind="props"
                           :disabled="disableEdit"
-                          v-on="{ ...convertTypeDialog }"
+                          prepend-icon="mdi-drawing"
+                          title="Convert type"
                         >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-drawing</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Convert type</v-list-item-title>
-                          </v-list-item-content>
                         </v-list-item>
                       </template>
                       <product-convert-type-form
@@ -156,19 +147,13 @@
                       ></product-convert-type-form>
                     </v-dialog>
                     <v-dialog v-model="deleteDialog" max-width="600">
-                      <template v-slot:activator="{ on: deleteDialog }">
+                      <template v-slot:activator="{ props }">
                         <v-list-item
+                          v-bind="props"
                           :disabled="disableDelete"
-                          v-on="{ ...deleteDialog }"
+                          prepend-icon="mdi-delete"
+                          title="Delete"
                         >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableDelete">
-                              mdi-delete
-                            </v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Delete</v-list-item-title>
-                          </v-list-item-content>
                         </v-list-item>
                       </template>
                       <product-delete-form
@@ -212,9 +197,7 @@
           <v-row>
             <v-col cols="12" md="8" offset-md="4">
               <div class="caption grey--text">Relations</div>
-              <div
-                v-if="relations && Object.keys(relations).length > 0"
-              ></div>
+              <div v-if="relations && Object.keys(relations).length > 0"></div>
               <div v-else class="body-2 grey--text">None</div>
               <div v-for="(r, key) in relations" :key="key">
                 <span
