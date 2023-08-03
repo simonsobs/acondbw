@@ -196,7 +196,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, withDefaults } from "vue";
+import { ref, reactive, watch, computed, withDefaults } from "vue";
 import { useRouter } from "vue-router";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
@@ -319,21 +319,22 @@ async function refresh() {
   }
 }
 
-const isCardCollapsed = ref<{ [key: string]: boolean }>({});
+const isCardCollapsed = reactive<{ [key: string]: boolean }>({});
 
 function collapseCards() {
   nodes.value.forEach((node) => {
     const id = node.id;
-    if (id in isCardCollapsed.value) return;
-    isCardCollapsed.value = { ...isCardCollapsed.value, [id]: true };
+    if (id in isCardCollapsed) return;
+    isCardCollapsed[id] = true;
   });
 }
+collapseCards();
 
 const areAllCardsCollapsed = computed({
-  get: () => Object.values(isCardCollapsed.value).every((i) => i),
+  get: () => Object.values(isCardCollapsed).every((i) => i),
   set: (v) => {
-    Object.keys(isCardCollapsed.value).forEach((k) => {
-      isCardCollapsed.value[k] = v;
+    Object.keys(isCardCollapsed).forEach((k) => {
+      isCardCollapsed[k] = v;
     });
   },
 });
