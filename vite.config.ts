@@ -24,18 +24,6 @@ export default ({ mode }) => {
         path: "path-browserify",
       },
     },
-    css: {
-      // https://github.com/antfu/unplugin-vue-components/issues/45
-      preprocessorOptions: {
-        sass: {
-          additionalData: [
-            "", // start with newline
-            '@import "@/styles/variables.scss"',
-            "", // end with newline
-          ].join("\n"),
-        },
-      },
-    },
     // test: {
     //   globals: true,
     //   environment: "jsdom",
