@@ -9,8 +9,8 @@
       <v-col class="pb-0">
         <v-card-actions class="align-end" style="height: 56px">
           <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
+            <template v-slot:activator="{ props }">
+              <v-btn :disabled="loading" icon @click="refresh()" v-bind="props">
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
@@ -24,29 +24,27 @@
           <v-spacer></v-spacer>
           <span v-if="loaded && nItemsTotal > 1">
             <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on: tooltip }">
+              <template v-slot:activator="{ props: tooltip }">
                 <v-menu left offset-y>
-                  <template v-slot:activator="{ on: menu }">
-                    <v-btn icon v-on="{ ...tooltip, ...menu }">
+                  <template v-slot:activator="{ props: menu }">
+                    <v-btn icon v-bind="{ ...tooltip, ...menu }">
                       <v-icon>mdi-sort-variant</v-icon>
                     </v-btn>
                   </template>
                   <v-list flat dense>
-                    <v-list-item>
-                      <v-list-item-title>Sort</v-list-item-title>
+                    <v-list-item title="Sort"> </v-list-item>
+                    <!-- <v-list-item-group v-model="sortItem" color="primary"> -->
+                    <v-list-item
+                      v-for="(item, i) in sortItems"
+                      :key="i"
+                      :title="item.text"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon v-if="i == sortItem" icon="mdi-check"> </v-icon>
+                        <v-icon v-else> </v-icon>
+                      </template>
                     </v-list-item>
-                    <v-list-item-group v-model="sortItem" color="primary">
-                      <v-list-item v-for="(item, i) in sortItems" :key="i">
-                        <v-list-item-icon>
-                          <v-icon v-if="i == sortItem">mdi-check</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title
-                            v-text="item.text"
-                          ></v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
+                    <!-- </v-list-item-group> -->
                   </v-list>
                 </v-menu>
               </template>
@@ -56,11 +54,11 @@
           <v-spacer></v-spacer>
           <span v-if="loaded">
             <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on }">
+              <template v-slot:activator="{ props }">
                 <v-btn
                   icon
                   @click="areAllCardsCollapsed = !areAllCardsCollapsed"
-                  v-on="on"
+                  v-bind="props"
                 >
                   <v-icon>
                     {{
@@ -155,7 +153,7 @@
         <v-card-actions>
           <v-btn
             depressed
-            color="primary"
+            variant="flat"
             :to="{
               name: 'ProductAdd',
               params: { productTypeName: productType.name },
@@ -166,13 +164,12 @@
         </v-card-actions>
         <v-card-actions>
           <v-dialog v-model="deleteDialog" max-width="600">
-            <template v-slot:activator="{ on: deleteDialog }">
+            <template v-slot:activator="{ props }">
               <v-btn
-                outlined
+                v-bind="props"
+                variant="outlined"
                 color="secondary"
-                text
                 :disabled="disableDelete"
-                v-on="{ ...deleteDialog }"
               >
                 <v-icon left> mdi-delete </v-icon>
                 Delete the product type
@@ -188,10 +185,8 @@
         </v-card-actions>
       </v-col>
     </v-row>
-    <dev-tool-loading-state-menu
-      top="-10px"
-      v-model="devtoolState"
-    ></dev-tool-loading-state-menu>
+    <dev-tool-loading-state-menu top="10px" right="10px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </v-container>
 </template>
 
@@ -295,7 +290,10 @@ watch(nodes, async () => {
 });
 
 async function loadAllFewRemainingItems() {
-  if (nodes.value.length + nExtraItemsAutomaticLoad.value >= nItemsTotal.value) {
+  if (
+    nodes.value.length + nExtraItemsAutomaticLoad.value >=
+    nItemsTotal.value
+  ) {
     await loadMore();
   }
 }
