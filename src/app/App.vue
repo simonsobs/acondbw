@@ -2,10 +2,10 @@
   <v-app>
     <router-view name="frame"></router-view>
     <v-main>
-      <router-view :key="route.fullPath" v-slot="{ Component }">
+      <router-view :key="route.path" v-slot="{ Component }">
         <transition :name="transitionName" :mode="transitionMode">
           <keep-alive>
-            <component :is="Component" />
+            <component :key="route.path" :is="Component" />
           </keep-alive>
         </transition>
       </router-view>
@@ -31,7 +31,7 @@ watchEffect(() => {
 });
 
 const transitionName = ref("fade-app-across");
-const transitionMode = ref("out-in");
+const transitionMode = ref<"out-in">("out-in");
 watch(
   () => route.path,
   (to, from) => {
