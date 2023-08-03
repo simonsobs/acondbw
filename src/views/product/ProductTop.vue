@@ -16,20 +16,31 @@
           :width="3"
           color="secondary"
         ></v-progress-circular>
-        <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
+        <v-alert
+          v-else-if="error"
+          type="error"
+          variant="tonal"
+          :text="error"
+        ></v-alert>
         <v-card flat v-if="loaded && node">
           <v-card-title class="text-h4 primary--text justify-space-between">
             <span>
-              <v-icon large class="me-3" v-text="node.icon"></v-icon>
+              <v-icon
+                large
+                class="me-3"
+                :icon="node.icon"
+                v-if="node.icon"
+              ></v-icon>
               <router-link
                 :to="{
                   name: 'ProductList',
                   params: { productTypeName: node.name },
                 }"
-                v-text="node.plural"
                 class="capitalize"
                 style="text-decoration: none; color: inherit"
-              ></router-link>
+              >
+                {{ node.plural }}
+              </router-link>
               <span v-if="itemName">
                 <v-icon large color="primary">mdi-chevron-right</v-icon>
                 {{ itemName }}
@@ -37,11 +48,15 @@
             </span>
             <span v-if="!itemName">
               <v-tooltip left open-delay="800">
-                <template v-slot:activator="{ on: tooltip }">
+                <template v-slot:activator="{ props: tooltip }">
                   <v-dialog persistent v-model="editDialog" max-width="800">
-                    <template v-slot:activator="{ on: editDialog }">
-                      <v-btn icon v-on="{ ...tooltip, ...editDialog }">
-                        <v-icon small>mdi-cog</v-icon>
+                    <template v-slot:activator="{ props: editDialog }">
+                      <v-btn
+                        v-bind="{ ...tooltip, ...editDialog }"
+                        variant="plain"
+                        icon
+                      >
+                        <v-icon small icon="mdi-cog"></v-icon>
                       </v-btn>
                     </template>
                     <product-type-edit-form
@@ -61,24 +76,25 @@
               </v-tooltip>
             </span>
           </v-card-title>
-          <transition :name="transitionName" :mode="transitionMode">
-            <keep-alive>
-              <router-view
-                :key="$route.fullPath"
-                :productTypeId="node ? Number(node.typeId) : null"
-                :disableAdd="disableAdd"
-                :disableEdit="disableEdit"
-                :disableDelete="disableDelete"
-              ></router-view>
-            </keep-alive>
-          </transition>
+          <router-view
+            :key="route.fullPath"
+            :productTypeId="node ? Number(node.typeId) : null"
+            :disableAdd="disableAdd"
+            :disableEdit="disableEdit"
+            :disableDelete="disableDelete"
+            v-slot="{ Component }"
+          >
+            <transition :name="transitionName" :mode="transitionMode">
+              <keep-alive>
+                <component :is="Component"></component>
+              </keep-alive>
+            </transition>
+          </router-view>
         </v-card>
       </v-col>
     </v-row>
-    <dev-tool-loading-state-menu
-      top="-10px"
-      v-model="devtoolState"
-    ></dev-tool-loading-state-menu>
+    <dev-tool-loading-state-menu top="10px" right="10px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </v-container>
 </template>
 
@@ -112,8 +128,8 @@ const router = useRouter();
 const productTypeName = ref<string | null>(null);
 const itemName = ref<string | null>(null);
 onMounted(() => {
-  productTypeName.value = route.params.productTypeName;
-  itemName.value = route.params.name;
+  productTypeName.value = route.params.productTypeName as string;
+  itemName.value = (route.params.name || null) as string | null;
 });
 
 const query = useQuery<ProductTypeByNameQuery>({
@@ -146,7 +162,7 @@ function onNameChanged(event: string) {
   });
 }
 const transitionName = ref("fade-product-top-leave");
-const transitionMode = ref("out-in");
+const transitionMode = ref<"out-in">("out-in");
 onBeforeRouteUpdate((to, from, next) => {
   transitionName.value = "fade-product-top-update";
   transitionMode.value = "out-in";
