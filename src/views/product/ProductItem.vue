@@ -4,26 +4,31 @@
       <v-col class="pb-0">
         <v-card-actions class="align-end" style="height: 56px">
           <v-tooltip v-if="node && node.type_" bottom open-delay="800">
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ props }">
               <v-btn
-                text
+                v-bind="props"
+                variant="plain"
                 icon
-                exact
                 :to="{
                   name: 'ProductList',
                   params: { productTypeName: node.type_.name },
                 }"
-                v-on="on"
               >
-                <v-icon>mdi-arrow-left</v-icon>
+                <v-icon icon="mdi-arrow-left"></v-icon>
               </v-btn>
             </template>
             <span>Back to the list</span>
           </v-tooltip>
           <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
-                <v-icon>mdi-refresh</v-icon>
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                :disabled="loading"
+                variant="plain"
+                icon
+                @click="refresh()"
+              >
+                <v-icon icon="mdi-refresh"></v-icon>
               </v-btn>
             </template>
             <span>Refresh</span>
