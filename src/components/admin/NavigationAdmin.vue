@@ -1,8 +1,18 @@
 <template>
-  <div class="navigation" style="position: relative">
-    <v-list shaped>
-      <v-list-item v-for="(link, index) in links" :key="index" :to="link.to" :prepend-icon="link.icon">
-        <v-list-item-title v-text="link.title" class="capitalize condensed-font"></v-list-item-title>
+  <div class="navigation ma-2" style="position: relative">
+    <v-list>
+      <v-list-item
+        v-for="(link, index) in links"
+        :key="index"
+        :to="link.to"
+        :prepend-icon="link.icon"
+        color="primary"
+        rounded="lg"
+      >
+        <v-list-item-title
+          v-text="link.title"
+          class="capitalize condensed-font"
+        ></v-list-item-title>
       </v-list-item>
     </v-list>
   </div>

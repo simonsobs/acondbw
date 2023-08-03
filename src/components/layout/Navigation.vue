@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer v-model="drawer">
-    <v-list v-if="loaded" nav>
+    <v-list v-if="loaded" class="ma-2">
       <v-list-item
         v-for="node in nodes"
         :key="node.typeId"
@@ -9,8 +9,13 @@
           params: { productTypeName: node.name },
         }"
         :prepend-icon="node.icon || undefined"
+        color="primary"
+        rounded="lg"
       >
-        <v-list-item-title class="capitalize" v-text="node.plural">
+        <v-list-item-title
+          class="capitalize condensed-font"
+          v-text="node.plural"
+        >
         </v-list-item-title>
         <template v-slot:append>
           <v-chip
@@ -53,8 +58,9 @@
       :width="3"
       color="secondary"
       class="mx-5 mt-5"
-    ></v-progress-circular>
-    <v-alert v-if="error" outlined dense type="error" class="ma-2">
+    >
+    </v-progress-circular>
+    <v-alert v-if="error" variant="tonal" dense type="error" class="ma-2">
       {{ error }}
     </v-alert>
     <template v-slot:append>
