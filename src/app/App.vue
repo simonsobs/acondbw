@@ -22,7 +22,6 @@ import { useConfigStore } from "@/stores/config";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
 
-
 const route = useRoute();
 const configStore = useConfigStore();
 
@@ -81,7 +80,6 @@ body,
   height: 100%;
 }
 
-
 .v-main {
   height: calc(100% - 64px);
   /* 64px: the height of the app bar */
@@ -89,7 +87,11 @@ body,
 }
 
 .v-card--variant-outlined {
-    border: thin solid rgb(var(--v-theme-outline-variant));
+  border: thin solid rgb(var(--v-theme-outline-variant));
+}
+
+.v-autocomplete .v-field__overlay {
+  background-color: rgb(var(--v-theme-surface-container-lowest));
 }
 </style>
 
