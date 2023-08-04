@@ -2,13 +2,23 @@
   <div v-if="enabled">
     <v-menu right bottom offset-y :close-on-content-click="false">
       <template v-slot:activator="{ props }">
-        <v-btn v-bind="props" variant="plain" density="compact" size="x-small" :style="buttonStyle"
-          icon="mdi-nut">
+        <v-btn
+          v-bind="props"
+          variant="plain"
+          density="compact"
+          size="x-small"
+          :style="buttonStyle"
+          icon="mdi-nut"
+        >
         </v-btn>
       </template>
       <v-list dense v-model:selected="selected">
         <v-list-subheader>Dev Tools</v-list-subheader>
-        <v-list-item :value="item.value" :title="item.text" v-for="item in menuItems">
+        <v-list-item
+          :value="item.value"
+          :title="item.text"
+          v-for="item in menuItems"
+        >
         </v-list-item>
       </v-list>
     </v-menu>
@@ -68,9 +78,4 @@ watch(enabled, (val) => {
 watch(state, (s) => {
   emit("update:modelValue", s);
 });
-</script>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({ name: "DevToolLoadingStateMenu" });
 </script>
