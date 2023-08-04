@@ -101,11 +101,9 @@ import {
   onBeforeRouteLeave,
 } from "vue-router";
 
-import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
-import { ProductTypeByNameQuery } from "@/generated/graphql";
+import { useProductTypeByNameQuery } from "@/generated/graphql";
 
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
-import { useQuery } from "@urql/vue";
 
 import { useConfigStore } from "@/stores/config";
 
@@ -121,11 +119,12 @@ onMounted(() => {
   itemName.value = (route.params.name || null) as string | null;
 });
 
-const query = useQuery<ProductTypeByNameQuery>({
-  query: PRODUCT_TYPE_BY_NAME,
+const query = useProductTypeByNameQuery({
+  // @ts-ignore
   variables: { name: productTypeName },
   pause: !productTypeName,
 });
+
 const node = computed(() => query.data?.value?.productType);
 const configStore = useConfigStore();
 const disableAdd = computed(() => !configStore.config.productCreationDialog);
