@@ -1,107 +1,96 @@
 <template>
-  <v-container
-    :fill-height="notFound"
-    class="product-top"
-    style="position: relative"
-  >
-    <v-row v-if="notFound" align="center" justify="center">
-      <v-col class="text-h1 text-center">Not Found (404)</v-col>
-    </v-row>
-    <v-row v-else>
-      <v-col>
-        <v-progress-circular
-          v-if="loading"
-          indeterminate
-          :size="18"
-          :width="3"
-          color="secondary"
-        ></v-progress-circular>
-        <v-alert
-          v-else-if="error"
-          type="error"
-          variant="tonal"
-          :text="error"
-        ></v-alert>
-        <v-card flat v-if="loaded && node">
-          <v-card-title class="text-h4 primary--text justify-space-between">
-            <span>
-              <v-icon
-                large
-                class="me-3"
-                :icon="node.icon"
-                v-if="node.icon"
-              ></v-icon>
-              <router-link
-                :to="{
-                  name: 'ProductList',
-                  params: { productTypeName: node.name },
-                }"
-                class="capitalize"
-                style="text-decoration: none; color: inherit"
-              >
-                {{ node.plural }}
-              </router-link>
-              <span v-if="itemName">
-                <v-icon large color="primary">mdi-chevron-right</v-icon>
-                {{ itemName }}
-              </span>
+  <div style="block-size: 100%; position: relative">
+    <div v-if="notFound" class="not-found">
+      <span class="text-h1 text-center"> Not Found (404) </span>
+    </div>
+    <v-progress-linear v-else-if="loading" indeterminate color="primary">
+    </v-progress-linear>
+    <div v-else-if="error" class="pa-5">
+      <v-alert
+        type="error"
+        variant="tonal"
+        :text="error"
+        class="mx-auto"
+        max-width="960px"
+      >
+      </v-alert>
+    </div>
+    <div v-else style="max-width: 960px; margin: auto">
+      <div v-if="loaded && node" class="pt-5">
+        <div class="top-bar text-h4 text-primary">
+          <span>
+            <v-icon
+              large
+              class="me-3"
+              :icon="node.icon"
+              v-if="node.icon"
+            ></v-icon>
+            <router-link
+              :to="{
+                name: 'ProductList',
+                params: { productTypeName: node.name },
+              }"
+              class="capitalize"
+              style="text-decoration: none; color: inherit"
+            >
+              {{ node.plural }}
+            </router-link>
+            <span v-if="itemName">
+              <v-icon large color="primary">mdi-chevron-right</v-icon>
+              {{ itemName }}
             </span>
-            <span v-if="!itemName">
-              <v-tooltip left open-delay="800">
-                <template v-slot:activator="{ props: tooltip }">
-                  <v-dialog persistent v-model="editDialog" max-width="800">
-                    <template v-slot:activator="{ props: editDialog }">
-                      <v-btn
-                        v-bind="{ ...tooltip, ...editDialog }"
-                        variant="plain"
-                        icon
-                      >
-                        <v-icon small icon="mdi-cog"></v-icon>
-                      </v-btn>
-                    </template>
-                    <product-type-edit-form
-                      v-if="editDialog"
-                      :node="node"
-                      @cancel="onEditFormCancelled"
-                      @finished="onEditFormFinished($event)"
-                    ></product-type-edit-form>
-                  </v-dialog>
-                </template>
-                <span>
-                  Settings:
-                  <span class="capitalize font-italic">
-                    {{ node.plural }}
-                  </span>
+          </span>
+          <span v-if="!itemName">
+            <v-tooltip left open-delay="800">
+              <template v-slot:activator="{ props: tooltip }">
+                <v-dialog persistent v-model="editDialog" max-width="800">
+                  <template v-slot:activator="{ props: editDialog }">
+                    <v-btn
+                      v-bind="{ ...tooltip, ...editDialog }"
+                      variant="plain"
+                      icon
+                      class="button-mdi-cog"
+                    >
+                      <v-icon size="x-small" icon="mdi-cog"></v-icon>
+                    </v-btn>
+                  </template>
+                  <product-type-edit-form
+                    v-if="editDialog"
+                    :node="node"
+                    @cancel="onEditFormCancelled"
+                    @finished="onEditFormFinished($event)"
+                  ></product-type-edit-form>
+                </v-dialog>
+              </template>
+              <span>
+                Settings:
+                <span class="capitalize font-italic">
+                  {{ node.plural }}
                 </span>
-              </v-tooltip>
-            </span>
-          </v-card-title>
-          <router-view
-            :key="route.fullPath"
-            :productTypeId="node ? Number(node.typeId) : null"
-            :disableAdd="disableAdd"
-            :disableEdit="disableEdit"
-            :disableDelete="disableDelete"
-            v-slot="{ Component }"
-          >
-            <transition :name="transitionName" :mode="transitionMode">
-              <keep-alive>
-                <component :is="Component"></component>
-              </keep-alive>
-            </transition>
-          </router-view>
-        </v-card>
-      </v-col>
-    </v-row>
+              </span>
+            </v-tooltip>
+          </span>
+        </div>
+        <router-view
+          :key="route.fullPath"
+          :productTypeId="node ? Number(node.typeId) : null"
+          :disableAdd="disableAdd"
+          :disableEdit="disableEdit"
+          :disableDelete="disableDelete"
+          v-slot="{ Component }"
+        >
+          <transition :name="transitionName" :mode="transitionMode">
+            <keep-alive>
+              <component :is="Component"></component>
+            </keep-alive>
+          </transition>
+        </router-view>
+      </div>
+    </div>
     <dev-tool-loading-state-menu top="10px" right="10px" v-model="devtoolState">
     </dev-tool-loading-state-menu>
-  </v-container>
+  </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({ name: "ProductTop" });
-</script>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
@@ -212,5 +201,22 @@ const { loading, loaded, notFound, error, devtoolState } = useQueryState(
 
 .fade-product-top-leave-leave-to {
   opacity: 1;
+}
+
+.not-found {
+  display: grid;
+  block-size: 100%;
+  place-items: center;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.button-mdi-cog {
+  align-items: start;
 }
 </style>
