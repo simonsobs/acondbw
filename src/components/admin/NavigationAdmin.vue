@@ -1,25 +1,44 @@
 <template>
-  <div class="navigation ma-2" style="position: relative">
-    <v-list>
-      <v-list-item
-        v-for="(link, index) in links"
-        :key="index"
-        :to="link.to"
-        :prepend-icon="link.icon"
-        color="primary"
-        rounded="lg"
-      >
-        <v-list-item-title
-          v-text="link.title"
-          class="capitalize condensed-font"
-        ></v-list-item-title>
-      </v-list-item>
-    </v-list>
-  </div>
+  <v-navigation-drawer v-model="drawer">
+    <div class="navigation ma-2" style="position: relative">
+      <v-list>
+        <v-list-item
+          v-for="(link, index) in links"
+          :key="index"
+          :to="link.to"
+          :prepend-icon="link.icon"
+          color="primary"
+          rounded="lg"
+        >
+          <v-list-item-title
+            v-text="link.title"
+            class="capitalize condensed-font"
+          ></v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </div>
+  </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { ref, reactive, watch, watchEffect } from "vue";
+
+interface Props {
+  modelValue?: boolean;
+}
+interface Emits {
+  (event: "update:modelValue", value: boolean): void;
+}
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+const drawer = ref(props.modelValue);
+watchEffect(() => {
+  drawer.value = props.modelValue;
+});
+watch(drawer, (val) => {
+  emit("update:modelValue", val);
+});
+
 const links = reactive([
   {
     title: "versions",

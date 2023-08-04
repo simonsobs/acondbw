@@ -1,8 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" app clipped>
-      <navigation-admin></navigation-admin>
-    </v-navigation-drawer>
+    <navigation-admin v-model="drawer"></navigation-admin>
     <app-bar v-on:drawer="drawer = !drawer"></app-bar>
   </div>
 </template>
