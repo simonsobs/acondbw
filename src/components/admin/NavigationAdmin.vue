@@ -18,49 +18,38 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "NavigationAdmin",
-  data: () => ({
-    edges: null,
-    links: [
-      {
-        title: "versions",
-        to: { name: "AdminVersion" },
-        icon: "mdi-scatter-plot-outline",
-      },
-      {
-        title: "log",
-        to: { name: "AdminLog" },
-        icon: "mdi-exclamation-thick",
-      },
-      {
-        title: "config",
-        to: { name: "AdminConfig" },
-        icon: "mdi-cog",
-      },
-      {
-        title: "theme",
-        to: { name: "AdminTheme" },
-        icon: "mdi-format-color-fill",
-      },
-      {
-        title: "users",
-        to: { name: "AdminUser" },
-        icon: "mdi-account-multiple",
-      },
-      {
-        title: "product types",
-        to: { name: "ProductType" },
-        icon: "mdi-shape",
-      },
-    ],
-  }),
-};
+<script setup lang="ts">
+import { reactive } from "vue";
+const links = reactive([
+  {
+    title: "versions",
+    to: { name: "AdminVersion" },
+    icon: "mdi-scatter-plot-outline",
+  },
+  {
+    title: "log",
+    to: { name: "AdminLog" },
+    icon: "mdi-exclamation-thick",
+  },
+  {
+    title: "config",
+    to: { name: "AdminConfig" },
+    icon: "mdi-cog",
+  },
+  {
+    title: "theme",
+    to: { name: "AdminTheme" },
+    icon: "mdi-format-color-fill",
+  },
+  {
+    title: "users",
+    to: { name: "AdminUser" },
+    icon: "mdi-account-multiple",
+  },
+  {
+    title: "product types",
+    to: { name: "ProductType" },
+    icon: "mdi-shape",
+  },
+]);
 </script>
-
-<style scoped>
-.capitalize {
-  text-transform: capitalize;
-}
-</style>
