@@ -1,10 +1,15 @@
 <template>
-  <v-app-bar flat density="compact" :order="order">
+  <v-app-bar density="default" :order="order">
     <template v-slot:prepend>
-      <v-app-bar-nav-icon @click="$emit('drawer')" v-if="mobile"> </v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="$emit('drawer')" v-if="mobile">
+      </v-app-bar-nav-icon>
     </template>
     <template v-slot:title>
-      <router-link :to="{ name: 'Entry' }" v-text="title" style="text-decoration: none; color: inherit">
+      <router-link
+        :to="{ name: 'Entry' }"
+        v-text="title"
+        class="text-primary font-weight-medium text-decoration-none"
+      >
       </router-link>
     </template>
     <search-window class="d-none d-sm-inline"></search-window>
@@ -22,7 +27,6 @@ import { useConfigStore } from "@/stores/config";
 
 import SearchWindow from "@/components/utils/SearchWindow.vue";
 import UserMenuButton from "@/components/auth/UserMenuButton.vue";
-
 
 // https://vuetifyjs.com/en/features/application-layout/#dynamic-layouts-and-order
 const display = useDisplay();

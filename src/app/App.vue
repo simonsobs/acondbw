@@ -83,8 +83,13 @@ body,
 
 
 .v-main {
-  height: calc(100% - 48px);
-  /* 48px: the height of the app bar */
+  height: calc(100% - 64px);
+  /* 64px: the height of the app bar */
+  overflow-y: scroll;
+}
+
+.v-card--variant-outlined {
+    border: thin solid rgb(var(--v-theme-outline-variant));
 }
 </style>
 
