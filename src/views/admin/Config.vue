@@ -1,10 +1,17 @@
 <template>
-  <v-card flat style="max-inline-size: 960px; margin: auto">
-    <v-card-title class="text-h4">Config</v-card-title>
-    <v-card-text>
-      <v-alert v-if="error" type="error">{{ error }}</v-alert>
-    </v-card-text>
-    <v-data-table :headers="headers" :items="items" :items-per-page="-1">
+  <div class="pt-5 px-5" style="max-width: 960px; margin: auto">
+    <div class="text-h4 text-primary">Config</div>
+    <div v-if="error" class="pa-5">
+      <v-alert type="error" variant="tonal" class="mx-auto" max-width="960px">
+        {{ error }}
+      </v-alert>
+    </div>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :items-per-page="-1"
+      class="mt-5"
+    >
       <template v-slot:item.value="{ item }">
         {{ item.raw.value }}
         <v-icon
@@ -52,17 +59,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-card>
+  </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { storeToRefs } from "pinia";
-export default defineComponent({ name: "Config" });
-</script>
 
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
+import { storeToRefs } from "pinia";
 import { useConfigStore } from "@/stores/config";
 
 // https://stackoverflow.com/a/66430948/7309855
