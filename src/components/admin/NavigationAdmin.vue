@@ -1,22 +1,20 @@
 <template>
   <v-navigation-drawer v-model="drawer">
-    <div class="navigation ma-2" style="position: relative">
-      <v-list>
-        <v-list-item
-          v-for="(link, index) in links"
-          :key="index"
-          :to="link.to"
-          :prepend-icon="link.icon"
-          color="primary"
-          rounded="lg"
-        >
-          <v-list-item-title
-            v-text="link.title"
-            class="capitalize condensed-font"
-          ></v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </div>
+    <v-list class="ma-2">
+      <v-list-item
+        v-for="(link, index) in links"
+        :key="index"
+        :to="link.to"
+        :prepend-icon="link.icon"
+        color="primary"
+        rounded="lg"
+      >
+        <v-list-item-title
+          v-text="link.title"
+          class="capitalize condensed-font"
+        ></v-list-item-title>
+      </v-list-item>
+    </v-list>
   </v-navigation-drawer>
 </template>
 
