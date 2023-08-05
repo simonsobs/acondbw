@@ -1,5 +1,7 @@
 <template>
   <v-navigation-drawer v-model="drawer">
+    <v-progress-linear v-if="loading" indeterminate color="primary">
+    </v-progress-linear>
     <v-list v-if="loaded" class="ma-2">
       <v-list-item
         v-for="node in nodes"
@@ -28,17 +30,16 @@
         </template>
       </v-list-item>
     </v-list>
-    <v-card-text v-if="empty" outlined dense type="info" class="ma-2">
+    <div v-if="empty" class="mx-2 my-5 text-center">
       No product types are defined.
-    </v-card-text>
-    <v-card-actions v-if="loaded || empty" class="px-5 py-0">
-      <v-spacer></v-spacer>
+    </div>
+    <div v-if="loaded || empty" class="px-5 py-0 text-right">
       <v-tooltip left open-delay="800">
         <template v-slot:activator="{ props: tooltip }">
           <v-dialog persistent v-model="addDialog" max-width="800">
             <template v-slot:activator="{ props: addDialog }">
-              <v-btn icon v-bind="{ ...tooltip, ...addDialog }">
-                <v-icon x-small>mdi-plus-thick</v-icon>
+              <v-btn v-bind="{ ...tooltip, ...addDialog }" variant="text" icon>
+                <v-icon size="x-small" icon="mdi-plus-thick"></v-icon>
               </v-btn>
             </template>
             <product-type-add-form
@@ -50,18 +51,14 @@
         </template>
         <span> Add a product type </span>
       </v-tooltip>
-    </v-card-actions>
-    <v-progress-circular
-      v-if="loading"
-      indeterminate
-      :size="18"
-      :width="3"
-      color="secondary"
-      class="mx-5 mt-5"
+    </div>
+    <v-alert
+      v-if="error"
+      variant="tonal"
+      type="error"
+      class="ma-2"
+      :text="error"
     >
-    </v-progress-circular>
-    <v-alert v-if="error" variant="tonal" dense type="error" class="ma-2">
-      {{ error }}
     </v-alert>
     <template v-slot:append>
       <v-list>
