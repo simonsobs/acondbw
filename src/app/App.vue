@@ -81,12 +81,16 @@ body,
 }
 
 .v-main {
-  height: calc(100% - 64px);
-  /* 64px: the height of the app bar */
+  height: calc(100% - 64px); /* 64px: the height of the app bar */
   overflow-y: scroll;
 }
 
+.v-btn {
+  text-transform: capitalize;
+}
+
 .v-card--variant-outlined {
+  background: rgb(var(--v-theme-surface-container-lowest));
   border: thin solid rgb(var(--v-theme-outline-variant));
 }
 
