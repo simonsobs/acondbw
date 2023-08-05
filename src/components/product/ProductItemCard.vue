@@ -184,31 +184,28 @@
                   v-text="edgep && edgep.node && edgep.node.path"
                 ></li>
               </ul>
-              <div v-else class="body-2 grey--text">None</div>
+              <div v-else class="text-body-2">None</div>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="8" offset-md="4">
               <div class="text-caption">Relations</div>
               <div v-if="relations && Object.keys(relations).length > 0"></div>
-              <div v-else class="body-2 grey--text">None</div>
+              <div v-else class="text-body-2">None</div>
               <div v-for="(r, key) in relations" :key="key">
-                <span
-                  class="capitalize subtitle-2 grey--text text--darken-2 ml-3"
-                >
+                <span class="text-capitalize text-subtitle-2 ml-3">
                   {{ r.relationType }}:
                 </span>
                 <div v-for="(t, key_) in r.types" :key="key_">
-                  <span
-                    class="capitalize subtitle-2 grey--text text--darken-2 ml-6"
-                  >
+                  <span class="text-capitalize text-subtitle-2 ml-6">
                     {{ t.type }}:
                   </span>
-                  <span v-for="(n, i) in t.nodes" :key="i">
+                  <span v-for="(n, i) in t.nodes" :key="i" class="text-primary">
                     <router-link
-                      class="font-weight-bold primary--text"
                       :to="n.to"
                       v-text="n.name"
+                      class="font-weight-bold"
+                      style="color: inherit"
                     ></router-link>
                     <span v-if="i != t.nodes.length - 1">, </span>
                   </span>
@@ -220,7 +217,7 @@
             <v-col order="1" cols="12" md="8" offset-md="4">
               <div class="text-caption">Note</div>
               <div v-if="note" class="markdown-body" v-html="note"></div>
-              <div v-else class="body-2 grey--text">None</div>
+              <div v-else class="text-body-2">None</div>
             </v-col>
           </v-row>
           <v-row
