@@ -11,10 +11,10 @@
         :size="18"
         :width="3"
         color="secondary"
-      ></v-progress-circular>
+      >
+      </v-progress-circular>
     </v-card-text>
-    <v-alert v-else-if="error" outlined dense type="error" class="ma-2">
-      {{ error }}
+    <v-alert v-else-if="error" variant="tonal" type="error" :text="error">
     </v-alert>
     <v-container
       v-else-if="loaded && node"
@@ -23,8 +23,7 @@
     >
       <v-row>
         <v-col order="1" cols="9" md="4">
-          <div class="caption grey--text">Name</div>
-          <div class="font-weight-bold primary--text">
+          <div class="text-h5 font-weight-medium text-primary">
             <span @click.stop>
               <router-link
                 :to="{
@@ -36,19 +35,22 @@
                 }"
                 v-text="node.name"
                 v-if="node.type_"
-              ></router-link>
+                class="text-decoration-none"
+                style="color: inherit"
+              >
+              </router-link>
             </span>
           </div>
         </v-col>
         <v-col order="3" cols="6" md="3">
-          <div class="caption grey--text">Date produced</div>
+          <div class="text-caption">Date produced</div>
           <div
             v-if="attributes"
             v-text="attributes['date_produced']['value']"
           ></div>
         </v-col>
         <v-col order="4" cols="6" md="2">
-          <div class="caption grey--text">Produced by</div>
+          <div class="text-caption">Produced by</div>
           <div
             v-if="attributes"
             v-text="attributes['produced_by']['value']"
@@ -58,26 +60,17 @@
           <v-container>
             <v-row justify="end">
               <v-col v-if="collapsible" style="flex: 0" class="pa-0">
-                <v-tooltip bottom open-delay="800">
-                  <template v-slot:activator="{ props }">
-                    <v-btn
-                      v-bind="props"
-                      variant="plain"
-                      icon
-                      @click.stop="
-                        collapsed ? $emit('expand') : $emit('collapse')
-                      "
-                    >
-                      <v-icon
-                        :icon="
-                          collapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'
-                        "
-                      >
-                      </v-icon>
-                    </v-btn>
-                  </template>
-                  <span>{{ collapsed ? "Expand" : "Collapse" }}</span>
-                </v-tooltip>
+                <v-btn
+                  v-bind="props"
+                  variant="plain"
+                  icon
+                  @click.stop="collapsed ? $emit('expand') : $emit('collapse')"
+                >
+                  <v-icon
+                    :icon="collapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                  >
+                  </v-icon>
+                </v-btn>
               </v-col>
               <v-col @click.stop style="flex: 0" class="pa-0">
                 <v-menu
@@ -174,7 +167,7 @@
         <div class="collapsible" v-show="!(collapsible && collapsed)">
           <v-row>
             <v-col cols="12" md="4" offset-md="4">
-              <div class="caption grey--text">Contact</div>
+              <div class="text-caption">Contact</div>
               <div
                 v-if="attributes"
                 v-text="attributes['contact']['value']"
@@ -183,7 +176,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="8" offset-md="4">
-              <div class="caption grey--text">Paths</div>
+              <div class="text-caption">Paths</div>
               <ul v-if="node.paths && node.paths.edges.length > 0">
                 <li
                   v-for="(edgep, index) in node.paths.edges"
@@ -196,7 +189,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="8" offset-md="4">
-              <div class="caption grey--text">Relations</div>
+              <div class="text-caption">Relations</div>
               <div v-if="relations && Object.keys(relations).length > 0"></div>
               <div v-else class="body-2 grey--text">None</div>
               <div v-for="(r, key) in relations" :key="key">
@@ -225,7 +218,7 @@
           </v-row>
           <v-row>
             <v-col order="1" cols="12" md="8" offset-md="4">
-              <div class="caption grey--text">Note</div>
+              <div class="text-caption">Note</div>
               <div v-if="note" class="markdown-body" v-html="note"></div>
               <div v-else class="body-2 grey--text">None</div>
             </v-col>
@@ -234,8 +227,8 @@
             no-gutters
             align="end"
             justify="space-between"
-            class="grey--text mt-3"
-            style="font-size: 80%"
+            class="mt-3"
+            style="font-size: 11px"
           >
             <div>
               <div v-if="timeUpdated || node.updatingGitHubUser">
@@ -259,10 +252,8 @@
       </v-expand-transition>
     </v-container>
     <v-card-text v-else-if="notFound">Not Found</v-card-text>
-    <dev-tool-loading-state-menu
-      top="-10px"
-      v-model="devtoolState"
-    ></dev-tool-loading-state-menu>
+    <dev-tool-loading-state-menu top="10px" right="10px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </v-card>
 </template>
 
