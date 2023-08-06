@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-5 px-5" style="max-width: 960px; margin: auto">
+  <div class="pt-5 px-5 pb-16" style="max-width: 960px; margin: auto">
     <div class="text-h4 text-primary">Config</div>
     <div v-if="error" class="pa-5">
       <v-alert type="error" variant="tonal" class="mx-auto" max-width="960px">
