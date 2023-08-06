@@ -7,6 +7,10 @@
       :items-per-page="-1"
       @click:row="clickRow"
     >
+      <template v-slot:top>
+        <v-alert v-if="error" variant="tonal" type="error" :text="error">
+        </v-alert>
+      </template>
       <template v-slot:[`item.plural`]="{ item }">
         <router-link
           :to="{
@@ -21,14 +25,6 @@
       </template>
       <template #bottom></template>
     </v-data-table>
-    <v-alert
-      v-if="error"
-      variant="tonal"
-      type="error"
-      :text="error"
-      style="width: 100%"
-    >
-    </v-alert>
     <dev-tool-loading-state-menu
       top="-30px"
       right="10px"
