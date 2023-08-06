@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-5 px-5" style="max-width: 960px; margin: auto">
+  <div class="pt-5 px-5 pb-16" style="max-width: 960px; margin: auto">
     <div class="text-h4 text-primary">Log</div>
     <v-data-table
       :headers="headers"
@@ -25,7 +25,7 @@
         </td>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small @click="openRemoveForm(item)"> mdi-delete </v-icon>
+        <v-icon small @click="openRemoveForm(item.raw)" icon="mdi-delete"></v-icon>
       </template>
     </v-data-table>
     <v-dialog v-model="dialogRemove" max-width="500px">
@@ -33,6 +33,7 @@
         :id_="removeId"
         @cancel="removeFormCanceled"
         @finished="removeFormFinished"
+        v-if="removeId"
       ></log-remove-form>
     </v-dialog>
   </div>

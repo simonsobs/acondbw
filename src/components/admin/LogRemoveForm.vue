@@ -1,16 +1,16 @@
 <template>
-  <v-card>
+  <v-card class="pa-2">
     <v-card-title class="headline">Remove</v-card-title>
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
     </v-card-text>
-    <v-card-text class="body-1 font-weight-medium error--text"
-      >Really, remove?</v-card-text
-    >
-    <v-card-actions>
+    <v-card-text class="body-1 font-weight-medium error--text">
+      Really, remove?
+    </v-card-text>
+    <v-card-actions class="mt-3">
+      <v-btn color="secondary" @click="cancel">Cancel</v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
-      <v-btn color="error" text @click="remove">Remove</v-btn>
+      <v-btn color="error" variant="outlined" @click="remove">Remove</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -22,7 +22,7 @@ import { useStore } from "@/stores/main";
 import { useDeleteLogMutation } from "@/generated/graphql";
 
 const props = defineProps<{
-  id_?: number;
+  id_: number;
 }>();
 
 interface Emits {
