@@ -1,22 +1,10 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-card flat>
-          <v-card-title class="text-h4">Product Types</v-card-title>
-          <product-type-table></product-type-table>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="pt-5 px-5 pb-16" style="max-width: 960px; margin: auto">
+    <div class="text-h4 text-primary">Product Types</div>
+    <product-type-table></product-type-table>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
 import ProductTypeTable from "@/components/product-type/Table.vue";
-
-export default defineComponent({
-  name: "ProductType",
-  components: { ProductTypeTable },
-});
 </script>
