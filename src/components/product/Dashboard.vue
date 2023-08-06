@@ -1,9 +1,20 @@
 <template>
-  <div class="dashboard" style="position: relative">
-    <v-data-table :headers="headers" :items="items" :loading="loading" :items-per-page="-1"
-      @click:row="clickRow" class="elevation-1">
+  <div class="dashboard px-5">
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :loading="loading"
+      :items-per-page="-1"
+      @click:row="clickRow"
+      class="elevation-1"
+    >
       <template v-slot:[`item.plural`]="{ item }">
-        <router-link :to="{ name: 'ProductList', params: { productTypeName: item.selectable.name } }">
+        <router-link
+          :to="{
+            name: 'ProductList',
+            params: { productTypeName: item.selectable.name },
+          }"
+        >
           <span class="capitalize font-weight-bold text-primary">
             {{ item.selectable.plural }}
           </span>
@@ -11,8 +22,19 @@
       </template>
       <template #bottom></template>
     </v-data-table>
-    <v-alert v-if="error" type="error" style="width: 100%"> {{ error }} </v-alert>
-    <dev-tool-loading-state-menu top="-30px" right="-10px" v-model="devtoolState">
+    <v-alert
+      v-if="error"
+      variant="tonal"
+      type="error"
+      :text="error"
+      style="width: 100%"
+    >
+    </v-alert>
+    <dev-tool-loading-state-menu
+      top="-30px"
+      right="10px"
+      v-model="devtoolState"
+    >
     </dev-tool-loading-state-menu>
   </div>
 </template>
@@ -53,7 +75,6 @@ const headers = ref([
   },
 ]);
 
-
 const queryState = useQueryState(query, { isEmpty });
 const { loading, loaded, empty, error, devtoolState } = queryState;
 
@@ -72,7 +93,20 @@ function clickRow(event: Event, { item }) {
   text-transform: capitalize;
 }
 
-.dashboard>>>tbody tr :hover {
+.dashboard {
+  position: relative;
+}
+
+/* :deep() selects child components in scoped styles */
+.dashboard:deep(.v-table) {
+  background: rgb(var(--v-theme-surface-container-lowest));
+}
+.dashboard:deep(.v-table-table),
+.dashboard:deep(.v-table__wrapper > table > thead > tr th),
+.dashboard:deep(.v-table__wrapper > table tbody > tr > td) {
+  background-color: inherit;
+}
+.dashboard:deep(tbody tr :hover) {
   cursor: pointer;
 }
 </style>
