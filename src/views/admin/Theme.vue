@@ -1,29 +1,25 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12">
-        <v-card flat>
-          <v-card-title class="text-h4">Theme</v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-for="(c, k) in bgColors" :key="k">
-      <v-col cols="6">
-        <v-card variant="outlined">
-          <v-card-title :class="`bg-${k}`">
-            {{ k }}: {{ colors[k] }}
-          </v-card-title>
-        </v-card>
-      </v-col>
-      <v-col cols="6">
-        <v-card variant="outlined" v-if="`on-${k}` in colors">
-          <v-card-title :class="`bg-${k} text-on-${k}`">
-            {{ `on-${k}` }}: {{ colors[`on-${k}`] }}
-          </v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="pt-5 px-5 pb-16" style="max-width: 960px; margin: auto">
+    <div class="text-h4 text-primary">Theme</div>
+    <v-container>
+      <v-row v-for="(c, k) in bgColors" :key="k">
+        <v-col cols="6">
+          <v-card variant="outlined">
+            <v-card-title :class="`bg-${k}`">
+              {{ k }}: {{ colors[k] }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card variant="outlined" v-if="`on-${k}` in colors">
+            <v-card-title :class="`bg-${k} text-on-${k}`">
+              {{ `on-${k}` }}: {{ colors[`on-${k}`] }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
