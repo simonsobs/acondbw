@@ -98,14 +98,6 @@ function clickRow(event: Event, { item }) {
 }
 
 /* :deep() selects child components in scoped styles */
-.dashboard:deep(.v-table) {
-  background: rgb(var(--v-theme-surface-container-lowest));
-}
-.dashboard:deep(.v-table-table),
-.dashboard:deep(.v-table__wrapper > table > thead > tr th),
-.dashboard:deep(.v-table__wrapper > table tbody > tr > td) {
-  background-color: inherit;
-}
 .dashboard:deep(tbody tr :hover) {
   cursor: pointer;
 }

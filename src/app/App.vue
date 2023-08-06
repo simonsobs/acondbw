@@ -129,4 +129,16 @@ body,
 .v-autocomplete .v-field__overlay {
   background-color: rgb(var(--v-theme-surface-container-lowest));
 }
+
+.v-table {
+  background: rgb(var(--v-theme-surface-container-lowest));
+}
+.v-table__wrapper > table > thead > tr th,
+.v-table__wrapper > table tbody > tr > td {
+  background-color: inherit;
+}
+.v-data-table .v-table__wrapper > table > thead > tr th,
+.v-data-table .v-table__wrapper > table tbody > tr > td {
+  background-color: inherit; 
+}
 </style>
