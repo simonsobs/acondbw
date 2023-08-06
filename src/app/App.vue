@@ -51,6 +51,38 @@ watch(
 );
 </script>
 
+<style scoped>
+.fade-app-across-enter-active {
+  transition: opacity 0.8s;
+}
+
+.fade-app-across-leave-active {
+  transition: opacity 0s;
+}
+
+.fade-app-across-enter,
+.fade-app-across-leave-to {
+  opacity: 0;
+}
+
+.fade-app-within-enter-active,
+.fade-app-within-leave-active {
+  transition: opacity 0s;
+}
+
+.fade-app-within-enter,
+.fade-app-within-leave-to {
+  opacity: 1;
+}
+</style>
+<!-- The leave active for ".fade-app-across" is set to zero because
+sometimes the fade away starts from a wrong image.
+
+For .fade-app-within, the opacity is set to one and the duration is
+set to zero for both enter and leave, which is effectively disabling the
+transition effects, letting the nested routes handle the transition
+effects. -->
+
 <style>
 .capitalize {
   text-transform: capitalize;
@@ -98,35 +130,3 @@ body,
   background-color: rgb(var(--v-theme-surface-container-lowest));
 }
 </style>
-
-<style scoped>
-.fade-app-across-enter-active {
-  transition: opacity 0.8s;
-}
-
-.fade-app-across-leave-active {
-  transition: opacity 0s;
-}
-
-.fade-app-across-enter,
-.fade-app-across-leave-to {
-  opacity: 0;
-}
-
-.fade-app-within-enter-active,
-.fade-app-within-leave-active {
-  transition: opacity 0s;
-}
-
-.fade-app-within-enter,
-.fade-app-within-leave-to {
-  opacity: 1;
-}
-</style>
-<!-- The leave active for ".fade-app-across" is set to zero because
-sometimes the fade away starts from a wrong image.
-
-For .fade-app-within, the opacity is set to one and the duration is
-set to zero for both enter and leave, which is effectively disabling the
-transition effects, letting the nested routes handle the transition
-effects. -->
