@@ -1,31 +1,33 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-card flat>
-          <v-card-title class="text-h4">Log</v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="items"
-            :items-per-page="items.length"
-            :hide-default-footer="true"
-            item-key="node.id_"
-            :single-expand="singleExpand"
-            :expanded.sync="expanded"
-            show-expand
+  <div class="pt-5 px-5" style="max-width: 960px; margin: auto">
+    <div class="text-h4 text-primary">Log</div>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :items-per-page="items.length"
+      :hide-default-footer="true"
+      item-key="node.id_"
+      :expanded.sync="expanded"
+      show-expand
+      class="mt-5"
+    >
+      <template v-slot:expanded-row="{ columns, item }">
+        <td :colspan="columns.length">
+          <pre
+            style="
+              margin: auto;
+              width: 900px;
+              max-height: 450px;
+              overflow: auto;
+            "
+            >{{ item.raw.message }}</pre
           >
-            <template v-slot:expanded-item="{ headers, item }">
-              <td :colspan="headers.length">
-                <pre>{{ item.message }}</pre>
-              </td>
-            </template>
-            <template v-slot:item.actions="{ item }">
-              <v-icon small @click="openRemoveForm(item)"> mdi-delete </v-icon>
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
-    </v-row>
+        </td>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon small @click="openRemoveForm(item)"> mdi-delete </v-icon>
+      </template>
+    </v-data-table>
     <v-dialog v-model="dialogRemove" max-width="500px">
       <log-remove-form
         :id_="removeId"
@@ -33,7 +35,7 @@
         @finished="removeFormFinished"
       ></log-remove-form>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -98,6 +100,8 @@ const headers = ref([
   { title: "", key: "data-table-expand" },
   { title: "", key: "actions", sortable: false, align: "end" },
 ]);
+
+const expanded = ref<string[]>([]);
 
 const dialogRemove = ref(false);
 const removeId = ref<number | null>(null);
