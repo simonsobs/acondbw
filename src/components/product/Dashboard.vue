@@ -6,17 +6,16 @@
       :loading="loading"
       :items-per-page="-1"
       @click:row="clickRow"
-      class="elevation-1"
     >
       <template v-slot:[`item.plural`]="{ item }">
         <router-link
           :to="{
             name: 'ProductList',
-            params: { productTypeName: item.selectable.name },
+            params: { productTypeName: item.raw.name },
           }"
         >
           <span class="capitalize font-weight-bold text-primary">
-            {{ item.selectable.plural }}
+            {{ item.raw.plural }}
           </span>
         </router-link>
       </template>

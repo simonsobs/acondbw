@@ -6,7 +6,6 @@
       :headers="headers"
       :items="items"
       :items-per-page="-1"
-      class="elevation-1"
       @click:row="onClickRow"
     >
       <template v-slot:top>

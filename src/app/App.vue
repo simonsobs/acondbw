@@ -132,6 +132,8 @@ body,
 
 .v-table {
   background: rgb(var(--v-theme-surface-container-lowest));
+  border: 1px solid rgb(var(--v-theme-outline-variant));
+  border-radius: 8px;
 }
 .v-table__wrapper > table > thead > tr th,
 .v-table__wrapper > table tbody > tr > td {
