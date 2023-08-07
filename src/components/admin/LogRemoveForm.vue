@@ -4,7 +4,7 @@
     <v-card-text>
       <v-alert v-if="error" type="error">{{ error }}</v-alert>
     </v-card-text>
-    <v-card-text class="body-1 font-weight-medium error--text">
+    <v-card-text class="body-1 font-weight-medium text-error">
       Really, remove?
     </v-card-text>
     <v-card-actions class="mt-3">
