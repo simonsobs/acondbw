@@ -9,7 +9,7 @@
             required
             :hint="pluralHint"
             persistent-hint
-            v-model="v$.form.plural.$model"
+            v-model="v$.plural.$model"
             :error-messages="pluralErrors"
           ></v-text-field>
         </v-col>
@@ -21,17 +21,15 @@
                   label="Indefinite article for singular"
                   id="radio-group-indef-article"
                   class="mt-0"
-                  :value="v$.form.indefArticle.$model"
-                  @change="fixForEmptyString(v$.form.indefArticle, $event)"
+                  v-model="v$.indefArticle.$model"
                   :hint="indefArticleHint"
                   persistent-hint
                   row
                 >
                   <v-radio
-                    v-for="(item, index) in indefArticleItems"
+                    v-for="item in indefArticleItems"
                     :label="item.text"
                     :value="item.value"
-                    :key="index"
                   ></v-radio>
                 </v-radio-group>
               </v-col>
@@ -42,8 +40,8 @@
                   required
                   :hint="singularHint"
                   persistent-hint
-                  :prefix="v$.form.indefArticle.$model"
-                  v-model="v$.form.singular.$model"
+                  :prefix="v$.indefArticle.$model || undefined"
+                  v-model="v$.singular.$model"
                   :error-messages="singularErrors"
                 ></v-text-field>
               </v-col>
@@ -57,7 +55,7 @@
             required
             :hint="nameHint"
             persistent-hint
-            v-model="v$.form.name.$model"
+            v-model="v$.name.$model"
             :error-messages="nameErrors"
           >
             <template v-slot:message="{ message }">
@@ -72,12 +70,15 @@
             :items="iconItems"
             :hint="iconHint"
             persistent-hint
-            v-model="v$.form.icon.$model"
-            :prepend-icon="v$.form.icon.$model"
+            v-model="v$.icon.$model"
+            :prepend-icon="v$.icon.$model || undefined"
           >
-            <template v-slot:item="data">
-              <v-icon class="me-3"> {{ data.item }} </v-icon>
-              {{ data.item }}
+            <template v-slot:item="{ props, item }">
+              <v-list-item
+                v-bind="props"
+                :prepend-icon="item?.raw"
+                :title="item?.raw"
+              ></v-list-item>
             </template>
             <template v-slot:message="{ message }">
               <span v-html="message"></span>
@@ -90,7 +91,7 @@
             label="Order"
             :hint="orderHint"
             persistent-hint
-            v-model="v$.form.order.$model"
+            v-model="v$.order.$model"
             :error-messages="orderErrors"
           ></v-text-field>
         </v-col>
@@ -99,8 +100,8 @@
         <v-spacer></v-spacer>
         <v-btn
           color="secondary"
-          :disabled="!v$.form.$anyDirty"
-          text
+          :disabled="!v$.$anyDirty"
+          variant="text"
           @click="reset"
         >
           Reset
@@ -110,8 +111,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { computed, reactive, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, integer } from "@vuelidate/validators";
 
@@ -123,145 +124,291 @@ const iconItems = mdIcons.map(({ name }) => `mdi-${name}`);
 
 type ValueType = Omit<CreateProductTypeInput, "fieldIds">;
 
-export default defineComponent({
-  name: "FormProductType",
-  props: {
-    value: Object as PropType<ValueType>,
-  },
-  setup() {
-    return { v$: useVuelidate() };
-  },
-  data() {
-    const formDefault: ValueType = {
-      name: "",
-      order: null,
-      indefArticle: "",
-      singular: "",
-      plural: "",
-      icon: "mdi-chart-gantt",
-    };
-    const formReset = { ...formDefault, ...(this.value || {}) };
-    return {
-      formReset,
-      form: { ...formReset },
-      pluralHint:
-        'Product type name in the plural form, e.g., "maps". ' +
-        "If the plural form does not exist, use the singular form. " +
-        "White spaces can be included. " +
-        "Use all lowercase unless the word is usually written in uppercase. " +
-        "It will be capitalized automatically when rendered if appropriate. ",
-      indefArticleHint:
-        "The indefinite article to be placed before the singular form of the product type name.",
-      indefArticleItems: [
-        { text: "a", value: "a" },
-        { text: "an", value: "an" },
-        { text: "(none)", value: "" },
-      ],
-      singularHint:
-        'Product type name in the singular form, e.g., "map". ' +
-        "White spaces can be included. " +
-        "Use all lowercase unless the word is usually written in uppercase. " +
-        "It will be capitalized automatically when rendered if appropriate. ",
-      nameHint:
-        "Name of the product type in the " +
-        '<a href="https://en.wikipedia.org/wiki/Snake_case" target="_blank">snake case</a> ' +
-        "Use the singular name with all white spaces replaced with underscores if possible. ",
-      iconHint:
-        "Icon for the product type. " +
-        "Choose from material design icons: " +
-        '<a href="https://pictogrammers.github.io/@mdi/font/6.3.95/" target="_blank">materialdesignicons.com/</a>',
-      iconItems,
-      orderHint:
-        "The product types are laid out in the ascending order of these values " +
-        "when relevant, e.g., in the sidebar navigation.",
-    };
-  },
-  validations() {
-    return {
-      form: {
-        name: { required },
-        order: { integer },
-        indefArticle: {},
-        singular: { required },
-        plural: { required },
-        icon: {},
-      },
-    };
-  },
-  computed: {
-    nameErrors() {
-      const errors: string[] = [];
-      const field = this.v$.form.name;
-      if (!field.$dirty) return errors;
-      field.required.$invalid && errors.push("This field is required");
-      return errors;
-    },
-    singularErrors() {
-      const errors: string[] = [];
-      const field = this.v$.form.singular;
-      if (!field.$dirty) return errors;
-      field.required.$invalid && errors.push("This field is required");
-      return errors;
-    },
-    pluralErrors() {
-      const errors: string[] = [];
-      const field = this.v$.form.plural;
-      if (!field.$dirty) return errors;
-      field.required.$invalid && errors.push("This field is required");
-      return errors;
-    },
-    orderErrors() {
-      const errors: string[] = [];
-      const field = this.v$.form.order;
-      if (!field.$dirty) return errors;
-      field.integer.$invalid && errors.push("Must be an integer value");
-      return errors;
-    },
-    valid() {
-      return !this.v$.$invalid;
-    },
-  },
-  watch: {
-    value: {
-      handler() {
-        if (JSON.stringify(this.value) === JSON.stringify(this.form)) return;
-        this.form = { ...this.formReset, ...(this.value || {}) };
-      },
-      deep: true,
-    },
-    form: {
-      handler() {
-        // if (this.v$.$invalid) return;
-        this.$emit("input", { ...this.form });
-      },
-      deep: true,
-      immediate: true,
-    },
-    valid: {
-      handler(val) {
-        this.$emit("valid", val);
-      },
-      immediate: true,
-    },
-  },
-  methods: {
-    fixForEmptyString(field, value) {
-      // v-raio returns 2 when the value is "" (empty string)
-      // This might be a bug of Vuetify.
-      const fixedValue = this.indefArticleItems
-        .map(({ value }) => value)
-        .includes(value)
-        ? value
-        : "";
-      field.$model = fixedValue;
-      field.$touch();
-    },
-    reset() {
-      this.form = { ...this.formReset };
-      this.v$.$reset();
-    },
-  },
+interface Props {
+  modelValue: ValueType;
+}
+
+interface Emits {
+  (event: "update:modelValue", value: ValueType): void;
+  (event: "valid", value: boolean): void;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+const formDefault = {
+  name: "",
+  order: null,
+  indefArticle: "",
+  singular: "",
+  plural: "",
+  icon: "mdi-chart-gantt",
+};
+const formReset = { ...formDefault, ...(props.modelValue || {}) };
+const form = reactive({ ...formReset });
+
+const pluralHint =
+  'Product type name in the plural form, e.g., "maps". ' +
+  "If the plural form does not exist, use the singular form. " +
+  "White spaces can be included. " +
+  "Use all lowercase unless the word is usually written in uppercase. " +
+  "It will be capitalized automatically when rendered if appropriate. ";
+
+const indefArticleHint =
+  "The indefinite article to be placed before the singular form of the product type name.";
+
+const indefArticleItems = [
+  { text: "a", value: "a" },
+  { text: "an", value: "an" },
+  { text: "(none)", value: "" },
+];
+
+const singularHint =
+  'Product type name in the singular form, e.g., "map". ' +
+  "White spaces can be included. " +
+  "Use all lowercase unless the word is usually written in uppercase. " +
+  "It will be capitalized automatically when rendered if appropriate. ";
+
+const nameHint =
+  "Name of the product type in the " +
+  '<a href="https://en.wikipedia.org/wiki/Snake_case" target="_blank">snake case</a> ' +
+  "Use the singular name with all white spaces replaced with underscores if possible. ";
+
+const iconHint =
+  "Icon for the product type. " +
+  "Choose from material design icons: " +
+  '<a href="https://pictogrammers.github.io/@mdi/font/6.3.95/" target="_blank">materialdesignicons.com/</a>';
+
+const orderHint =
+  "The product types are laid out in the ascending order of these values " +
+  "when relevant, e.g., in the sidebar navigation.";
+
+const rules = {
+  name: { required },
+  order: { integer },
+  indefArticle: {},
+  singular: { required },
+  plural: { required },
+  icon: {},
+};
+
+const v$ = useVuelidate(rules, form);
+
+const nameErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.name;
+  if (!field.$dirty) return errors;
+  field.required.$invalid && errors.push("This field is required");
+  return errors;
 });
+
+const singularErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.singular;
+  if (!field.$dirty) return errors;
+  field.required.$invalid && errors.push("This field is required");
+  return errors;
+});
+
+const pluralErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.plural;
+  if (!field.$dirty) return errors;
+  field.required.$invalid && errors.push("This field is required");
+  return errors;
+});
+
+const orderErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.order;
+  if (!field.$dirty) return errors;
+  field.integer.$invalid && errors.push("Must be an integer value");
+  return errors;
+});
+
+const valid = computed(() => !v$.value.$invalid);
+
+watch(
+  () => props.modelValue,
+  () => {
+    if (JSON.stringify(props.modelValue) === JSON.stringify(form)) return;
+    Object.assign(form, { ...formReset, ...(props.modelValue || {}) });
+  },
+  { deep: true }
+);
+
+watch(
+  () => form,
+  () => {
+    // if (v$.value.$invalid) return;
+    emit("update:modelValue", { ...form });
+  },
+  { deep: true, immediate: true }
+);
+
+watch(
+  () => valid.value,
+  (val) => {
+    emit("valid", val);
+  },
+  { immediate: true }
+);
+
+function fixForEmptyString(field, value) {
+  console.log("fixForEmptyString", field, value);
+  // v-raio returns 2 when the value is "" (empty string)
+  // This might be a bug of Vuetify.
+  const fixedValue = indefArticleItems.map(({ value }) => value).includes(value)
+    ? value
+    : "";
+  field.$model = fixedValue;
+  field.$touch();
+}
+
+function reset() {
+  Object.assign(form, { ...formReset });
+  v$.value.$reset();
+}
+
+// export default defineComponent({
+//   name: "FormProductType",
+//   props: {
+//     value: Object as PropType<ValueType>,
+//   },
+//   setup() {
+//     return { v$: useVuelidate() };
+//   },
+//   data() {
+//     const formDefault: ValueType = {
+//       name: "",
+//       order: null,
+//       indefArticle: "",
+//       singular: "",
+//       plural: "",
+//       icon: "mdi-chart-gantt",
+//     };
+//     const formReset = { ...formDefault, ...(this.value || {}) };
+//     return {
+//       formReset,
+//       form: { ...formReset },
+//       pluralHint:
+//         'Product type name in the plural form, e.g., "maps". ' +
+//         "If the plural form does not exist, use the singular form. " +
+//         "White spaces can be included. " +
+//         "Use all lowercase unless the word is usually written in uppercase. " +
+//         "It will be capitalized automatically when rendered if appropriate. ",
+//       indefArticleHint:
+//         "The indefinite article to be placed before the singular form of the product type name.",
+//       indefArticleItems: [
+//         { text: "a", value: "a" },
+//         { text: "an", value: "an" },
+//         { text: "(none)", value: "" },
+//       ],
+//       singularHint:
+//         'Product type name in the singular form, e.g., "map". ' +
+//         "White spaces can be included. " +
+//         "Use all lowercase unless the word is usually written in uppercase. " +
+//         "It will be capitalized automatically when rendered if appropriate. ",
+//       nameHint:
+//         "Name of the product type in the " +
+//         '<a href="https://en.wikipedia.org/wiki/Snake_case" target="_blank">snake case</a> ' +
+//         "Use the singular name with all white spaces replaced with underscores if possible. ",
+//       iconHint:
+//         "Icon for the product type. " +
+//         "Choose from material design icons: " +
+//         '<a href="https://pictogrammers.github.io/@mdi/font/6.3.95/" target="_blank">materialdesignicons.com/</a>',
+//       iconItems,
+//       orderHint:
+//         "The product types are laid out in the ascending order of these values " +
+//         "when relevant, e.g., in the sidebar navigation.",
+//     };
+//   },
+//   validations() {
+//     return {
+//       form: {
+//         name: { required },
+//         order: { integer },
+//         indefArticle: {},
+//         singular: { required },
+//         plural: { required },
+//         icon: {},
+//       },
+//     };
+//   },
+//   computed: {
+//     nameErrors() {
+//       const errors: string[] = [];
+//       const field = this.v$.form.name;
+//       if (!field.$dirty) return errors;
+//       field.required.$invalid && errors.push("This field is required");
+//       return errors;
+//     },
+//     singularErrors() {
+//       const errors: string[] = [];
+//       const field = this.v$.form.singular;
+//       if (!field.$dirty) return errors;
+//       field.required.$invalid && errors.push("This field is required");
+//       return errors;
+//     },
+//     pluralErrors() {
+//       const errors: string[] = [];
+//       const field = this.v$.form.plural;
+//       if (!field.$dirty) return errors;
+//       field.required.$invalid && errors.push("This field is required");
+//       return errors;
+//     },
+//     orderErrors() {
+//       const errors: string[] = [];
+//       const field = this.v$.form.order;
+//       if (!field.$dirty) return errors;
+//       field.integer.$invalid && errors.push("Must be an integer value");
+//       return errors;
+//     },
+//     valid() {
+//       return !this.v$.$invalid;
+//     },
+//   },
+//   watch: {
+//     value: {
+//       handler() {
+//         if (JSON.stringify(this.value) === JSON.stringify(this.form)) return;
+//         this.form = { ...this.formReset, ...(this.value || {}) };
+//       },
+//       deep: true,
+//     },
+//     form: {
+//       handler() {
+//         // if (this.v$.$invalid) return;
+//         this.$emit("input", { ...this.form });
+//       },
+//       deep: true,
+//       immediate: true,
+//     },
+//     valid: {
+//       handler(val) {
+//         this.$emit("valid", val);
+//       },
+//       immediate: true,
+//     },
+//   },
+//   methods: {
+//     fixForEmptyString(field, value) {
+//       // v-raio returns 2 when the value is "" (empty string)
+//       // This might be a bug of Vuetify.
+//       const fixedValue = this.indefArticleItems
+//         .map(({ value }) => value)
+//         .includes(value)
+//         ? value
+//         : "";
+//       field.$model = fixedValue;
+//       field.$touch();
+//     },
+//     reset() {
+//       this.form = { ...this.formReset };
+//       this.v$.$reset();
+//     },
+//   },
+// });
 </script>
 
 <style>
