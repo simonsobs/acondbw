@@ -1,6 +1,12 @@
 <template>
-  <v-progress-circular v-if="loading" indeterminate :size="18" :width="3"
-    color="secondary"></v-progress-circular>
+  <v-progress-circular
+    v-if="loading"
+    indeterminate
+    :size="18"
+    :width="3"
+    color="secondary"
+  >
+  </v-progress-circular>
   <v-card flat v-else>
     <div class="text-center">
       <slot name="title"> <v-card-title> Sign In </v-card-title> </slot>
