@@ -1,85 +1,101 @@
 <template>
-  <div>
-    <template v-if="allGitHubTokens">
+  <div class="mt-5" style="position: relative">
+    <template v-if="nodes">
       <v-data-table
-        :headers="allGitHubTokensHeaders"
-        :items="allGitHubTokens.edges"
-        :items-per-page="allGitHubTokens.totalCount"
+        :headers="headers"
+        :items="items"
+        :loading="loading"
+        :items-per-page="-1"
         :hide-default-footer="true"
       >
         <template v-slot:top>
-          <v-toolbar flat>
+          <v-alert v-if="error" variant="tonal" type="error" :text="error">
+          </v-alert>
+          <v-alert
+            closable
+            v-model="alertDelete"
+            variant="tonal"
+            type="error"
+            :text="errorDelete"
+          >
+          </v-alert>
+          <div class="d-flex">
             <v-spacer></v-spacer>
             <v-dialog v-model="dialogAdd" max-width="500px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon v-bind="attrs" v-on="on">
-                  <v-icon>mdi-plus-thick</v-icon>
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" variant="text" icon>
+                  <v-icon icon="mdi-plus-thick"></v-icon>
                 </v-btn>
               </template>
               <v-card>
                 <v-card-title>Add a token with org access</v-card-title>
                 <v-card-actions>
-                  <v-btn block outlined @click="requestAuth">
-                    <v-icon left>mdi-github</v-icon>Add
+                  <v-btn block variant="outlined" @click="requestAuth">
+                    <v-icon icon="mdi-github"></v-icon>
+                    Add
                   </v-btn>
                 </v-card-actions>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="secondary" text @click="closeAdd">Cancel</v-btn>
+                  <v-btn color="secondary" variant="text" @click="closeAdd">
+                    Cancel
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
-              <v-card>
+              <v-card class="pa-2">
                 <v-card-title class="headline">Delete</v-card-title>
-                <v-card-text class="body-1 font-weight-medium error--text"
-                  >Really, delete the token?</v-card-text
-                >
+                <v-card-text class="body-1 font-weight-medium text-error">
+                  Really, delete the token?
+                </v-card-text>
                 <v-card-actions>
+                  <v-btn color="secondary" @click="closeDelete"> Cancel </v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="secondary" text @click="closeDelete"
-                    >Cancel</v-btn
+                  <v-btn
+                    color="error"
+                    variant="outlined"
+                    @click="deleteItemConfirm"
                   >
-                  <v-btn color="error" text @click="deleteItemConfirm"
-                    >OK</v-btn
-                  >
+                    OK
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-toolbar>
-          <v-alert dismissible v-model="alert" type="error">{{
-            error
-          }}</v-alert>
+          </div>
         </template>
-        <template v-slot:[`item.node.user.avatarUrl`]="{ item }">
-          <span>
-            <v-avatar size="24">
-              <img :src="item.node.user.avatarUrl" />
-            </v-avatar>
-          </span>
+        <template v-slot:item.avatarUrl="{ item }">
+          <v-avatar size="24">
+            <v-img :src="item.raw.avatarUrl"></v-img>
+          </v-avatar>
         </template>
-        <template v-slot:[`item.node.timeCreated`]="{ item }">
-          <span>{{ new Date(item.node.timeCreated).toLocaleString() }}</span>
+        <template v-slot:item.timeCreated="{ item }">
+          <span>{{ new Date(item.raw.timeCreated).toLocaleString() }}</span>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small @click="deleteToken(item)"> mdi-delete </v-icon>
+        <template v-slot:item.actions="{ item }">
+          <v-icon small @click="deleteToken(item.raw)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
     </template>
+    <dev-tool-loading-state-menu top="3px" right="3px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </div>
 </template>
 
-<script lang="ts">
-// The implementation based on the example
-// https://vuetifyjs.com/en/components/data-tables/#crud-actions
-// https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
-
-import { defineComponent, ref, watch, nextTick } from "vue";
+<script setup lang="ts">
+import { ref, watch, computed, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { v4 as uuidv4 } from "uuid";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
-import { useQuery, useMutation, useClientHandle } from "@urql/vue";
+import { useClientHandle } from "@urql/vue";
+
+import {
+  useAllGitHubTokensWithOrgAccessQuery,
+  useDeleteGitHubTokenMutation,
+} from "@/generated/graphql";
+
+import { useQueryState } from "@/utils/query-state";
 
 import {
   redirectToGitHubAuthURL,
@@ -88,137 +104,114 @@ import {
   UnencodedState,
 } from "@/utils/auth/oauth";
 
-import ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS from "@/graphql/queries/AllGitHubTokensWithOrgAccess.gql";
-import DELETE_GITHUB_TOKEN from "@/graphql/mutations/DeleteGitHubToken.gql";
+const router = useRouter();
+const store = useStore();
+const authStore = useAuthStore();
+const clientHandle = useClientHandle();
 
-interface GitHubUser {
-  login: string;
-  avatarUrl?: string;
-  url?: string;
+const query = useAllGitHubTokensWithOrgAccessQuery();
+type Query = typeof query;
+
+function readEdges(query: Query) {
+  const edgesAndNulls = query.data?.value?.allGitHubTokens?.edges;
+  if (!edgesAndNulls) return [];
+  return edgesAndNulls.flatMap((e) => (e ? [e] : []));
 }
 
-interface GitHubToken {
-  tokenId: string;
-  tokenMasked: string;
-  scope: string;
-  timeCreated: string;
-  user: GitHubUser;
+function readNodes(query: Query) {
+  return readEdges(query).flatMap((e) => (e.node ? e.node : []));
 }
 
-interface GitHubTokenEdge {
-  node: GitHubToken;
+function isEmpty(query: Query) {
+  return readNodes(query).length === 0;
 }
 
-interface GitHubTokenConnection {
-  totalCount: number;
-  edges: GitHubTokenEdge[];
+const queryState = useQueryState(query, { isEmpty });
+const { loading, loaded, empty, error, devtoolState } = queryState;
+
+const edges = computed(() => (empty.value ? [] : readEdges(query)));
+const nodes = computed(() => (empty.value ? [] : readNodes(query)));
+
+const items = computed(() =>
+  nodes.value.map((node) => ({
+    avatarUrl: node.user?.avatarUrl,
+    login: node.user?.login,
+    tokenMasked: node.tokenMasked,
+    scope: node.scope,
+    timeCreated: node.timeCreated,
+    tokenId: Number(node.tokenId),
+  }))
+);
+
+const headers = ref([
+  { title: "", key: "avatarUrl", align: "start" },
+  { title: "User", key: "login" },
+  { title: "Token", key: "tokenMasked" },
+  { title: "Scope", key: "scope" },
+  { title: "Created at", key: "timeCreated" },
+  { title: "", key: "actions", sortable: false, align: "end" },
+]);
+
+const alertDelete = ref(false);
+const errorDelete = ref<any>(null);
+
+const dialogAdd = ref(false);
+function closeAdd() {
+  dialogAdd.value = false;
 }
-
-export default defineComponent({
-  name: "GitHubTokenTable",
-  setup() {
-    const router = useRouter();
-    const store = useStore();
-    const authStore = useAuthStore();
-    const clientHandle = useClientHandle();
-    const alert = ref(false);
-    const error = ref<any>(null);
-
-    const allGitHubTokens = ref<GitHubTokenConnection | null>(null);
-    const query = useQuery<{ allGitHubTokens: GitHubTokenConnection }>({
-      query: ALL_GIT_HUB_TOKENS_WITH_ORG_ACCESS,
-    });
-    watch(query.data, (data) => {
-      if (data) {
-        allGitHubTokens.value = data.allGitHubTokens;
-      }
-    });
-
-    const allGitHubTokensHeaders = ref([
-      { text: "", value: "node.user.avatarUrl", align: "start" },
-      { text: "User", value: "node.user.login" },
-      { text: "Token", value: "node.tokenMasked" },
-      { text: "Scope", value: "node.scope" },
-      { text: "Created at", value: "node.timeCreated" },
-      { text: "", value: "actions", sortable: false, align: "end" },
-    ]);
-
-    const dialogAdd = ref(false);
-    function closeAdd() {
-      dialogAdd.value = false;
-    }
-    async function requestAuth() {
-      try {
-        authStore.clearAuthError();
-        const callbackRoute = { name: "AdminAppAuth" };
-        const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
-        const rawState: UnencodedState = {
-          redirect: callbackRoute,
-          option: uuidv4(),
-        };
-        const state = encodeAndStoreState(rawState);
-        await redirectToGitHubAuthURL(clientHandle.client, scope, state);
-      } catch (error) {
-        clearState();
-        router.push({ name: "AdminAppTokenError" });
-        closeAdd();
-      }
-    }
-
-    const dialogDelete = ref(false);
-    const deleteTokenId = ref<string | null>(null);
-    function deleteToken(item) {
-      if (!allGitHubTokens.value) return;
-      const index = allGitHubTokens.value.edges.indexOf(item);
-      deleteTokenId.value = allGitHubTokens.value.edges[index].node.tokenId;
-      dialogDelete.value = true;
-    }
-    function closeDelete() {
-      dialogDelete.value = false;
-      nextTick(() => {
-        deleteTokenId.value = null;
-      });
-    }
-    const { executeMutation } = useMutation(DELETE_GITHUB_TOKEN);
-    async function deleteItemConfirm() {
-      try {
-        const { error } = await executeMutation({
-          tokenId: deleteTokenId.value,
-        });
-        if (error) throw error;
-        query.executeQuery({ requestPolicy: "network-only" });
-        store.apolloMutationCalled();
-        store.setSnackbarMessage("Deleted");
-      } catch (e) {
-        error.value = e;
-      }
-      closeDelete();
-    }
-
-    watch(error, (val, oldVal) => {
-      alert.value = val ? true : false;
-    });
-
-    watch(alert, (val, oldVal) => {
-      if (!val) {
-        error.value = null;
-      }
-    });
-
-    return {
-      alert,
-      error,
-      allGitHubTokens,
-      allGitHubTokensHeaders,
-      dialogAdd,
-      closeAdd,
-      requestAuth,
-      dialogDelete,
-      deleteTokenId,
-      deleteToken,
-      closeDelete,
-      deleteItemConfirm,
+async function requestAuth() {
+  try {
+    authStore.clearAuthError();
+    const callbackRoute = { name: "AdminAppAuth" };
+    const scope = "read:org"; // (no scope) https://docs.github.com/en/developers/apps/scopes-for-oauth-apps
+    const rawState: UnencodedState = {
+      redirect: callbackRoute,
+      option: uuidv4(),
     };
-  },
+    const state = encodeAndStoreState(rawState);
+    await redirectToGitHubAuthURL(clientHandle.client, scope, state);
+  } catch (error) {
+    clearState();
+    router.push({ name: "AdminAppTokenError" });
+    closeAdd();
+  }
+}
+
+const dialogDelete = ref(false);
+const deleteTokenId = ref<number | null>(null);
+function deleteToken(item: (typeof items.value)[0]) {
+  deleteTokenId.value = item.tokenId;
+  dialogDelete.value = true;
+}
+function closeDelete() {
+  dialogDelete.value = false;
+  nextTick(() => {
+    deleteTokenId.value = null;
+  });
+}
+const { executeMutation } = useDeleteGitHubTokenMutation();
+async function deleteItemConfirm() {
+  if (!deleteTokenId.value) return;
+  try {
+    const { error } = await executeMutation({
+      tokenId: deleteTokenId.value,
+    });
+    if (error) throw error;
+    query.executeQuery({ requestPolicy: "network-only" });
+    store.apolloMutationCalled();
+    store.setSnackbarMessage("Deleted");
+  } catch (e) {
+    // @ts-ignore
+    errorDelete.value = e.message;
+  }
+  closeDelete();
+}
+
+watch(errorDelete, (val, oldVal) => {
+  alertDelete.value = val ? true : false;
+});
+
+watch(alertDelete, (val, oldVal) => {
+  if (!val) errorDelete.value = null;
 });
 </script>
