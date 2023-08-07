@@ -2,7 +2,12 @@
   <v-card>
     <v-card-title>Add a GitHub organization</v-card-title>
     <v-card-text>
-      <v-alert v-if="error" type="error">{{ error }}</v-alert>
+      <v-alert
+        v-if="error"
+        variant="tonal"
+        type="error"
+        :text="error"
+      ></v-alert>
       <v-container>
         <v-row>
           <v-col cols="12">
@@ -19,11 +24,16 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="cancel">Cancel</v-btn>
-      <v-btn color="secondary" text @click="reset">Reset</v-btn>
-      <v-btn color="primary" :disabled="v$.$invalid" text @click="add"
-        >Add</v-btn
+      <v-btn color="secondary" variant="text" @click="cancel">Cancel</v-btn>
+      <v-btn color="secondary" variant="text" @click="reset">Reset</v-btn>
+      <v-btn
+        color="primary"
+        :disabled="v$.$invalid"
+        variant="text"
+        @click="add"
       >
+        Add
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -85,7 +95,8 @@ async function add() {
     emit("finished");
     delayedReset();
   } catch (e) {
-    error.value = e;
+    // @ts-ignore
+    error.value = e.message;
   }
 }
 </script>
