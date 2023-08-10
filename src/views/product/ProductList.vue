@@ -143,7 +143,7 @@
           text="Add the first entry"
         >
         </v-btn>
-        <v-dialog v-model="deleteDialog" max-width="600">
+        <v-dialog v-model="deleteDialog" max-width="400">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
