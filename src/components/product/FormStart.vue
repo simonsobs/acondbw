@@ -11,13 +11,14 @@
             :hint="`Name of the ${productType.singular}.`"
             persistent-hint
             :error-messages="nameErrors"
-            :value="v$.form.name.$model"
+            :model-value="v$.form.name.$model"
             @input="debounceInput(v$.form.name, $event)"
             @blur="v$.form.name.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="3" cols="12" md="10">
-          <v-text-field-with-date-picker
+          <!-- need more work on v-date-picker -->
+          <!-- <v-text-field-with-date-picker
             outlined
             label="Date produced (YYYY-MM-DD)*"
             required
@@ -25,7 +26,18 @@
             persistent-hint
             v-model="v$.form.dateProduced.$model"
             :error-messages="dateProducedErrors"
-          ></v-text-field-with-date-picker>
+          >
+          </v-text-field-with-date-picker> -->
+          <v-text-field
+            outlined
+            label="Date produced (YYYY-MM-DD)*"
+            required
+            :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06.`"
+            persistent-hint
+            v-model="v$.form.dateProduced.$model"
+            :error-messages="dateProducedErrors"
+          >
+          </v-text-field>
         </v-col>
         <v-col order="4" cols="12" md="10">
           <v-text-field
@@ -64,12 +76,12 @@
         <v-col cols="12" md="10" class="mt-4">
           <label class="v-label theme--light">Note</label>
           <v-tabs v-model="tabNote" class="mb-1">
-            <v-tab key="edit">Edit</v-tab>
-            <v-tab key="preview">Preview</v-tab>
+            <v-tab value="edit">Edit</v-tab>
+            <v-tab value="preview">Preview</v-tab>
           </v-tabs>
-          <v-tabs-items v-model="tabNote">
-            <v-tab-item
-              key="edit"
+          <v-window v-model="tabNote">
+            <v-window-item
+              value="edit"
               style="min-height: 180px"
               :transition="false"
               :reverse-transition="false"
@@ -81,17 +93,17 @@
                 rows="5"
                 v-model="v$.form.note.$model"
               ></v-textarea>
-            </v-tab-item>
-            <v-tab-item
-              key="preview"
+            </v-window-item>
+            <v-window-item
+              value="preview"
               v-html="noteMarked"
               style="min-height: 180px"
               :transition="false"
               :reverse-transition="false"
               class="markdown-body px-3 pt-3"
             >
-            </v-tab-item>
-          </v-tabs-items>
+            </v-window-item>
+          </v-window>
         </v-col>
       </v-row>
     </v-container>
@@ -100,7 +112,7 @@
       <v-btn
         color="secondary"
         :disabled="!v$.form.$anyDirty"
-        text
+        variant="text"
         @click="reset"
       >
         Reset
@@ -109,8 +121,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, ref, computed, watch } from "vue";
+<script setup lang="ts">
+import { ref, computed, watch } from "vue";
 import { useClientHandle, Client } from "@urql/vue";
 import _ from "lodash";
 import { marked } from "marked";
@@ -118,6 +130,9 @@ import gql from "graphql-tag";
 
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
+
+// not sure how to use this with toPromise()
+import { useQueryProductNameInFormStartQuery } from "@/generated/graphql";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
@@ -171,175 +186,166 @@ interface FormStepStart {
   note: string;
 }
 
-export default defineComponent({
-  name: "FormStart",
-  components: { VTextFieldWithDatePicker },
-  props: {
-    value: Object as PropType<FormStepStart>,
-    productType: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(prop, { emit }) {
-    const urqlClientHandle = useClientHandle();
-    const error = ref<any>(null);
+interface Props {
+  modelValue: FormStepStart;
+  productType: {
+    typeId: number;
+    name: string;
+    singular: string;
+    plural: string;
+  };
+}
 
-    const formDefault: FormStepStart = {
-      name: "",
-      dateProduced: new Date().toISOString().slice(0, 10), // "YYYY-MM-DD"
-      producedBy: "",
-      contact: "",
-      paths: "",
-      note: "",
-    };
+interface Emits {
+  (event: "update:modelValue", value: FormStepStart): void;
+  (event: "valid", value: boolean): void;
+  (event: "cancel"): void;
+}
 
-    const formReset = ref<FormStepStart>({
-      ...formDefault,
-      ...(prop.value || {}),
-    });
+const prop = defineProps<Props>();
+const emit = defineEmits<Emits>();
 
-    const form = ref<FormStepStart>({ ...formReset.value });
+const urqlClientHandle = useClientHandle();
+const error = ref<any>(null);
 
-    const rules = computed(() => ({
-      form: {
-        name: {
-          required,
-          unique: withAsync(async (value) => {
-            if (value === "") return true;
-            if (value === formReset.value.name) return true;
-            try {
-              return await isNameAvailable(
-                value.trim(),
-                prop.productType.typeId,
-                urqlClientHandle.client
-              );
-            } catch (e) {
-              error.value = e;
-              return true;
-            }
-          }),
-        },
-        producedBy: { required },
-        dateProduced: { required, parsableAsDate },
-        contact: { required },
-        paths: {},
-        note: {},
-      },
-    }));
+const formDefault: FormStepStart = {
+  name: "",
+  dateProduced: new Date().toISOString().slice(0, 10), // "YYYY-MM-DD"
+  producedBy: "",
+  contact: "",
+  paths: "",
+  note: "",
+};
 
-    const v$ = useVuelidate(rules, { form });
-
-    const nameErrors = computed(() => {
-      const errors: string[] = [];
-      const field = v$.value.form.name;
-      if (!field.$dirty) return errors;
-      field.required.$invalid && errors.push("This field is required");
-      field.unique.$invalid &&
-        // @ts-ignore
-        errors.push(`The name "${field.$model.trim()}" is not available.`);
-      return errors;
-    });
-
-    const dateProducedErrors = computed(() => {
-      const errors: string[] = [];
-      const field = v$.value.form.dateProduced;
-      if (!field.$dirty) return errors;
-      field.required.$invalid && errors.push("This field is required");
-      field.parsableAsDate.$invalid &&
-        errors.push(`"${field.$model}" cannot be parsed as a date.`);
-      return errors;
-    });
-
-    const producedByErrors = computed(() => {
-      const errors: string[] = [];
-      const field = v$.value.form.producedBy;
-      if (!field.$dirty) return errors;
-      field.required.$invalid && errors.push("This field is required");
-      return errors;
-    });
-
-    const contactErrors = computed(() => {
-      const errors: string[] = [];
-      const field = v$.value.form.contact;
-      if (!field.$dirty) return errors;
-      field.required.$invalid && errors.push("This field is required");
-      return errors;
-    });
-
-    const valid = computed(() => !v$.value.$invalid);
-
-    watch(
-      () => prop.value,
-      (val) => {
-        if (JSON.stringify(val) === JSON.stringify(form.value)) return;
-        form.value = { ...formReset.value, ...(val || {}) };
-      },
-      { deep: true }
-    );
-
-    watch(
-      form,
-      (val) => {
-        emit("input", { ...val });
-      },
-      {
-        deep: true,
-        immediate: true,
-      }
-    );
-
-    watch(
-      valid,
-      (val) => {
-        emit("valid", val);
-      },
-      {
-        immediate: true,
-      }
-    );
-
-    const tabNote = ref<number | null>(null);
-
-    const noteMarked = computed(() =>
-      form.value.note
-        ? marked.parse(form.value.note)
-        : "<em>Nothing to preview</em>"
-    );
-
-    const debounceInput = _.debounce(function (field, value) {
-      // https://github.com/vuelidate/vuelidate/issues/320#issuecomment-395349377
-      field.$model = value;
-      field.$touch();
-    }, 500);
-
-    function cancel() {
-      emit("cancel");
-    }
-
-    function reset() {
-      error.value = null;
-      tabNote.value = null;
-      form.value = { ...formReset.value };
-      v$.value.$reset();
-    }
-
-    return {
-      error,
-      formReset,
-      form,
-      v$,
-      nameErrors,
-      dateProducedErrors,
-      producedByErrors,
-      contactErrors,
-      valid,
-      tabNote,
-      noteMarked,
-      debounceInput,
-      cancel,
-      reset,
-    };
-  },
+const formReset = ref<FormStepStart>({
+  ...formDefault,
+  ...(prop.modelValue || {}),
 });
+
+const form = ref<FormStepStart>({ ...formReset.value });
+
+const rules = computed(() => ({
+  form: {
+    name: {
+      required,
+      unique: withAsync(async (value: string) => {
+        if (value === "") return true;
+        if (value === formReset.value.name) return true;
+        try {
+          return await isNameAvailable(
+            value.trim(),
+            prop.productType.typeId,
+            urqlClientHandle.client
+          );
+        } catch (e) {
+          error.value = e;
+          return true;
+        }
+      }),
+    },
+    producedBy: { required },
+    dateProduced: { required, parsableAsDate },
+    contact: { required },
+    paths: {},
+    note: {},
+  },
+}));
+
+const v$ = useVuelidate(rules, { form });
+
+const nameErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.form.name;
+  if (!field.$dirty) return errors;
+  field.required.$invalid && errors.push("This field is required");
+  field.unique.$invalid &&
+    // @ts-ignore
+    errors.push(`The name "${field.$model.trim()}" is not available.`);
+  return errors;
+});
+
+const dateProducedErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.form.dateProduced;
+  if (!field.$dirty) return errors;
+  field.required.$invalid && errors.push("This field is required");
+  field.parsableAsDate.$invalid &&
+    errors.push(`"${field.$model}" cannot be parsed as a date.`);
+  return errors;
+});
+
+const producedByErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.form.producedBy;
+  if (!field.$dirty) return errors;
+  field.required.$invalid && errors.push("This field is required");
+  return errors;
+});
+
+const contactErrors = computed(() => {
+  const errors: string[] = [];
+  const field = v$.value.form.contact;
+  if (!field.$dirty) return errors;
+  field.required.$invalid && errors.push("This field is required");
+  return errors;
+});
+
+const valid = computed(() => !v$.value.$invalid);
+
+watch(
+  () => prop.modelValue,
+  (val) => {
+    if (JSON.stringify(val) === JSON.stringify(form.value)) return;
+    form.value = { ...formReset.value, ...(val || {}) };
+  },
+  { deep: true }
+);
+
+watch(
+  form,
+  (val) => {
+    emit("update:modelValue", { ...val });
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+);
+
+watch(
+  valid,
+  (val) => {
+    emit("valid", val);
+  },
+  {
+    immediate: true,
+  }
+);
+
+const tabNote = ref<number | null>(null);
+
+const noteMarked = computed(() =>
+  form.value.note
+    ? marked.parse(form.value.note)
+    : "<em>Nothing to preview</em>"
+);
+
+const debounceInput = _.debounce(function (field, event) {
+  // https://github.com/vuelidate/vuelidate/issues/320#issuecomment-395349377
+  field.$model = event.target.value;
+  field.$touch();
+}, 500);
+
+function cancel() {
+  emit("cancel");
+}
+
+function reset() {
+  console.log("reset");
+  error.value = null;
+  tabNote.value = null;
+  form.value = { ...formReset.value };
+  console.log(form.value);
+  v$.value.$reset();
+}
 </script>
