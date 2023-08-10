@@ -49,16 +49,8 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useStore } from "@/stores/main";
-import { useQuery, useMutation } from "@urql/vue";
 
-import PRODUCT from "@/graphql/queries/Product.gql";
-import DELETE_PRODUCT from "@/graphql/mutations/DeleteProduct.gql";
-import {
-  ProductQuery,
-  ProductQueryVariables,
-  DeleteProductMutation,
-  DeleteProductMutationVariables,
-} from "@/generated/graphql";
+import { useProductQuery, useDeleteProductMutation } from "@/generated/graphql";
 
 import { useQueryState } from "@/utils/query-state";
 
@@ -75,9 +67,8 @@ const prop = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const store = useStore();
-const query = useQuery<ProductQuery>({
-  query: PRODUCT,
-  variables: { productId: prop.productId } as ProductQueryVariables,
+const query = useProductQuery({
+  variables: { productId: prop.productId },
 });
 const node = computed(() => query.data?.value?.product);
 
@@ -96,10 +87,7 @@ function reset() {
   mutationError.value = null;
 }
 
-const { executeMutation } = useMutation<
-  DeleteProductMutation,
-  DeleteProductMutationVariables
->(DELETE_PRODUCT);
+const { executeMutation } = useDeleteProductMutation();
 
 async function remove() {
   try {
