@@ -86,7 +86,7 @@
                     </v-btn>
                   </template>
                   <v-list dense>
-                    <v-dialog v-model="editDialog" max-width="800">
+                    <v-dialog v-model="editDialog" max-width="800" persistent>
                       <template v-slot:activator="{ props }">
                         <v-list-item
                           v-bind="props"
@@ -97,7 +97,7 @@
                         </v-list-item>
                       </template>
                       <product-edit-form
-                        v-if="editDialog"
+                        v-if="editDialog && attributes"
                         :node="node"
                         :attributes="attributes"
                         @cancel="onEditFormCancelled"
