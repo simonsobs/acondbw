@@ -7,36 +7,42 @@
       >
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="secondary" text @click="$emit('finished')">Cancel</v-btn>
-        <v-btn color="primary" @click="callSignOut">Sign Out</v-btn>
+        <v-btn color="secondary" variant="text" @click="emit('finished')">
+          Cancel
+        </v-btn>
+        <v-btn color="primary" @click="callSignOut"> Sign Out </v-btn>
       </v-card-actions>
     </v-card>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
-import { mapActions } from "pinia";
+<script setup lang="ts">
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "@/stores/main";
 import { useAuthStore } from "@/stores/auth";
 
-export default defineComponent({
-  name: "SignOutConfirmation",
-  methods: {
-    async callSignOut() {
-      await this.signOut();
-      this.$emit("finished");
-      this.setSnackbarMessage("Signed out");
+interface Emits {
+  (event: "finished"): void;
+}
 
-      const to = { name: "Entry" };
-      if (this.$route.path == this.$router.resolve(to).route.path) {
-        // to avoid NavigationDuplicated
-        return;
-      }
-      this.$router.push(to);
-    },
-    ...mapActions(useStore, ["setSnackbarMessage"]),
-    ...mapActions(useAuthStore, ["signOut"]),
-  },
-});
+const emit = defineEmits<Emits>();
+
+const route = useRoute();
+const router = useRouter();
+
+const store = useStore();
+const authStore = useAuthStore();
+
+async function callSignOut() {
+  await authStore.signOut();
+  emit("finished");
+  store.setSnackbarMessage("Signed out");
+
+  const to = { name: "Entry" };
+  if (route.path == router.resolve(to).path) {
+    // to avoid NavigationDuplicated
+    return;
+  }
+  router.push(to);
+}
 </script>
