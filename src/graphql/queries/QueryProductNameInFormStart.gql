@@ -1,0 +1,8 @@
+query QueryProductNameInFormStart($typeId: Int!, $name: String!) {
+  product(typeId: $typeId, name: $name) {
+    id
+    productId
+    typeId
+    name
+  }
+}
