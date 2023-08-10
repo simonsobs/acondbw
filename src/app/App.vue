@@ -126,6 +126,10 @@ body,
   border: thin solid rgb(var(--v-theme-outline-variant));
 }
 
+.v-card--variant-elevated {
+  background: rgb(var(--v-theme-surface-container-lowest));
+}
+
 .v-autocomplete .v-field__overlay {
   background-color: rgb(var(--v-theme-surface-container-lowest));
 }
