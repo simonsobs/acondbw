@@ -104,7 +104,11 @@
                         @finished="onEditFormFinished($event)"
                       ></product-edit-form>
                     </v-dialog>
-                    <v-dialog v-model="updateRelationsDialog" max-width="800">
+                    <v-dialog
+                      v-model="updateRelationsDialog"
+                      max-width="800"
+                      persistent
+                    >
                       <template v-slot:activator="{ props }">
                         <v-list-item
                           v-bind="props"
@@ -121,7 +125,11 @@
                         @finished="onUpdateRelationsFormFinished"
                       ></product-update-relations-form>
                     </v-dialog>
-                    <v-dialog v-model="convertTypeDialog" max-width="800">
+                    <v-dialog
+                      v-model="convertTypeDialog"
+                      max-width="800"
+                      persistent
+                    >
                       <template v-slot:activator="{ props }">
                         <v-list-item
                           v-bind="props"
@@ -134,7 +142,6 @@
                       <product-convert-type-form
                         v-if="convertTypeDialog"
                         :node="node"
-                        :attributes="attributes"
                         @cancel="onConvertTypeFormCancelled"
                         @finished="onConvertTypeFormFinished($event)"
                       ></product-convert-type-form>
@@ -151,7 +158,7 @@
                       </template>
                       <product-delete-form
                         v-if="deleteDialog"
-                        :productId="node.productId"
+                        :productId="Number(node.productId)"
                         @cancel="onDeleteFormCancelled"
                         @finished="onDeleteFormFinished"
                       ></product-delete-form>
