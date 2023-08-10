@@ -17,7 +17,9 @@
         :size="26"
         color="secondary"
       ></v-progress-circular>
-      <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
+      <v-alert v-else-if="error" variant="tonal" type="error">
+        {{ error }}
+      </v-alert>
     </v-card-text>
     <div v-if="loaded" class="pb-5">
       <div
@@ -27,10 +29,10 @@
       >
         <template v-if="edge && edge.node">
           <v-divider></v-divider>
-          <v-card-title class="text-h5 capitalize">
-            {{ edge.node.plural }}
+          <v-card-title class="text-h5">
+            <span class="capitalize">{{ edge.node.plural }}</span>
           </v-card-title>
-          <v-card-text class="grey--text" v-if="edge.node.reverse">
+          <v-card-text v-if="edge.node.reverse">
             <span>
               <span class="font-italic capitalize">
                 {{ edge.node.plural }}
@@ -51,9 +53,9 @@
             >
               <v-card-text>
                 <v-autocomplete
-                  :label="edge.node.singular"
+                  :label="edge.node.singular ?? ''"
                   :items="productItems"
-                  outlined
+                  variant="outlined"
                   clearable
                   hide-details
                   hide-no-data
@@ -62,11 +64,11 @@
               </v-card-text>
               <v-card-actions>
                 <v-tooltip bottom open-delay="800">
-                  <template v-slot:activator="{ on }">
+                  <template v-slot:activator="{ props }">
                     <v-btn
                       icon
                       @click="form[edge.node.typeId].splice(i, 1)"
-                      v-on="on"
+                      v-bind="props"
                     >
                       <v-icon>mdi-delete</v-icon>
                     </v-btn>
@@ -81,7 +83,7 @@
             <v-btn
               color="secondary"
               outlined
-              text
+              variant="text"
               @click="form[edge.node.typeId].push({ productId: null })"
             >
               Add a field
@@ -92,24 +94,24 @@
     </div>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" :disabled="unchanged" text @click="reset">
+      <v-btn
+        color="secondary"
+        :disabled="unchanged"
+        variant="text"
+        @click="reset"
+      >
         Reset
       </v-btn>
     </v-card-actions>
-    <dev-tool-loading-state-menu
-      top="-10px"
-      v-model="devtoolState"
-    ></dev-tool-loading-state-menu>
+    <dev-tool-loading-state-menu top="10px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, watch, PropType } from "vue";
+<script setup lang="ts">
+import { ref, computed, watch, PropType } from "vue";
 
-import QueryForFormRelations from "@/graphql/queries/QueryForFormRelations.gql";
-import { QueryForFormRelationsQuery } from "@/generated/graphql";
-
-import { useQuery } from "@urql/vue";
+import { useQueryForFormRelationsQuery } from "@/generated/graphql";
 
 import { useQueryState } from "@/utils/query-state";
 
@@ -134,116 +136,103 @@ function reshapeValue(val: Relation[]): Reshaped {
   }, {});
 }
 
-export default defineComponent({
-  name: "FormRelations",
-  props: {
-    value: Array as PropType<Relation[]>,
-    name: { type: String, require: true },
-  },
-  setup(prop, { emit }) {
-    const query = useQuery<QueryForFormRelationsQuery>({
-      query: QueryForFormRelations,
-    });
-    const allProductRelationTypes = computed(
-      () => query.data.value?.allProductRelationTypes || { edges: [] }
-    );
-    watch(allProductRelationTypes, (val) => {
-      const reshapedValue = prop.value ? reshapeValue(prop.value) : {};
-      form.value = composeForm(val, reshapedValue);
-      if (!formReset.value) {
-        formReset.value = JSON.parse(JSON.stringify(form.value));
-      }
-    });
-    function composeForm(
-      relationTypes: typeof allProductRelationTypes.value,
-      reshapedValue: Reshaped
-    ): Reshaped {
-      return relationTypes.edges.reduce(
-        (a, e) =>
-          e?.node
-            ? {
-                ...a,
-                [e.node.typeId]: [
-                  ...(reshapedValue[e.node.typeId] || []),
-                  { productId: null },
-                ],
-              }
-            : a,
-        {} as Reshaped
-      );
-    }
-    const allProducts = computed(
-      () => query.data.value?.allProducts || { edges: [] }
-    );
-    const form = ref(reshapeValue(prop.value || []));
-    const formReset = ref<typeof form.value | null>(null);
-    const unchanged = computed(() =>
-      formReset.value === null
-        ? false
-        : JSON.stringify(form.value) === JSON.stringify(formReset.value)
-    );
-    const input = computed((): Relation[] =>
-      Object.entries(form.value)
-        // @ts-ignore
-        .reduce((a, e: [string, typeof form.value[number]]) => {
-          const typeId = Number(e[0]);
-          const l = e[1].filter((x) => x.productId !== null);
-          return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
-        }, [] as Relation[])
-        .sort(
-          (a, b) =>
-            a.typeId - b.typeId || a.productId - b.productId
-        )
-    );
-    watch(
-      input,
-      (val) => {
-        emit("input", val);
-      },
-      { deep: true, immediate: true }
-    );
-    const relationTypeItems = computed(
-      // [{ text: relation type name (singular), value: relation type id }]
-      // e.g., [{ text: "parent", value: "1" }, { text: "child", value: "2" }];
-      () =>
-        allProductRelationTypes.value.edges.flatMap((e) =>
-          e?.node
-            ? {
-                text: e.node.singular,
-                value: e.node.typeId,
-              }
-            : []
-        )
-    );
-    const productItems = computed(
-      // [{ text: product name (product type name), value: product id }]
-      // e.g., [{ text: "Map-01 (map)", value: "1" }, ...];
-      () =>
-        allProducts.value.edges.map((e) =>
-          e?.node
-            ? {
-                text: `${e.node.name} (${e.node.type_?.singular})`,
-                value: Number(e.node.productId),
-              }
-            : []
-        )
-    );
-    function reset() {
-      form.value = JSON.parse(JSON.stringify(formReset.value));
-    }
-    return {
-      ...useQueryState(query),
-      query,
-      allProductRelationTypes,
-      allProducts,
-      form,
-      formReset,
-      unchanged,
-      input,
-      relationTypeItems,
-      productItems,
-      reset,
-    };
-  },
+interface Props {
+  modelValue: Relation[];
+  name: string;
+}
+
+interface Emits {
+  (event: "update:modelValue", input: Relation[]): boolean;
+}
+
+const prop = defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+const query = useQueryForFormRelationsQuery();
+const allProductRelationTypes = computed(
+  () => query.data.value?.allProductRelationTypes || { edges: [] }
+);
+watch(allProductRelationTypes, (val) => {
+  const reshapedValue = prop.modelValue ? reshapeValue(prop.modelValue) : {};
+  form.value = composeForm(val, reshapedValue);
+  if (!formReset.value) {
+    formReset.value = JSON.parse(JSON.stringify(form.value));
+  }
 });
+function composeForm(
+  relationTypes: typeof allProductRelationTypes.value,
+  reshapedValue: Reshaped
+): Reshaped {
+  return relationTypes.edges.reduce(
+    (a, e) =>
+      e?.node
+        ? {
+            ...a,
+            [e.node.typeId]: [
+              ...(reshapedValue[e.node.typeId] || []),
+              { productId: null },
+            ],
+          }
+        : a,
+    {} as Reshaped
+  );
+}
+const allProducts = computed(
+  () => query.data.value?.allProducts || { edges: [] }
+);
+const form = ref(reshapeValue(prop.modelValue || []));
+const formReset = ref<typeof form.value | null>(null);
+const unchanged = computed(() =>
+  formReset.value === null
+    ? false
+    : JSON.stringify(form.value) === JSON.stringify(formReset.value)
+);
+const input = computed((): Relation[] =>
+  Object.entries(form.value)
+    // @ts-ignore
+    .reduce((a, e: [string, (typeof form.value)[number]]) => {
+      const typeId = Number(e[0]);
+      const l = e[1].filter((x) => x.productId !== null);
+      return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
+    }, [] as Relation[])
+    .sort((a, b) => a.typeId - b.typeId || a.productId - b.productId)
+);
+watch(
+  input,
+  (val) => {
+    emit("update:modelValue", val);
+  },
+  { deep: true, immediate: true }
+);
+const relationTypeItems = computed(
+  // [{ text: relation type name (singular), value: relation type id }]
+  // e.g., [{ text: "parent", value: "1" }, { text: "child", value: "2" }];
+  () =>
+    allProductRelationTypes.value.edges.flatMap((e) =>
+      e?.node
+        ? {
+            text: e.node.singular,
+            value: e.node.typeId,
+          }
+        : []
+    )
+);
+const productItems = computed(
+  // [{ text: product name (product type name), value: product id }]
+  // e.g., [{ text: "Map-01 (map)", value: "1" }, ...];
+  () =>
+    allProducts.value.edges.map((e) =>
+      e?.node
+        ? {
+            title: `${e.node.name} (${e.node.type_?.singular})`,
+            value: Number(e.node.productId),
+          }
+        : []
+    )
+);
+function reset() {
+  form.value = JSON.parse(JSON.stringify(formReset.value));
+}
+
+const { loading, error, loaded, devtoolState } = useQueryState(query);
 </script>

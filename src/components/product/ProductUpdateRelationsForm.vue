@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="primary--text">
+    <v-card-title class="text-primary">
       <span>
         Update the relations of
         <span class="font-italic"> {{ node.name }} </span>
@@ -9,22 +9,29 @@
     <v-card-text>
       <v-alert v-if="error" type="error"> {{ error }} </v-alert>
     </v-card-text>
-    <v-card flat class="px-6">
+    <v-card flat class="px-6 overflow-auto">
       <form-relations v-model="relations" :name="node.name"></form-relations>
       <v-divider></v-divider>
     </v-card>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="$emit('cancel')"> Cancel </v-btn>
-      <v-btn color="primary" :disabled="unchanged" text @click="submit">
+      <v-btn color="secondary" variant="text" @click="$emit('cancel')">
+        Cancel
+      </v-btn>
+      <v-btn
+        color="primary"
+        :disabled="unchanged"
+        variant="text"
+        @click="submit"
+      >
         Submit
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, ref, computed } from "vue";
+<script setup lang="ts">
+import { ref, computed } from "vue";
 import { useStore } from "@/stores/main";
 
 import _ from "lodash";
@@ -57,67 +64,57 @@ function composeRelations(node: Product) {
   ).sort((a, b) => a.typeId - b.typeId || a.productId - b.productId);
 }
 
-export default defineComponent({
-  name: "ProductUpdateRelationsForm",
-  components: { FormRelations },
-  props: {
-    node: {
-      type: Object as PropType<Product>,
-      required: true,
-    },
-  },
-  setup(prop, { emit }) {
-    const error = ref<any>(null);
-    const store = useStore();
+interface Props {
+  node: Product;
+}
 
-    const initialRelations = ref<ReturnType<typeof composeRelations>>(
-      composeRelations(prop.node)
-    );
-    const relations = ref<typeof initialRelations>(
-      JSON.parse(JSON.stringify(initialRelations.value))
-    );
+interface Emits {
+  (event: "finished"): void;
+  (event: "cancel"): void;
+}
 
-    const input = computed(() => composeInput(relations.value));
+const prop = defineProps<Props>();
+const emit = defineEmits<Emits>();
 
-    function composeInput<T>(relations: T[]): T[] {
-      // unique https://medium.com/coding-at-dawn/how-to-use-set-to-filter-unique-items-in-javascript-es6-196c55ce924b
-      return [...new Set(relations.map((o) => JSON.stringify(o)))].map((s) =>
-        JSON.parse(s)
-      );
-    }
+const error = ref<any>(null);
+const store = useStore();
 
-    const unchanged = computed(
-      () =>
-        JSON.stringify(relations.value) ===
-        JSON.stringify(initialRelations.value)
-    );
+const initialRelations = ref<ReturnType<typeof composeRelations>>(
+  composeRelations(prop.node)
+);
+const relations = ref<typeof initialRelations>(
+  JSON.parse(JSON.stringify(initialRelations.value))
+);
 
-    const { executeMutation } = useUpdateProductMutation();
+const input = computed(() => composeInput(relations.value));
 
-    async function submit() {
-      try {
-        const updateProductInput = { relations: input.value };
-        const { error } = await executeMutation({
-          productId: Number(prop.node.productId),
-          input: updateProductInput,
-        });
-        if (error) throw error;
-        store.apolloMutationCalled();
-        store.setSnackbarMessage("Updated");
-        emit("finished");
-      } catch (e) {
-        error.value = e;
-      }
-    }
+function composeInput<T>(relations: T[]): T[] {
+  // unique https://medium.com/coding-at-dawn/how-to-use-set-to-filter-unique-items-in-javascript-es6-196c55ce924b
+  return [...new Set(relations.map((o) => JSON.stringify(o)))].map((s) =>
+    JSON.parse(s)
+  );
+}
 
-    return {
-      error,
-      initialRelations,
-      relations,
-      input,
-      unchanged,
-      submit,
-    };
-  },
-});
+const unchanged = computed(
+  () =>
+    JSON.stringify(relations.value) === JSON.stringify(initialRelations.value)
+);
+
+const { executeMutation } = useUpdateProductMutation();
+
+async function submit() {
+  try {
+    const updateProductInput = { relations: input.value };
+    const { error } = await executeMutation({
+      productId: Number(prop.node.productId),
+      input: updateProductInput,
+    });
+    if (error) throw error;
+    store.apolloMutationCalled();
+    store.setSnackbarMessage("Updated");
+    emit("finished");
+  } catch (e) {
+    error.value = e;
+  }
+}
 </script>
