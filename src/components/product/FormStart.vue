@@ -187,7 +187,7 @@ interface FormStepStart {
 }
 
 interface Props {
-  modelValue: FormStepStart;
+  modelValue: FormStepStart | null;
   productType: {
     typeId: number;
     name: string;
@@ -341,11 +341,9 @@ function cancel() {
 }
 
 function reset() {
-  console.log("reset");
   error.value = null;
   tabNote.value = null;
   form.value = { ...formReset.value };
-  console.log(form.value);
   v$.value.$reset();
 }
 </script>

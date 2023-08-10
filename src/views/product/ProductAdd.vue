@@ -1,101 +1,157 @@
 <template>
-  <v-container
-    :fill-height="notFound"
-    class="product-add"
-    style="position: relative"
-  >
-    <v-progress-circular
-      v-if="loading"
-      indeterminate
-      :size="18"
-      :width="3"
-      color="secondary"
-    ></v-progress-circular>
-    <v-alert v-else-if="error" type="error">{{ error }}</v-alert>
+  <div class="product-add my-5" style="block-size: 100%; position: relative">
+    <div v-if="notFound" class="not-found">
+      <span class="text-h1 text-center"> Not Found (404) </span>
+    </div>
+    <v-progress-linear v-else-if="loading" indeterminate color="primary">
+    </v-progress-linear>
+    <div v-else-if="error" class="pa-5">
+      <v-alert
+        type="error"
+        variant="tonal"
+        :text="error"
+        class="mx-auto"
+        max-width="960px"
+      >
+      </v-alert>
+    </div>
     <product-add-form
       v-else-if="on && loaded && productTypeId"
       :productTypeId="productTypeId"
       @finished="finished"
     ></product-add-form>
-    <v-row v-else-if="notFound" align="center" justify="center">
-      <v-col class="text-h1 text-center">Not Found (404)</v-col>
-    </v-row>
-    <dev-tool-loading-state-menu
-      top="-10px"
-      v-model="devtoolState"
-    ></dev-tool-loading-state-menu>
-  </v-container>
+    <dev-tool-loading-state-menu top="10px" right="10px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
+  </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, ref, watch, computed, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useQuery } from "@urql/vue";
 
-import PRODUCT_TYPE_BY_NAME from "@/graphql/queries/ProductTypeByName.gql";
-import { ProductTypeByNameQuery } from "@/generated/graphql";
+import { useProductTypeByNameQuery } from "@/generated/graphql";
 
 import ProductAddForm from "@/components/product/ProductAddForm.vue";
 
 import { useQueryState } from "@/utils/query-state";
 
+const route = useRoute();
+const router = useRouter();
+const productTypeName = computed(() => route.params.productTypeName);
+const query = useProductTypeByNameQuery({
+  // @ts-ignore
+  variables: { name: productTypeName },
+});
+const node = computed(() => query.data?.value?.productType);
+const productTypeId = computed(() => {
+  const typeId = Number(node.value?.typeId);
+  return isNaN(typeId) ? undefined : typeId;
+});
+function finished() {
+  router.push({
+    name: "ProductList",
+    params: { productTypeName: productTypeName.value },
+  });
+}
+
+function onEntered() {
+  if (init.value) return;
+  query.executeQuery({ requestPolicy: "network-only" });
+  recreateForm();
+}
+
+function recreateForm() {
+  // A component will be re-instantiated
+  // when v-if becomes once false and then true.
+  on.value = false;
+  console.log("recreateForm");
+  nextTick(() => {
+    console.log("nextTick");
+    on.value = true;
+  });
+}
+const on = ref(true);
+const queryState = useQueryState(query, {
+  isNull: () => node.value === null,
+});
+const { init, notFound, loading, error, loaded, devtoolState } = queryState;
+
+onEntered();
+</script>
+
+<script lang="ts">
 export default defineComponent({
   name: "ProductAdd",
   components: {
     ProductAddForm,
   },
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const productTypeName = computed(() => route.params.productTypeName);
-    const query = useQuery<ProductTypeByNameQuery>({
-      query: PRODUCT_TYPE_BY_NAME,
-      variables: { name: productTypeName },
-    });
-    const node = computed(() => query.data?.value?.productType);
-    const productTypeId = computed(() => {
-      const typeId = Number(node.value?.typeId);
-      return isNaN(typeId) ? undefined : typeId;
-    });
-    function finished() {
-      router.push({
-        name: "ProductList",
-        params: { productTypeName: productTypeName.value },
-      });
-    }
-    function onEntered() {
-      if (init.value) return;
-      query.executeQuery({ requestPolicy: "network-only" });
-      recreateForm();
-    }
-    function recreateForm() {
-      // A component will be re-instantiated
-      // when v-if becomes once false and then true.
-      on.value = false;
-      nextTick(() => {
-        on.value = true;
-      });
-    }
-    const on = ref(true);
-    const queryState = useQueryState(query, { isNull: () => node.value === null});
-    const { init } = queryState;
-    return {
-      ...queryState,
-      on,
-      productTypeName,
-      productTypeId,
-      query,
-      node,
-      finished,
-      onEntered,
-      recreateForm,
-    };
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      // @ts-ignore
-      vm.onEntered();
-    });
-  },
+  // setup() {
+  //   const route = useRoute();
+  //   const router = useRouter();
+  //   const productTypeName = computed(() => route.params.productTypeName);
+  //   const query = useQuery<ProductTypeByNameQuery>({
+  //     query: PRODUCT_TYPE_BY_NAME,
+  //     variables: { name: productTypeName },
+  //   });
+  //   const node = computed(() => query.data?.value?.productType);
+  //   const productTypeId = computed(() => {
+  //     const typeId = Number(node.value?.typeId);
+  //     return isNaN(typeId) ? undefined : typeId;
+  //   });
+  //   function finished() {
+  //     router.push({
+  //       name: "ProductList",
+  //       params: { productTypeName: productTypeName.value },
+  //     });
+  //   }
+  //   function onEntered() {
+  //     if (init.value) return;
+  //     query.executeQuery({ requestPolicy: "network-only" });
+  //     recreateForm();
+  //   }
+  //   function recreateForm() {
+  //     // A component will be re-instantiated
+  //     // when v-if becomes once false and then true.
+  //     on.value = false;
+  //     nextTick(() => {
+  //       on.value = true;
+  //     });
+  //   }
+  //   const on = ref(true);
+  //   const queryState = useQueryState(query, {
+  //     isNull: () => node.value === null,
+  //   });
+  //   const { init } = queryState;
+  //   return {
+  //     ...queryState,
+  //     on,
+  //     productTypeName,
+  //     productTypeId,
+  //     query,
+  //     node,
+  //     finished,
+  //     onEntered,
+  //     recreateForm,
+  //   };
+  // },
+  // beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     // @ts-ignore
+  //     vm.onEntered();
+  //   });
+  // },
 });
 </script>
+
+<style scoped>
+.not-found {
+  display: grid;
+  block-size: 100%;
+  place-items: center;
+}
+
+
+.product-add:deep(.v-sheet){
+  background-color: rgb(var(--v-theme-surface-container-lowest));
+}
+</style>

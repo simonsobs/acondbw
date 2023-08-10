@@ -137,7 +137,7 @@ function reshapeValue(val: Relation[]): Reshaped {
 }
 
 interface Props {
-  modelValue: Relation[];
+  modelValue: Relation[] | null;
   name: string;
 }
 

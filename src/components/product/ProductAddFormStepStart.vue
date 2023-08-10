@@ -1,44 +1,50 @@
 <template>
   <div fluid>
     <form-start
-      :value="value"
+      :model-value="modelValue"
       :productType="productType"
       @valid="valid = $event"
-      @input="$emit('input', $event)"
+      @update:model-value="emit('update:modelValue', $event)"
     ></form-start>
     <v-divider></v-divider>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="$emit('cancel')"> Cancel </v-btn>
-      <v-btn color="primary" :disabled="!valid" text @click="$emit('next')">
+      <v-btn color="secondary" variant="text" @click="emit('cancel')">
+        Cancel
+      </v-btn>
+      <v-btn
+        color="primary"
+        :disabled="!valid"
+        variant="text"
+        @click="emit('next')"
+      >
         Next
       </v-btn>
     </v-card-actions>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import FormStart from "./FormStart.vue";
 
-type FormStepStart = NonNullable<InstanceType<typeof FormStart>["value"]>;
+export type FormStepStart = NonNullable<
+  InstanceType<typeof FormStart>["modelValue"]
+>;
 
-export default defineComponent({
-  name: "ProductAddFormStepStart",
-  components: {
-    FormStart,
-  },
-  props: {
-    value: Object as PropType<FormStepStart>,
-    productType: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      valid: false,
-    };
-  },
-});
+interface Props {
+  modelValue: FormStepStart | null;
+  productType: any;
+}
+
+interface Emits {
+  (event: "update:modelValue", value: FormStepStart): boolean;
+  (event: "cancel"): boolean;
+  (event: "next"): boolean;
+}
+
+const prop = defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+const valid = ref(false);
 </script>
