@@ -188,6 +188,8 @@
 <script setup lang="ts">
 import { ref, reactive, watch, computed, withDefaults } from "vue";
 import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useStore } from "@/stores/main";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
@@ -370,6 +372,10 @@ async function loadMore() {
   if (!productType.value?.products?.pageInfo?.hasNextPage) return;
   first.value = first.value + nItemsPerLoad.value;
 }
+
+const store = useStore();
+const { nApolloMutations } = storeToRefs(store);
+watch(nApolloMutations, refresh);
 </script>
 
 <style scoped>
