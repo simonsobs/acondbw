@@ -1,4 +1,4 @@
-import '@mdi/font/css/materialdesignicons.css';
+import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 import "@/styles/variables.scss";
 import { createVuetify } from "vuetify";
@@ -7,7 +7,7 @@ import * as directives from "vuetify/directives";
 import { md3 } from "vuetify/blueprints";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 
-import * as labsComponents from 'vuetify/labs/components';
+import * as labsComponents from "vuetify/labs/components";
 
 const vuetify = createVuetify({
   components: { ...components, ...labsComponents },
