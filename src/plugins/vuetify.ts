@@ -18,6 +18,20 @@ const vuetify = createVuetify({
     aliases,
     sets: { mdi },
   },
+  defaults: {
+    VAppBar: {
+      // color: "surface-container",
+    },
+    VNavigationDrawer: {
+      // color: "surface-container",
+    },
+    // VListItem: {
+    //   "color": "primary",
+    // },
+    // VCard: {
+    //   color: "primary",
+    // }
+  },
 });
 
 export default vuetify;
