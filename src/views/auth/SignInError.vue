@@ -1,42 +1,46 @@
 <template>
-  <v-container fill-height fluid>
-    <v-row align="center" justify="center">
-      <v-card flat min-width="250px">
-        <v-card-title>Sign In Unsuccessful</v-card-title>
-        <v-card-text v-if="error">
-          <v-alert type="error" outlined>
-            <strong v-if="error.error">{{ error.error }}:</strong>
-            <span v-if="error.error_description">
-              {{ error.error_description }}</span
-            ><v-btn
-              v-if="error.error_uri"
-              icon
-              small
-              color="error"
-              :href="error.error_uri"
-              target="_blank"
-              ><v-icon small>mdi-open-in-new</v-icon></v-btn
-            >
-          </v-alert>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn outlined to="/">Go back</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-row>
-  </v-container>
+  <div class="g-container">
+    <v-card flat min-width="250px" variant="flat">
+      <v-card-title> Sign In Unsuccessful </v-card-title>
+      <v-card-text v-if="error">
+        <v-alert type="error" outlined>
+          <strong v-if="error.error">{{ error.error }}:</strong>
+          <span v-if="error.error_description">
+            {{ error.error_description }}
+          </span>
+          <v-btn
+            v-if="error.error_uri"
+            icon
+            small
+            color="error"
+            :href="error.error_uri"
+            target="_blank"
+          >
+            <v-icon icon="mdi-open-in-new"></v-icon>
+          </v-btn>
+        </v-alert>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn variant="outlined" to="/">Go back</v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
-import { mapState } from "pinia";
+<script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
-export default defineComponent({
-  name: "SignInError",
-  computed: {
-    ...mapState(useAuthStore, { error: "lastError" }),
-  },
-});
+const authStore = useAuthStore();
+
+const { lastError: error } = storeToRefs(authStore);
 </script>
+
+<style scoped>
+.g-container {
+  display: grid;
+  height: 100%;
+  place-items: center;
+}
+</style>
