@@ -1,15 +1,20 @@
 <template>
-  <v-card outlined hover class="product-item-card" style="position: relative">
+  <v-card
+    variant="outlined"
+    hover
+    class="product-item-card"
+    style="position: relative"
+  >
     <v-card-text v-if="loading">
       <v-progress-circular
         indeterminate
         :size="18"
         :width="3"
         color="secondary"
-      ></v-progress-circular>
+      >
+      </v-progress-circular>
     </v-card-text>
-    <v-alert v-else-if="error" outlined dense type="error" class="ma-2">
-      {{ error }}
+    <v-alert v-else-if="error" variant="tonal" type="error" :text="error">
     </v-alert>
     <v-container
       v-else-if="loaded && node"
@@ -18,8 +23,7 @@
     >
       <v-row>
         <v-col order="1" cols="9" md="4">
-          <div class="caption grey--text">Name</div>
-          <div class="font-weight-bold primary--text">
+          <div class="text-h5 font-weight-medium text-primary">
             <span @click.stop>
               <router-link
                 :to="{
@@ -31,19 +35,22 @@
                 }"
                 v-text="node.name"
                 v-if="node.type_"
-              ></router-link>
+                class="text-decoration-none"
+                style="color: inherit"
+              >
+              </router-link>
             </span>
           </div>
         </v-col>
         <v-col order="3" cols="6" md="3">
-          <div class="caption grey--text">Date produced</div>
+          <div class="text-caption">Date produced</div>
           <div
             v-if="attributes"
             v-text="attributes['date_produced']['value']"
           ></div>
         </v-col>
         <v-col order="4" cols="6" md="2">
-          <div class="caption grey--text">Produced by</div>
+          <div class="text-caption">Produced by</div>
           <div
             v-if="attributes"
             v-text="attributes['produced_by']['value']"
@@ -53,22 +60,17 @@
           <v-container>
             <v-row justify="end">
               <v-col v-if="collapsible" style="flex: 0" class="pa-0">
-                <v-tooltip bottom open-delay="800">
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      icon
-                      @click.stop="
-                        collapsed ? $emit('expand') : $emit('collapse')
-                      "
-                      v-on="on"
-                    >
-                      <v-icon>
-                        {{ collapsed ? "mdi-chevron-down" : "mdi-chevron-up" }}
-                      </v-icon>
-                    </v-btn>
-                  </template>
-                  <span>{{ collapsed ? "Expand" : "Collapse" }}</span>
-                </v-tooltip>
+                <v-btn
+                  v-bind="props"
+                  variant="plain"
+                  icon
+                  @click.stop="collapsed ? $emit('expand') : $emit('collapse')"
+                >
+                  <v-icon
+                    :icon="collapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+                  >
+                  </v-icon>
+                </v-btn>
               </v-col>
               <v-col @click.stop style="flex: 0" class="pa-0">
                 <v-menu
@@ -78,52 +80,42 @@
                   v-model="menu"
                   :close-on-content-click="false"
                 >
-                  <template v-slot:activator="{ on: menu }">
-                    <v-btn icon v-on="{ ...menu }">
-                      <v-icon>mdi-dots-vertical</v-icon>
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" variant="plain" icon>
+                      <v-icon icon="mdi-dots-vertical"></v-icon>
                     </v-btn>
                   </template>
                   <v-list dense>
-                    <v-dialog v-model="editDialog" max-width="800">
-                      <template v-slot:activator="{ on: editDialog }">
+                    <v-dialog v-model="editDialog" max-width="800" persistent>
+                      <template v-slot:activator="{ props }">
                         <v-list-item
+                          v-bind="props"
                           :disabled="disableEdit"
-                          v-on="{ ...editDialog }"
+                          prepend-icon="mdi-pencil"
+                          title="Edit"
                         >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-pencil</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Edit</v-list-item-title>
-                          </v-list-item-content>
                         </v-list-item>
                       </template>
                       <product-edit-form
-                        v-if="editDialog"
+                        v-if="editDialog && attributes"
                         :node="node"
                         :attributes="attributes"
                         @cancel="onEditFormCancelled"
                         @finished="onEditFormFinished($event)"
                       ></product-edit-form>
                     </v-dialog>
-                    <v-dialog v-model="updateRelationsDialog" max-width="800">
-                      <template
-                        v-slot:activator="{ on: updateRelationsDialog }"
-                      >
+                    <v-dialog
+                      v-model="updateRelationsDialog"
+                      max-width="800"
+                      persistent
+                    >
+                      <template v-slot:activator="{ props }">
                         <v-list-item
+                          v-bind="props"
                           :disabled="disableEdit"
-                          v-on="{ ...updateRelationsDialog }"
+                          prepend-icon="mdi-relation-many-to-many"
+                          title="Update relations"
                         >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit"
-                              >mdi-relation-many-to-many</v-icon
-                            >
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              Update relations
-                            </v-list-item-title>
-                          </v-list-item-content>
                         </v-list-item>
                       </template>
                       <product-update-relations-form
@@ -133,47 +125,40 @@
                         @finished="onUpdateRelationsFormFinished"
                       ></product-update-relations-form>
                     </v-dialog>
-                    <v-dialog v-model="convertTypeDialog" max-width="800">
-                      <template v-slot:activator="{ on: convertTypeDialog }">
+                    <v-dialog
+                      v-model="convertTypeDialog"
+                      max-width="800"
+                      persistent
+                    >
+                      <template v-slot:activator="{ props }">
                         <v-list-item
+                          v-bind="props"
                           :disabled="disableEdit"
-                          v-on="{ ...convertTypeDialog }"
+                          prepend-icon="mdi-drawing"
+                          title="Convert type"
                         >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableEdit">mdi-drawing</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Convert type</v-list-item-title>
-                          </v-list-item-content>
                         </v-list-item>
                       </template>
                       <product-convert-type-form
                         v-if="convertTypeDialog"
                         :node="node"
-                        :attributes="attributes"
                         @cancel="onConvertTypeFormCancelled"
                         @finished="onConvertTypeFormFinished($event)"
                       ></product-convert-type-form>
                     </v-dialog>
                     <v-dialog v-model="deleteDialog" max-width="600">
-                      <template v-slot:activator="{ on: deleteDialog }">
+                      <template v-slot:activator="{ props }">
                         <v-list-item
+                          v-bind="props"
                           :disabled="disableDelete"
-                          v-on="{ ...deleteDialog }"
+                          prepend-icon="mdi-delete"
+                          title="Delete"
                         >
-                          <v-list-item-icon>
-                            <v-icon :disabled="disableDelete">
-                              mdi-delete
-                            </v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-content>
-                            <v-list-item-title>Delete</v-list-item-title>
-                          </v-list-item-content>
                         </v-list-item>
                       </template>
                       <product-delete-form
                         v-if="deleteDialog"
-                        :productId="node.productId"
+                        :productId="Number(node.productId)"
                         @cancel="onDeleteFormCancelled"
                         @finished="onDeleteFormFinished"
                       ></product-delete-form>
@@ -189,7 +174,7 @@
         <div class="collapsible" v-show="!(collapsible && collapsed)">
           <v-row>
             <v-col cols="12" md="4" offset-md="4">
-              <div class="caption grey--text">Contact</div>
+              <div class="text-caption">Contact</div>
               <div
                 v-if="attributes"
                 v-text="attributes['contact']['value']"
@@ -198,7 +183,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="8" offset-md="4">
-              <div class="caption grey--text">Paths</div>
+              <div class="text-caption">Paths</div>
               <ul v-if="node.paths && node.paths.edges.length > 0">
                 <li
                   v-for="(edgep, index) in node.paths.edges"
@@ -206,33 +191,28 @@
                   v-text="edgep && edgep.node && edgep.node.path"
                 ></li>
               </ul>
-              <div v-else class="body-2 grey--text">None</div>
+              <div v-else class="text-body-2">None</div>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="8" offset-md="4">
-              <div class="caption grey--text">Relations</div>
-              <div
-                v-if="relations && Object.keys(relations).length > 0"
-              ></div>
-              <div v-else class="body-2 grey--text">None</div>
+              <div class="text-caption">Relations</div>
+              <div v-if="relations && Object.keys(relations).length > 0"></div>
+              <div v-else class="text-body-2">None</div>
               <div v-for="(r, key) in relations" :key="key">
-                <span
-                  class="capitalize subtitle-2 grey--text text--darken-2 ml-3"
-                >
+                <span class="text-capitalize text-subtitle-2 ml-3">
                   {{ r.relationType }}:
                 </span>
                 <div v-for="(t, key_) in r.types" :key="key_">
-                  <span
-                    class="capitalize subtitle-2 grey--text text--darken-2 ml-6"
-                  >
+                  <span class="text-capitalize text-subtitle-2 ml-6">
                     {{ t.type }}:
                   </span>
-                  <span v-for="(n, i) in t.nodes" :key="i">
+                  <span v-for="(n, i) in t.nodes" :key="i" class="text-primary">
                     <router-link
-                      class="font-weight-bold primary--text"
                       :to="n.to"
                       v-text="n.name"
+                      class="font-weight-bold"
+                      style="color: inherit"
                     ></router-link>
                     <span v-if="i != t.nodes.length - 1">, </span>
                   </span>
@@ -242,17 +222,17 @@
           </v-row>
           <v-row>
             <v-col order="1" cols="12" md="8" offset-md="4">
-              <div class="caption grey--text">Note</div>
+              <div class="text-caption">Note</div>
               <div v-if="note" class="markdown-body" v-html="note"></div>
-              <div v-else class="body-2 grey--text">None</div>
+              <div v-else class="text-body-2">None</div>
             </v-col>
           </v-row>
           <v-row
             no-gutters
             align="end"
             justify="space-between"
-            class="grey--text mt-3"
-            style="font-size: 80%"
+            class="mt-3"
+            style="font-size: 11px"
           >
             <div>
               <div v-if="timeUpdated || node.updatingGitHubUser">
@@ -276,17 +256,10 @@
       </v-expand-transition>
     </v-container>
     <v-card-text v-else-if="notFound">Not Found</v-card-text>
-    <dev-tool-loading-state-menu
-      top="-10px"
-      v-model="devtoolState"
-    ></dev-tool-loading-state-menu>
+    <dev-tool-loading-state-menu top="10px" right="10px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </v-card>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({ name: "ProductItemCard" });
-</script>
 
 <script setup lang="ts">
 import { ref, computed, withDefaults } from "vue";

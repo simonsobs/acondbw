@@ -1,61 +1,64 @@
 <template>
-  <div>
-    <template v-if="allGitHubOrgs">
+  <div class="mt-5" style="position: relative">
+    <template v-if="items">
       <v-data-table
-        :headers="allGitHubOrgsHeaders"
-        :items="allGitHubOrgs.edges"
-        :items-per-page="allGitHubOrgs.totalCount"
-        :hide-default-footer="true"
+        :headers="headers"
+        :items="items"
+        :loading="loading"
+        :items-per-page="-1"
       >
         <template v-slot:top>
-          <v-toolbar flat>
+          <v-alert v-if="error" variant="tonal" type="error" :text="error">
+          </v-alert>
+          <div class="d-flex">
             <v-spacer></v-spacer>
             <v-dialog v-model="dialogAdd" max-width="500px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon v-bind="attrs" v-on="on">
-                  <v-icon>mdi-plus-thick</v-icon>
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" variant="text" icon>
+                  <v-icon icon="mdi-plus-thick"></v-icon>
                 </v-btn>
               </template>
               <git-hub-org-add-form
                 @cancel="addFormCanceled"
                 @finished="addFormFinished"
-              ></git-hub-org-add-form>
+              >
+              </git-hub-org-add-form>
             </v-dialog>
             <v-dialog v-model="dialogRemove" max-width="500px">
               <git-hub-org-remove-form
                 :login="removeLogin"
                 @cancel="removeFormCanceled"
                 @finished="removeFormFinished"
-              ></git-hub-org-remove-form>
+                v-if="removeLogin"
+              >
+              </git-hub-org-remove-form>
             </v-dialog>
-          </v-toolbar>
+          </div>
         </template>
-        <template v-slot:[`item.node.avatarUrl`]="{ item }">
-          <span>
-            <v-avatar size="24">
-              <img :src="item.node.avatarUrl" />
-            </v-avatar>
-          </span>
+        <template v-slot:item.avatarUrl="{ item }">
+          <v-avatar size="24">
+            <v-img :src="item.raw.avatarUrl"></v-img>
+          </v-avatar>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small @click="openRemoveForm(item)"> mdi-delete </v-icon>
+        <template v-slot:item.actions="{ item }">
+          <v-icon small @click="openRemoveForm(item.raw)" icon="mdi-delete">
+          </v-icon>
         </template>
       </v-data-table>
     </template>
+    <dev-tool-loading-state-menu top="3px" right="3px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch, nextTick } from "vue";
-import { useQuery } from "@urql/vue";
-// The original implementation based on the example
-// https://vuetifyjs.com/en/components/data-tables/#crud-actions
-// https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
-
-import ALL_GIT_HUB_ORGS from "@/graphql/queries/AllGitHubOrgs.gql";
+<script setup lang="ts">
+import { ref, watch, computed, nextTick } from "vue";
+import { useAllGitHubOrgsQuery } from "@/generated/graphql";
+import { useQueryState } from "@/utils/query-state";
 
 import GitHubOrgAddForm from "./GitHubOrgAddForm.vue";
 import GitHubOrgRemoveForm from "./GitHubOrgRemoveForm.vue";
+import { i } from "vitest/dist/index-6e18a03a";
 
 interface GitHubUser {
   login: string;
@@ -90,78 +93,83 @@ interface GitHubOrgConnection {
   edges: GitHubOrgEdge[];
 }
 
-export default defineComponent({
-  name: "GitHubOrgTable",
-  components: {
-    GitHubOrgAddForm,
-    GitHubOrgRemoveForm,
-  },
-  setup() {
-    const allGitHubOrgs = ref<GitHubOrgConnection | null>(null);
-    const query = useQuery<{ allGitHubOrgs: GitHubOrgConnection }>({
-      query: ALL_GIT_HUB_ORGS,
-    });
-    watch(query.data, (data) => {
-      if (data) {
-        allGitHubOrgs.value = data.allGitHubOrgs;
-      }
-    });
+const allGitHubOrgs = ref<GitHubOrgConnection | null>(null);
+// const query = useQuery<{ allGitHubOrgs: GitHubOrgConnection }>({
+//   query: ALL_GIT_HUB_ORGS,
+// });
+// watch(query.data, (data) => {
+//   if (data) {
+//     allGitHubOrgs.value = data.allGitHubOrgs;
+//   }
+// });
 
-    const allGitHubOrgsHeaders = ref([
-      { text: "", value: "node.avatarUrl", align: "start" },
-      { text: "Org", value: "node.login" },
-      { text: "Number of members", value: "node.memberships.totalCount" },
-      { text: "", value: "actions", sortable: false, align: "end" },
-    ]);
+const query = useAllGitHubOrgsQuery();
+type Query = typeof query;
 
-    const dialogAdd = ref(false);
-    function addFormCanceled() {
-      closeAddDialog();
-    }
-    function addFormFinished() {
-      query.executeQuery({ requestPolicy: "network-only" });
-      closeAddDialog();
-    }
-    function closeAddDialog() {
-      dialogAdd.value = false;
-    }
+function readEdges(query: Query) {
+  const edgesAndNulls = query.data?.value?.allGitHubOrgs?.edges;
+  if (!edgesAndNulls) return [];
+  return edgesAndNulls.flatMap((e) => (e ? [e] : []));
+}
 
-    const dialogRemove = ref(false);
-    const removeLogin = ref<string | null>(null);
-    function removeFormCanceled() {
-      closeRemoveForm();
-    }
-    function removeFormFinished() {
-      query.executeQuery({ requestPolicy: "network-only" });
-      closeRemoveForm();
-    }
-    function closeRemoveForm() {
-      dialogRemove.value = false;
-      nextTick(() => {
-        removeLogin.value = null;
-      });
-    }
-    function openRemoveForm(item) {
-      if (!allGitHubOrgs.value) return;
-      const index = allGitHubOrgs.value.edges.indexOf(item);
-      removeLogin.value = allGitHubOrgs.value.edges[index].node.login;
-      dialogRemove.value = true;
-    }
+function readNodes(query: Query) {
+  return readEdges(query).flatMap((e) => (e.node ? e.node : []));
+}
 
-    return {
-      allGitHubOrgs,
-      allGitHubOrgsHeaders,
-      dialogAdd,
-      addFormCanceled,
-      addFormFinished,
-      closeAddDialog,
-      dialogRemove,
-      removeLogin,
-      removeFormCanceled,
-      removeFormFinished,
-      closeRemoveForm,
-      openRemoveForm,
-    };
-  },
-});
+function isEmpty(query: Query) {
+  return readNodes(query).length === 0;
+}
+
+const queryState = useQueryState(query, { isEmpty });
+const { loading, loaded, empty, error, devtoolState } = queryState;
+
+const edges = computed(() => (empty.value ? [] : readEdges(query)));
+const nodes = computed(() => (empty.value ? [] : readNodes(query)));
+
+const items = computed(() =>
+  nodes.value.map((node) => ({
+    avatarUrl: node.avatarUrl,
+    login: node.login,
+    totalCount: node.memberships?.totalCount ?? 0,
+  }))
+);
+
+const headers = ref([
+  { title: "", key: "avatarUrl", align: "start" },
+  { title: "Org", key: "login" },
+  { title: "Number of members", key: "totalCount", align: "end" },
+  { title: "", key: "actions", sortable: false, align: "end" },
+]);
+
+const dialogAdd = ref(false);
+function addFormCanceled() {
+  closeAddDialog();
+}
+function addFormFinished() {
+  query.executeQuery({ requestPolicy: "network-only" });
+  closeAddDialog();
+}
+function closeAddDialog() {
+  dialogAdd.value = false;
+}
+
+const dialogRemove = ref(false);
+const removeLogin = ref<string | null>(null);
+function removeFormCanceled() {
+  closeRemoveForm();
+}
+function removeFormFinished() {
+  query.executeQuery({ requestPolicy: "network-only" });
+  closeRemoveForm();
+}
+function closeRemoveForm() {
+  dialogRemove.value = false;
+  nextTick(() => {
+    removeLogin.value = null;
+  });
+}
+function openRemoveForm(item: (typeof items.value)[0]) {
+  removeLogin.value = item.login;
+  dialogRemove.value = true;
+}
 </script>

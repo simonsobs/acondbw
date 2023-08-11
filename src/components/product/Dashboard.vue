@@ -1,95 +1,86 @@
 <template>
-  <div class="dashboard" style="position: relative">
+  <div class="dashboard px-5">
     <v-data-table
-      v-if="items"
       :headers="headers"
       :items="items"
-      :items-per-page="items.length"
       :loading="loading"
-      disable-sort
-      hide-default-footer
+      :items-per-page="-1"
       @click:row="clickRow"
-      class="elevation-1"
     >
+      <template v-slot:top>
+        <v-alert v-if="error" variant="tonal" type="error" :text="error">
+        </v-alert>
+      </template>
       <template v-slot:[`item.plural`]="{ item }">
         <router-link
-          :to="{ name: 'ProductList', params: { productTypeName: item.name } }"
+          :to="{
+            name: 'ProductList',
+            params: { productTypeName: item.raw.name },
+          }"
         >
-          <span class="capitalize font-weight-bold primary--text">
-            {{ item.plural }}
+          <span class="capitalize font-weight-bold text-primary">
+            {{ item.raw.plural }}
           </span>
         </router-link>
       </template>
+      <template #bottom></template>
     </v-data-table>
-    <v-alert v-if="error" type="error" style="width: 100%">{{ error }}</v-alert>
     <dev-tool-loading-state-menu
       top="-30px"
-      right="-10px"
+      right="10px"
       v-model="devtoolState"
-    ></dev-tool-loading-state-menu>
+    >
+    </dev-tool-loading-state-menu>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed } from "vue";
-import { useRouter } from "vue-router/composables";
-import { useQuery } from "@urql/vue";
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 
-import ALL_PRODUCT_TYPES from "@/graphql/queries/AllProductTypes.gql";
-import { AllProductTypesQuery } from "@/generated/graphql";
+import { useAllProductTypesQuery } from "@/generated/graphql";
 
 import { useQueryState } from "@/utils/query-state";
 
-export default defineComponent({
-  name: "Dashboard",
-  setup() {
-    const router = useRouter();
-    const query = useQuery<AllProductTypesQuery>({
-      query: ALL_PRODUCT_TYPES,
-    });
-    function readEdges(
-      query: ReturnType<typeof useQuery<AllProductTypesQuery>>
-    ) {
-      return query.data?.value?.allProductTypes?.edges?.flatMap((e) =>
-        e ? [e] : []
-      );
-    }
-    const edges = computed(() => readEdges(query) || []);
+const router = useRouter();
 
-    const headers = ref([
-      { text: "Product type", value: "plural" },
-      {
-        text: "Number of products",
-        align: "end",
-        value: "products.totalCount",
-      },
-    ]);
+const query = useAllProductTypesQuery();
+type Query = typeof query;
 
-    function isEmpty(query: ReturnType<typeof useQuery<AllProductTypesQuery>>) {
-      const edges = readEdges(query);
-      return edges ? edges.length === 0 : false;
-    }
+function readEdges(query: Query) {
+  const edgesAndNulls = query.data?.value?.allProductTypes?.edges;
+  if (!edgesAndNulls) return [];
+  return edgesAndNulls.flatMap((e) => (e ? [e] : []));
+}
 
-    const items = computed(() =>
-      edges.value.flatMap((edge) => (edge?.node ? [edge.node] : []))
-    );
+function readNodes(query: Query) {
+  return readEdges(query).flatMap((e) => (e.node ? e.node : []));
+}
 
-    function clickRow(item: typeof items.value[number]) {
-      router.push({
-        name: "ProductList",
-        params: { productTypeName: item.name },
-      });
-    }
+function isEmpty(query: Query) {
+  return readNodes(query).length === 0;
+}
 
-    return {
-      ...useQueryState(query, { isEmpty }),
-      edges,
-      headers,
-      items,
-      clickRow,
-    };
+const headers = ref([
+  { title: "Product type", key: "plural" },
+  {
+    title: "Number of products",
+    align: "end",
+    key: "products.totalCount",
   },
-});
+]);
+
+const queryState = useQueryState(query, { isEmpty });
+const { loading, loaded, empty, error, devtoolState } = queryState;
+
+const items = computed(() => (empty.value ? [] : readNodes(query)));
+
+function clickRow(event: Event, { item }) {
+  router.push({
+    name: "ProductList",
+    params: { productTypeName: item.selectable.name },
+  });
+}
 </script>
 
 <style scoped>
@@ -97,7 +88,12 @@ export default defineComponent({
   text-transform: capitalize;
 }
 
-.dashboard >>> tbody tr :hover {
+.dashboard {
+  position: relative;
+}
+
+/* :deep() selects child components in scoped styles */
+.dashboard:deep(tbody tr :hover) {
   cursor: pointer;
 }
 </style>

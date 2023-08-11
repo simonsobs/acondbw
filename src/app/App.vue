@@ -2,11 +2,13 @@
   <v-app>
     <router-view name="frame"></router-view>
     <v-main>
-      <transition :name="transitionName" :mode="transitionMode">
-        <keep-alive>
-          <router-view :key="route.fullPath"></router-view>
-        </keep-alive>
-      </transition>
+      <router-view :key="route.path" v-slot="{ Component }">
+        <transition :name="transitionName" :mode="transitionMode">
+          <keep-alive>
+            <component :key="route.path" :is="Component" />
+          </keep-alive>
+        </transition>
+      </router-view>
     </v-main>
     <snackbar></snackbar>
   </v-app>
@@ -14,12 +16,11 @@
 
 <script setup lang="ts">
 import { ref, watch, watchEffect } from "vue";
-import { useRoute } from "vue-router/composables";
+import { useRoute } from "vue-router";
 
 import { useConfigStore } from "@/stores/config";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
-
 
 const route = useRoute();
 const configStore = useConfigStore();
@@ -29,7 +30,7 @@ watchEffect(() => {
 });
 
 const transitionName = ref("fade-app-across");
-const transitionMode = ref("out-in");
+const transitionMode = ref<"out-in">("out-in");
 watch(
   () => route.path,
   (to, from) => {
@@ -49,39 +50,6 @@ watch(
   }
 );
 </script>
-
-<style>
-.capitalize {
-  text-transform: capitalize;
-}
-
-.condensed-font {
-  font-family: "Barlow Condensed", "Barlow", sans-serif;
-  /* font-family: "Roboto Condensed", Roboto, sans-serif; */
-  /* Google Fonts are imported in src/styles/variables.scss */
-}
-
-#app .v-card__title {
-  /* #app is to increase CSS specificity */
-  word-break: normal;
-}
-
-#app .markdown-body pre code {
-  background-color: inherit;
-}
-
-html,
-body,
-.v-application,
-.v-application--wrap,
-.v-main__wrap {
-  height: 100%;
-}
-
-.v-main {
-  height: calc(100% - 48px); /* 48px: the height of the app bar */
-}
-</style>
 
 <style scoped>
 .fade-app-across-enter-active {
@@ -114,3 +82,69 @@ For .fade-app-within, the opacity is set to one and the duration is
 set to zero for both enter and leave, which is effectively disabling the
 transition effects, letting the nested routes handle the transition
 effects. -->
+
+<style>
+.capitalize {
+  text-transform: capitalize;
+}
+
+.condensed-font {
+  font-family: "Barlow Condensed", "Barlow", sans-serif;
+  /* font-family: "Roboto Condensed", Roboto, sans-serif; */
+  /* Google Fonts are imported in src/styles/variables.scss */
+}
+
+#app .v-card__title {
+  /* #app is to increase CSS specificity */
+  word-break: normal;
+}
+
+#app .markdown-body pre code {
+  background-color: inherit;
+}
+
+html,
+body,
+#app,
+.v-application,
+.v-application__wrap,
+.v-main__wrap {
+  height: 100%;
+}
+
+.v-main {
+  height: calc(100% - 64px); /* 64px: the height of the app bar */
+  overflow-y: scroll;
+}
+
+.v-btn {
+  text-transform: capitalize;
+}
+
+.v-card--variant-outlined {
+  background: rgb(var(--v-theme-surface-container-lowest));
+  border: thin solid rgb(var(--v-theme-outline-variant));
+}
+
+.v-card--variant-elevated {
+  background: rgb(var(--v-theme-surface-container-lowest));
+}
+
+.v-autocomplete .v-field__overlay {
+  background-color: rgb(var(--v-theme-surface-container-lowest));
+}
+
+.v-table {
+  background: rgb(var(--v-theme-surface-container-lowest));
+  border: 1px solid rgb(var(--v-theme-outline-variant));
+  border-radius: 8px;
+}
+.v-table__wrapper > table > thead > tr th,
+.v-table__wrapper > table tbody > tr > td {
+  background-color: inherit;
+}
+.v-data-table .v-table__wrapper > table > thead > tr th,
+.v-data-table .v-table__wrapper > table tbody > tr > td {
+  background-color: inherit; 
+}
+</style>

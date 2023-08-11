@@ -2281,6 +2281,14 @@ export type QueryForSearchWindowQueryVariables = Exact<{ [key: string]: never; }
 
 export type QueryForSearchWindowQuery = { __typename?: 'QueryAdmin', allProducts?: { __typename?: 'ProductConnection', edges: Array<{ __typename?: 'ProductEdge', node?: { __typename?: 'Product', id: string, name: string, type_?: { __typename?: 'ProductType', id: string, name: string, singular?: string | null } | null } | null } | null> } | null };
 
+export type QueryProductNameInFormStartQueryVariables = Exact<{
+  typeId: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+}>;
+
+
+export type QueryProductNameInFormStartQuery = { __typename?: 'QueryAdmin', product?: { __typename?: 'Product', id: string, productId: string, typeId: number, name: string } | null };
+
 export type SignInInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3047,6 +3055,20 @@ export const QueryForSearchWindowDocument = gql`
 
 export function useQueryForSearchWindowQuery(options: Omit<Urql.UseQueryArgs<never, QueryForSearchWindowQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<QueryForSearchWindowQuery>({ query: QueryForSearchWindowDocument, ...options });
+};
+export const QueryProductNameInFormStartDocument = gql`
+    query QueryProductNameInFormStart($typeId: Int!, $name: String!) {
+  product(typeId: $typeId, name: $name) {
+    id
+    productId
+    typeId
+    name
+  }
+}
+    `;
+
+export function useQueryProductNameInFormStartQuery(options: Omit<Urql.UseQueryArgs<never, QueryProductNameInFormStartQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QueryProductNameInFormStartQuery>({ query: QueryProductNameInFormStartDocument, ...options });
 };
 export const SignInInfoDocument = gql`
     query SignInInfo {

@@ -1,52 +1,38 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12">
-        <v-card flat>
-          <v-card-title class="text-h4">Theme</v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-for="k in keys" :key="k">
-      <v-col cols="6">
-        <v-card flat outlined>
-          <v-card-title :class="`${k}--text`">
-            {{ k }}: {{ colors[k] }}
-          </v-card-title>
-        </v-card>
-      </v-col>
-      <v-col cols="6">
-        <v-card flat :class="k">
-          <v-card-title :class="`on-${k}--text`">
-            {{ `on-${k}` }}: {{ colors[`on-${k}`] }}
-          </v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="pt-5 px-5 pb-16" style="max-width: 960px; margin: auto">
+    <div class="text-h4 text-primary">Theme</div>
+    <v-container>
+      <v-row v-for="(c, k) in bgColors" :key="k">
+        <v-col cols="6">
+          <v-card variant="outlined">
+            <v-card-title :class="`bg-${k}`">
+              {{ k }}: {{ colors[k] }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card variant="outlined" v-if="`on-${k}` in colors">
+            <v-card-title :class="`bg-${k} text-on-${k}`">
+              {{ `on-${k}` }}: {{ colors[`on-${k}`] }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
-<script>
-const KEYS = [
-  "primary",
-  "secondary",
-  "accent",
-  "error",
-  "info",
-  "success",
-  "warning",
-];
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { useTheme } from "vuetify";
 
-export default {
-  name: "Theme",
-  data: () => ({ keys: KEYS }),
-  computed: {
-    colors() {
-      const theme = this.$vuetify.theme.themes.light;
-      const keys = [...this.keys, ...this.keys.map((k) => `on-${k}`)];
-      const ret = keys.reduce((a, k) => ({ ...a, ...{ [k]: theme[k] } }), {});
-      return ret;
-    },
-  },
-};
+const theme = useTheme();
+
+const colors = computed(() => theme.current.value.colors);
+
+const bgColors = computed(() =>
+  Object.fromEntries(
+    Object.entries(colors.value).filter(([k, v]) => !k.startsWith("on-"))
+  )
+);
 </script>

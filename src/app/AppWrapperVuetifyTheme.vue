@@ -2,38 +2,34 @@
   <app> </app>
 </template>
 
-<script lang="ts">
-// Use Options API to set Vuetify theme in Vuetify 2 because not clear how to
-// access $vuetify in Composition API.
-import { defineComponent, computed } from "vue";
+<script setup lang="ts">
+import { computed, onBeforeMount } from "vue";
+import { useTheme } from "vuetify";
 
 import { useConfigStore } from "@/stores/config";
+import { generateLightAndDarkThemesFromSourceColor } from "@/utils/material-color";
 
 import App from "./App.vue";
 
-export default defineComponent({
-  components: { App },
-  setup() {
-    const configStore = useConfigStore();
-    return {
-      vuetifyTheme: computed(() => configStore.vuetifyTheme),
-    };
-  },
-  watch: {
-    vuetifyTheme() {
-      this.setVuetifyTheme();
-    },
-  },
-  beforeMount() {
-    this.setVuetifyTheme();
-  },
-  methods: {
-    setVuetifyTheme() {
-      this.$vuetify.theme.themes.light = {
-        ...this.$vuetify.theme.themes.light,
-        ...this.vuetifyTheme,
-      };
-    },
-  },
+const configStore = useConfigStore();
+
+const sourceColor = computed(
+  () => configStore.config.materialDynamicColorSource
+);
+
+const theme = useTheme();
+
+onBeforeMount(() => {
+  setVuetifyTheme();
 });
+
+function setVuetifyTheme() {
+  const [dynamicLight, dynamicDark] = generateLightAndDarkThemesFromSourceColor(
+    sourceColor.value
+  );
+  // @ts-ignore
+  theme.themes.value.light.colors = dynamicLight.colors;
+  // @ts-ignore
+  theme.themes.value.dark.colors = dynamicDark.colors;
+}
 </script>

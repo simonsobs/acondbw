@@ -1,100 +1,82 @@
 <template>
-  <v-container class="product-list" style="position: relative">
-    <v-row v-if="error">
-      <v-col>
-        <v-alert v-if="error" type="error">{{ error }}</v-alert>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0">
-        <v-card-actions class="align-end" style="height: 56px">
-          <v-tooltip bottom open-delay="800">
-            <template v-slot:activator="{ on }">
-              <v-btn :disabled="loading" icon @click="refresh()" v-on="on">
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
-            </template>
-            <span>Refresh</span>
-          </v-tooltip>
-          <v-spacer></v-spacer>
-          <span v-if="loaded && productType" class="secondary--text">
-            <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
-            <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
-          </span>
-          <v-spacer></v-spacer>
-          <span v-if="loaded && nItemsTotal > 1">
-            <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on: tooltip }">
-                <v-menu left offset-y>
-                  <template v-slot:activator="{ on: menu }">
-                    <v-btn icon v-on="{ ...tooltip, ...menu }">
-                      <v-icon>mdi-sort-variant</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list flat dense>
-                    <v-list-item>
-                      <v-list-item-title>Sort</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item-group v-model="sortItem" color="primary">
-                      <v-list-item v-for="(item, i) in sortItems" :key="i">
-                        <v-list-item-icon>
-                          <v-icon v-if="i == sortItem">mdi-check</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title
-                            v-text="item.text"
-                          ></v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-menu>
-              </template>
-              <span>Sort</span>
-            </v-tooltip>
-          </span>
-          <v-spacer></v-spacer>
-          <span v-if="loaded">
-            <v-tooltip bottom open-delay="800">
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  icon
-                  @click="areAllCardsCollapsed = !areAllCardsCollapsed"
-                  v-on="on"
-                >
-                  <v-icon>
-                    {{
-                      areAllCardsCollapsed
-                        ? "mdi-unfold-more-horizontal"
-                        : "mdi-unfold-less-horizontal"
-                    }}
-                  </v-icon>
+  <div class="my-5" style="block-size: 100%; position: relative">
+    <div v-if="error">
+      <v-alert variant="tonal" type="error" :text="error"> </v-alert>
+    </div>
+    <div class="top-bar">
+      <v-tooltip bottom open-delay="800">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            variant="text"
+            :disabled="loading"
+            icon
+            @click="refresh()"
+          >
+            <v-icon icon="mdi-refresh"></v-icon>
+          </v-btn>
+        </template>
+        <span>Refresh</span>
+      </v-tooltip>
+      <div v-if="loaded && productType">
+        <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
+        <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
+      </div>
+      <div v-if="loaded && nItemsTotal > 1">
+        <v-tooltip bottom open-delay="800">
+          <template v-slot:activator="{ props: tooltip }">
+            <v-menu left offset-y>
+              <template v-slot:activator="{ props: menu }">
+                <v-btn v-bind="{ ...tooltip, ...menu }" variant="text" icon>
+                  <v-icon icon="mdi-sort-variant"></v-icon>
                 </v-btn>
               </template>
-              <span>
-                {{ areAllCardsCollapsed ? "Expand all" : "Collapse all" }}
-              </span>
-            </v-tooltip>
-          </span>
-          <span v-if="loaded || empty">
+              <v-list flat dense v-model:selected="sortSelected">
+                <v-list-item title="Sort"> </v-list-item>
+                <v-list-item
+                  v-for="(item, i) in sortItems"
+                  :key="i"
+                  :value="item"
+                  :title="item.title"
+                >
+                  <template v-slot:prepend>
+                    <v-icon v-if="item == sortItem" icon="mdi-check"> </v-icon>
+                    <v-icon v-else> </v-icon>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+          <span>Sort</span>
+        </v-tooltip>
+      </div>
+      <div v-if="loaded">
+        <v-tooltip bottom open-delay="800">
+          <template v-slot:activator="{ props }">
             <v-btn
-              :disabled="disableAdd"
-              fab
-              class="ml-3 secondary"
-              :to="{
-                name: 'ProductAdd',
-                params: { productTypeName: productType.name },
-              }"
-              v-if="productType"
+              v-bind="props"
+              variant="text"
+              icon
+              @click="areAllCardsCollapsed = !areAllCardsCollapsed"
             >
-              <v-icon class="on-secondary--text">mdi-plus-thick</v-icon>
+              <v-icon
+                :icon="
+                  areAllCardsCollapsed
+                    ? 'mdi-unfold-more-horizontal'
+                    : 'mdi-unfold-less-horizontal'
+                "
+              >
+              </v-icon>
             </v-btn>
+          </template>
+          <span>
+            {{ areAllCardsCollapsed ? "Expand all" : "Collapse all" }}
           </span>
-        </v-card-actions>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col v-if="nodes.length" class="pt-0 pb-16">
+        </v-tooltip>
+      </div>
+    </div>
+    <div>
+      <div v-if="nodes.length" class="pt-0 pb-16">
         <component
           :is="productItemCard"
           v-for="node in nodes"
@@ -115,9 +97,9 @@
             color="secondary"
           ></v-progress-circular>
         </div>
-        <v-card-actions v-if="showLoadMoreButton && productType">
-          <v-spacer></v-spacer>
-          <span v-if="nItemsTotal > 1">
+        <div v-if="showLoadMoreButton && productType" class="bottom-bar">
+          <div></div>
+          <div v-if="nItemsTotal > 1">
             <span v-if="nodes.length == nItemsTotal">
               {{ nItemsTotal }} {{ productType.plural }}
             </span>
@@ -125,21 +107,19 @@
               {{ edges.length }} of {{ nItemsTotal }}
               {{ productType.plural }}
             </span>
-          </span>
-          <v-spacer></v-spacer>
+          </div>
           <v-btn
             v-if="productType && productType.products"
             :disabled="!productType.products.pageInfo.hasNextPage"
-            outlined
-            color="secondary"
-            text
+            variant="tonal"
+            color="primary"
             @click="loadMore()"
+            text="Load more"
           >
-            Load more
           </v-btn>
-        </v-card-actions>
-      </v-col>
-      <v-col v-else-if="loading">
+        </div>
+      </div>
+      <div v-else-if="loading">
         <div class="pa-3">
           <v-progress-circular
             indeterminate
@@ -147,57 +127,69 @@
             color="secondary"
           ></v-progress-circular>
         </div>
-      </v-col>
-      <v-col v-else-if="empty && productType">
-        <v-card-text>
+      </div>
+      <div v-else-if="empty && productType" class="empty">
+        <div class="text-body-1 font-weight-medium">
           Empty. No {{ productType.plural }} are found.
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            depressed
-            color="primary"
-            :to="{
-              name: 'ProductAdd',
-              params: { productTypeName: productType.name },
-            }"
-          >
-            <v-icon left> mdi-plus-thick </v-icon> Add the first entry
-          </v-btn>
-        </v-card-actions>
-        <v-card-actions>
-          <v-dialog v-model="deleteDialog" max-width="600">
-            <template v-slot:activator="{ on: deleteDialog }">
-              <v-btn
-                outlined
-                color="secondary"
-                text
-                :disabled="disableDelete"
-                v-on="{ ...deleteDialog }"
-              >
-                <v-icon left> mdi-delete </v-icon>
-                Delete the product type
-              </v-btn>
-            </template>
-            <product-type-delete-form
-              v-if="deleteDialog"
-              :node="productType"
-              @cancel="onDeleteFormCancelled"
-              @finished="onDeleteFormFinished"
-            ></product-type-delete-form>
-          </v-dialog>
-        </v-card-actions>
-      </v-col>
-    </v-row>
-    <dev-tool-loading-state-menu
-      top="-10px"
-      v-model="devtoolState"
-    ></dev-tool-loading-state-menu>
-  </v-container>
+        </div>
+        <v-btn
+          depressed
+          variant="flat"
+          :to="{
+            name: 'ProductAdd',
+            params: { productTypeName: productType.name },
+          }"
+          prepend-icon="mdi-plus-thick"
+          text="Add the first entry"
+        >
+        </v-btn>
+        <v-dialog v-model="deleteDialog" max-width="400">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              variant="outlined"
+              color="secondary"
+              :disabled="disableDelete"
+              prepend-icon="mdi-delete"
+              text="Delete this product type"
+            >
+            </v-btn>
+          </template>
+          <product-type-delete-form
+            v-if="deleteDialog"
+            :node="productType"
+            @cancel="onDeleteFormCancelled"
+            @finished="onDeleteFormFinished"
+          ></product-type-delete-form>
+        </v-dialog>
+      </div>
+    </div>
+    <v-btn
+      :disabled="disableAdd"
+      icon
+      variant="flat"
+      size="x-large"
+      color="tertiary-container"
+      elevation="8"
+      :to="{
+        name: 'ProductAdd',
+        params: { productTypeName: productType.name },
+      }"
+      v-if="loaded && !empty && productType"
+      style="position: fixed; bottom: 24px; right: 24px"
+    >
+      <v-icon icon="mdi-plus-thick"></v-icon>
+    </v-btn>
+    <dev-tool-loading-state-menu top="0" right="-35px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, withDefaults, Component } from "vue";
-import { useRouter } from "vue-router/composables";
+import { ref, reactive, watch, computed, withDefaults } from "vue";
+import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useStore } from "@/stores/main";
 
 import ProductItemCard from "@/components/product/ProductItemCard.vue";
 
@@ -210,10 +202,11 @@ import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteFo
 
 import { useQueryState } from "@/utils/query-state";
 
+// Use any for productItemCard because Component causes an error for unknown reason.
 const props = withDefaults(
   defineProps<{
     productTypeId: number;
-    productItemCard?: Component;
+    productItemCard?: any;
     disableAdd?: boolean;
     disableEdit?: boolean;
     disableDelete?: boolean;
@@ -228,23 +221,26 @@ const props = withDefaults(
 
 const router = useRouter();
 
-const sortItem = ref(0);
-
 const sortItems = ref([
-  { text: "Recently posted", value: ProductSortEnum.TimePostedDesc },
-  { text: "Recently updated", value: ProductSortEnum.TimeUpdatedDesc },
-  { text: "Name", value: ProductSortEnum.NameAsc },
+  { title: "Recently posted", value: ProductSortEnum.TimePostedDesc },
+  { title: "Recently updated", value: ProductSortEnum.TimeUpdatedDesc },
+  { title: "Name", value: ProductSortEnum.NameAsc },
 ]);
+
+const sortSelected = ref([sortItems.value[0]]);
+const sortItem = computed(() => sortSelected.value[0]);
 
 const nItemsInitialLoad = ref(10);
 const first = ref(nItemsInitialLoad.value);
 
-const sort = computed(() => [sortItems.value[sortItem.value].value]);
+const sort = computed(() => [sortItem.value.value]);
 
 const query = useQueryForProductListQuery({
   variables: {
     typeId: props.productTypeId,
+    // @ts-ignore
     sort: sort,
+    // @ts-ignore
     first: first,
     after: "",
   },
@@ -294,7 +290,10 @@ watch(nodes, async () => {
 });
 
 async function loadAllFewRemainingItems() {
-  if (nodes.value.length + nExtraItemsAutomaticLoad.value >= nItemsTotal.value) {
+  if (
+    nodes.value.length + nExtraItemsAutomaticLoad.value >=
+    nItemsTotal.value
+  ) {
     await loadMore();
   }
 }
@@ -314,21 +313,22 @@ async function refresh() {
   }
 }
 
-const isCardCollapsed = ref<{ [key: string]: boolean }>({});
+const isCardCollapsed = reactive<{ [key: string]: boolean }>({});
 
 function collapseCards() {
   nodes.value.forEach((node) => {
     const id = node.id;
-    if (id in isCardCollapsed.value) return;
-    isCardCollapsed.value = { ...isCardCollapsed.value, [id]: true };
+    if (id in isCardCollapsed) return;
+    isCardCollapsed[id] = true;
   });
 }
+collapseCards();
 
 const areAllCardsCollapsed = computed({
-  get: () => Object.values(isCardCollapsed.value).every((i) => i),
+  get: () => Object.values(isCardCollapsed).every((i) => i),
   set: (v) => {
-    Object.keys(isCardCollapsed.value).forEach((k) => {
-      isCardCollapsed.value[k] = v;
+    Object.keys(isCardCollapsed).forEach((k) => {
+      isCardCollapsed[k] = v;
     });
   },
 });
@@ -372,4 +372,34 @@ async function loadMore() {
   if (!productType.value?.products?.pageInfo?.hasNextPage) return;
   first.value = first.value + nItemsPerLoad.value;
 }
+
+const store = useStore();
+const { nApolloMutations } = storeToRefs(store);
+watch(nApolloMutations, refresh);
 </script>
+
+<style scoped>
+.top-bar {
+  display: flex;
+  min-block-size: 56px;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 1rem;
+}
+
+.bottom-bar {
+  display: flex;
+  margin-top: 16px;
+  min-block-size: 56px;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 1rem;
+}
+.empty {
+  margin-top: 16px;
+  display: grid;
+  block-size: 100%;
+  place-items: center;
+  gap: 24px;
+}
+</style>

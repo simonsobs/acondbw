@@ -24,20 +24,20 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     error.value = e?.message || null;
   });
 
-  const devtoolState = ref<number | null>(null);
+  const devtoolState = ref(State.Off);
   watch(devtoolState, (val) => {
-    if (val) init.value = val === State.INIT;
-    error.value = val === State.ERROR ? "Error from Dev Tools" : null;
+    if (val) init.value = val === State.Init;
+    error.value = val === State.Error ? "Error from Dev Tools" : null;
   });
 
   const state = computed(() => {
-    if (devtoolState.value !== null) return devtoolState.value;
-    if (refreshing.value) return State.LOADING;
-    if (query.fetching.value) return State.LOADING;
-    if (error.value) return State.ERROR;
-    if (isEmpty?.(query)) return State.EMPTY;
-    if (isNull?.(query)) return State.NONE;
-    return State.LOADED;
+    if (devtoolState.value !== State.Off) return devtoolState.value;
+    if (refreshing.value) return State.Loading;
+    if (query.fetching.value) return State.Loading;
+    if (error.value) return State.Error;
+    if (isEmpty?.(query)) return State.Empty;
+    if (isNull?.(query)) return State.None;
+    return State.Loaded;
   });
 
   const store = useStore();
@@ -71,10 +71,10 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     init,
     error,
     devtoolState,
-    loading: computed(() => state.value === State.LOADING),
-    loaded: computed(() => state.value === State.LOADED),
-    empty: computed(() => state.value === State.EMPTY),
-    notFound: computed(() => state.value === State.NONE),
+    loading: computed(() => state.value === State.Loading),
+    loaded: computed(() => state.value === State.Loaded),
+    empty: computed(() => state.value === State.Empty),
+    notFound: computed(() => state.value === State.None),
     refresh,
   };
 }

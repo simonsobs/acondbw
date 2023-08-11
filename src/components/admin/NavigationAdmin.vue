@@ -1,70 +1,72 @@
 <template>
-  <div class="navigation" style="position: relative">
-    <v-list shaped>
+  <v-navigation-drawer v-model="drawer">
+    <v-list class="ma-2">
       <v-list-item
-        link
-        router
         v-for="(link, index) in links"
         :key="index"
         :to="link.to"
+        :prepend-icon="link.icon"
+        color="primary"
+        rounded="lg"
       >
-        <v-list-item-action>
-          <v-icon v-text="link.icon"></v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title
-            v-text="link.title"
-            class="capitalize condensed-font"
-          ></v-list-item-title>
-        </v-list-item-content>
+        <v-list-item-title
+          v-text="link.title"
+          class="capitalize condensed-font"
+        ></v-list-item-title>
       </v-list-item>
     </v-list>
-  </div>
+  </v-navigation-drawer>
 </template>
 
-<script>
-export default {
-  name: "NavigationAdmin",
-  data: () => ({
-    edges: null,
-    links: [
-      {
-        title: "versions",
-        to: { name: "AdminVersion" },
-        icon: "mdi-scatter-plot-outline",
-      },
-      {
-        title: "log",
-        to: { name: "AdminLog" },
-        icon: "mdi-exclamation-thick",
-      },
-      {
-        title: "config",
-        to: { name: "AdminConfig" },
-        icon: "mdi-cog",
-      },
-      {
-        title: "theme",
-        to: { name: "AdminTheme" },
-        icon: "mdi-format-color-fill",
-      },
-      {
-        title: "users",
-        to: { name: "AdminUser" },
-        icon: "mdi-account-multiple",
-      },
-      {
-        title: "product types",
-        to: { name: "ProductType" },
-        icon: "mdi-shape",
-      },
-    ],
-  }),
-};
-</script>
+<script setup lang="ts">
+import { ref, reactive, watch, watchEffect } from "vue";
 
-<style scoped>
-.capitalize {
-  text-transform: capitalize;
+interface Props {
+  modelValue?: boolean;
 }
-</style>
+interface Emits {
+  (event: "update:modelValue", value: boolean): void;
+}
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+const drawer = ref(props.modelValue);
+watchEffect(() => {
+  drawer.value = props.modelValue;
+});
+watch(drawer, (val) => {
+  emit("update:modelValue", val);
+});
+
+const links = reactive([
+  {
+    title: "versions",
+    to: { name: "AdminVersion" },
+    icon: "mdi-scatter-plot-outline",
+  },
+  {
+    title: "log",
+    to: { name: "AdminLog" },
+    icon: "mdi-exclamation-thick",
+  },
+  {
+    title: "config",
+    to: { name: "AdminConfig" },
+    icon: "mdi-cog",
+  },
+  {
+    title: "theme",
+    to: { name: "AdminTheme" },
+    icon: "mdi-format-color-fill",
+  },
+  {
+    title: "users",
+    to: { name: "AdminUser" },
+    icon: "mdi-account-multiple",
+  },
+  {
+    title: "product types",
+    to: { name: "ProductType" },
+    icon: "mdi-shape",
+  },
+]);
+</script>

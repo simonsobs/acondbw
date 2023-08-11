@@ -1,11 +1,15 @@
-export default {
-  INIT: 0,
-  LOADING: 1,
-  ERROR: 2,
-  LOADED: 3,
-  EMPTY: 4, // e.g., empty list
-  NONE: 5, // i.e., not found
-};
+enum State {
+  Off = "OFF",
+  Init = "INIT",
+  Loading = "LOADING",
+  Error = "ERROR",
+  Loaded = "LOADED",
+  Empty = "EMPTY", // e.g., empty list
+  None = "NONE", // i.e., not found
+}
+
+export default State;
+
 
 // INIT -+-> LOADING -+-> ERROR  -+
 //       |            |           |

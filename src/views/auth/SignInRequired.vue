@@ -1,24 +1,20 @@
 <template>
   <div class="g-container">
-    <div>
-      <div class="text-h3 pa-3">Sign-in required</div>
-      <sign-in-card :path="$route.query.path">
-        <template v-slot:title> <span></span> </template>
-      </sign-in-card>
-    </div>
+    <sign-in-card :path="path" v-if="path">
+      <template v-slot:title>
+        <span class="text-h3 pa-3">Sign-in required</span>
+      </template>
+    </sign-in-card>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
+<script setup lang="ts">
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 import SignInCard from "@/components/auth/SignInCard.vue";
 
-export default defineComponent({
-  name: "SignInRequired",
-  components: {
-    SignInCard,
-  },
-});
+const router = useRouter();
+const path = computed(() => router.currentRoute.value.query.path as string);
 </script>
 
 <style scoped>

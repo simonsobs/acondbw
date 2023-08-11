@@ -1,29 +1,38 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-card flat>
-          <v-card-title class="text-h4">Versions</v-card-title>
-          <v-card-text v-if="versions">
-            <span class="font-weight-medium"> App version: </span>
-            {{ appVersion }} <br />
-            <span class="font-weight-medium"> Server version: </span>
-            {{ versions.version }} <br />
-            <span class="font-weight-medium"> Alembic migration version: </span>
-            {{ versions.alembicVersion }}
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="pt-5 px-5" style="max-width: 960px; margin: auto">
+    <div class="text-h4 text-primary">Versions</div>
+    <v-table class="mt-5">
+      <tbody>
+        <tr v-for="item in items" :key="item.key">
+          <td class="font-weight-medium">{{ item.key }}</td>
+          <td>{{ item.value }}</td>
+        </tr>
+      </tbody>
+    </v-table>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, computed } from "vue";
 import { useStore } from "@/stores/main";
 import { useVersionsQuery } from "@/generated/graphql";
 const store = useStore();
 const appVersion = ref(store.appVersion);
 const query = useVersionsQuery();
 const versions = query.data;
+
+const items = computed(() => [
+  {
+    key: "App version",
+    value: appVersion.value,
+  },
+  {
+    key: "Server version",
+    value: versions.value?.version,
+  },
+  {
+    key: "Alembic migration version",
+    value: versions.value?.alembicVersion,
+  },
+]);
 </script>

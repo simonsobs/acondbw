@@ -1,5 +1,4 @@
-import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import { RouteRecordRaw, createRouter, createWebHistory, Router } from "vue-router";
 
 import { useAuthStore } from "@/stores/auth";
 
@@ -35,17 +34,11 @@ const Config = () => import("@/views/admin/Config.vue");
 const Theme = () => import("@/views/admin/Theme.vue");
 const User = () => import("@/views/admin/User.vue");
 const AdminAppAuth = () => import("@/views/admin-token/AdminAppAuth.vue");
-const AdminAppTokenError = () => import("@/views/admin-token/AdminAppTokenError.vue");
+const AdminAppTokenError = () =>
+  import("@/views/admin-token/AdminAppTokenError.vue");
 
-import { PiniaVuePlugin } from "pinia";
 
-// Pinia must be plugged in before the router.
-// https://github.com/vuejs/pinia/discussions/723#discussioncomment-2110660
-// Plugging in pinia here in case it has not been plugged in yet.
-Vue.use(PiniaVuePlugin);
-Vue.use(VueRouter);
-
-const routes: Array<RouteConfig> = [
+const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Entry",
@@ -190,16 +183,15 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true },
   },
   {
-    path: "*",
+    path: "/*",
     name: "NotFound",
     components: { default: NotFound, frame: NullFrame },
   },
 ];
 
-function createRouter() {
-  const router = new VueRouter({
-    mode: "history",
-    base: import.meta.env.VITE_PUBLIC_PATH,
+function createRouter_() {
+  const router = createRouter({
+    history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
     routes,
   });
 
@@ -235,8 +227,8 @@ function createRouter() {
   return router;
 }
 
-async function checkAuthForCurrentRoute(router: VueRouter) {
-  const authRequired = router.currentRoute.matched.some(
+async function checkAuthForCurrentRoute(router: Router) {
+  const authRequired = router.currentRoute.value.matched.some(
     (record) => record.meta.requiresAuth
   );
   const auth = useAuthStore();
@@ -246,4 +238,4 @@ async function checkAuthForCurrentRoute(router: VueRouter) {
   }
 }
 
-export { createRouter, checkAuthForCurrentRoute };
+export { createRouter_, checkAuthForCurrentRoute };

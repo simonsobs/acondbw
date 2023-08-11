@@ -1,90 +1,70 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-card flat>
-          <v-card-title class="text-h4">Config</v-card-title>
-          <v-card-text>
-            <v-alert v-if="error" type="error">{{ error }}</v-alert>
-          </v-card-text>
-          <v-data-table
-            :headers="headers"
-            :items="items"
-            :items-per-page="items.length"
-            :hide-default-footer="true"
-          >
-            <!-- <template v-slot:[slotName]="{ item }">
-                {{ item }}
-            </template> -->
-            <!-- <template v-slot:item.key="{ item }">
-              <v-edit-dialog
-                :return-value.sync="item.key"
-                large
-                @save="save(item)"
-                @cancel="cancel"
-                @open="open"
-                @close="close"
-              >
-                {{ item.key }}
-                <template v-slot:input>
-                  <v-text-field
-                    v-model="item.key"
-                    label="Edit"
-                    single-line
-                    counter
-                  ></v-text-field>
-                </template>
-              </v-edit-dialog>
-            </template> -->
-            <template v-slot:item.value="{ item }">
-              <v-edit-dialog
-                :return-value.sync="item.value"
-                large
-                @save="save(item)"
-                @cancel="cancel"
-                @open="open"
-                @close="close"
-              >
-                {{ item.value }}
-                <template v-slot:input>
-                  <v-text-field
-                    v-model="item.value"
-                    label="Edit"
-                    single-line
-                    counter
-                  ></v-text-field>
-                </template>
-              </v-edit-dialog>
-            </template>
-          </v-data-table>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="secondary" text :disabled="saved" @click="reset()">
-              Reset
-            </v-btn>
-            <v-btn
-              color="primary"
-              text
-              :disabled="saved || !!error"
-              @click="saveToServer()"
-            >
-              Save to server
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="pt-5 px-5 pb-16" style="max-width: 960px; margin: auto">
+    <div class="text-h4 text-primary">Config</div>
+    <div v-if="error" class="pa-5">
+      <v-alert type="error" variant="tonal" class="mx-auto" max-width="960px">
+        {{ error }}
+      </v-alert>
+    </div>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :items-per-page="-1"
+      class="mt-5"
+    >
+      <template v-slot:item.value="{ item }">
+        {{ item.raw.value }}
+        <v-icon
+          size="x-small"
+          icon="mdi-pencil"
+          class="mx-1"
+          @click="edit(item.raw)"
+        ></v-icon>
+      </template>
+      <template #bottom></template>
+    </v-data-table>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn
+        color="secondary"
+        variant="text"
+        :disabled="saved"
+        @click="reset()"
+      >
+        Reset
+      </v-btn>
+      <v-btn
+        color="primary"
+        variant="text"
+        :disabled="saved || !!error"
+        @click="saveToServer()"
+      >
+        Save to server
+      </v-btn>
+    </v-card-actions>
+    <v-dialog v-model="dialog" max-width="500" :close-on-content-click="false">
+      <v-card>
+        <v-card-text>
+          <v-text-field
+            v-model="edited"
+            label="Edit"
+            single-line
+            counter
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn variant="text" @click="cancelEdit">Cancel</v-btn>
+          <v-btn variant="text" @click="saveEdit">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { storeToRefs } from "pinia";
-export default defineComponent({ name: "Config" });
-</script>
 
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
+import { storeToRefs } from "pinia";
 import { useConfigStore } from "@/stores/config";
 
 // https://stackoverflow.com/a/66430948/7309855
@@ -120,29 +100,27 @@ function reshapeWebConfigToItems(webConfig: StringKeyObject) {
   }));
 }
 
-function reshapeItemsToWebConfig(items: Item[]) {
-  const webConfig = items.reduce(
-    (a, item) => ({
-      ...a,
-      ...{ [item.key]: JSON.parse(item.value) },
-    }),
-    {} as StringKeyObject
-  );
-  return webConfig;
-}
-
-function save(item: Item) {
-  // webConfig.value = reshapeItemsToWebConfig(items.value);
-  config.value[item.key] = JSON.parse(item.value);
-}
-
-function cancel() {}
-function open() {}
-function close() {}
-
 const headers = ref([
-  { text: "Key", value: "key" },
-  { text: "Value (stringified)", value: "value" },
-  { text: "Type", value: "type" },
+  { title: "Key", key: "key" },
+  { title: "Value (stringified)", key: "value" },
+  { title: "Type", key: "type" },
 ]);
+
+const dialog = ref(false);
+const editedItem = ref<Item | null>(null);
+const edited = ref("");
+function edit(item: Item) {
+  editedItem.value = item;
+  edited.value = item.value;
+  dialog.value = true;
+}
+function saveEdit() {
+  if (editedItem.value === null) return;
+  config.value[editedItem.value.key] = JSON.parse(edited.value);
+  dialog.value = false;
+}
+function cancelEdit() {
+  editedItem.value = null;
+  dialog.value = false;
+}
 </script>

@@ -1,58 +1,50 @@
 <template>
-  <v-card>
-    <v-card-title class="primary--text">
+  <v-card class="pa-3">
+    <v-card-title class="text-primary">
       <span>
         Delete the product type:
         <span class="capitalize font-italic"> {{ node.plural }} </span>
       </span>
     </v-card-title>
-    <v-card-text class="body-1 font-weight-medium error--text">
+    <v-card-text class="body-1 font-weight-medium text-error">
       Really, delete the type?
     </v-card-text>
     <v-card-actions>
+      <v-btn color="secondary" variant="text" @click="emit('cancel')">
+        Cancel
+      </v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="secondary" text @click="$emit('cancel')"> Cancel </v-btn>
-      <v-btn color="primary" text @click="submit"> Delete </v-btn>
+      <v-btn color="error" variant="outlined" @click="submit"> Delete </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
 import { useStore } from "@/stores/main";
-import { useMutation } from "@urql/vue";
 
-import DELETE_PRODUCT_TYPE from "@/graphql/mutations/DeleteProductType.gql";
-import {
-  DeleteProductTypeMutation,
-  DeleteProductTypeMutationVariables,
-} from "@/generated/graphql";
+import { useDeleteProductTypeMutation } from "@/generated/graphql";
 
-export default defineComponent({
-  name: "ProductTypeDeleteForm",
-  props: {
-    node: {
-      type: Object as PropType<{ typeId: number; plural: string }>,
-      required: true,
-    },
-  },
-  setup(prop, { emit }) {
-    const store = useStore();
+interface Props {
+  node: { typeId: number; plural: string };
+}
 
-    const { executeMutation } = useMutation<
-      DeleteProductTypeMutation,
-      DeleteProductTypeMutationVariables
-    >(DELETE_PRODUCT_TYPE);
+interface Emits {
+  (event: "cancel"): void;
+  (event: "finished"): void;
+}
 
-    async function submit() {
-      const { error } = await executeMutation({ typeId: prop.node.typeId });
-      if (error) throw error;
-      store.apolloMutationCalled();
-      store.setSnackbarMessage("Deleted");
-      emit("finished");
-    }
+const prop = defineProps<Props>();
+const emit = defineEmits<Emits>();
 
-    return { submit };
-  },
-});
+const store = useStore();
+
+const { executeMutation } = useDeleteProductTypeMutation();
+
+async function submit() {
+  const { error } = await executeMutation({ typeId: prop.node.typeId });
+  if (error) throw error;
+  store.apolloMutationCalled();
+  store.setSnackbarMessage("Deleted");
+  emit("finished");
+}
 </script>

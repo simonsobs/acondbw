@@ -1,115 +1,117 @@
 <template>
-  <div>
-    <template v-if="allGitHubUsers">
+  <div class="mt-5" style="position: relative">
+    <template v-if="nodes">
       <v-data-table
-        :headers="allGitHubUsersHeaders"
-        :items="allGitHubUsers.edges"
-        :items-per-page="allGitHubUsers.totalCount"
+        :headers="headers"
+        :items="items"
+        :loading="loading"
+        :items-per-page="20"
         :hide-default-footer="true"
       >
         <template v-slot:top>
-          <v-toolbar flat>
+          <v-alert v-if="error" variant="tonal" type="error" :text="error">
+          </v-alert>
+          <v-alert
+            closable
+            v-model="alertMutation"
+            variant="tonal"
+            type="error"
+            :text="errorMutation"
+          >
+          </v-alert>
+          <div class="d-flex">
             <v-spacer></v-spacer>
-            <v-btn icon @click="updateOrgMemberList">
-              <v-icon>mdi-refresh</v-icon>
+            <v-btn variant="text" icon @click="updateOrgMemberList">
+              <v-icon icon="mdi-refresh"></v-icon>
             </v-btn>
-          </v-toolbar>
-          <v-alert dismissible v-model="alert" type="error">{{
-            error
-          }}</v-alert>
+          </div>
         </template>
-        <template v-slot:[`item.node.avatarUrl`]="{ item }">
+        <template v-slot:item.avatarUrl="{ item }">
           <span>
             <v-avatar size="24">
-              <img :src="item.node.avatarUrl" />
+            <v-img :src="item.raw.avatarUrl"></v-img>
             </v-avatar>
           </span>
         </template>
       </v-data-table>
     </template>
+    <dev-tool-loading-state-menu top="3px" right="3px" v-model="devtoolState">
+    </dev-tool-loading-state-menu>
   </div>
 </template>
 
-<script lang="ts">
-// The implementation based on the example
-// https://vuetifyjs.com/en/components/data-tables/#crud-actions
-// https://github.com/vuetifyjs/vuetify/blob/master/packages/docs/src/examples/v-data-table/misc-crud.vue
-
-import { defineComponent, ref, watch } from "vue";
+<script setup lang="ts">
+import { ref, watch, computed } from "vue";
 import { useStore } from "@/stores/main";
-import { useQuery, useMutation } from "@urql/vue";
 
-import ALL_GIT_HUB_USERS from "@/graphql/queries/AllGitHubUsers.gql";
-import UPDATE_GITHUB_ORG_MEMBER_LIST from "@/graphql/mutations/UpdateGitHubOrgMemberLists.gql";
+import {
+  useAllGitHubUsersQuery,
+  useUpdateGitHubOrgMemberListsMutation,
+} from "@/generated/graphql";
 
-interface GitHubUser {
-  login: string;
-  avatarUrl?: string;
-  url?: string;
+import { useQueryState } from "@/utils/query-state";
+
+const store = useStore();
+
+const query = useAllGitHubUsersQuery();
+type Query = typeof query;
+
+function readEdges(query: Query) {
+  const edgesAndNulls = query.data?.value?.allGitHubUsers?.edges;
+  if (!edgesAndNulls) return [];
+  return edgesAndNulls.flatMap((e) => (e ? [e] : []));
 }
 
-interface GitHubUserEdge {
-  node: GitHubUser;
+function readNodes(query: Query) {
+  return readEdges(query).flatMap((e) => (e.node ? e.node : []));
 }
 
-interface GitHubUserConnection {
-  totalCount: number;
-  edges: GitHubUserEdge[];
+function isEmpty(query: Query) {
+  return readNodes(query).length === 0;
 }
 
-export default defineComponent({
-  name: "GitHubUserTable",
-  setup() {
-    const store = useStore();
-    const alert = ref(false);
-    const error = ref<any>(null);
+const queryState = useQueryState(query, { isEmpty });
+const { loading, loaded, empty, error, devtoolState } = queryState;
 
-    const allGitHubUsers = ref<GitHubUserConnection | null>(null);
-    const query = useQuery<{ allGitHubUsers: GitHubUserConnection }>({
-      query: ALL_GIT_HUB_USERS,
-      variables: { orgMember: true },
-    });
-    watch(query.data, (data) => {
-      if (data) {
-        allGitHubUsers.value = data.allGitHubUsers;
-      }
-    });
+const edges = computed(() => (empty.value ? [] : readEdges(query)));
+const nodes = computed(() => (empty.value ? [] : readNodes(query)));
 
-    const allGitHubUsersHeaders = ref([
-      { text: "", value: "node.avatarUrl", align: "start" },
-      { text: "User", value: "node.login" },
-      { text: "Name", value: "node.name" },
-    ]);
+const items = computed(() =>
+  nodes.value.map((node) => ({
+    avatarUrl: node.avatarUrl,
+    login: node.login,
+    name: node.name,
+  }))
+);
 
-    const { executeMutation } = useMutation(UPDATE_GITHUB_ORG_MEMBER_LIST);
-    async function updateOrgMemberList() {
-      try {
-        const { error } = await executeMutation({});
-        query.executeQuery({ requestPolicy: "network-only" });
-        store.apolloMutationCalled();
-        store.setSnackbarMessage("Updated");
-      } catch (e) {
-        error.value = e;
-      }
-    }
+const headers = ref([
+  { title: "", key: "avatarUrl", align: "start" },
+  { title: "User", key: "login" },
+  { title: "Name", key: "name" },
+]);
 
-    watch(error, (val, oldVal) => {
-      alert.value = val ? true : false;
-    });
+const alertMutation = ref(false);
+const errorMutation = ref<any>(null);
 
-    watch(alert, (val, oldVal) => {
-      if (!val) {
-        error.value = null;
-      }
-    });
+const { executeMutation } = useUpdateGitHubOrgMemberListsMutation();
+async function updateOrgMemberList() {
+  try {
+    const { error } = await executeMutation({});
+    if (error) throw error;
+    query.executeQuery({ requestPolicy: "network-only" });
+    store.apolloMutationCalled();
+    store.setSnackbarMessage("Updated");
+  } catch (e) {
+    // @ts-ignore
+    errorMutation.value = e.message;
+  }
+}
 
-    return {
-      alert,
-      error,
-      allGitHubUsers,
-      allGitHubUsersHeaders,
-      updateOrgMemberList,
-    };
-  },
+watch(errorMutation, (val, oldVal) => {
+  alertMutation.value = val ? true : false;
+});
+
+watch(alertMutation, (val, oldVal) => {
+  if (!val) errorMutation.value = null;
 });
 </script>

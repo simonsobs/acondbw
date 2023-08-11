@@ -10,7 +10,7 @@ import { createUrqlClient } from "@/plugins/urql";
 import App from "./AppWrapperAuth.vue";
 const preConfigStore = usePreConfigStore();
 const url = preConfigStore.preConfig?.graphqlHttp;
-if(!url) throw new Error("api url is not found");
+if (!url) throw new Error("api url is not found");
 const urqlClient = ref(createUrqlClient(url));
 provideClient(urqlClient);
 </script>

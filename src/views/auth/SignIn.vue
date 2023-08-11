@@ -1,20 +1,17 @@
 <template>
-  <v-container fill-height fluid>
-    <v-row align="center" justify="center">
-      <sign-in-card></sign-in-card>
-    </v-row>
-  </v-container>
+  <div class="g-container">
+    <sign-in-card></sign-in-card>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
+<script setup lang="ts">
 import SignInCard from "@/components/auth/SignInCard.vue";
-
-export default defineComponent({
-  name: "SignIn",
-  components: {
-    SignInCard,
-  },
-  data: () => ({}),
-});
 </script>
+
+<style scoped>
+.g-container {
+  display: grid;
+  height: 100%;
+  place-items: center;
+}
+</style>

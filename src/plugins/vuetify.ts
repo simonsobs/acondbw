@@ -1,26 +1,37 @@
-import Vue from "vue";
-import Vuetify from "vuetify/lib/framework";
+import "@mdi/font/css/materialdesignicons.css";
+import "vuetify/styles";
+import "@/styles/variables.scss";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+import { md3 } from "vuetify/blueprints";
+import { aliases, mdi } from "vuetify/iconsets/mdi";
 
-import colors from "vuetify/lib/util/colors";
+import * as labsComponents from "vuetify/labs/components";
 
-import "material-design-icons-iconfont/dist/material-design-icons.css";
-
-Vue.use(Vuetify);
-
-export default new Vuetify({
+const vuetify = createVuetify({
+  components: { ...components, ...labsComponents },
+  directives,
+  blueprint: md3,
   icons: {
-    iconfont: "mdi",
+    defaultSet: "mdi",
+    aliases,
+    sets: { mdi },
   },
-  theme: {
-    // dark: false,
-    // options: { customProperties: true },
-    // themes: {
-    //   light: {
-    //     primary: colors.teal.base,
-    //     "on-primary": colors.shades.white,
-    //     secondary: "#b0bec5",
-    //     anchor: "#8c9eff",
-    //   },
+  defaults: {
+    VAppBar: {
+      // color: "surface-container",
+    },
+    VNavigationDrawer: {
+      // color: "surface-container",
+    },
+    // VListItem: {
+    //   "color": "primary",
     // },
+    // VCard: {
+    //   color: "primary",
+    // }
   },
 });
+
+export default vuetify;
