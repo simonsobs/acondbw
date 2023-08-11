@@ -1,8 +1,7 @@
 import { Client } from "@urql/vue";
 import _ from "lodash";
 
-import QUERY_SIGN_IN_INFO from "@/graphql/queries/SignInInfo.gql";
-import QUERY_IS_SIGNED_IN from "@/graphql/queries/IsSignedIn.gql";
+import { SignInInfoDocument, IsSignedInDocument } from "@/generated/graphql";
 
 import { exchangeCodeForToken } from "./oauth";
 
@@ -27,9 +26,8 @@ export function readTokenFromLocalStorage() {
 
 export function restoreFromLocalStorage() {
   try {
-    const tokenJson = localStorage.getItem(AUTH_TOKEN);
     const signInInfoJson = localStorage.getItem("sign-in-info");
-    const token = tokenJson && (JSON.parse(tokenJson) as string);
+    const token = readTokenFromLocalStorage();
     const signInInfo =
       signInInfoJson && (JSON.parse(signInInfoJson) as SignInInfo);
 
@@ -58,7 +56,7 @@ export function restoreFromLocalStorage() {
 export async function isSignedIn(urqlClient: Client) {
   try {
     const { error, data } = await urqlClient
-      .query(QUERY_IS_SIGNED_IN, {})
+      .query(IsSignedInDocument, {})
       .toPromise();
     if (error) throw error;
     if (data.isSignedIn) {
@@ -91,7 +89,7 @@ export async function signIn(code: string, state: string, urqlClient: Client) {
 
 export async function getSignInInfo(urqlClient: Client) {
   const { error, data } = await urqlClient
-    .query(QUERY_SIGN_IN_INFO, {})
+    .query(SignInInfoDocument, {})
     .toPromise();
   if (error) throw error;
   return _.pick(data, ["isSignedIn", "isAdmin", "gitHubViewer"]);
