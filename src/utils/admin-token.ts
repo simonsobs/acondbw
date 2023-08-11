@@ -1,5 +1,6 @@
 import { Client } from "@urql/vue";
-import AddGitHubAdminAppToken from "@/graphql/mutations/AddGitHubAdminAppToken.gql";
+
+import { AddGitHubAdminAppTokenDocument } from "@/generated/graphql";
 
 const AUTH_ADMIN_STATE = "auth-state";
 
@@ -20,7 +21,7 @@ export async function storeAdminAppToken(
     throw new Error("The state did not match.");
   }
   const { error } = await urqlClient
-    .mutation(AddGitHubAdminAppToken, { code: code })
+    .mutation(AddGitHubAdminAppTokenDocument, { code: code })
     .toPromise();
   if (error) throw error;
 }
