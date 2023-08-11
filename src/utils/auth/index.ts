@@ -1,12 +1,12 @@
 import { Client } from "@urql/vue";
 import _ from "lodash";
 
-import { AUTH_TOKEN } from "@/vue-apollo";
-
 import QUERY_SIGN_IN_INFO from "@/graphql/queries/SignInInfo.gql";
 import QUERY_IS_SIGNED_IN from "@/graphql/queries/IsSignedIn.gql";
 
 import { exchangeCodeForToken } from "./oauth";
+
+export const AUTH_TOKEN = "apollo-token";
 
 export interface GitHubViewer {
   login: string;

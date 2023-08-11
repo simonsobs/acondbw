@@ -10,7 +10,7 @@ import {
 import { authExchange } from "@urql/exchange-auth";
 import { devtoolsExchange } from "@urql/devtools";
 
-import { AUTH_TOKEN } from "@/vue-apollo";
+import { AUTH_TOKEN } from "@/utils/auth";
 
 // https://formidable.com/open-source/urql/docs/api/auth-exchange/
 // https://formidable.com/open-source/urql/docs/advanced/authentication/
