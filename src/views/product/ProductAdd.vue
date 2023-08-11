@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref, watch, computed, nextTick } from "vue";
+import { ref, computed, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useProductTypeByNameQuery } from "@/generated/graphql";
@@ -79,70 +79,6 @@ const { init, notFound, loading, error, loaded, devtoolState } = queryState;
 onEntered();
 </script>
 
-<script lang="ts">
-export default defineComponent({
-  name: "ProductAdd",
-  components: {
-    ProductAddForm,
-  },
-  // setup() {
-  //   const route = useRoute();
-  //   const router = useRouter();
-  //   const productTypeName = computed(() => route.params.productTypeName);
-  //   const query = useQuery<ProductTypeByNameQuery>({
-  //     query: PRODUCT_TYPE_BY_NAME,
-  //     variables: { name: productTypeName },
-  //   });
-  //   const node = computed(() => query.data?.value?.productType);
-  //   const productTypeId = computed(() => {
-  //     const typeId = Number(node.value?.typeId);
-  //     return isNaN(typeId) ? undefined : typeId;
-  //   });
-  //   function finished() {
-  //     router.push({
-  //       name: "ProductList",
-  //       params: { productTypeName: productTypeName.value },
-  //     });
-  //   }
-  //   function onEntered() {
-  //     if (init.value) return;
-  //     query.executeQuery({ requestPolicy: "network-only" });
-  //     recreateForm();
-  //   }
-  //   function recreateForm() {
-  //     // A component will be re-instantiated
-  //     // when v-if becomes once false and then true.
-  //     on.value = false;
-  //     nextTick(() => {
-  //       on.value = true;
-  //     });
-  //   }
-  //   const on = ref(true);
-  //   const queryState = useQueryState(query, {
-  //     isNull: () => node.value === null,
-  //   });
-  //   const { init } = queryState;
-  //   return {
-  //     ...queryState,
-  //     on,
-  //     productTypeName,
-  //     productTypeId,
-  //     query,
-  //     node,
-  //     finished,
-  //     onEntered,
-  //     recreateForm,
-  //   };
-  // },
-  // beforeRouteEnter(to, from, next) {
-  //   next((vm) => {
-  //     // @ts-ignore
-  //     vm.onEntered();
-  //   });
-  // },
-});
-</script>
-
 <style scoped>
 .not-found {
   display: grid;
@@ -150,8 +86,7 @@ export default defineComponent({
   place-items: center;
 }
 
-
-.product-add:deep(.v-sheet){
+.product-add:deep(.v-sheet) {
   background-color: rgb(var(--v-theme-surface-container-lowest));
 }
 </style>
