@@ -52,8 +52,10 @@ export function restoreFromLocalStorage() {
 
 export async function isSignedIn(urqlClient: Client) {
   try {
-    const { error, data } = await urqlClient.query(QUERY_IS_SIGNED_IN, {}).toPromise();
-  if(error) throw error;
+    const { error, data } = await urqlClient
+      .query(QUERY_IS_SIGNED_IN, {})
+      .toPromise();
+    if (error) throw error;
     if (data.isSignedIn) {
       const signInInfo = await getSignInInfo(urqlClient);
       localStorage.setItem("sign-in-info", JSON.stringify(signInInfo));
@@ -69,11 +71,7 @@ export async function signOut() {
   localStorage.clear();
 }
 
-export async function signIn(
-  code: string,
-  state: string,
-  urqlClient: Client
-) {
+export async function signIn(code: string, state: string, urqlClient: Client) {
   try {
     const token = await exchangeCodeForToken(code, state, urqlClient);
     localStorage.setItem(AUTH_TOKEN, token);
@@ -87,7 +85,9 @@ export async function signIn(
 }
 
 export async function getSignInInfo(urqlClient: Client) {
-  const { error, data } = await urqlClient.query(QUERY_SIGN_IN_INFO, {}).toPromise();
-  if(error) throw error;
+  const { error, data } = await urqlClient
+    .query(QUERY_SIGN_IN_INFO, {})
+    .toPromise();
+  if (error) throw error;
   return _.pick(data, ["isSignedIn", "isAdmin", "gitHubViewer"]);
 }
