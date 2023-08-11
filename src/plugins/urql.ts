@@ -10,15 +10,10 @@ import {
 import { authExchange } from "@urql/exchange-auth";
 import { devtoolsExchange } from "@urql/devtools";
 
-import { AUTH_TOKEN } from "@/utils/auth";
+import { readTokenFromLocalStorage } from "@/utils/auth";
 
 // https://formidable.com/open-source/urql/docs/api/auth-exchange/
 // https://formidable.com/open-source/urql/docs/advanced/authentication/
-
-function readTokenFromLocalStorage() {
-  const tokenJson = localStorage.getItem(AUTH_TOKEN);
-  return tokenJson && (JSON.parse(tokenJson) as string);
-}
 
 const getAuth = async ({ authState }) => {
   if (!authState) {

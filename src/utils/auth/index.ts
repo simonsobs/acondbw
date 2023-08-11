@@ -6,7 +6,7 @@ import QUERY_IS_SIGNED_IN from "@/graphql/queries/IsSignedIn.gql";
 
 import { exchangeCodeForToken } from "./oauth";
 
-export const AUTH_TOKEN = "apollo-token";
+const AUTH_TOKEN = "apollo-token";
 
 export interface GitHubViewer {
   login: string;
@@ -18,6 +18,11 @@ export interface SignInInfo {
   gitHubViewer: GitHubViewer | null;
   isSignedIn: boolean;
   isAdmin: boolean;
+}
+
+export function readTokenFromLocalStorage() {
+  const tokenJson = localStorage.getItem(AUTH_TOKEN);
+  return tokenJson && (JSON.parse(tokenJson) as string);
 }
 
 export function restoreFromLocalStorage() {
