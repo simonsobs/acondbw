@@ -126,13 +126,11 @@ import { ref, computed, watch } from "vue";
 import { useClientHandle, Client } from "@urql/vue";
 import _ from "lodash";
 import { marked } from "marked";
-import gql from "graphql-tag";
 
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
 
-// not sure how to use this with toPromise()
-import { useQueryProductNameInFormStartQuery } from "@/generated/graphql";
+import { QueryProductNameInFormStartDocument } from "@/generated/graphql";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
@@ -143,20 +141,9 @@ async function isNameAvailable(
   productTypeId,
   urqlClient: Client
 ) {
-  const QUERY = gql`
-    query QueryProductNameInFormStart($typeId: Int!, $name: String!) {
-      product(typeId: $typeId, name: $name) {
-        id
-        productId
-        typeId
-        name
-      }
-    }
-  `;
-
   const { data } = await urqlClient
     .query(
-      QUERY,
+      QueryProductNameInFormStartDocument,
       {
         typeId: productTypeId,
         name: name,
