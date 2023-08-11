@@ -9,42 +9,45 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { validateAndDecodeState } from "@/utils/auth/oauth";
 
-export default defineComponent({
-  name: "OAuthRedirect",
-  async mounted() {
-    const route = this.$route;
-    const router = this.$router;
-    const locationOnError = { name: "Entry" };
+const route = useRoute();
+const router = useRouter();
 
-    const state = route.query.state;
+async function main() {
+  const locationOnError = { name: "Entry" };
 
-    let rawState: ReturnType<typeof validateAndDecodeState>;
-    if (!(rawState = validateAndDecodeState(state))) {
-      await router.push(locationOnError);
-      return;
-    }
-    // e.g.,
-    //   rawState = {
-    //     redirect: { name: "Auth" },
-    //     option: "XXXXXXXX",
-    //   };
+  const state = route.query.state;
 
-    const redirect = { ...rawState.redirect, query: route.query };
-    // e.g.,
-    //   redirect = {
-    //     name: "Auth",
-    //     query: {
-    //       code: "XXXXXXXX",
-    //       state: "XXXXXXXXXXXXXXXX"
-    //     }
-    //   }
+  let rawState: ReturnType<typeof validateAndDecodeState>;
+  if (!(rawState = validateAndDecodeState(state))) {
+    await router.push(locationOnError);
+    return;
+  }
+  // e.g.,
+  //   rawState = {
+  //     redirect: { name: "Auth" },
+  //     option: "XXXXXXXX",
+  //   };
 
-    await router.push(redirect);
-  },
+  const redirect = { ...rawState.redirect, query: route.query };
+  // e.g.,
+  //   redirect = {
+  //     name: "Auth",
+  //     query: {
+  //       code: "XXXXXXXX",
+  //       state: "XXXXXXXXXXXXXXXX"
+  //     }
+  //   }
+
+  await router.push(redirect);
+}
+
+onMounted(async () => {
+  await main();
 });
 </script>
 
