@@ -15,19 +15,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
-
-import { useConfigStore } from "@/stores/config";
 
 import Snackbar from "@/components/layout/Snackbar.vue";
 
-const route = useRoute();
-const configStore = useConfigStore();
+import { useSetTitle } from "./set-title";
 
-watchEffect(() => {
-  document.title = configStore.config.headTitle || "loading...";
-});
+const route = useRoute();
+
+useSetTitle();
 
 const transitionName = ref("fade-app-across");
 const transitionMode = ref<"out-in">("out-in");
@@ -145,6 +142,6 @@ body,
 }
 .v-data-table .v-table__wrapper > table > thead > tr th,
 .v-data-table .v-table__wrapper > table tbody > tr > td {
-  background-color: inherit; 
+  background-color: inherit;
 }
 </style>
