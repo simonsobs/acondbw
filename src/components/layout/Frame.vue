@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <navigation v-model="drawer"></navigation>
-    <app-bar :order="order">
+  <router-view name="navigationDrawer" v-model="drawer"></router-view>
+  <router-view name="appBar" v-slot="{ Component }">
+    <component :is="Component" :order="order">
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click="toggleDrawer" v-if="mobile">
         </v-app-bar-nav-icon>
       </template>
-    </app-bar>
-  </div>
+    </component>
+  </router-view>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watchEffect } from "vue";
 import { useDisplay } from "vuetify";
-import AppBar from "./AppBar.vue";
-import Navigation from "./Navigation.vue";
 
 // https://vuetifyjs.com/en/features/display-and-platform/
 const { mobile } = useDisplay();

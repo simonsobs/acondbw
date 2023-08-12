@@ -1,5 +1,5 @@
 <template>
-  <router-view name="frame"></router-view>
+  <frame></frame>
   <v-main>
     <router-view v-slot="{ Component, route }">
       <keep-alive>
@@ -9,7 +9,9 @@
   </v-main>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Frame from "@/components/layout/Frame.vue";
+</script>
 
 <style>
 .v-main {

@@ -1,33 +1,38 @@
-import { RouteRecordRaw, createRouter, createWebHistory, Router } from "vue-router";
+import {
+  RouteRecordRaw,
+  createRouter,
+  createWebHistory,
+  Router,
+} from "vue-router";
 
 import { useAuthStore } from "@/stores/auth";
 
-import Frame from "@/components/layout/Frame.vue";
-import NullFrame from "@/components/layout/NullFrame.vue";
+const AppBar = () => import("@/components/layout/AppBar.vue");
+const Navigation = () => import("@/components/layout/Navigation.vue");
+const NavigationAdmin = () => import("@/components/admin/NavigationAdmin.vue");
 
-import Home from "@/views/framework/Home.vue";
-import Entry from "@/views/framework/Entry.vue";
-import SearchTest from "@/views/framework/SearchTest.vue";
+const Home = () => import("@/views/framework/Home.vue");
+const Entry = () => import("@/views/framework/Entry.vue");
+// const SearchTest = () => import("@/views/framework/SearchTest.vue");
 
-import OAuthRedirect from "@/views/auth/OAuthRedirect.vue";
+const OAuthRedirect = () => import("@/views/auth/OAuthRedirect.vue");
 
-import SignIn from "@/views/auth/SignIn.vue";
-import Auth from "@/views/auth/Auth.vue";
-import SignInError from "@/views/auth/SignInError.vue";
+const SignIn = () => import("@/views/auth/SignIn.vue");
+const Auth = () => import("@/views/auth/Auth.vue");
+const SignInError = () => import("@/views/auth/SignInError.vue");
 
-import ProductTop from "@/views/product/ProductTop.vue";
-import ProductList from "@/views/product/ProductList.vue";
-import ProductItem from "@/views/product/ProductItem.vue";
-import ProductAdd from "@/views/product/ProductAdd.vue";
+const ProductTop = () => import("@/views/product/ProductTop.vue");
+const ProductList = () => import("@/views/product/ProductList.vue");
+const ProductItem = () => import("@/views/product/ProductItem.vue");
+const ProductAdd = () => import("@/views/product/ProductAdd.vue");
 
-import ProductType from "@/views/admin/ProductType.vue";
+const ProductType = () => import("@/views/admin/ProductType.vue");
 
 const About = () => import("@/views/framework/About.vue");
 const NotFound = () => import("@/views/framework/NotFound.vue");
 const SignInRequired = () => import("@/views/auth/SignInRequired.vue");
 const AccessDenied = () => import("@/views/framework/AccessDenied.vue");
 
-const FrameAdmin = () => import("@/components/admin/FrameAdmin.vue");
 const Version = () => import("@/views/admin/Version.vue");
 const Log = () => import("@/views/admin/Log.vue");
 const Config = () => import("@/views/admin/Config.vue");
@@ -37,15 +42,11 @@ const AdminAppAuth = () => import("@/views/admin-token/AdminAppAuth.vue");
 const AdminAppTokenError = () =>
   import("@/views/admin-token/AdminAppTokenError.vue");
 
-
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Entry",
-    components: {
-      default: Entry,
-      frame: NullFrame,
-    },
+    component: Entry,
     beforeEnter: (to, from, next) => {
       const auth = useAuthStore();
       const signedIn = auth.isSignedIn;
@@ -61,7 +62,8 @@ const routes: RouteRecordRaw[] = [
     name: "Dashboard",
     components: {
       default: Home,
-      frame: Frame,
+      navigationDrawer: Navigation,
+      appBar: AppBar,
     },
     // meta: { requiresAuth: true },
     beforeEnter: (to, from, next) => {
@@ -74,31 +76,31 @@ const routes: RouteRecordRaw[] = [
       }
     },
   },
-  {
-    path: "/search-test",
-    name: "SearchTest",
-    components: { default: SearchTest, frame: Frame },
-    meta: { requiresAuth: true },
-  },
+  // {
+  //   path: "/search-test",
+  //   name: "SearchTest",
+  //   components: { default: SearchTest, frame: Frame },
+  //   meta: { requiresAuth: true },
+  // },
   {
     path: "/oauth-redirect",
     name: "OAuthRedirect",
-    components: { default: OAuthRedirect, frame: NullFrame },
+    component: OAuthRedirect,
   },
   {
     path: "/signin",
     name: "SignIn",
-    components: { default: SignIn, frame: NullFrame },
+    component: SignIn,
   },
   {
     path: "/auth",
     name: "Auth",
-    components: { default: Auth, frame: NullFrame },
+    component: Auth,
   },
   {
     path: "/signin-error",
     name: "SignInError",
-    components: { default: SignInError, frame: NullFrame },
+    component: SignInError,
   },
   {
     path: "/admin",
@@ -108,48 +110,80 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/admin/product-type",
     name: "ProductType",
-    components: { default: ProductType, frame: FrameAdmin },
+    components: {
+      default: ProductType,
+      navigationDrawer: NavigationAdmin,
+      appBar: AppBar,
+    },
     meta: { requiresAdmin: true },
   },
   {
     path: "/admin/versions",
     name: "AdminVersion",
-    components: { default: Version, frame: FrameAdmin },
+    components: {
+      default: Version,
+      navigationDrawer: NavigationAdmin,
+      appBar: AppBar,
+    },
     meta: { requiresAdmin: true },
   },
   {
     path: "/admin/log",
     name: "AdminLog",
-    components: { default: Log, frame: FrameAdmin },
+    components: {
+      default: Log,
+      navigationDrawer: NavigationAdmin,
+      appBar: AppBar,
+    },
     meta: { requiresAdmin: true },
   },
   {
     path: "/admin/config",
     name: "AdminConfig",
-    components: { default: Config, frame: FrameAdmin },
+    components: {
+      default: Config,
+      navigationDrawer: NavigationAdmin,
+      appBar: AppBar,
+    },
     meta: { requiresAdmin: true },
   },
   {
     path: "/admin/theme",
     name: "AdminTheme",
-    components: { default: Theme, frame: FrameAdmin },
+    components: {
+      default: Theme,
+      navigationDrawer: NavigationAdmin,
+      appBar: AppBar,
+    },
     meta: { requiresAdmin: true },
   },
   {
     path: "/admin/users",
     name: "AdminUser",
-    components: { default: User, frame: FrameAdmin },
+    components: {
+      default: User,
+      navigationDrawer: NavigationAdmin,
+      appBar: AppBar,
+    },
     meta: { requiresAdmin: true },
   },
   {
     path: "/admin/auth",
     name: "AdminAppAuth",
-    components: { default: AdminAppAuth, frame: FrameAdmin },
+    components: {
+      default: AdminAppAuth,
+      navigationDrawer: NavigationAdmin,
+      appBar: AppBar,
+    },
   },
   {
     path: "/admin/token-error",
     name: "AdminAppTokenError",
-    components: { default: AdminAppTokenError, frame: FrameAdmin },
+    components: {
+      default: AdminAppTokenError,
+      navigationDrawer: NavigationAdmin,
+      appBar: AppBar,
+    },
   },
   {
     path: "/about",
@@ -159,12 +193,16 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/add-product/:productTypeName",
     name: "ProductAdd",
-    components: { default: ProductAdd, frame: NullFrame },
+    component: ProductAdd,
     meta: { requiresAuth: true },
   },
   {
     path: "/product/:productTypeName",
-    components: { default: ProductTop, frame: Frame },
+    components: {
+      default: ProductTop,
+      navigationDrawer: Navigation,
+      appBar: AppBar,
+    },
     meta: { requiresAuth: true },
     children: [
       { path: "", name: "ProductList", component: ProductList },
@@ -174,18 +212,18 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/sign-in-required",
     name: "SignInRequired",
-    components: { default: SignInRequired, frame: NullFrame },
+    component: SignInRequired,
   },
   {
     path: "/access-denied",
     name: "AccessDenied",
-    components: { default: AccessDenied, frame: NullFrame },
+    component: AccessDenied,
     meta: { requiresAuth: true },
   },
   {
     path: "/*",
     name: "NotFound",
-    components: { default: NotFound, frame: NullFrame },
+    component: NotFound,
   },
 ];
 
