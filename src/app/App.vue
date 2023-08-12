@@ -2,12 +2,10 @@
   <v-app>
     <router-view name="frame"></router-view>
     <v-main>
-      <router-view :key="route.path" v-slot="{ Component }">
-        <transition :name="transitionName" :mode="transitionMode">
-          <keep-alive>
-            <component :key="route.path" :is="Component" />
-          </keep-alive>
-        </transition>
+      <router-view v-slot="{ Component, route }">
+        <keep-alive>
+          <component :key="route.path" :is="Component" />
+        </keep-alive>
       </router-view>
     </v-main>
     <snackbar></snackbar>
@@ -15,70 +13,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
-
-import Snackbar from "@/components/layout/Snackbar.vue";
-
 import { useSetTitle } from "./set-title";
-
-const route = useRoute();
-
+import Snackbar from "@/components/layout/Snackbar.vue";
 useSetTitle();
-
-const transitionName = ref("fade-app-across");
-const transitionMode = ref<"out-in">("out-in");
-watch(
-  () => route.path,
-  (to, from) => {
-    // update the transition effect dynamically
-    // https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition
-
-    const toDir = to.split("/")[2]; // e.g., "/product/map/abc-def/" -> "map"
-    const fromDir = from.split("/")[2];
-
-    if (toDir === fromDir) {
-      transitionName.value = "fade-app-within";
-      transitionMode.value = "out-in";
-    } else {
-      transitionName.value = "fade-app-across";
-      transitionMode.value = "out-in";
-    }
-  }
-);
 </script>
-
-<style scoped>
-.fade-app-across-enter-active {
-  transition: opacity 0.8s;
-}
-
-.fade-app-across-leave-active {
-  transition: opacity 0s;
-}
-
-.fade-app-across-enter,
-.fade-app-across-leave-to {
-  opacity: 0;
-}
-
-.fade-app-within-enter-active,
-.fade-app-within-leave-active {
-  transition: opacity 0s;
-}
-
-.fade-app-within-enter,
-.fade-app-within-leave-to {
-  opacity: 1;
-}
-</style>
-<!-- The leave active for ".fade-app-across" is set to zero because
-sometimes the fade away starts from a wrong image.
-
-For .fade-app-within, the opacity is set to one and the duration is
-set to zero for both enter and leave, which is effectively disabling the
-transition effects, letting the nested routes handle the transition
-effects. -->
 
 <style>
 .capitalize {
