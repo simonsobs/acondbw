@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer">
+  <v-navigation-drawer comment="fallthrough attributes in use">
     <v-progress-linear v-if="loading" indeterminate color="primary">
     </v-progress-linear>
     <v-list v-if="loaded" class="ma-2">
@@ -73,7 +73,7 @@
 <script setup lang="ts">
 // https://vuetifyjs.com/en/components/navigation-drawers/
 
-import { computed, ref, watch, watchEffect } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "@/stores/main";
 
 import { useAllProductTypesQuery } from "@/generated/graphql";
@@ -81,22 +81,6 @@ import { useAllProductTypesQuery } from "@/generated/graphql";
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 
 import { useQueryState } from "@/utils/query-state";
-
-interface Props {
-  modelValue?: boolean;
-}
-interface Emits {
-  (event: "update:modelValue", value: boolean): void;
-}
-const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-const drawer = ref(props.modelValue);
-watchEffect(() => {
-  drawer.value = props.modelValue;
-});
-watch(drawer, (val) => {
-  emit("update:modelValue", val);
-});
 
 const store = useStore();
 const { appVersion } = store;
