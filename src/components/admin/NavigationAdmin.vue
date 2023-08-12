@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer">
+  <v-navigation-drawer comment="fallthrough attributes in use">
     <v-list class="ma-2">
       <v-list-item
         v-for="(link, index) in links"
@@ -19,23 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, watchEffect } from "vue";
-
-interface Props {
-  modelValue?: boolean;
-}
-interface Emits {
-  (event: "update:modelValue", value: boolean): void;
-}
-const props = defineProps<Props>();
-const emit = defineEmits<Emits>();
-const drawer = ref(props.modelValue);
-watchEffect(() => {
-  drawer.value = props.modelValue;
-});
-watch(drawer, (val) => {
-  emit("update:modelValue", val);
-});
+import { reactive } from "vue";
 
 const links = reactive([
   {
