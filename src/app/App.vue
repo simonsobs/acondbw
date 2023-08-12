@@ -1,19 +1,13 @@
 <template>
   <v-app>
-    <router-view name="frame"></router-view>
-    <v-main>
-      <router-view v-slot="{ Component, route }">
-        <keep-alive>
-          <component :key="route.path" :is="Component" />
-        </keep-alive>
-      </router-view>
-    </v-main>
+    <layout-baseline></layout-baseline>
     <snackbar></snackbar>
   </v-app>
 </template>
 
 <script setup lang="ts">
 import { useSetTitle } from "./set-title";
+import LayoutBaseline from "./LayoutBaseline.vue";
 import Snackbar from "@/components/layout/Snackbar.vue";
 useSetTitle();
 </script>
@@ -42,14 +36,8 @@ html,
 body,
 #app,
 .v-application,
-.v-application__wrap,
-.v-main__wrap {
+.v-application__wrap {
   height: 100%;
-}
-
-.v-main {
-  height: calc(100% - 64px); /* 64px: the height of the app bar */
-  overflow-y: scroll;
 }
 
 .v-btn {
