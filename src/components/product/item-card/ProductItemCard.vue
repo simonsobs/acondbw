@@ -97,14 +97,7 @@
           <v-row>
             <v-col cols="12" md="8" offset-md="4">
               <div class="text-caption">Paths</div>
-              <ul v-if="node.paths && node.paths.edges.length > 0">
-                <li
-                  v-for="(edgep, index) in node.paths.edges"
-                  :key="index"
-                  v-text="edgep && edgep.node && edgep.node.path"
-                ></li>
-              </ul>
-              <div v-else class="text-body-2">None</div>
+              <paths :paths="node.paths" v-if="node.paths"></paths>
             </v-col>
           </v-row>
           <v-row>
@@ -166,6 +159,7 @@ import { useQueryState } from "@/utils/query-state";
 
 import ToggleCollapseButton from "./ToggleCollapseButton.vue";
 import DotMenu from "./DotMenu.vue";
+import Paths from "./Paths.vue";
 import Relations from "./Relations.vue";
 import Note from "./Note.vue";
 
