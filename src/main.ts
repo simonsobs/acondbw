@@ -6,8 +6,16 @@ import vuetify from "@/plugins/vuetify";
 import App from "@/app/AppWrapperLoadPreConfig.vue";
 import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
-// https://github.com/sindresorhus/github-markdown-css
-import "../node_modules/github-markdown-css/github-markdown.css";
+// github-markdown-css:  https://github.com/sindresorhus/github-markdown-css
+
+// light
+import "../node_modules/github-markdown-css/github-markdown-light.css";
+
+// dark
+// import "../node_modules/github-markdown-css/github-markdown-dark.css";
+
+// light or dark from OS setting
+// import "../node_modules/github-markdown-css/github-markdown.css";
 
 const router = createRouter_();
 
