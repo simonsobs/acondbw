@@ -191,7 +191,7 @@ import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useStore } from "@/stores/main";
 
-import ProductItemCard from "@/components/product/ProductItemCard.vue";
+import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
 
 import {
   useQueryForProductListQuery,

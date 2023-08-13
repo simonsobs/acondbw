@@ -1,5 +1,8 @@
 <template>
-  <div class="my-5" style="block-size: 100%; position: relative; padding-bottom: 96px;">
+  <div
+    class="my-5"
+    style="block-size: 100%; position: relative; padding-bottom: 96px"
+  >
     <div style="max-width: 960px; margin: auto">
       <div class="top-bar">
         <v-tooltip v-if="node && node.type_" bottom open-delay="800">
@@ -73,7 +76,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useProductByTypeIdAndNameQuery } from "@/generated/graphql";
 
-import ProductItemCard from "@/components/product/ProductItemCard.vue";
+import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
 
 import { useQueryState } from "@/utils/query-state";
 
