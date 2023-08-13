@@ -52,10 +52,6 @@ function setVuetifyTheme() {
   word-break: normal;
 }
 
-#app .markdown-body pre code {
-  background-color: inherit;
-}
-
 html,
 body,
 #app,

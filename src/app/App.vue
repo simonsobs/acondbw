@@ -65,4 +65,8 @@ const order = computed(() => (mobile.value ? 0 : -1));
 .v-main__wrap {
   height: 100%;
 }
+
+#app .markdown-body pre code {
+  background-color: inherit;
+}
 </style>
