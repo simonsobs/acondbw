@@ -19,6 +19,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * This component provides the layout of the app.
+ * The layout consists of the navigation drawer, the app bar, and the main content.
+ * The contents are provided by the router.
+ * This component should be placed inside the <v-app> component.
+ */
 import { ref, computed, watchEffect } from "vue";
 import { useDisplay } from "vuetify";
 import { useSetTitle } from "./set-title";
@@ -29,7 +35,11 @@ useSetTitle();
 // https://vuetifyjs.com/en/features/display-and-platform/
 const { mobile } = useDisplay();
 
+/**
+ * The navigation drawer is open if true and closed if false.
+ */
 const drawer = ref<boolean>(false);
+
 watchEffect(() => {
   drawer.value = !mobile.value;
 });
@@ -38,7 +48,10 @@ function toggleDrawer() {
   drawer.value = !drawer.value;
 }
 
-// https://vuetifyjs.com/en/features/application-layout/#dynamic-layouts-and-order
+/**
+ * The order of the navigation drawer and the app bar is reversed on mobile.
+ * @see https://vuetifyjs.com/en/features/application-layout/#dynamic-layouts-and-order
+ */
 const order = computed(() => (mobile.value ? 0 : -1));
 </script>
 
