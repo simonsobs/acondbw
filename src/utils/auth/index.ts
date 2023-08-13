@@ -26,8 +26,8 @@ export function readTokenFromLocalStorage() {
 
 export function restoreFromLocalStorage() {
   try {
-    const signInInfoJson = localStorage.getItem("sign-in-info");
     const token = readTokenFromLocalStorage();
+    const signInInfoJson = localStorage.getItem("sign-in-info");
     const signInInfo =
       signInInfoJson && (JSON.parse(signInInfoJson) as SignInInfo);
 
