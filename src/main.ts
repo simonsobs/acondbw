@@ -7,7 +7,7 @@ import App from "@/app/AppWrapperLoadPreConfig.vue";
 import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
 // https://github.com/sindresorhus/github-markdown-css
-import "../node_modules/github-markdown-css/github-markdown-light.css";
+import "../node_modules/github-markdown-css/github-markdown.css";
 
 const router = createRouter_();
 
