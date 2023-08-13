@@ -61,9 +61,10 @@
     >
     </v-alert>
     <template v-slot:append>
-      <v-list>
-        <v-list-item :title="`v${appVersion}`" disabled> </v-list-item>
-      </v-list>
+      <div class="ma-4 d-flex justify-space-around align-center">
+        <toggle-dark-mode-button></toggle-dark-mode-button>
+        <span class="text-secondary text-body-2">v{{ appVersion }}</span>
+      </div>
     </template>
     <dev-tool-loading-state-menu top="5px" right="5px" v-model="devtoolState">
     </dev-tool-loading-state-menu>
@@ -79,6 +80,7 @@ import { useStore } from "@/stores/main";
 import { useAllProductTypesQuery } from "@/generated/graphql";
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
+import ToggleDarkModeButton from "@/components/utils/ToggleDarkModeButton.vue";
 
 import { useQueryState } from "@/utils/query-state";
 

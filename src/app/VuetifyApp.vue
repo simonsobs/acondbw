@@ -10,8 +10,11 @@ import { useTheme } from "vuetify";
 
 import { useConfigStore } from "@/stores/config";
 import { generateLightAndDarkThemesFromSourceColor } from "@/utils/material-color";
+import { useDarkMode } from "@/utils/dark-mode";
 
 import App from "./App.vue";
+
+useDarkMode();
 
 const configStore = useConfigStore();
 
