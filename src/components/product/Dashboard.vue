@@ -17,10 +17,9 @@
             name: 'ProductList',
             params: { productTypeName: item.raw.name },
           }"
+          class="capitalize font-weight-bold text-primary text-decoration-none"
+          v-text="item.raw.plural"
         >
-          <span class="capitalize font-weight-bold text-primary">
-            {{ item.raw.plural }}
-          </span>
         </router-link>
       </template>
       <template #bottom></template>
