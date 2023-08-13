@@ -50,7 +50,7 @@ import {
 
 import FormStart from "./FormStart.vue";
 
-type Product = NonNullable<
+export type Product = NonNullable<
   NonNullable<
     NonNullable<ReturnType<typeof useProductQuery>["data"]>["value"]
   >["product"]
@@ -62,7 +62,7 @@ interface Attribute {
   value: unknown;
 }
 
-interface Attributes {
+export interface Attributes {
   [key: string]: Attribute;
 }
 

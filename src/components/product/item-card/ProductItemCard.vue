@@ -73,98 +73,16 @@
                 </v-btn>
               </v-col>
               <v-col @click.stop style="flex: 0" class="pa-0">
-                <v-menu
-                  left
-                  bottom
-                  offset-y
-                  v-model="menu"
-                  :close-on-content-click="false"
+                <dot-menu
+                  :node="node"
+                  :attributes="attributes"
+                  :disable-edit="disableEdit"
+                  :disable-delete="disableDelete"
+                  @name-changed="emit('nameChanged', $event)"
+                  @type-changed="emit('typeChanged', $event)"
+                  @deleted="emit('deleted')"
                 >
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" variant="plain" icon>
-                      <v-icon icon="mdi-dots-vertical"></v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list dense>
-                    <v-dialog v-model="editDialog" max-width="800" persistent>
-                      <template v-slot:activator="{ props }">
-                        <v-list-item
-                          v-bind="props"
-                          :disabled="disableEdit"
-                          prepend-icon="mdi-pencil"
-                          title="Edit"
-                        >
-                        </v-list-item>
-                      </template>
-                      <product-edit-form
-                        v-if="editDialog && attributes"
-                        :node="node"
-                        :attributes="attributes"
-                        @cancel="onEditFormCancelled"
-                        @finished="onEditFormFinished($event)"
-                      ></product-edit-form>
-                    </v-dialog>
-                    <v-dialog
-                      v-model="updateRelationsDialog"
-                      max-width="800"
-                      persistent
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-list-item
-                          v-bind="props"
-                          :disabled="disableEdit"
-                          prepend-icon="mdi-relation-many-to-many"
-                          title="Update relations"
-                        >
-                        </v-list-item>
-                      </template>
-                      <product-update-relations-form
-                        v-if="updateRelationsDialog"
-                        :node="node"
-                        @cancel="onUpdateRelationsFormCancelled"
-                        @finished="onUpdateRelationsFormFinished"
-                      ></product-update-relations-form>
-                    </v-dialog>
-                    <v-dialog
-                      v-model="convertTypeDialog"
-                      max-width="800"
-                      persistent
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-list-item
-                          v-bind="props"
-                          :disabled="disableEdit"
-                          prepend-icon="mdi-drawing"
-                          title="Convert type"
-                        >
-                        </v-list-item>
-                      </template>
-                      <product-convert-type-form
-                        v-if="convertTypeDialog"
-                        :node="node"
-                        @cancel="onConvertTypeFormCancelled"
-                        @finished="onConvertTypeFormFinished($event)"
-                      ></product-convert-type-form>
-                    </v-dialog>
-                    <v-dialog v-model="deleteDialog" max-width="600">
-                      <template v-slot:activator="{ props }">
-                        <v-list-item
-                          v-bind="props"
-                          :disabled="disableDelete"
-                          prepend-icon="mdi-delete"
-                          title="Delete"
-                        >
-                        </v-list-item>
-                      </template>
-                      <product-delete-form
-                        v-if="deleteDialog"
-                        :productId="Number(node.productId)"
-                        @cancel="onDeleteFormCancelled"
-                        @finished="onDeleteFormFinished"
-                      ></product-delete-form>
-                    </v-dialog>
-                  </v-list>
-                </v-menu>
+                </dot-menu>
               </v-col>
             </v-row>
           </v-container>
@@ -245,17 +163,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, withDefaults } from "vue";
-
-import ProductEditForm from "@/components/product/ProductEditForm.vue";
-import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
-import ProductConvertTypeForm from "@/components/product/ProductConvertTypeForm.vue";
-import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
+import { computed, withDefaults } from "vue";
 
 import { useProductQuery } from "@/generated/graphql";
 
 import { useQueryState } from "@/utils/query-state";
 
+import DotMenu from "./DotMenu.vue";
 import Relations from "./Relations.vue";
 import Note from "./Note.vue";
 
@@ -300,8 +214,8 @@ const node = computed(() => query.data?.value?.product);
 const timePosted = computed(() => formatDateTime(node.value?.timePosted));
 const timeUpdated = computed(() => formatDateTime(node.value?.timeUpdated));
 
-const attributes = computed<Attributes | null>(() => {
-  if (!node.value) return null;
+const attributes = computed<Attributes>(() => {
+  if (!node.value) return {};
   const thisNode = node.value;
 
   const keys = [
@@ -348,54 +262,6 @@ function formatDateTime(dateTime: string | undefined | null) {
     hour12: false,
   });
   return format.format(sinceEpoch);
-}
-const menu = ref(false);
-const editDialog = ref(false);
-function onEditFormCancelled() {
-  closeEditForm();
-}
-function onEditFormFinished(event: string | undefined) {
-  closeEditForm();
-  if (event) emit("nameChanged", event);
-}
-function closeEditForm() {
-  editDialog.value = false;
-  menu.value = false;
-}
-const updateRelationsDialog = ref(false);
-function onUpdateRelationsFormCancelled() {
-  closeUpdateRelationsForm();
-}
-function onUpdateRelationsFormFinished() {
-  closeUpdateRelationsForm();
-}
-function closeUpdateRelationsForm() {
-  updateRelationsDialog.value = false;
-  menu.value = false;
-}
-const convertTypeDialog = ref(false);
-function onConvertTypeFormCancelled() {
-  closeConvertTypeForm();
-}
-function onConvertTypeFormFinished(event: string) {
-  closeConvertTypeForm();
-  if (event) emit("typeChanged", event);
-}
-function closeConvertTypeForm() {
-  convertTypeDialog.value = false;
-  menu.value = false;
-}
-const deleteDialog = ref(false);
-function onDeleteFormCancelled() {
-  closeDeleteForm();
-}
-function onDeleteFormFinished() {
-  closeDeleteForm();
-  emit("deleted");
-}
-function closeDeleteForm() {
-  deleteDialog.value = false;
-  menu.value = false;
 }
 
 const queryState = useQueryState(query, { isNull: () => node.value === null });
