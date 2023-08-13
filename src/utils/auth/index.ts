@@ -70,7 +70,7 @@ export async function isSignedIn(urqlClient: Client) {
 }
 
 export async function signOut() {
-  // localStorage.removeItem(AUTH_TOKEN);
+  localStorage.removeItem(AUTH_TOKEN);
   localStorage.clear();
 }
 
