@@ -25,3 +25,14 @@ $body-font-family: "Barlow", sans-serif;
 // https://fonts.google.com/specimen/Roboto+Condensed
 // @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap");
 // $body-font-family: 'Roboto Condensed', sans-serif;
+
+// github-markdown-css:  https://github.com/sindresorhus/github-markdown-css 
+// The two CSS files are copied from node_modules/github-markdown-css/ and the
+// file extension is changed to .scss.
+.v-theme--light {
+  @import "./github-markdown-light.scss";
+}
+
+.v-theme--dark {
+  @import "./github-markdown-dark.scss";
+}
