@@ -223,7 +223,7 @@
           <v-row>
             <v-col order="1" cols="12" md="8" offset-md="4">
               <div class="text-caption">Note</div>
-              <div v-if="note" class="markdown-body" v-html="note"></div>
+              <note :markdown="node.note" v-if="node.note"></note>
               <div v-else class="text-body-2">None</div>
             </v-col>
           </v-row>
@@ -264,8 +264,6 @@
 <script setup lang="ts">
 import { ref, computed, withDefaults } from "vue";
 
-import { marked } from "marked";
-
 import ProductEditForm from "@/components/product/ProductEditForm.vue";
 import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
 import ProductConvertTypeForm from "@/components/product/ProductConvertTypeForm.vue";
@@ -274,6 +272,8 @@ import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 import { useProductQuery } from "@/generated/graphql";
 
 import { useQueryState } from "@/utils/query-state";
+
+import Note from "./Note.vue";
 
 interface Attribute {
   fieldId: number;
@@ -315,7 +315,6 @@ const query = useProductQuery({ variables: { productId: props.productId } });
 const node = computed(() => query.data?.value?.product);
 const timePosted = computed(() => formatDateTime(node.value?.timePosted));
 const timeUpdated = computed(() => formatDateTime(node.value?.timeUpdated));
-const note = computed(() => marked.parse(node.value?.note ?? ""));
 const relations = computed(() =>
   node.value?.relations?.edges.reduce((acc, cur) => {
     const relationType = cur?.node?.type_;
