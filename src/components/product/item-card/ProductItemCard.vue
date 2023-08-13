@@ -60,17 +60,12 @@
           <v-container>
             <v-row justify="end">
               <v-col v-if="collapsible" style="flex: 0" class="pa-0">
-                <v-btn
-                  v-bind="props"
-                  variant="plain"
-                  icon
-                  @click.stop="collapsed ? $emit('expand') : $emit('collapse')"
+                <toggle-collapse-button
+                  :collapsed="collapsed"
+                  @expand="emit('expand')"
+                  @collapse="emit('collapse')"
                 >
-                  <v-icon
-                    :icon="collapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'"
-                  >
-                  </v-icon>
-                </v-btn>
+                </toggle-collapse-button>
               </v-col>
               <v-col @click.stop style="flex: 0" class="pa-0">
                 <dot-menu
@@ -169,6 +164,7 @@ import { useProductQuery } from "@/generated/graphql";
 
 import { useQueryState } from "@/utils/query-state";
 
+import ToggleCollapseButton from "./ToggleCollapseButton.vue";
 import DotMenu from "./DotMenu.vue";
 import Relations from "./Relations.vue";
 import Note from "./Note.vue";
