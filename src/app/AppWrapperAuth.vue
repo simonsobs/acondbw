@@ -8,7 +8,7 @@ import { useRouter, useRoute } from "vue-router";
 import { useClientHandle } from "@urql/vue";
 import { useAuthStore } from "@/stores/auth";
 import { checkAuthForCurrentRoute } from "@/router";
-import App from "./AppWrapperVuetifyTheme.vue";
+import App from "./VuetifyApp.vue";
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
