@@ -15,11 +15,22 @@
         ></v-list-item-title>
       </v-list-item>
     </v-list>
+    <template v-slot:append>
+      <div class="ma-4 d-flex justify-space-around align-center">
+        <toggle-dark-mode-button></toggle-dark-mode-button>
+        <span class="text-secondary text-body-2">v{{ appVersion }}</span>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue";
+import { useStore } from "@/stores/main";
+import ToggleDarkModeButton from "@/components/utils/ToggleDarkModeButton.vue";
+
+const store = useStore();
+const { appVersion } = store;
 
 const links = reactive([
   {
