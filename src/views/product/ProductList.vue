@@ -84,8 +84,6 @@
           :productId="Number(node.productId)"
           :collapsible="true"
           v-model:collapsed="isCardCollapsed[node.id]"
-          :disableEdit="disableEdit"
-          :disableDelete="disableDelete"
           class="my-1"
         ></component>
         <div v-if="loading" class="pa-3">
@@ -188,6 +186,7 @@ import { ref, reactive, watch, computed, withDefaults } from "vue";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useStore } from "@/stores/main";
+import { useConfigStore } from "@/stores/config";
 
 import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
 
@@ -205,17 +204,15 @@ const props = withDefaults(
   defineProps<{
     productTypeId: number;
     productItemCard?: any;
-    disableAdd?: boolean;
-    disableEdit?: boolean;
-    disableDelete?: boolean;
   }>(),
   {
     productItemCard: () => ProductItemCard,
-    disableAdd: false,
-    disableEdit: false,
-    disableDelete: false,
   }
 );
+
+const configStore = useConfigStore();
+const disableAdd = computed(() => !configStore.config.productCreationDialog);
+const disableDelete = computed(() => !configStore.config.productDeletionDialog);
 
 const router = useRouter();
 

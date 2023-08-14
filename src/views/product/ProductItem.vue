@@ -56,8 +56,6 @@
             @deleted="onDeleted"
             @nameChanged="onNameChanged($event)"
             @typeChanged="onTypeChanged($event)"
-            :disableEdit="disableEdit"
-            :disableDelete="disableDelete"
           ></component>
         </div>
         <div v-if="notFound">
@@ -85,13 +83,9 @@ const props = withDefaults(
   defineProps<{
     productTypeId: number;
     productItemCard?: any;
-    disableEdit?: boolean;
-    disableDelete?: boolean;
   }>(),
   {
     productItemCard: () => ProductItemCard,
-    disableEdit: false,
-    disableDelete: false,
   }
 );
 

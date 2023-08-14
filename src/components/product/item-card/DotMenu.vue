@@ -80,7 +80,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useConfigStore } from "@/stores/config";
 
 import ProductEditForm, {
   Product,
@@ -93,8 +94,6 @@ import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 interface Props {
   node: Product;
   attributes: Attributes;
-  disableEdit: boolean;
-  disableDelete: boolean;
 }
 
 interface Emits {
@@ -105,6 +104,10 @@ interface Emits {
 
 const prop = defineProps<Props>();
 const emit = defineEmits<Emits>();
+
+const configStore = useConfigStore();
+const disableEdit = computed(() => !configStore.config.productUpdateDialog);
+const disableDelete = computed(() => !configStore.config.productDeletionDialog);
 
 const menu = ref(false);
 const editDialog = ref(false);

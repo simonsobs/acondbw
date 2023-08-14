@@ -77,9 +77,6 @@
       <router-view
         :key="route.fullPath"
         :productTypeId="node ? Number(node.typeId) : null"
-        :disableAdd="disableAdd"
-        :disableEdit="disableEdit"
-        :disableDelete="disableDelete"
         v-slot="{ Component }"
       >
         <transition :name="transitionName" :mode="transitionMode">
@@ -107,8 +104,6 @@ import { useProductTypeByNameQuery } from "@/generated/graphql";
 
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 
-import { useConfigStore } from "@/stores/config";
-
 import { useQueryState } from "@/utils/query-state";
 
 const route = useRoute();
@@ -128,10 +123,6 @@ const query = useProductTypeByNameQuery({
 });
 
 const node = computed(() => query.data?.value?.productType);
-const configStore = useConfigStore();
-const disableAdd = computed(() => !configStore.config.productCreationDialog);
-const disableEdit = computed(() => !configStore.config.productUpdateDialog);
-const disableDelete = computed(() => !configStore.config.productDeletionDialog);
 const editDialog = ref(false);
 function onEditFormCancelled() {
   closeEditForm();

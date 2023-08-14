@@ -70,8 +70,6 @@
                 <dot-menu
                   :node="node"
                   :attributes="attributes"
-                  :disable-edit="disableEdit"
-                  :disable-delete="disableDelete"
                   @name-changed="emit('nameChanged', $event)"
                   @type-changed="emit('typeChanged', $event)"
                   @deleted="emit('deleted')"
@@ -153,8 +151,6 @@ interface Props {
   productId: number;
   collapsed?: boolean;
   collapsible?: boolean;
-  disableEdit?: boolean;
-  disableDelete?: boolean;
 }
 
 interface Emits {
@@ -167,8 +163,6 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   collapsed: false,
   collapsible: false,
-  disableEdit: false,
-  disableDelete: false,
 });
 const emit = defineEmits<Emits>();
 
