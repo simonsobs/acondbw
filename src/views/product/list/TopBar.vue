@@ -1,19 +1,7 @@
 <template>
   <div class="top-bar">
-    <v-tooltip>
-      <template v-slot:activator="{ props }">
-        <v-btn
-          v-bind="props"
-          variant="text"
-          :disabled="loading"
-          icon
-          @click="emit('refresh')"
-        >
-          <v-icon icon="mdi-refresh"></v-icon>
-        </v-btn>
-      </template>
-      <span>Refresh</span>
-    </v-tooltip>
+    <refresh-button :disabled="loading" @refresh="emit('refresh')">
+    </refresh-button>
     <div v-if="loaded && productType">
       <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
       <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
@@ -39,6 +27,7 @@
 import { computed } from "vue";
 import { ProductSortEnum, QueryForProductListQuery } from "@/generated/graphql";
 
+import RefreshButton from "./RefreshButton.vue";
 import SortMenuButton from "./SortMenuButton.vue";
 import ToggleCollapseAllButton from "./ToggleCollapseAllButton.vue";
 
