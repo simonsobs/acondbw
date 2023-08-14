@@ -34,7 +34,7 @@
       No product types are defined.
     </div>
     <div v-if="loaded || empty" class="px-5 py-0 text-right">
-      <v-tooltip left open-delay="800">
+      <v-tooltip>
         <template v-slot:activator="{ props: tooltip }">
           <v-dialog persistent v-model="addDialog" max-width="800">
             <template v-slot:activator="{ props: addDialog }">

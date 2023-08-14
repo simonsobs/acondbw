@@ -19,6 +19,10 @@ const vuetify = createVuetify({
     sets: { mdi },
   },
   defaults: {
+    // https://vuetifyjs.com/en/features/global-configuration/
+    VTooltip: {
+      openDelay: 800,
+    },
     VAppBar: {
       // color: "surface-container",
     },

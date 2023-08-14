@@ -63,7 +63,7 @@
                 ></v-autocomplete>
               </v-card-text>
               <v-card-actions>
-                <v-tooltip bottom open-delay="800">
+                <v-tooltip>
                   <template v-slot:activator="{ props }">
                     <v-btn
                       icon

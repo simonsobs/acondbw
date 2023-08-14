@@ -5,7 +5,7 @@
   >
     <div style="max-width: 960px; margin: auto">
       <div class="top-bar">
-        <v-tooltip v-if="node && node.type_" bottom open-delay="800">
+        <v-tooltip v-if="node && node.type_" location="top">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
@@ -21,7 +21,7 @@
           </template>
           <span>Back to the list</span>
         </v-tooltip>
-        <v-tooltip bottom open-delay="800">
+        <v-tooltip location="top">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"

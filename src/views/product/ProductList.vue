@@ -4,7 +4,7 @@
       <v-alert variant="tonal" type="error" :text="error"> </v-alert>
     </div>
     <div class="top-bar">
-      <v-tooltip bottom open-delay="800">
+      <v-tooltip>
         <template v-slot:activator="{ props }">
           <v-btn
             v-bind="props"
@@ -23,7 +23,7 @@
         <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
       </div>
       <div v-if="loaded && nItemsTotal > 1">
-        <v-tooltip bottom open-delay="800">
+        <v-tooltip>
           <template v-slot:activator="{ props: tooltip }">
             <v-menu left offset-y>
               <template v-slot:activator="{ props: menu }">
@@ -51,7 +51,7 @@
         </v-tooltip>
       </div>
       <div v-if="loaded">
-        <v-tooltip bottom open-delay="800">
+        <v-tooltip>
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"

@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip location="top end" open-delay="800">
+  <v-tooltip location="top end">
     <template #activator="{ props }">
       <v-btn v-bind="props" variant="text" icon @click="toggleDark()">
         <v-icon v-if="isDark" icon="mdi-weather-night"></v-icon>

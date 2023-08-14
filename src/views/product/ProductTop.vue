@@ -44,7 +44,7 @@
           </span>
         </span>
         <span v-if="!itemName">
-          <v-tooltip left open-delay="800">
+          <v-tooltip>
             <template v-slot:activator="{ props: tooltip }">
               <v-dialog persistent v-model="editDialog" max-width="800">
                 <template v-slot:activator="{ props: editDialog }">
