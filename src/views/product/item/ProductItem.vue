@@ -4,39 +4,7 @@
     style="block-size: 100%; position: relative; padding-bottom: 96px"
   >
     <div style="max-width: 960px; margin: auto">
-      <div class="top-bar">
-        <v-tooltip v-if="node && node.type_" location="top">
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              variant="plain"
-              icon
-              :to="{
-                name: 'ProductList',
-                params: { productTypeName: node.type_.name },
-              }"
-            >
-              <v-icon icon="mdi-arrow-left"></v-icon>
-            </v-btn>
-          </template>
-          <span>Back to the list</span>
-        </v-tooltip>
-        <v-tooltip location="top">
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              :disabled="loading"
-              variant="plain"
-              icon
-              @click="refresh()"
-            >
-              <v-icon icon="mdi-refresh"></v-icon>
-            </v-btn>
-          </template>
-          <span>Refresh</span>
-        </v-tooltip>
-        <v-spacer></v-spacer>
-      </div>
+      <top-bar :node="node" :disabled="loading" @refresh="refresh()"></top-bar>
       <div>
         <div v-if="loading">
           <v-progress-circular
@@ -73,10 +41,10 @@ import { ref, computed, withDefaults, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useProductByTypeIdAndNameQuery } from "@/generated/graphql";
-
-import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
-
 import { useQueryState } from "@/utils/query-state";
+
+import TopBar from "./TopBar.vue";
+import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
 
 // Use any for productItemCard because Component causes an error for unknown reason.
 interface Props {
@@ -141,13 +109,3 @@ function onTypeChanged(event: string) {
 const queryState = useQueryState(query, { isNull: () => node.value === null });
 const { loading, loaded, notFound, error, refresh, devtoolState } = queryState;
 </script>
-
-<style scoped>
-.top-bar {
-  display: flex;
-  min-block-size: 56px;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0 1rem;
-}
-</style>
