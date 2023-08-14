@@ -23,7 +23,7 @@ const SignInError = () => import("@/views/auth/SignInError.vue");
 
 const ProductTop = () => import("@/views/product/ProductTop.vue");
 const ProductList = () => import("@/views/product/ProductList.vue");
-const ProductItem = () => import("@/views/product/ProductItem.vue");
+const ProductItem = () => import("@/views/product/item/ProductItem.vue");
 const ProductAdd = () => import("@/views/product/ProductAdd.vue");
 
 const ProductType = () => import("@/views/admin/ProductType.vue");
