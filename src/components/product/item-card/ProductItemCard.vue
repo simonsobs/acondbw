@@ -61,9 +61,8 @@
             <v-row justify="end">
               <v-col v-if="collapsible" style="flex: 0" class="pa-0">
                 <toggle-collapse-button
-                  :collapsed="collapsed"
-                  @expand="emit('expand')"
-                  @collapse="emit('collapse')"
+                  :model-value="collapsed"
+                  @update:model-value="emit('update:collapsed', $event)"
                 >
                 </toggle-collapse-button>
               </v-col>
@@ -173,30 +172,27 @@ interface Attributes {
   [key: string]: Attribute;
 }
 
-const props = withDefaults(
-  defineProps<{
-    productId: number;
-    collapsed?: boolean;
-    collapsible?: boolean;
-    disableEdit?: boolean;
-    disableDelete?: boolean;
-  }>(),
-  {
-    collapsed: false,
-    collapsible: false,
-    disableEdit: false,
-    disableDelete: false,
-  }
-);
+interface Props {
+  productId: number;
+  collapsed?: boolean;
+  collapsible?: boolean;
+  disableEdit?: boolean;
+  disableDelete?: boolean;
+}
 
 interface Emits {
   (e: "nameChanged", value: string | null): void;
   (e: "typeChanged", value: string | null): void;
   (e: "deleted", value: void): void;
-  (e: "expand", value: void): void;
-  (e: "collapse", value: void): void;
+  (e: "update:collapsed", value: boolean): void;
 }
 
+const props = withDefaults(defineProps<Props>(), {
+  collapsed: false,
+  collapsible: false,
+  disableEdit: false,
+  disableDelete: false,
+});
 const emit = defineEmits<Emits>();
 
 const query = useProductQuery({ variables: { productId: props.productId } });

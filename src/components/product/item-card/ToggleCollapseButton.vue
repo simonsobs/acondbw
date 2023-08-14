@@ -8,29 +8,24 @@
 import { withDefaults, computed } from "vue";
 
 interface Props {
-  collapsed?: boolean;
+  modelValue?: boolean;
 }
 
 interface Emits {
-  (e: "expand", value: void): void;
-  (e: "collapse", value: void): void;
+  (event: "update:modelValue", value: boolean): void;
 }
 
 const prop = withDefaults(defineProps<Props>(), {
-  collapsed: false,
+  modelValue: false,
 });
 
 const emit = defineEmits<Emits>();
 
 function toggle() {
-  if (prop.collapsed) {
-    emit("expand");
-  } else {
-    emit("collapse");
-  }
+  emit("update:modelValue", !prop.modelValue);
 }
 
 const icon = computed(() =>
-  prop.collapsed ? "mdi-chevron-down" : "mdi-chevron-up"
+  prop.modelValue ? "mdi-chevron-down" : "mdi-chevron-up"
 );
 </script>
