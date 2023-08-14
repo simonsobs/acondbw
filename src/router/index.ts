@@ -22,7 +22,7 @@ const Auth = () => import("@/views/auth/Auth.vue");
 const SignInError = () => import("@/views/auth/SignInError.vue");
 
 const ProductTop = () => import("@/views/product/ProductTop.vue");
-const ProductList = () => import("@/views/product/ProductList.vue");
+const ProductList = () => import("@/views/product/list/ProductList.vue");
 const ProductItem = () => import("@/views/product/item/ProductItem.vue");
 const ProductAdd = () => import("@/views/product/ProductAdd.vue");
 
