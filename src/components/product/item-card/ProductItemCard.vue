@@ -18,7 +18,7 @@
     </v-alert>
     <v-container
       v-else-if="loaded && node"
-      @click="$emit('expand')"
+      @click="emit('update:collapsed', false)"
       style="cursor: default"
     >
       <v-row>
