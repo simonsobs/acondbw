@@ -51,28 +51,8 @@
         </v-tooltip>
       </div>
       <div v-if="loaded">
-        <v-tooltip>
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              variant="text"
-              icon
-              @click="areAllCardsCollapsed = !areAllCardsCollapsed"
-            >
-              <v-icon
-                :icon="
-                  areAllCardsCollapsed
-                    ? 'mdi-unfold-more-horizontal'
-                    : 'mdi-unfold-less-horizontal'
-                "
-              >
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>
-            {{ areAllCardsCollapsed ? "Expand all" : "Collapse all" }}
-          </span>
-        </v-tooltip>
+        <toggle-collapse-all-button v-model="areAllCardsCollapsed">
+        </toggle-collapse-all-button>
       </div>
     </div>
     <div>
@@ -188,6 +168,7 @@ import { storeToRefs } from "pinia";
 import { useStore } from "@/stores/main";
 import { useConfigStore } from "@/stores/config";
 
+import ToggleCollapseAllButton from "./ToggleCollapseAllButton.vue";
 import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
 
 import {
