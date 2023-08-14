@@ -79,15 +79,14 @@ import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue"
 import { useQueryState } from "@/utils/query-state";
 
 // Use any for productItemCard because Component causes an error for unknown reason.
-const props = withDefaults(
-  defineProps<{
-    productTypeId: number;
-    productItemCard?: any;
-  }>(),
-  {
-    productItemCard: () => ProductItemCard,
-  }
-);
+interface Props {
+  productTypeId: number;
+  productItemCard?: any;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  productItemCard: () => ProductItemCard,
+});
 
 const route = useRoute();
 const router = useRouter();
