@@ -3,58 +3,15 @@
     <div v-if="error">
       <v-alert variant="tonal" type="error" :text="error"> </v-alert>
     </div>
-    <div class="top-bar">
-      <v-tooltip>
-        <template v-slot:activator="{ props }">
-          <v-btn
-            v-bind="props"
-            variant="text"
-            :disabled="loading"
-            icon
-            @click="refresh()"
-          >
-            <v-icon icon="mdi-refresh"></v-icon>
-          </v-btn>
-        </template>
-        <span>Refresh</span>
-      </v-tooltip>
-      <div v-if="loaded && productType">
-        <span v-if="nItemsTotal == 1">1 {{ productType.singular }}</span>
-        <span v-else>{{ nItemsTotal }} {{ productType.plural }}</span>
-      </div>
-      <div v-if="loaded && nItemsTotal > 1">
-        <v-tooltip>
-          <template v-slot:activator="{ props: tooltip }">
-            <v-menu left offset-y>
-              <template v-slot:activator="{ props: menu }">
-                <v-btn v-bind="{ ...tooltip, ...menu }" variant="text" icon>
-                  <v-icon icon="mdi-sort-variant"></v-icon>
-                </v-btn>
-              </template>
-              <v-list flat dense v-model:selected="sortSelected">
-                <v-list-item title="Sort"> </v-list-item>
-                <v-list-item
-                  v-for="(item, i) in sortItems"
-                  :key="i"
-                  :value="item"
-                  :title="item.title"
-                >
-                  <template v-slot:prepend>
-                    <v-icon v-if="item == sortItem" icon="mdi-check"> </v-icon>
-                    <v-icon v-else> </v-icon>
-                  </template>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </template>
-          <span>Sort</span>
-        </v-tooltip>
-      </div>
-      <div v-if="loaded">
-        <toggle-collapse-all-button v-model="areAllCardsCollapsed">
-        </toggle-collapse-all-button>
-      </div>
-    </div>
+    <top-bar
+      :loading="loading"
+      :loaded="loaded"
+      :product-type="productType"
+      v-model:sort="sort"
+      v-model:are-all-cards-collapsed="areAllCardsCollapsed"
+      @refresh="refresh()"
+    >
+    </top-bar>
     <div>
       <div v-if="nodes.length" class="pt-0 pb-16">
         <component
@@ -168,7 +125,7 @@ import { storeToRefs } from "pinia";
 import { useStore } from "@/stores/main";
 import { useConfigStore } from "@/stores/config";
 
-import ToggleCollapseAllButton from "./ToggleCollapseAllButton.vue";
+import TopBar from "./TopBar.vue";
 import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
 
 import {
@@ -197,19 +154,10 @@ const disableDelete = computed(() => !configStore.config.productDeletionDialog);
 
 const router = useRouter();
 
-const sortItems = ref([
-  { title: "Recently posted", value: ProductSortEnum.TimePostedDesc },
-  { title: "Recently updated", value: ProductSortEnum.TimeUpdatedDesc },
-  { title: "Name", value: ProductSortEnum.NameAsc },
-]);
-
-const sortSelected = ref([sortItems.value[0]]);
-const sortItem = computed(() => sortSelected.value[0]);
-
 const nItemsInitialLoad = ref(10);
 const first = ref(nItemsInitialLoad.value);
 
-const sort = computed(() => [sortItem.value.value]);
+const sort = ref<ProductSortEnum[]>([]);
 
 const query = useQueryForProductListQuery({
   variables: {
@@ -355,14 +303,6 @@ watch(nApolloMutations, refresh);
 </script>
 
 <style scoped>
-.top-bar {
-  display: flex;
-  min-block-size: 56px;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 0 1rem;
-}
-
 .bottom-bar {
   display: flex;
   margin-top: 16px;
