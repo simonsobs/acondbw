@@ -115,31 +115,7 @@
               <div v-else class="text-body-2">None</div>
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            align="end"
-            justify="space-between"
-            class="mt-3"
-            style="font-size: 11px"
-          >
-            <div>
-              <div v-if="timeUpdated || node.updatingGitHubUser">
-                Updated
-                <span v-if="timeUpdated"> at {{ timeUpdated }} </span>
-                <span v-if="node.updatingGitHubUser">
-                  by {{ node.updatingGitHubUser.login }}
-                </span>
-              </div>
-              <div v-if="timePosted || node.postingGitHubUser">
-                Posted
-                <span v-if="timePosted"> at {{ timePosted }} </span>
-                <span v-if="node.postingGitHubUser">
-                  by {{ node.postingGitHubUser.login }}
-                </span>
-              </div>
-            </div>
-            <div>ID: {{ node.id }}</div>
-          </v-row>
+          <bottom-row :node="node"></bottom-row>
         </div>
       </v-expand-transition>
     </v-container>
@@ -161,6 +137,7 @@ import DotMenu from "./DotMenu.vue";
 import Paths from "./Paths.vue";
 import Relations from "./Relations.vue";
 import Note from "./Note.vue";
+import BottomRow from "./BottomRow.vue";
 
 interface Attribute {
   fieldId: number;
@@ -197,8 +174,6 @@ const emit = defineEmits<Emits>();
 
 const query = useProductQuery({ variables: { productId: props.productId } });
 const node = computed(() => query.data?.value?.product);
-const timePosted = computed(() => formatDateTime(node.value?.timePosted));
-const timeUpdated = computed(() => formatDateTime(node.value?.timeUpdated));
 
 const attributes = computed<Attributes>(() => {
   if (!node.value) return {};
@@ -235,20 +210,6 @@ const attributes = computed<Attributes>(() => {
   );
   return ret;
 });
-function formatDateTime(dateTime: string | undefined | null) {
-  if (!dateTime) return null;
-  const sinceEpoch = Date.parse(dateTime);
-  const format = Intl.DateTimeFormat("default", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-  });
-  return format.format(sinceEpoch);
-}
 
 const queryState = useQueryState(query, { isNull: () => node.value === null });
 const { loading, loaded, notFound, error, devtoolState } = queryState;
