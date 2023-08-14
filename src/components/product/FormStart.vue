@@ -97,10 +97,10 @@
             <v-window-item
               value="preview"
               v-html="noteMarked"
-              style="min-height: 180px"
+              style="min-height: 180px; width: 98%; border: solid 1px"
               :transition="false"
               :reverse-transition="false"
-              class="markdown-body px-3 pt-3"
+              class="markdown-body px-3 py-3"
             >
             </v-window-item>
           </v-window>
