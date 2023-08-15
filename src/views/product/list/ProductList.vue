@@ -14,45 +14,18 @@
     </top-bar>
     <div>
       <div v-if="nodes.length" class="pt-0 pb-16">
-        <product-item-card
-          v-for="node in nodes"
-          :key="node.id"
-          :productId="Number(node.productId)"
-          :collapsible="true"
-          v-model:collapsed="isCardCollapsed[node.id]"
-          class="my-1"
+        <list
+          :loading="loading"
+          :product-type="productType"
+          :edges="edges"
+          :nodes="nodes"
+          :n-items-total="nItemsTotal"
+          :n-items-initial-load="nItemsInitialLoad"
+          v-model:first="first"
+          :is-card-collapsed="isCardCollapsed"
+          v-if="!empty && productType"
         >
-        </product-item-card>
-        <div v-if="loading" class="pa-3">
-          <v-progress-circular
-            indeterminate
-            :size="26"
-            color="secondary"
-          ></v-progress-circular>
-        </div>
-        <div v-if="showLoadMoreButton && productType">
-          <div class="bottom-bar">
-            <div></div>
-            <div v-if="nItemsTotal > 1">
-              <span v-if="nodes.length == nItemsTotal">
-                {{ nItemsTotal }} {{ productType.plural }}
-              </span>
-              <span v-else>
-                {{ edges.length }} of {{ nItemsTotal }}
-                {{ productType.plural }}
-              </span>
-            </div>
-            <v-btn
-              v-if="productType && productType.products"
-              :disabled="!productType.products.pageInfo.hasNextPage"
-              variant="tonal"
-              color="primary"
-              @click="loadMore()"
-              text="Load more"
-            >
-            </v-btn>
-          </div>
-        </div>
+        </list>
       </div>
       <div v-else-if="loading">
         <div class="pa-3">
@@ -89,13 +62,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, computed, withDefaults } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useStore } from "@/stores/main";
 import { useConfigStore } from "@/stores/config";
 
 import TopBar from "./TopBar.vue";
-import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
+import List from "./List.vue";
 import Empty from "./Empty.vue";
 
 import {
@@ -168,20 +141,6 @@ const nodes = computed(() =>
   refreshing.value || empty.value ? [] : readNodes(query)
 );
 
-watch(nodes, async () => {
-  collapseCards();
-  await loadAllFewRemainingItems();
-});
-
-async function loadAllFewRemainingItems() {
-  if (
-    nodes.value.length + nExtraItemsAutomaticLoad.value >=
-    nItemsTotal.value
-  ) {
-    await loadMore();
-  }
-}
-
 const nItemsTotal = computed(
   () => productType.value?.products?.totalCount || 0
 );
@@ -199,15 +158,6 @@ async function refresh() {
 
 const isCardCollapsed = reactive<{ [key: string]: boolean }>({});
 
-function collapseCards() {
-  nodes.value.forEach((node) => {
-    const id = node.id;
-    if (id in isCardCollapsed) return;
-    isCardCollapsed[id] = true;
-  });
-}
-collapseCards();
-
 const areAllCardsCollapsed = computed({
   get: () => Object.values(isCardCollapsed).every((i) => i),
   set: (v) => {
@@ -217,39 +167,7 @@ const areAllCardsCollapsed = computed({
   },
 });
 
-const loadingMore = ref(false);
-
-// Set temporarily to 0 for the error
-// https://actcollaboration.slack.com/archives/C7WJA7X45/p1686667739493689
-// Note: The error doesn't occur in local development environment.
-// const nExtraItemsAutomaticLoad = ref(2);
-const nExtraItemsAutomaticLoad = ref(0);
-
-const showLoadMoreButton = computed(() => {
-  // if (loadingMore.value) return false;
-  return (
-    nItemsTotal.value > nItemsInitialLoad.value + nExtraItemsAutomaticLoad.value
-  );
-});
-
-const nItemsPerLoad = ref(20);
-async function loadMore() {
-  if (!productType.value?.products?.pageInfo?.hasNextPage) return;
-  first.value = first.value + nItemsPerLoad.value;
-}
-
 const store = useStore();
 const { nApolloMutations } = storeToRefs(store);
 watch(nApolloMutations, refresh);
 </script>
-
-<style scoped>
-.bottom-bar {
-  display: flex;
-  margin-top: 16px;
-  min-block-size: 56px;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 0 1rem;
-}
-</style>
