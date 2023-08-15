@@ -17,14 +17,13 @@
           <v-alert variant="tonal" type="error" :text="error"></v-alert>
         </div>
         <div v-else-if="loaded && node" class="pt-0">
-          <component
-            :is="productItemCard"
+          <product-item-card
             :productId="Number(node.productId)"
             :collapsible="false"
             @deleted="onDeleted"
             @nameChanged="onNameChanged($event)"
             @typeChanged="onTypeChanged($event)"
-          ></component>
+          ></product-item-card>
         </div>
         <div v-if="notFound">
           <v-card-text class="text-body-1">Not Found (404)</v-card-text>
@@ -46,15 +45,11 @@ import { useQueryState } from "@/utils/query-state";
 import TopBar from "./TopBar.vue";
 import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
 
-// Use any for productItemCard because Component causes an error for unknown reason.
 interface Props {
   productTypeId: number;
-  productItemCard?: any;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  productItemCard: () => ProductItemCard,
-});
+const props = defineProps<Props>();
 
 const route = useRoute();
 const router = useRouter();

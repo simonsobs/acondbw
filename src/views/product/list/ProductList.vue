@@ -14,15 +14,15 @@
     </top-bar>
     <div>
       <div v-if="nodes.length" class="pt-0 pb-16">
-        <component
-          :is="productItemCard"
+        <product-item-card
           v-for="node in nodes"
           :key="node.id"
           :productId="Number(node.productId)"
           :collapsible="true"
           v-model:collapsed="isCardCollapsed[node.id]"
           class="my-1"
-        ></component>
+        >
+        </product-item-card>
         <div v-if="loading" class="pa-3">
           <v-progress-circular
             indeterminate
@@ -105,16 +105,11 @@ import {
 
 import { useQueryState } from "@/utils/query-state";
 
-// Use any for productItemCard because Component causes an error for unknown reason.
-const props = withDefaults(
-  defineProps<{
-    productTypeId: number;
-    productItemCard?: any;
-  }>(),
-  {
-    productItemCard: () => ProductItemCard,
-  }
-);
+interface Props {
+  productTypeId: number;
+}
+
+const props = defineProps<Props>();
 
 const configStore = useConfigStore();
 const disableAdd = computed(() => !configStore.config.productCreationDialog);

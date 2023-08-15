@@ -154,8 +154,8 @@ interface Props {
 }
 
 interface Emits {
-  (e: "nameChanged", value: string | null): void;
-  (e: "typeChanged", value: string | null): void;
+  (e: "nameChanged", value: string): void;
+  (e: "typeChanged", value: string): void;
   (e: "deleted", value: void): void;
   (e: "update:collapsed", value: boolean): void;
 }
