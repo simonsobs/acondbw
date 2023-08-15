@@ -166,11 +166,11 @@ interface Props {
   };
 }
 
-interface Emits {
-  (event: "update:modelValue", value: FormStepStart): void;
-  (event: "update:valid", value: boolean): void;
-  (event: "cancel"): void;
-}
+type Emits = {
+  "update:modelValue": [value: FormStepStart];
+  "update:valid": [value: boolean];
+  cancel: [];
+};
 
 const prop = defineProps<Props>();
 const emit = defineEmits<Emits>();
