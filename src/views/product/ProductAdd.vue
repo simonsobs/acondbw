@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from "vue";
+import { ref, computed, nextTick, onActivated } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useProductTypeByNameQuery } from "@/generated/graphql";
@@ -77,6 +77,7 @@ const queryState = useQueryState(query, {
 const { init, notFound, loading, error, loaded, devtoolState } = queryState;
 
 onEntered();
+onActivated(onEntered);
 </script>
 
 <style scoped>
