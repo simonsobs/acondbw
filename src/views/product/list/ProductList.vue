@@ -61,40 +61,8 @@
           ></v-progress-circular>
         </div>
       </div>
-      <div v-else-if="empty && productType" class="empty">
-        <div class="text-body-1 font-weight-medium">
-          Empty. No {{ productType.plural }} are found.
-        </div>
-        <v-btn
-          depressed
-          variant="flat"
-          :to="{
-            name: 'ProductAdd',
-            params: { productTypeName: productType.name },
-          }"
-          prepend-icon="mdi-plus-thick"
-          text="Add the first entry"
-        >
-        </v-btn>
-        <v-dialog v-model="deleteDialog" max-width="400">
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              variant="outlined"
-              color="secondary"
-              :disabled="disableDelete"
-              prepend-icon="mdi-delete"
-              text="Delete this product type"
-            >
-            </v-btn>
-          </template>
-          <product-type-delete-form
-            v-if="deleteDialog"
-            :node="productType"
-            @cancel="onDeleteFormCancelled"
-            @finished="onDeleteFormFinished"
-          ></product-type-delete-form>
-        </v-dialog>
+      <div v-else-if="empty">
+        <empty :product-type="productType" v-if="productType"></empty>
       </div>
     </div>
     <v-btn
@@ -120,20 +88,18 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch, computed, withDefaults } from "vue";
-import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useStore } from "@/stores/main";
 import { useConfigStore } from "@/stores/config";
 
 import TopBar from "./TopBar.vue";
 import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
+import Empty from "./Empty.vue";
 
 import {
   useQueryForProductListQuery,
   ProductSortEnum,
 } from "@/generated/graphql";
-
-import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
 
 import { useQueryState } from "@/utils/query-state";
 
@@ -150,9 +116,6 @@ const props = withDefaults(
 
 const configStore = useConfigStore();
 const disableAdd = computed(() => !configStore.config.productCreationDialog);
-const disableDelete = computed(() => !configStore.config.productDeletionDialog);
-
-const router = useRouter();
 
 const nItemsInitialLoad = ref(10);
 const first = ref(nItemsInitialLoad.value);
@@ -257,25 +220,6 @@ const areAllCardsCollapsed = computed({
   },
 });
 
-const deleteDialog = ref(false);
-
-function onDeleteFormCancelled() {
-  closeDeleteForm();
-}
-
-function onDeleteFormFinished() {
-  closeDeleteForm();
-  onDeleted();
-}
-
-function closeDeleteForm() {
-  deleteDialog.value = false;
-}
-
-function onDeleted() {
-  router.push({ name: "Dashboard" });
-}
-
 const loadingMore = ref(false);
 
 // Set temporarily to 0 for the error
@@ -310,12 +254,5 @@ watch(nApolloMutations, refresh);
   justify-content: space-between;
   align-items: baseline;
   padding: 0 1rem;
-}
-.empty {
-  margin-top: 16px;
-  display: grid;
-  block-size: 100%;
-  place-items: center;
-  gap: 24px;
 }
 </style>
