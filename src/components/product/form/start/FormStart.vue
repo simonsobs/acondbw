@@ -138,7 +138,7 @@ const { withAsync } = helpers;
 
 async function isNameAvailable(
   name: string,
-  productTypeId,
+  productTypeId: number,
   urqlClient: Client
 ) {
   const { data } = await urqlClient
@@ -152,8 +152,7 @@ async function isNameAvailable(
     )
     .toPromise();
 
-  if (data.product) return false;
-  return true;
+  return !data.product;
 }
 
 function parsableAsDate(value: string) {
