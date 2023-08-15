@@ -5,7 +5,7 @@
       <v-row justify="center">
         <v-col order="1" cols="12" md="10">
           <v-text-field
-            outlined
+            variant="outlined"
             label="Name*"
             required
             :hint="`Name of the ${productType.singular}.`"
@@ -19,7 +19,7 @@
         <v-col order="3" cols="12" md="10">
           <!-- need more work on v-date-picker -->
           <!-- <v-text-field-with-date-picker
-            outlined
+            variant="outlined"
             label="Date produced (YYYY-MM-DD)*"
             required
             :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06.`"
@@ -29,7 +29,7 @@
           >
           </v-text-field-with-date-picker> -->
           <v-text-field
-            outlined
+            variant="outlined"
             label="Date produced (YYYY-MM-DD)*"
             required
             :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06.`"
@@ -41,7 +41,7 @@
         </v-col>
         <v-col order="4" cols="12" md="10">
           <v-text-field
-            outlined
+            variant="outlined"
             label="Produced by*"
             required
             :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx.`"
@@ -52,7 +52,7 @@
         </v-col>
         <v-col order="5" cols="12" md="10">
           <v-text-field
-            outlined
+            variant="outlined"
             label="Contact*"
             required
             :hint="`A person or group that can be contacted for questions or issues about the ${productType.singular}.`"
@@ -65,7 +65,7 @@
       <v-row justify="center">
         <v-col cols="12" md="10">
           <v-textarea
-            outlined
+            variant="outlined"
             label="Paths"
             hint="A path per line. e.g., nersc:/go/to/my/product_v3. Note that paths are an unordered set; they will not be always displayed in the order entered here."
             rows="4"

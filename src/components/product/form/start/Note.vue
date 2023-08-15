@@ -9,12 +9,13 @@
       style="min-height: 180px"
       :transition="false"
       :reverse-transition="false"
+      class="px-3 py-3"
     >
       <v-textarea
-        solo
-        outlined
-        label="Note will be parsed as Markdown"
-        rows="5"
+        variant="outlined"
+        hint="Note will be parsed as Markdown"
+        persistent-hint
+        rows="6"
         :model-value="note"
         @update:model-value="onUpdate"
       ></v-textarea>
