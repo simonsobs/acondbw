@@ -31,7 +31,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useProductTypeByNameQuery } from "@/generated/graphql";
 
-import ProductAddForm from "@/components/product/ProductAddForm.vue";
+import ProductAddForm from "@/components/product/form/ProductAddForm.vue";
 
 import { useQueryState } from "@/utils/query-state";
 

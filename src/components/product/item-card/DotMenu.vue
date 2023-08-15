@@ -86,10 +86,10 @@ import { useConfigStore } from "@/stores/config";
 import ProductEditForm, {
   Product,
   Attributes,
-} from "@/components/product/ProductEditForm.vue";
-import ProductUpdateRelationsForm from "@/components/product/ProductUpdateRelationsForm.vue";
-import ProductConvertTypeForm from "@/components/product/ProductConvertTypeForm.vue";
-import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
+} from "@/components/product/form/ProductEditForm.vue";
+import ProductUpdateRelationsForm from "@/components/product/form/ProductUpdateRelationsForm.vue";
+import ProductConvertTypeForm from "@/components/product/form/ProductConvertTypeForm.vue";
+import ProductDeleteForm from "@/components/product/form/ProductDeleteForm.vue";
 
 interface Props {
   node: Product;
