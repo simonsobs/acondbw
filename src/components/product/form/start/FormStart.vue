@@ -267,7 +267,7 @@ watchEffect(() => {
   emit("update:modelValue", { ...form.value });
 });
 
-const tabNote = ref<number | null>(null);
+const tabNote = ref<"edit"| "preview">("edit");
 
 const noteMarked = computed(() =>
   form.value.note
@@ -287,7 +287,7 @@ function cancel() {
 
 function reset() {
   error.value = null;
-  tabNote.value = null;
+  tabNote.value = "edit";
   form.value = { ...formReset.value };
   v$.value.$reset();
 }
