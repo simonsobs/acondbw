@@ -30,26 +30,28 @@
             color="secondary"
           ></v-progress-circular>
         </div>
-        <div v-if="showLoadMoreButton && productType" class="bottom-bar">
-          <div></div>
-          <div v-if="nItemsTotal > 1">
-            <span v-if="nodes.length == nItemsTotal">
-              {{ nItemsTotal }} {{ productType.plural }}
-            </span>
-            <span v-else>
-              {{ edges.length }} of {{ nItemsTotal }}
-              {{ productType.plural }}
-            </span>
+        <div v-if="showLoadMoreButton && productType">
+          <div class="bottom-bar">
+            <div></div>
+            <div v-if="nItemsTotal > 1">
+              <span v-if="nodes.length == nItemsTotal">
+                {{ nItemsTotal }} {{ productType.plural }}
+              </span>
+              <span v-else>
+                {{ edges.length }} of {{ nItemsTotal }}
+                {{ productType.plural }}
+              </span>
+            </div>
+            <v-btn
+              v-if="productType && productType.products"
+              :disabled="!productType.products.pageInfo.hasNextPage"
+              variant="tonal"
+              color="primary"
+              @click="loadMore()"
+              text="Load more"
+            >
+            </v-btn>
           </div>
-          <v-btn
-            v-if="productType && productType.products"
-            :disabled="!productType.products.pageInfo.hasNextPage"
-            variant="tonal"
-            color="primary"
-            @click="loadMore()"
-            text="Load more"
-          >
-          </v-btn>
         </div>
       </div>
       <div v-else-if="loading">
