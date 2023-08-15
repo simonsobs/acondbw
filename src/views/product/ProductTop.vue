@@ -74,14 +74,14 @@
           </v-tooltip>
         </span>
       </div>
-      <router-view
-        :key="route.fullPath"
-        :productTypeId="node ? Number(node.typeId) : null"
-        v-slot="{ Component }"
-      >
+      <router-view v-slot="{ Component }">
         <transition :name="transitionName" :mode="transitionMode">
           <keep-alive>
-            <component :is="Component"></component>
+            <component
+              :key="route.fullPath"
+              :productTypeId="node ? Number(node.typeId) : null"
+              :is="Component"
+            ></component>
           </keep-alive>
         </transition>
       </router-view>
