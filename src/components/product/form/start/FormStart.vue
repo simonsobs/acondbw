@@ -75,35 +75,7 @@
         </v-col>
         <v-col cols="12" md="10" class="mt-4">
           <label class="v-label">Note</label>
-          <v-tabs v-model="tabNote" class="mb-1">
-            <v-tab value="edit">Edit</v-tab>
-            <v-tab value="preview">Preview</v-tab>
-          </v-tabs>
-          <v-window v-model="tabNote">
-            <v-window-item
-              value="edit"
-              style="min-height: 180px"
-              :transition="false"
-              :reverse-transition="false"
-            >
-              <v-textarea
-                solo
-                outlined
-                label="Note will be parsed as Markdown"
-                rows="5"
-                v-model="v$.note.$model"
-              ></v-textarea>
-            </v-window-item>
-            <v-window-item
-              value="preview"
-              v-html="noteMarked"
-              style="min-height: 180px; width: 98%; border: solid 1px"
-              :transition="false"
-              :reverse-transition="false"
-              class="markdown-body px-3 py-3"
-            >
-            </v-window-item>
-          </v-window>
+          <note v-model="v$.note.$model"></note>
         </v-col>
       </v-row>
     </v-container>
@@ -122,9 +94,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, watchEffect } from "vue";
 import _ from "lodash";
-import { marked } from "marked";
 
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
@@ -132,7 +103,7 @@ import { required, helpers } from "@vuelidate/validators";
 import { useIsNameAvailable } from "./name-availability";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
-import { watchEffect } from "vue";
+import Note from "./Note.vue";
 
 const { withAsync } = helpers;
 
@@ -264,14 +235,6 @@ watchEffect(() => {
   emit("update:modelValue", { ...form.value });
 });
 
-const tabNote = ref<"edit" | "preview">("edit");
-
-const noteMarked = computed(() =>
-  form.value.note
-    ? marked.parse(form.value.note)
-    : "<em>Nothing to preview</em>"
-);
-
 const debounceInput = _.debounce(function (field, event) {
   // https://github.com/vuelidate/vuelidate/issues/320#issuecomment-395349377
   field.$model = event.target.value;
@@ -284,8 +247,8 @@ function cancel() {
 
 function reset() {
   error.value = null;
-  tabNote.value = "edit";
   form.value = { ...formReset.value };
   v$.value.$reset();
+  console.log("reset");
 }
 </script>
