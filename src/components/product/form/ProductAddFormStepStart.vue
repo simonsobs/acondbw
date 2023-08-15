@@ -3,7 +3,7 @@
     <form-start
       :model-value="modelValue"
       :productType="productType"
-      @valid="valid = $event"
+      v-model:valid="valid"
       @update:model-value="emit('update:modelValue', $event)"
     ></form-start>
     <v-divider></v-divider>

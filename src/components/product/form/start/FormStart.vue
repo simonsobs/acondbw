@@ -132,6 +132,7 @@ import { required, helpers } from "@vuelidate/validators";
 import { useIsNameAvailable } from "./name-availability";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
+import { watchEffect } from "vue";
 
 const { withAsync } = helpers;
 
@@ -156,6 +157,7 @@ interface FormStepStart {
 
 interface Props {
   modelValue: FormStepStart | null;
+  valid?: boolean;
   productType: {
     typeId: number;
     name: string;
@@ -166,7 +168,7 @@ interface Props {
 
 interface Emits {
   (event: "update:modelValue", value: FormStepStart): void;
-  (event: "valid", value: boolean): void;
+  (event: "update:valid", value: boolean): void;
   (event: "cancel"): void;
 }
 
@@ -248,7 +250,9 @@ const contactErrors = computed(() => {
   return errors;
 });
 
-const valid = computed(() => !v$.value.$invalid);
+watchEffect(() => {
+  emit("update:valid", !v$.value.$invalid);
+});
 
 watch(
   () => prop.modelValue,
@@ -266,16 +270,6 @@ watch(
   },
   {
     deep: true,
-    immediate: true,
-  }
-);
-
-watch(
-  valid,
-  (val) => {
-    emit("valid", val);
-  },
-  {
     immediate: true,
   }
 );

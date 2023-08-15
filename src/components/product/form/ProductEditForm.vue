@@ -13,8 +13,8 @@
       <v-divider class="mb-5"></v-divider>
       <form-start
         v-model="value"
+        v-model:valid="valid"
         :productType="node.type_"
-        @valid="valid = $event"
       >
       </form-start>
       <v-divider></v-divider>
