@@ -74,7 +74,7 @@
           ></v-textarea>
         </v-col>
         <v-col cols="12" md="10" class="mt-4">
-          <label class="v-label theme--light">Note</label>
+          <label class="v-label">Note</label>
           <v-tabs v-model="tabNote" class="mb-1">
             <v-tab value="edit">Edit</v-tab>
             <v-tab value="preview">Preview</v-tab>
