@@ -11,9 +11,9 @@
             :hint="`Name of the ${productType.singular}.`"
             persistent-hint
             :error-messages="nameErrors"
-            :model-value="v$.form.name.$model"
-            @input="debounceInput(v$.form.name, $event)"
-            @blur="v$.form.name.$touch()"
+            :model-value="v$.name.$model"
+            @input="debounceInput(v$.name, $event)"
+            @blur="v$.name.$touch()"
           ></v-text-field>
         </v-col>
         <v-col order="3" cols="12" md="10">
@@ -24,7 +24,7 @@
             required
             :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06.`"
             persistent-hint
-            v-model="v$.form.dateProduced.$model"
+            v-model="v$.dateProduced.$model"
             :error-messages="dateProducedErrors"
           >
           </v-text-field-with-date-picker> -->
@@ -34,7 +34,7 @@
             required
             :hint="`The date on which the ${productType.singular} was produced, e.g., 2020-05-06.`"
             persistent-hint
-            v-model="v$.form.dateProduced.$model"
+            v-model="v$.dateProduced.$model"
             :error-messages="dateProducedErrors"
           >
           </v-text-field>
@@ -46,7 +46,7 @@
             required
             :hint="`The person or group that produced the ${productType.singular}, e.g. pwg-xxx.`"
             persistent-hint
-            v-model="v$.form.producedBy.$model"
+            v-model="v$.producedBy.$model"
             :error-messages="producedByErrors"
           ></v-text-field>
         </v-col>
@@ -57,7 +57,7 @@
             required
             :hint="`A person or group that can be contacted for questions or issues about the ${productType.singular}.`"
             persistent-hint
-            v-model="v$.form.contact.$model"
+            v-model="v$.contact.$model"
             :error-messages="contactErrors"
           ></v-text-field>
         </v-col>
@@ -70,7 +70,7 @@
             hint="A path per line. e.g., nersc:/go/to/my/product_v3. Note that paths are an unordered set; they will not be always displayed in the order entered here."
             rows="4"
             persistent-hint
-            v-model="v$.form.paths.$model"
+            v-model="v$.paths.$model"
           ></v-textarea>
         </v-col>
         <v-col cols="12" md="10" class="mt-4">
@@ -91,7 +91,7 @@
                 outlined
                 label="Note will be parsed as Markdown"
                 rows="5"
-                v-model="v$.form.note.$model"
+                v-model="v$.note.$model"
               ></v-textarea>
             </v-window-item>
             <v-window-item
@@ -111,7 +111,7 @@
       <v-spacer></v-spacer>
       <v-btn
         color="secondary"
-        :disabled="!v$.form.$anyDirty"
+        :disabled="!v$.$anyDirty"
         variant="text"
         @click="reset"
       >
@@ -194,28 +194,26 @@ const formReset = ref<FormStepStart>({
 const form = ref<FormStepStart>({ ...formReset.value });
 
 const rules = computed(() => ({
-  form: {
-    name: {
-      required,
-      unique: withAsync(async (value: string) => {
-        if (value === "") return true;
-        if (value === formReset.value.name) return true;
-        return await isNameAvailable(value.trim(), prop.productType.typeId);
-      }),
-    },
-    producedBy: { required },
-    dateProduced: { required, parsableAsDate },
-    contact: { required },
-    paths: {},
-    note: {},
+  name: {
+    required,
+    unique: withAsync(async (value: string) => {
+      if (value === "") return true;
+      if (value === formReset.value.name) return true;
+      return await isNameAvailable(value.trim(), prop.productType.typeId);
+    }),
   },
+  producedBy: { required },
+  dateProduced: { required, parsableAsDate },
+  contact: { required },
+  paths: {},
+  note: {},
 }));
 
-const v$ = useVuelidate(rules, { form });
+const v$ = useVuelidate(rules, form);
 
 const nameErrors = computed(() => {
   const errors: string[] = [];
-  const field = v$.value.form.name;
+  const field = v$.value.name;
   if (!field.$dirty) return errors;
   field.required.$invalid && errors.push("This field is required");
   field.unique.$invalid &&
@@ -226,7 +224,7 @@ const nameErrors = computed(() => {
 
 const dateProducedErrors = computed(() => {
   const errors: string[] = [];
-  const field = v$.value.form.dateProduced;
+  const field = v$.value.dateProduced;
   if (!field.$dirty) return errors;
   field.required.$invalid && errors.push("This field is required");
   field.parsableAsDate.$invalid &&
@@ -236,7 +234,7 @@ const dateProducedErrors = computed(() => {
 
 const producedByErrors = computed(() => {
   const errors: string[] = [];
-  const field = v$.value.form.producedBy;
+  const field = v$.value.producedBy;
   if (!field.$dirty) return errors;
   field.required.$invalid && errors.push("This field is required");
   return errors;
@@ -244,7 +242,7 @@ const producedByErrors = computed(() => {
 
 const contactErrors = computed(() => {
   const errors: string[] = [];
-  const field = v$.value.form.contact;
+  const field = v$.value.contact;
   if (!field.$dirty) return errors;
   field.required.$invalid && errors.push("This field is required");
   return errors;
@@ -266,7 +264,7 @@ watchEffect(() => {
   emit("update:modelValue", { ...form.value });
 });
 
-const tabNote = ref<"edit"| "preview">("edit");
+const tabNote = ref<"edit" | "preview">("edit");
 
 const noteMarked = computed(() =>
   form.value.note
