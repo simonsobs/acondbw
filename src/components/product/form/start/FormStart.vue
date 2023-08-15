@@ -123,37 +123,19 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { useClientHandle, Client } from "@urql/vue";
 import _ from "lodash";
 import { marked } from "marked";
 
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
 
-import { QueryProductNameInFormStartDocument } from "@/generated/graphql";
+import { useIsNameAvailable } from "./name-availability";
 
 import VTextFieldWithDatePicker from "@/components/utils/VTextFieldWithDatePicker.vue";
 
 const { withAsync } = helpers;
 
-async function isNameAvailable(
-  name: string,
-  productTypeId: number,
-  urqlClient: Client
-) {
-  const { data } = await urqlClient
-    .query(
-      QueryProductNameInFormStartDocument,
-      {
-        typeId: productTypeId,
-        name: name,
-      },
-      { requestPolicy: "network-only" }
-    )
-    .toPromise();
-
-  return !data.product;
-}
+const { isNameAvailable } = useIsNameAvailable();
 
 function parsableAsDate(value: string) {
   // test format "YYYY-MM-DD"
@@ -191,7 +173,6 @@ interface Emits {
 const prop = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
-const urqlClientHandle = useClientHandle();
 const error = ref<any>(null);
 
 const formDefault: FormStepStart = {
@@ -217,16 +198,7 @@ const rules = computed(() => ({
       unique: withAsync(async (value: string) => {
         if (value === "") return true;
         if (value === formReset.value.name) return true;
-        try {
-          return await isNameAvailable(
-            value.trim(),
-            prop.productType.typeId,
-            urqlClientHandle.client
-          );
-        } catch (e) {
-          error.value = e;
-          return true;
-        }
+        return await isNameAvailable(value.trim(), prop.productType.typeId);
       }),
     },
     producedBy: { required },
