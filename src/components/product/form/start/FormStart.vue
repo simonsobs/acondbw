@@ -259,8 +259,7 @@ watch(
   (val) => {
     if (JSON.stringify(val) === JSON.stringify(form.value)) return;
     form.value = { ...formReset.value, ...(val || {}) };
-  },
-  { deep: true }
+  }
 );
 
 watchEffect(() => {
