@@ -263,16 +263,9 @@ watch(
   { deep: true }
 );
 
-watch(
-  form,
-  (val) => {
-    emit("update:modelValue", { ...val });
-  },
-  {
-    deep: true,
-    immediate: true,
-  }
-);
+watchEffect(() => {
+  emit("update:modelValue", { ...form.value });
+});
 
 const tabNote = ref<number | null>(null);
 
