@@ -36,7 +36,7 @@ import { useStore } from "@/stores/main";
 
 import _ from "lodash";
 
-import FormRelations from "./FormRelations.vue";
+import FormRelations from "./relations/FormRelations.vue";
 
 import { useProductQuery, useUpdateProductMutation } from "@/generated/graphql";
 

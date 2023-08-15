@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import FormRelations from "./FormRelations.vue";
+import FormRelations from "./relations/FormRelations.vue";
 
 interface ProductType {
   singular: string;

@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import FormStart from "./FormStart.vue";
+import FormStart from "./start/FormStart.vue";
 
 export type FormStepStart = NonNullable<
   InstanceType<typeof FormStart>["modelValue"]

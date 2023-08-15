@@ -48,7 +48,7 @@ import {
   UpdateProductInput,
 } from "@/generated/graphql";
 
-import FormStart from "./FormStart.vue";
+import FormStart from "./start/FormStart.vue";
 
 export type Product = NonNullable<
   NonNullable<
