@@ -42,6 +42,9 @@ const AdminAppAuth = () => import("@/views/admin-token/AdminAppAuth.vue");
 const AdminAppTokenError = () =>
   import("@/views/admin-token/AdminAppTokenError.vue");
 
+// Path Ranker tool: https://paths.esm.dev/?p=AAMeJSyAwR4UbFDAFxAcAGAIJXMAAA..
+// The route matching debugging tool
+
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
