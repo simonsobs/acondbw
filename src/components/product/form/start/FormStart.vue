@@ -249,6 +249,5 @@ function reset() {
   error.value = null;
   form.value = { ...formReset.value };
   v$.value.$reset();
-  console.log("reset");
 }
 </script>
