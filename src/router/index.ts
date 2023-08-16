@@ -256,9 +256,9 @@ function createRouter_() {
     }
   });
 
-  router.afterEach((to) => {
+  router.afterEach((to, from) => {
     const historyStack = useHistoryStack();
-    historyStack.afterEach(to);
+    historyStack.afterEach(to, from);
   });
 
   return router;

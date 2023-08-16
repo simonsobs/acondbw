@@ -10,13 +10,24 @@ export const useHistoryStack = defineStore("historyStack", () => {
   const historyStack = reactive<RouteLocationRaw[]>([]);
   const router = useRouter();
 
-  const afterEach = (to: RouteLocationNormalized) => {
+  const afterEach = (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized
+  ) => {
     if (to.name !== "ProductItem") {
       historyStack.splice(0); // clear
       return;
     }
+
+    if (!historyStack.length && from.name === "ProductList") {
+      // push "from" so that we can move back to "list"
+      const pushArg = toPushArg(from);
+      historyStack.push(pushArg);
+    }
+
     const pushArg = toPushArg(to);
     if (isSamePathAsLast(pushArg)) return; // Always true while moving back.
+
     historyStack.push(pushArg);
   };
 
