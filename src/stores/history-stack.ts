@@ -1,13 +1,17 @@
-import { computed, reactive } from "vue";
+import { computed } from "vue";
 import { defineStore } from "pinia";
 import {
   useRouter,
   RouteLocationRaw,
   RouteLocationNormalized,
 } from "vue-router";
+import { useSessionStorage } from "@vueuse/core";
 
 export const useHistoryStack = defineStore("historyStack", () => {
-  const historyStack = reactive<RouteLocationRaw[]>([]);
+  const historyStack = useSessionStorage<RouteLocationRaw[]>(
+    "historyStack",
+    []
+  );
   const router = useRouter();
 
   const afterEach = (
@@ -15,28 +19,28 @@ export const useHistoryStack = defineStore("historyStack", () => {
     from: RouteLocationNormalized
   ) => {
     if (to.name !== "ProductItem") {
-      historyStack.splice(0); // clear
+      historyStack.value.splice(0); // clear
       return;
     }
 
-    if (!historyStack.length && from.name === "ProductList") {
+    if (!historyStack.value.length && from.name === "ProductList") {
       // push "from" so that we can move back to "list"
       const pushArg = toPushArg(from);
-      historyStack.push(pushArg);
+      historyStack.value.push(pushArg);
     }
 
     const pushArg = toPushArg(to);
     if (isSamePathAsLast(pushArg)) return; // Always true while moving back.
 
-    historyStack.push(pushArg);
+    historyStack.value.push(pushArg);
   };
 
   /**
    * Return true if the same as the last item in the history stack
    */
   function isSamePathAsLast(arg: RouteLocationRaw) {
-    if (!historyStack.length) return false;
-    return isSamePath(historyStack[historyStack.length - 1], arg);
+    if (!historyStack.value.length) return false;
+    return isSamePath(historyStack.value[historyStack.value.length - 1], arg);
   }
 
   /**
@@ -57,12 +61,12 @@ export const useHistoryStack = defineStore("historyStack", () => {
     return { path: arg.path };
   }
 
-  const hasBack = computed(() => historyStack.length >= 2);
+  const hasBack = computed(() => historyStack.value.length >= 2);
 
   function back() {
     if (!hasBack.value) return;
-    historyStack.pop();
-    router.push(historyStack[historyStack.length - 1]);
+    historyStack.value.pop();
+    router.push(historyStack.value[historyStack.value.length - 1]);
   }
 
   return {
