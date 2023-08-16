@@ -1,4 +1,5 @@
 [![Test Status](https://github.com/simonsobs/acondbw/workflows/Test/badge.svg)](https://github.com/simonsobs/acondbw/actions?query=workflow%3ATest)
+[<img src="https://img.shields.io/badge/dockerhub-images-blue.svg?logo=Docker">](https://hub.docker.com/repository/docker/simonsobs/acondbw)
 <!-- [![Coverage Status](https://coveralls.io/repos/github/simonsobs/acondbw/badge.svg?branch=master)](https://coveralls.io/github/simonsobs/acondbw?branch=master) -->
 
 # acondbw
