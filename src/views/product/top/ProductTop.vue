@@ -22,15 +22,11 @@
     >
       <top-bar :node="node" :item-name="itemName"></top-bar>
       <router-view v-slot="{ Component }">
-        <transition :name="transitionName" :mode="transitionMode">
-          <keep-alive>
-            <component
-              :key="route.fullPath"
-              :productTypeId="node ? Number(node.typeId) : null"
-              :is="Component"
-            ></component>
-          </keep-alive>
-        </transition>
+        <component
+          :key="route.fullPath"
+          :productTypeId="node ? Number(node.typeId) : null"
+          :is="Component"
+        ></component>
       </router-view>
     </div>
     <dev-tool-loading-state-menu top="10px" right="10px" v-model="devtoolState">
@@ -39,8 +35,11 @@
 </template>
 
 <script setup lang="ts">
+// <keep-alive> is not used around <component> because it doesn't work well with
+// <transition> set in App.vue.
+
 import { ref, computed, onMounted } from "vue";
-import { useRoute, onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+import { useRoute } from "vue-router";
 
 import { useProductTypeByNameQuery } from "@/generated/graphql";
 
@@ -65,19 +64,6 @@ const query = useProductTypeByNameQuery({
 
 const node = computed(() => query.data?.value?.productType);
 
-const transitionName = ref("fade-product-top-leave");
-const transitionMode = ref<"out-in">("out-in");
-onBeforeRouteUpdate((to, from, next) => {
-  transitionName.value = "fade-product-top-update";
-  transitionMode.value = "out-in";
-  next();
-});
-onBeforeRouteLeave((to, from, next) => {
-  transitionName.value = "fade-product-top-leave";
-  transitionMode.value = "out-in";
-  next();
-});
-
 const { loading, loaded, notFound, error, devtoolState } = useQueryState(
   query,
   { isNull: () => node.value === null }
@@ -87,35 +73,6 @@ const { loading, loaded, notFound, error, devtoolState } = useQueryState(
 <style scoped>
 .capitalize {
   text-transform: capitalize;
-}
-
-.fade-product-top-update-enter-active {
-  transition: opacity 0.8s;
-}
-
-.fade-product-top-update-leave-active {
-  transition: opacity 0s;
-}
-
-.fade-product-top-update-enter,
-.fade-product-top-update-leave-to {
-  opacity: 0;
-}
-
-.fade-product-top-leave-enter-active {
-  transition: opacity 0s;
-}
-
-.fade-product-top-leave-leave-active {
-  transition: opacity 0s;
-}
-
-.fade-product-top-leave-enter {
-  opacity: 1;
-}
-
-.fade-product-top-leave-leave-to {
-  opacity: 1;
 }
 
 .not-found {

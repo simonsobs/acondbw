@@ -10,9 +10,9 @@
   </router-view>
   <v-main>
     <router-view v-slot="{ Component, route }">
-      <keep-alive>
+      <v-fade-transition>
         <component :key="route.path" :is="Component" />
-      </keep-alive>
+      </v-fade-transition>
     </router-view>
   </v-main>
   <snackbar></snackbar>
@@ -25,6 +25,10 @@
  * The contents are provided by the router.
  * This component should be placed inside the <v-app> component.
  */
+
+// <keep-alive> is not used around <component> because it
+// doesn't work well with <transition>
+
 import { ref, computed, watchEffect } from "vue";
 import { useDisplay } from "vuetify";
 import { useSetTitle } from "./set-title";
