@@ -1,20 +1,12 @@
 <template>
   <div class="top-bar">
-    <v-tooltip v-if="node && node.type_" location="top">
+    <v-tooltip location="top" v-if="historyStack.hasBack">
       <template v-slot:activator="{ props }">
-        <v-btn
-          v-bind="props"
-          variant="plain"
-          icon
-          :to="{
-            name: 'ProductList',
-            params: { productTypeName: node.type_.name },
-          }"
-        >
+        <v-btn v-bind="props" variant="plain" icon @click="historyStack.back">
           <v-icon icon="mdi-arrow-left"></v-icon>
         </v-btn>
       </template>
-      <span>Back to the list</span>
+      <span>Back</span>
     </v-tooltip>
     <v-tooltip location="top">
       <template v-slot:activator="{ props }">
@@ -35,6 +27,7 @@
 
 <script setup lang="ts">
 import { ProductQuery } from "@/generated/graphql";
+import { useHistoryStack } from "@/stores/history-stack";
 
 type Product = ProductQuery["product"];
 
@@ -47,8 +40,10 @@ interface Emits {
   (event: "refresh"): void;
 }
 
-const prop = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits<Emits>();
+
+const historyStack = useHistoryStack();
 </script>
 
 <style scoped>
