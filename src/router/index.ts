@@ -6,6 +6,7 @@ import {
 } from "vue-router";
 
 import { useAuthStore } from "@/stores/auth";
+import { useHistoryStack } from "@/stores/history-stack";
 
 const AppBar = () => import("@/components/layout/AppBar.vue");
 const Navigation = () => import("@/components/layout/Navigation.vue");
@@ -250,6 +251,11 @@ function createRouter_() {
     if (adminRequired && !isAdmin) {
       return { name: "AccessDenied" };
     }
+  });
+  
+  router.afterEach((to) => {
+    const historyStack = useHistoryStack();
+    historyStack.afterEach(to);
   });
 
   return router;
