@@ -50,14 +50,10 @@ const routes: RouteRecordRaw[] = [
     path: "/",
     name: "Entry",
     component: Entry,
-    beforeEnter: (to, from, next) => {
+    beforeEnter: (to, from) => {
       const auth = useAuthStore();
       const signedIn = auth.isSignedIn;
-      if (signedIn) {
-        next({ name: "Dashboard" });
-      } else {
-        next();
-      }
+      if (signedIn) return { name: "Dashboard" };
     },
   },
   {
@@ -69,14 +65,10 @@ const routes: RouteRecordRaw[] = [
       appBar: AppBar,
     },
     // meta: { requiresAuth: true },
-    beforeEnter: (to, from, next) => {
+    beforeEnter: (to, from) => {
       const auth = useAuthStore();
       const signedIn = auth.isSignedIn;
-      if (signedIn) {
-        next();
-      } else {
-        next({ name: "Entry" });
-      }
+      if (!signedIn) return { name: "Entry" };
     },
   },
   // {
@@ -236,7 +228,7 @@ function createRouter_() {
     routes,
   });
 
-  router.beforeEach((to, from, next) => {
+  router.beforeEach((to, from) => {
     // This will be called before beforeEnter() in each route.
     // https://v3.router.vuejs.org/guide/advanced/navigation-guards.html#in-component-guards
     const adminRequired = to.matched.some((r) => r.meta.requiresAdmin);
@@ -244,7 +236,6 @@ function createRouter_() {
       adminRequired || to.matched.some((r) => r.meta.requiresAuth);
 
     if (!(authRequired || adminRequired)) {
-      next();
       return;
     }
 
@@ -252,17 +243,13 @@ function createRouter_() {
 
     const isSignedIn = auth.isSignedIn;
     if (authRequired && !isSignedIn) {
-      next({ name: "SignInRequired", query: { path: to.fullPath } });
-      return;
+      return { name: "SignInRequired", query: { path: to.fullPath } };
     }
 
     const isAdmin = auth.isAdmin;
     if (adminRequired && !isAdmin) {
-      next({ name: "AccessDenied" });
-      return;
+      return { name: "AccessDenied" };
     }
-
-    next();
   });
 
   return router;
