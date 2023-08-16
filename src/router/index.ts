@@ -229,9 +229,12 @@ function createRouter_() {
     routes,
   });
 
+  // Navigation Guards
+  // https://router.vuejs.org/guide/advanced/navigation-guards.html#Navigation-Guards
+
   router.beforeEach((to, from) => {
     // This will be called before beforeEnter() in each route.
-    // https://v3.router.vuejs.org/guide/advanced/navigation-guards.html#in-component-guards
+    // https://router.vuejs.org/guide/advanced/navigation-guards.html#The-Full-Navigation-Resolution-Flow
     const adminRequired = to.matched.some((r) => r.meta.requiresAdmin);
     const authRequired =
       adminRequired || to.matched.some((r) => r.meta.requiresAuth);
@@ -252,7 +255,7 @@ function createRouter_() {
       return { name: "AccessDenied" };
     }
   });
-  
+
   router.afterEach((to) => {
     const historyStack = useHistoryStack();
     historyStack.afterEach(to);
