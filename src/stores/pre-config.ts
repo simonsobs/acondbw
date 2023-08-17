@@ -17,7 +17,9 @@ export const usePreConfigStore = defineStore("preConfig", () => {
   } = useAxios<PreConfig>(url.value);
 
   const typeError = computed(() => {
-    if (typeof preConfig.value?.graphqlHttp !== "string")
+    if(loading.value) return;
+    if(!preConfig.value) return Error("preConfig is null");
+    if (typeof preConfig.value.graphqlHttp !== "string")
       return Error("graphqlHttp is not string");
     if (preConfig.value?.graphqlHttp === "")
       return Error("graphqlHttp is empty");
