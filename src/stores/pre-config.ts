@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { useAxios } from "@vueuse/integrations/useAxios";
 import * as path from "path";
 
-interface PreConfig {
+export interface PreConfig {
   graphqlHttp: string;
 }
 
