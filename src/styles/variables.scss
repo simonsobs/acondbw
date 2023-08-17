@@ -26,7 +26,7 @@ $body-font-family: "Barlow", sans-serif;
 // @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap");
 // $body-font-family: 'Roboto Condensed', sans-serif;
 
-// github-markdown-css:  https://github.com/sindresorhus/github-markdown-css 
+// github-markdown-css:  https://github.com/sindresorhus/github-markdown-css
 // The two CSS files are copied from node_modules/github-markdown-css/ and the
 // file extension is changed to .scss.
 .v-theme--light {
@@ -35,4 +35,58 @@ $body-font-family: "Barlow", sans-serif;
 
 .v-theme--dark {
   @import "./github-markdown-dark.scss";
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.condensed-font {
+  font-family: "Barlow Condensed", "Barlow", sans-serif;
+  /* font-family: "Roboto Condensed", Roboto, sans-serif; */
+  /* Google Fonts are imported in src/styles/variables.scss */
+}
+
+#app .v-card__title {
+  /* #app is to increase CSS specificity */
+  word-break: normal;
+}
+
+html,
+body,
+#app,
+.v-application,
+.v-application__wrap {
+  height: 100%;
+}
+
+.v-btn {
+  text-transform: capitalize;
+}
+
+.v-card--variant-outlined {
+  background: rgb(var(--v-theme-surface-container-lowest));
+  border: thin solid rgb(var(--v-theme-outline-variant));
+}
+
+.v-card--variant-elevated {
+  background: rgb(var(--v-theme-surface-container-lowest));
+}
+
+.v-autocomplete .v-field__overlay {
+  background-color: rgb(var(--v-theme-surface-container-lowest));
+}
+
+.v-table {
+  background: rgb(var(--v-theme-surface-container-lowest));
+  border: 1px solid rgb(var(--v-theme-outline-variant));
+  border-radius: 8px;
+}
+.v-table__wrapper > table > thead > tr th,
+.v-table__wrapper > table tbody > tr > td {
+  background-color: inherit;
+}
+.v-data-table .v-table__wrapper > table > thead > tr th,
+.v-data-table .v-table__wrapper > table tbody > tr > td {
+  background-color: inherit;
 }
