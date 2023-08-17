@@ -26,21 +26,6 @@ $body-font-family: "Barlow", sans-serif;
 // @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400&display=swap");
 // $body-font-family: 'Roboto Condensed', sans-serif;
 
-// github-markdown-css:  https://github.com/sindresorhus/github-markdown-css
-// The two CSS files are copied from node_modules/github-markdown-css/ and the
-// file extension is changed to .scss.
-.v-theme--light {
-  @import "./github-markdown-light.scss";
-}
-
-.v-theme--dark {
-  @import "./github-markdown-dark.scss";
-}
-
-.capitalize {
-  text-transform: capitalize;
-}
-
 .condensed-font {
   font-family: "Barlow Condensed", "Barlow", sans-serif;
   /* font-family: "Roboto Condensed", Roboto, sans-serif; */
@@ -50,6 +35,10 @@ $body-font-family: "Barlow", sans-serif;
 #app .v-card__title {
   /* #app is to increase CSS specificity */
   word-break: normal;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 html,
@@ -82,11 +71,24 @@ body,
   border: 1px solid rgb(var(--v-theme-outline-variant));
   border-radius: 8px;
 }
+
 .v-table__wrapper > table > thead > tr th,
 .v-table__wrapper > table tbody > tr > td {
   background-color: inherit;
 }
+
 .v-data-table .v-table__wrapper > table > thead > tr th,
 .v-data-table .v-table__wrapper > table tbody > tr > td {
   background-color: inherit;
+}
+
+// github-markdown-css:  https://github.com/sindresorhus/github-markdown-css
+// The two CSS files are copied from node_modules/github-markdown-css/ and the
+// file extension is changed to .scss.
+.v-theme--light {
+  @import "./github-markdown-light.scss";
+}
+
+.v-theme--dark {
+  @import "./github-markdown-dark.scss";
 }
