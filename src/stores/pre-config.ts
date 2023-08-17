@@ -1,10 +1,10 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { useAxios } from "@vueuse/integrations/useAxios";
 import * as path from "path";
 
 interface PreConfig {
-  graphqlHttp?: string;
+  graphqlHttp: string;
 }
 
 export const usePreConfigStore = defineStore("preConfig", () => {
@@ -12,9 +12,18 @@ export const usePreConfigStore = defineStore("preConfig", () => {
 
   const {
     data: preConfig,
-    error,
+    error: axiosError,
     isLoading: loading,
   } = useAxios<PreConfig>(url.value);
+
+  const typeError = computed(() => {
+    if (typeof preConfig.value?.graphqlHttp !== "string")
+      return Error("graphqlHttp is not string");
+    if (preConfig.value?.graphqlHttp === "")
+      return Error("graphqlHttp is empty");
+  });
+
+  const error = computed(() => axiosError.value || typeError.value);
 
   return {
     url,
