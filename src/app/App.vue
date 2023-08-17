@@ -1,21 +1,23 @@
 <template>
-  <router-view name="navigationDrawer" v-model="drawer"></router-view>
-  <router-view name="appBar" v-slot="{ Component }">
-    <component :is="Component" :order="order">
-      <template v-slot:prepend>
-        <v-app-bar-nav-icon @click="toggleDrawer" v-if="mobile">
-        </v-app-bar-nav-icon>
-      </template>
-    </component>
-  </router-view>
-  <v-main>
-    <router-view v-slot="{ Component, route }">
-      <v-fade-transition>
-        <component :key="route.path" :is="Component" />
-      </v-fade-transition>
+  <v-app>
+    <router-view name="navigationDrawer" v-model="drawer"></router-view>
+    <router-view name="appBar" v-slot="{ Component }">
+      <component :is="Component" :order="order">
+        <template v-slot:prepend>
+          <v-app-bar-nav-icon @click="toggleDrawer" v-if="mobile">
+          </v-app-bar-nav-icon>
+        </template>
+      </component>
     </router-view>
-  </v-main>
-  <snackbar></snackbar>
+    <v-main>
+      <router-view v-slot="{ Component, route }">
+        <v-fade-transition>
+          <component :key="route.path" :is="Component" />
+        </v-fade-transition>
+      </router-view>
+    </v-main>
+    <snackbar></snackbar>
+  </v-app>
 </template>
 
 <script setup lang="ts">
@@ -31,9 +33,12 @@
 
 import { ref, computed, watchEffect } from "vue";
 import { useDisplay } from "vuetify";
+
+import { useColorTheme } from "@/utils/color-theme";
 import { useSetTitle } from "./set-title";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
+useColorTheme();
 useSetTitle();
 
 // https://vuetifyjs.com/en/features/display-and-platform/
