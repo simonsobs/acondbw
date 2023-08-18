@@ -3,7 +3,7 @@ import { createApp, h } from "vue";
 import pinia from "@/stores";
 import { createRouter_ } from "@/router";
 import vuetify from "@/plugins/vuetify";
-import App from "@/app/AppWrapperLoadPreConfig.vue";
+import App from "@/app/App.vue";
 import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
 
 const router = createRouter_();
