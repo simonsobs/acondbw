@@ -1,6 +1,6 @@
 <template>
   <div v-if="error">{{ error }}</div>
-  <div v-else-if="loading">Loading...</div>
+  <div v-else-if="loading"></div>
   <app v-else-if="preConfig" :pre-config="preConfig"> </app>
 </template>
 
