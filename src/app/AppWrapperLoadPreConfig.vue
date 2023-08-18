@@ -10,6 +10,6 @@
 import { storeToRefs } from "pinia";
 import { usePreConfigStore } from "@/stores/pre-config";
 import ProvideUrqlClient from "./ProvideUrqlClient.vue";
-import App from "./AppWrapperAuth.vue";
+import App from "./AppMain.vue";
 const { preConfig, loading, error } = storeToRefs(usePreConfigStore());
 </script>

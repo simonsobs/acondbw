@@ -34,10 +34,12 @@
 import { ref, computed, watchEffect } from "vue";
 import { useDisplay } from "vuetify";
 
+import { useCheckAuth } from "./check-auth";
 import { useColorTheme } from "@/utils/color-theme";
 import { useSetTitle } from "./set-title";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
+useCheckAuth();
 useColorTheme();
 useSetTitle();
 
