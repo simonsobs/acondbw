@@ -1,14 +1,7 @@
-import {
-  createClient,
-  dedupExchange,
-  cacheExchange,
-  fetchExchange,
-  makeOperation,
-} from "@urql/vue";
+import { createClient, cacheExchange, fetchExchange } from "@urql/vue";
 // import { cacheExchange } from "@urql/exchange-graphcache";
 // import { relayPagination } from "@urql/exchange-graphcache/extras";
 import { authExchange } from "@urql/exchange-auth";
-import { devtoolsExchange } from "@urql/devtools";
 
 import { readTokenFromLocalStorage } from "@/utils/auth";
 
@@ -47,8 +40,6 @@ function createUrqlClient(url: string) {
   return createClient({
     url,
     exchanges: [
-      devtoolsExchange,
-      dedupExchange,
       cacheExchange, // default document cache
       // cacheExchange({ // for graphcache, not clear how to initialize it
       //   resolvers: {
