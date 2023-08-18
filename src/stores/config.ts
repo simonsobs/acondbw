@@ -8,25 +8,7 @@ import {
 
 const localStorageKey = "config";
 
-// To be deleted -- switching to dynamic colors
-export interface VuetifyTheme {
-  primary?: string;
-  "on-primary"?: string;
-  secondary?: string;
-  "on-secondary"?: string;
-  accent?: string;
-  "on-accent"?: string;
-  error?: string;
-  "on-error"?: string;
-  info?: string;
-  "on-info"?: string;
-  success?: string;
-  "on-success"?: string;
-  warning?: string;
-  "on-warning"?: string;
-}
-
-export interface WebConfig extends VuetifyTheme {
+export interface WebConfig {
   headTitle: string;
   toolbarTitle: string;
   materialDynamicColorSource: string;
@@ -70,7 +52,7 @@ function isInSetup() {
 
 export const useConfigStore = defineStore("config", () => {
   const error = ref<unknown | null>(null);
-  
+
   const inSetup = isInSetup() || undefined;
 
   const query = ref(inSetup && useWebConfigQuery());
@@ -191,25 +173,6 @@ export const useConfigStore = defineStore("config", () => {
     refetch();
   }
 
-  const vuetifyTheme = computed(() => {
-    const theme_fields_base = [
-      "primary",
-      "secondary",
-      "accent",
-      "error",
-      "info",
-      "success",
-      "warning",
-    ];
-    const theme_fields = [
-      ...theme_fields_base,
-      ...theme_fields_base.map((k) => `on-${k}`),
-    ];
-    return theme_fields
-      .filter((e) => e in config.value && config.value[e])
-      .reduce((a, e) => ({ ...a, ...{ [e]: config.value[e] } }), {});
-  });
-
   return {
     error,
     defaultConfig,
@@ -222,6 +185,5 @@ export const useConfigStore = defineStore("config", () => {
     reset,
     loadFromServer: refetch,
     saveToServer,
-    vuetifyTheme,
   };
 });
