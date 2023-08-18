@@ -1,4 +1,10 @@
-import { createClient, cacheExchange, fetchExchange } from "@urql/vue";
+import { ref } from "vue";
+import {
+  createClient,
+  provideClient,
+  cacheExchange,
+  fetchExchange,
+} from "@urql/vue";
 // import { cacheExchange } from "@urql/exchange-graphcache";
 // import { relayPagination } from "@urql/exchange-graphcache/extras";
 import { authExchange } from "@urql/exchange-auth";
@@ -52,4 +58,9 @@ function useCreateClient(url: string) {
   });
 }
 
-export { useCreateClient };
+function useProvideClient(url: string) {
+  const client = ref(useCreateClient(url));
+  provideClient(client);
+}
+
+export { useCreateClient, useProvideClient };
