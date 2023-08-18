@@ -7,6 +7,9 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Render the main app after the pre-config is loaded.
+ */
 import { storeToRefs } from "pinia";
 import { usePreConfigStore } from "@/stores/pre-config";
 import ProvideUrqlClient from "./ProvideUrqlClient.vue";
