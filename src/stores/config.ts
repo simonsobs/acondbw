@@ -25,10 +25,6 @@ export interface WebConfig {
   productDeletionDialog: boolean;
 }
 
-function deepCopy<T>(data: T): T {
-  return JSON.parse(JSON.stringify(data));
-}
-
 function _readFromLocalStorage() {
   const stringified = localStorage.getItem(localStorageKey);
   if (stringified === null) return null;
@@ -84,12 +80,12 @@ export const useConfigStore = defineStore("config", () => {
   });
 
   const configLocalStorage = ref({
-    ...deepCopy(defaultConfig.value),
+    ...defaultConfig.value,
     ...readFromLocalStorage(),
   });
   writeToLocalStorage(configLocalStorage.value); // in case defaultConfig has added new properties
 
-  const config = ref(deepCopy(configLocalStorage.value));
+  const config = ref({ ...configLocalStorage.value });
   const configJson = computed(() => JSON.stringify(config.value));
 
   let configServerJson = ref<string | null | undefined>();
@@ -146,15 +142,15 @@ export const useConfigStore = defineStore("config", () => {
       );
       return;
     }
-    configServer.value = { ...deepCopy(defaultConfig.value), ...parsed };
+    configServer.value = { ...defaultConfig.value, ...parsed };
   });
 
   watch(
     configServer,
     (val) => {
       if (val === null) return;
-      config.value = deepCopy(val);
-      configLocalStorage.value = deepCopy(config.value);
+      config.value = { ...val };
+      configLocalStorage.value = { ...config.value };
       writeToLocalStorage(configLocalStorage.value);
     },
     { deep: true, immediate: true }
@@ -164,9 +160,9 @@ export const useConfigStore = defineStore("config", () => {
 
   function reset() {
     if (configServer.value) {
-      config.value = deepCopy(configServer.value);
+      config.value = { ...configServer.value };
     } else {
-      config.value = deepCopy(configLocalStorage.value);
+      config.value = { ...configLocalStorage.value };
     }
   }
 
