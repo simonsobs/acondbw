@@ -6,11 +6,12 @@
         {{ error }}
       </v-alert>
     </div>
+    <bar :saved="saved" :error="!!error" @reset="reset" @save="saveToServer">
+    </bar>
     <v-data-table
       :headers="headers"
       :items="items"
       :items-per-page="-1"
-      class="mt-5"
     >
       <template v-slot:item.value="{ item }">
         {{ item.raw.value }}
