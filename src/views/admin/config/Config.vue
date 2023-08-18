@@ -23,25 +23,8 @@
       </template>
       <template #bottom></template>
     </v-data-table>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn
-        color="secondary"
-        variant="text"
-        :disabled="saved"
-        @click="reset()"
-      >
-        Reset
-      </v-btn>
-      <v-btn
-        color="primary"
-        variant="text"
-        :disabled="saved || !!error"
-        @click="saveToServer()"
-      >
-        Save to server
-      </v-btn>
-    </v-card-actions>
+    <bar :saved="saved" :error="!!error" @reset="reset" @save="saveToServer">
+    </bar>
     <v-dialog v-model="dialog" max-width="500" :close-on-content-click="false">
       <v-card>
         <v-card-text>
@@ -66,6 +49,8 @@
 import { ref, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
 import { useConfigStore } from "@/stores/config";
+
+import Bar from "./Bar.vue";
 
 // https://stackoverflow.com/a/66430948/7309855
 let a_: any;
