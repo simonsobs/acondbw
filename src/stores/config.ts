@@ -1,4 +1,11 @@
-import { ref, computed, watch, watchEffect, getCurrentInstance } from "vue";
+import {
+  ref,
+  computed,
+  watch,
+  watchEffect,
+  toValue,
+  getCurrentInstance,
+} from "vue";
 import { defineStore } from "pinia";
 
 import {
@@ -88,14 +95,15 @@ export const useConfigStore = defineStore("config", () => {
   let configServerJson = ref<string | null | undefined>();
 
   watchEffect(() => {
-    if (!query.value?.error) return;
-    error.value = query.value.error;
+    const _error = toValue(query)?.error;
+    if (!_error) return;
+    error.value = _error;
   });
 
   watchEffect(() => {
     // set configServerJson from a query response
-    if (query.value?.fetching) return;
-    const data = query.value?.data;
+    if (toValue(query)?.fetching) return;
+    const data = toValue(query)?.data;
     if (!data) return;
     const json = data.webConfig?.json;
     if (json === undefined || json === null) {
@@ -113,14 +121,15 @@ export const useConfigStore = defineStore("config", () => {
   watchEffect(() => {
     // set configServer from configServerJson
     configServer.value = null;
-    if (configServerJson.value === undefined) return;
-    if (configServerJson.value === null) {
+    const _json = toValue(configServerJson);
+    if (_json === undefined) return;
+    if (_json === null) {
       error.value = new Error("The server returned null for the config.");
       return;
     }
     let parsed: unknown;
     try {
-      parsed = JSON.parse(configServerJson.value);
+      parsed = JSON.parse(_json);
     } catch (e) {
       error.value = e;
       return;
