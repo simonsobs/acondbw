@@ -6,7 +6,7 @@
 import { ref } from "vue";
 import { PreConfig } from "@/stores/pre-config";
 import { provideClient } from "@urql/vue";
-import { createUrqlClient } from "@/plugins/urql";
+import { useCreateClient } from "@/plugins/urql";
 import App from "./AppWrapperAuth.vue";
 
 interface Props {
@@ -15,6 +15,6 @@ interface Props {
 const prop = defineProps<Props>();
 
 const url = prop.preConfig.graphqlHttp;
-const urqlClient = ref(createUrqlClient(url));
+const urqlClient = ref(useCreateClient(url));
 provideClient(urqlClient);
 </script>
