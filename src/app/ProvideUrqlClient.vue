@@ -17,7 +17,7 @@
  *
  * The parent component renders this component after the pre-config is loaded.
  */
-import { PreConfig } from "@/stores/pre-config";
+import { PreConfig } from "./pre-config";
 import { useProvideClient } from "@/plugins/urql";
 
 interface Props {

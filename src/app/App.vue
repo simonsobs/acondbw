@@ -10,9 +10,8 @@
 /**
  * Render the main app after the pre-config is loaded.
  */
-import { storeToRefs } from "pinia";
-import { usePreConfigStore } from "@/stores/pre-config";
+import { usePreConfig } from "./pre-config";
 import ProvideUrqlClient from "./ProvideUrqlClient.vue";
 import App from "./AppMain.vue";
-const { preConfig, loading, error } = storeToRefs(usePreConfigStore());
+const { preConfig, loading, error } = usePreConfig();
 </script>

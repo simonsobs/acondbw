@@ -1,5 +1,4 @@
 import { ref, computed } from "vue";
-import { defineStore } from "pinia";
 import { useAxios } from "@vueuse/integrations/useAxios";
 import * as path from "path";
 
@@ -7,7 +6,7 @@ export interface PreConfig {
   graphqlHttp: string;
 }
 
-export const usePreConfigStore = defineStore("preConfig", () => {
+export function usePreConfig() {
   const url = ref(path.join(import.meta.env.VITE_PUBLIC_PATH, "config.json"));
 
   const {
@@ -17,8 +16,8 @@ export const usePreConfigStore = defineStore("preConfig", () => {
   } = useAxios<PreConfig>(url.value);
 
   const typeError = computed(() => {
-    if(loading.value) return;
-    if(!preConfig.value) return Error("preConfig is null");
+    if (loading.value) return;
+    if (!preConfig.value) return Error("preConfig is null");
     if (typeof preConfig.value.graphqlHttp !== "string")
       return Error("graphqlHttp is not string");
     if (preConfig.value?.graphqlHttp === "")
@@ -33,4 +32,4 @@ export const usePreConfigStore = defineStore("preConfig", () => {
     error,
     preConfig,
   };
-});
+}
