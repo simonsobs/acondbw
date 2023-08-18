@@ -1,11 +1,10 @@
 <template>
-  <app> </app>
+  <slot></slot>
 </template>
 
 <script setup lang="ts">
 import { PreConfig } from "@/stores/pre-config";
 import { useProvideClient } from "@/plugins/urql";
-import App from "./AppWrapperAuth.vue";
 
 interface Props {
   preConfig: PreConfig;
