@@ -1,9 +1,8 @@
 <template>
-  <v-card-actions>
-    <v-spacer></v-spacer>
+  <div class="ma-4 d-flex justify-end" style="gap: 12px">
     <v-btn
       color="secondary"
-      variant="text"
+      variant="outlined"
       :disabled="saved"
       @click="emit('reset')"
     >
@@ -11,13 +10,13 @@
     </v-btn>
     <v-btn
       color="primary"
-      variant="text"
+      variant="tonal"
       :disabled="saved || !!error"
       @click="emit('save')"
     >
       Save to server
     </v-btn>
-  </v-card-actions>
+  </div>
 </template>
 
 <script setup lang="ts">
