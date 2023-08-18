@@ -36,7 +36,7 @@ const AccessDenied = () => import("@/views/framework/AccessDenied.vue");
 
 const Version = () => import("@/views/admin/Version.vue");
 const Log = () => import("@/views/admin/Log.vue");
-const Config = () => import("@/views/admin/Config.vue");
+const Config = () => import("@/views/admin/config/Config.vue");
 const Theme = () => import("@/views/admin/Theme.vue");
 const User = () => import("@/views/admin/User.vue");
 const AdminAppAuth = () => import("@/views/admin-token/AdminAppAuth.vue");
