@@ -83,6 +83,13 @@ export const useConfigStore = defineStore("config", () => {
     ...defaultConfig.value,
     ...readFromLocalStorage(),
   });
+
+  // delete properties that are not in defaultConfig
+  const extraKeys = Object.keys(configLocalStorage.value).filter(
+    (key) => !(key in defaultConfig.value)
+  );
+  extraKeys.forEach((key) => delete configLocalStorage.value[key]);
+
   writeToLocalStorage(configLocalStorage.value); // in case defaultConfig has added new properties
 
   const config = ref({ ...configLocalStorage.value });
@@ -149,7 +156,14 @@ export const useConfigStore = defineStore("config", () => {
     configServer,
     (val) => {
       if (val === null) return;
-      config.value = { ...val };
+
+      // set config from configServer for keys that are in defaultConfig
+      const keys = Object.keys(val).filter((key) => key in defaultConfig.value);
+      config.value = Object.assign(
+        config.value,
+        ...keys.map((key) => ({ [key]: val[key] }))
+      );
+
       configLocalStorage.value = { ...config.value };
       writeToLocalStorage(configLocalStorage.value);
     },
