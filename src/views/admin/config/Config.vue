@@ -21,6 +21,7 @@
       </template>
       <template #bottom></template>
     </v-data-table>
+    <pre>{{ configJson }}</pre>
     <bar :saved="saved" :error="!!error" @reset="reset" @save="saveToServer">
     </bar>
     <edit-dialog
@@ -58,7 +59,7 @@ interface StringKeyObject {
 
 const configStore = useConfigStore();
 
-const { config, saved, error } = storeToRefs(configStore);
+const { config, configJson, saved, error } = storeToRefs(configStore);
 const { saveToServer, reset } = configStore;
 
 const items = ref<Item[]>([]);
