@@ -8,11 +8,8 @@
     </div>
     <bar :saved="saved" :error="!!error" @reset="reset" @save="saveToServer">
     </bar>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      :items-per-page="-1"
-    >
+    <pre>edited: {{ edited }}</pre>
+    <v-data-table :headers="headers" :items="items" :items-per-page="-1">
       <template v-slot:item.value="{ item }">
         {{ item.raw.value }}
         <v-icon
@@ -26,23 +23,13 @@
     </v-data-table>
     <bar :saved="saved" :error="!!error" @reset="reset" @save="saveToServer">
     </bar>
-    <v-dialog v-model="dialog" max-width="500" :close-on-content-click="false">
-      <v-card>
-        <v-card-text>
-          <v-text-field
-            v-model="edited"
-            label="Edit"
-            single-line
-            counter
-          ></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn variant="text" @click="cancelEdit">Cancel</v-btn>
-          <v-btn variant="text" @click="saveEdit">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <edit-dialog
+      v-model="dialog"
+      v-model:edited="edited"
+      @save="saveEdit"
+      @cancel="cancelEdit"
+    >
+    </edit-dialog>
   </div>
 </template>
 
@@ -52,6 +39,7 @@ import { storeToRefs } from "pinia";
 import { useConfigStore } from "@/stores/config";
 
 import Bar from "./Bar.vue";
+import EditDialog from "./EditDialog.vue";
 
 // https://stackoverflow.com/a/66430948/7309855
 let a_: any;
@@ -103,10 +91,12 @@ function edit(item: Item) {
 function saveEdit() {
   if (editedItem.value === null) return;
   config.value[editedItem.value.key] = JSON.parse(edited.value);
+  edited.value = "";
   dialog.value = false;
 }
 function cancelEdit() {
   editedItem.value = null;
+  edited.value = "";
   dialog.value = false;
 }
 </script>
