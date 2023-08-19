@@ -86,7 +86,7 @@ export const useConfigStore = defineStore("config", () => {
   writeToLocalStorage(configLocalStorage.value); // in case defaultConfig has added new properties
 
   const config = ref({ ...configLocalStorage.value });
-  const configJson = computed(() => JSON.stringify(config.value));
+  const configJson = computed(() => JSON.stringify(config.value, null, 2));
 
   let configServerJson = ref<string | null | undefined>();
 
