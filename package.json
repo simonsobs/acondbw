@@ -76,6 +76,6 @@
     "vite": "^4.4.7",
     "vite-plugin-package-version": "^1.0.2",
     "vite-plugin-vuetify": "^1.0.2",
-    "vitest": "^0.23.4"
+    "vitest": "^0.34.2"
   }
 }
