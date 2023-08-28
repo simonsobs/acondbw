@@ -11,7 +11,7 @@
     </router-view>
     <v-main>
       <router-view v-slot="{ Component, route }">
-        <v-fade-transition>
+        <v-fade-transition leave-absolute>
           <component :key="route.path" :is="Component" />
         </v-fade-transition>
       </router-view>
