@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { ProductQuery } from "@/generated/graphql";
+import { ProductQuery } from "@/graphql/codegen/generated";
 
 type Relations = NonNullable<NonNullable<ProductQuery["product"]>["relations"]>;
 

@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
 
-import { useAllProductTypesQuery } from "@/generated/graphql";
+import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

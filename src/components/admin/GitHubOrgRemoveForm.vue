@@ -21,7 +21,7 @@
 import { ref } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
 
-import { useDeleteGitHubOrgMutation } from "@/generated/graphql";
+import { useDeleteGitHubOrgMutation } from "@/graphql/codegen/generated";
 
 const props = defineProps<{
   login?: string;

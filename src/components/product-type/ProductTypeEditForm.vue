@@ -37,7 +37,7 @@ import {
   UpdateProductTypeInput,
   ProductTypeByNameQuery,
   useUpdateProductTypeMutation,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 import FormProductType from "./FormProductType.vue";
 

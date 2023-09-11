@@ -50,7 +50,7 @@
 import { ref, computed } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
 
-import { useProductQuery, useDeleteProductMutation } from "@/generated/graphql";
+import { useProductQuery, useDeleteProductMutation } from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

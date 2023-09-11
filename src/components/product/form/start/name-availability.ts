@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { useClientHandle } from "@urql/vue";
-import { QueryProductNameInFormStartDocument } from "@/generated/graphql";
+import { QueryProductNameInFormStartDocument } from "@/graphql/codegen/generated";
 
 export function useIsNameAvailable() {
   const urqlClientHandle = useClientHandle();

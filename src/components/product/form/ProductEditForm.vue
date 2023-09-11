@@ -46,7 +46,7 @@ import {
   useProductQuery,
   useUpdateProductMutation,
   UpdateProductInput,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 import FormStart from "./start/FormStart.vue";
 

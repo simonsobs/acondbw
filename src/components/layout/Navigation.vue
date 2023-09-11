@@ -77,7 +77,7 @@
 import { computed, ref } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
 
-import { useAllProductTypesQuery } from "@/generated/graphql";
+import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
 
 import ProductTypeAddForm from "@/components/product-type/ProductTypeAddForm.vue";
 import ToggleDarkModeButton from "@/components/utils/ToggleDarkModeButton.vue";

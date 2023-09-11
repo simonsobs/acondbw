@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
-import { useVersionsQuery } from "@/generated/graphql";
+import { useVersionsQuery } from "@/graphql/codegen/generated";
 const store = useStore();
 const appVersion = ref(store.appVersion);
 const query = useVersionsQuery();

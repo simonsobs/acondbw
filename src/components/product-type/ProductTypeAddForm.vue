@@ -51,7 +51,7 @@ import {
   CreateProductTypeInput,
   useAllFieldsQuery,
   useCreateProductTypeMutation,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 import FormProductType from "./FormProductType.vue";
 

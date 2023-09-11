@@ -48,7 +48,7 @@ import {
   useProductQuery,
   useAllProductTypesQuery,
   useProductTypeQuery,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 type Product = NonNullable<
   NonNullable<

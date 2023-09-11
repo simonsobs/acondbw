@@ -38,7 +38,7 @@ import _ from "lodash";
 
 import FormRelations from "./relations/FormRelations.vue";
 
-import { useProductQuery, useUpdateProductMutation } from "@/generated/graphql";
+import { useProductQuery, useUpdateProductMutation } from "@/graphql/codegen/generated";
 
 type Product = NonNullable<
   NonNullable<

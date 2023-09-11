@@ -74,7 +74,7 @@ import Empty from "./Empty.vue";
 import {
   useQueryForProductListQuery,
   ProductSortEnum,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

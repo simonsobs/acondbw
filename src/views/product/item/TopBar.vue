@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ProductQuery } from "@/generated/graphql";
+import { ProductQuery } from "@/graphql/codegen/generated";
 import { useHistoryStack } from "@/plugins/pinia/stores/history-stack";
 
 type Product = ProductQuery["product"];

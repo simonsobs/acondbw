@@ -1,8 +1,8 @@
 import { Client } from "@urql/vue";
 import { Location } from "vue-router";
 
-import QUERY_GIT_HUB_O_AUTH_APP_INFO from "@/graphql/queries/GitHubOAuthAppInfo.gql";
-import MUTATE_AUTHENTICATE_WITH_GIT_HUB from "@/graphql/mutations/AuthenticateWithGitHub.gql";
+import QUERY_GIT_HUB_O_AUTH_APP_INFO from "@/graphql/gql/queries/GitHubOAuthAppInfo.gql";
+import MUTATE_AUTHENTICATE_WITH_GIT_HUB from "@/graphql/gql/mutations/AuthenticateWithGitHub.gql";
 
 const AUTH_STATE = "auth-state";
 

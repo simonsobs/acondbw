@@ -2,9 +2,9 @@ import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   schema: "http://127.0.0.1:5001/graphql",
-  documents: ["src/graphql/**/*.gql"],
+  documents: ["src/graphql/gql/**/*.gql"],
   generates: {
-    "src/generated/graphql.ts": {
+    "src/graphql/codegen/generated.ts": {
       plugins: ["typescript", "typescript-operations", "typescript-vue-urql"],
     },
   },

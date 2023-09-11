@@ -45,7 +45,7 @@ import { useStore } from "@/plugins/pinia/stores/main";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
-import { useAddGitHubOrgMutation } from "@/generated/graphql";
+import { useAddGitHubOrgMutation } from "@/graphql/codegen/generated";
 
 const emit = defineEmits(["cancel", "finished"]);
 

@@ -44,7 +44,7 @@ import { ref, watch, computed, nextTick } from "vue";
 import { useQuery } from "@urql/vue";
 
 import ALL_LOGS from "@/graphql/queries/AllLogs.gql";
-import { AllLogsQuery } from "@/generated/graphql";
+import { AllLogsQuery } from "@/graphql/codegen/generated";
 
 import LogRemoveForm from "@/components/admin/LogRemoveForm.vue";
 

@@ -111,7 +111,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, PropType } from "vue";
 
-import { useQueryForFormRelationsQuery } from "@/generated/graphql";
+import { useQueryForFormRelationsQuery } from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

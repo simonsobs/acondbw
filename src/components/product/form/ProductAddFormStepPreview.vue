@@ -57,7 +57,7 @@ import {
   QueryForProductAddFormQuery,
   QueryForProductAddFormRelationsPreviewQuery,
   CreateProductInput,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 interface AttributePreviewItem {
   field: string;

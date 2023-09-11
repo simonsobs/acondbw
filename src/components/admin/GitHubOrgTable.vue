@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed, nextTick } from "vue";
-import { useAllGitHubOrgsQuery } from "@/generated/graphql";
+import { useAllGitHubOrgsQuery } from "@/graphql/codegen/generated";
 import { useQueryState } from "@/utils/query-state";
 
 import GitHubOrgAddForm from "./GitHubOrgAddForm.vue";

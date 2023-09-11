@@ -126,7 +126,7 @@
 <script setup lang="ts">
 import { computed, withDefaults } from "vue";
 
-import { useProductQuery } from "@/generated/graphql";
+import { useProductQuery } from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

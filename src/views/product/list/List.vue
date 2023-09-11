@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { ref, computed, toRefs, watch, watchEffect } from "vue";
-import { QueryForProductListQuery } from "@/generated/graphql";
+import { QueryForProductListQuery } from "@/graphql/codegen/generated";
 import ProductItemCard from "@/components/product/item-card/ProductItemCard.vue";
 
 type ProductType = NonNullable<QueryForProductListQuery["productType"]>;

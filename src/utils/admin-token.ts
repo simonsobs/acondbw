@@ -1,6 +1,6 @@
 import { Client } from "@urql/vue";
 
-import { AddGitHubAdminAppTokenDocument } from "@/generated/graphql";
+import { AddGitHubAdminAppTokenDocument } from "@/graphql/codegen/generated";
 
 const AUTH_ADMIN_STATE = "auth-state";
 

@@ -25,7 +25,10 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { ProductSortEnum, QueryForProductListQuery } from "@/generated/graphql";
+import {
+  ProductSortEnum,
+  QueryForProductListQuery,
+} from "@/graphql/codegen/generated";
 
 import RefreshButton from "./RefreshButton.vue";
 import SortMenuButton from "./SortMenuButton.vue";

@@ -41,7 +41,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-import { useProductTypeByNameQuery } from "@/generated/graphql";
+import { useProductTypeByNameQuery } from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

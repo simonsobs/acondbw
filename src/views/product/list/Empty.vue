@@ -40,7 +40,7 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useConfigStore } from "@/plugins/pinia/stores/config";
-import { QueryForProductListQuery } from "@/generated/graphql";
+import { QueryForProductListQuery } from "@/graphql/codegen/generated";
 import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
 
 type ProductType = NonNullable<QueryForProductListQuery["productType"]>;

@@ -19,7 +19,7 @@
 import { ref, computed, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
-import { useQueryForSearchWindowQuery } from "@/generated/graphql";
+import { useQueryForSearchWindowQuery } from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

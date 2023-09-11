@@ -37,7 +37,7 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
-import { useAllProductTypesQuery } from "@/generated/graphql";
+import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

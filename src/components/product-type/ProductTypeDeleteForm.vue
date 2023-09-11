@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { useStore } from "@/plugins/pinia/stores/main";
 
-import { useDeleteProductTypeMutation } from "@/generated/graphql";
+import { useDeleteProductTypeMutation } from "@/graphql/codegen/generated";
 
 interface Props {
   node: { typeId: number; plural: string };

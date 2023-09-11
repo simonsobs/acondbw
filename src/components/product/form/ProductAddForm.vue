@@ -100,7 +100,7 @@ import {
   useQueryForProductAddFormQuery,
   CreateProductInput,
   useCreateProductMutation,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 import ProductAddFormStepStart, {
   FormStepStart,

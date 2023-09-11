@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useVersionQuery } from "@/generated/graphql";
+import { useVersionQuery } from "@/graphql/codegen/generated";
 
 const { data } = useVersionQuery();
 const version = computed(() => data?.value?.version || "unknown");

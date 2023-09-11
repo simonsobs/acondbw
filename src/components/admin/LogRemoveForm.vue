@@ -19,7 +19,7 @@
 import { ref } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
 
-import { useDeleteLogMutation } from "@/generated/graphql";
+import { useDeleteLogMutation } from "@/graphql/codegen/generated";
 
 const props = defineProps<{
   id_: number;

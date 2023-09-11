@@ -29,7 +29,7 @@
 import { ref, computed, nextTick, onActivated } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { useProductTypeByNameQuery } from "@/generated/graphql";
+import { useProductTypeByNameQuery } from "@/graphql/codegen/generated";
 
 import ProductAddForm from "@/components/product/form/ProductAddForm.vue";
 

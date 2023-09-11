@@ -10,7 +10,7 @@ import Navigation from "@/components/layout/Navigation.vue";
 import { createRouter } from "@/plugins/router";
 import { useStore } from "@/plugins/pinia/stores/main";
 
-import { AllProductTypesQuery, ProductTypeEdge } from "@/generated/graphql";
+import { AllProductTypesQuery, ProductTypeEdge } from "@/graphql/codegen/generated";
 
 import { useQuery } from "@urql/vue";
 vi.mock("@urql/vue");

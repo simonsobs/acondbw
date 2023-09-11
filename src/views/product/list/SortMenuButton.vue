@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watchEffect } from "vue";
-import { ProductSortEnum } from "@/generated/graphql";
+import { ProductSortEnum } from "@/graphql/codegen/generated"; 
 
 interface Props {
   modelValue: ProductSortEnum[];

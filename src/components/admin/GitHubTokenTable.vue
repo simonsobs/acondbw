@@ -93,7 +93,7 @@ import { useClientHandle } from "@urql/vue";
 import {
   useAllGitHubTokensWithOrgAccessQuery,
   useDeleteGitHubTokenMutation,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

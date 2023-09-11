@@ -11,7 +11,7 @@ import { createRouter } from "@/plugins/router";
 
 import { useAuthStore } from "@/plugins/pinia/stores/auth";
 
-import { ProductByTypeIdAndNameQuery } from "@/generated/graphql";
+import { ProductByTypeIdAndNameQuery } from "@/graphql/codegen/generated";
 
 import { CombinedError } from "@urql/core";
 

@@ -18,7 +18,7 @@ import {
   ProductQueryVariables,
   DeleteProductMutation,
   DeleteProductMutationVariables,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

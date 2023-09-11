@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { ProductTypeByNameQuery } from "@/generated/graphql";
+import { ProductTypeByNameQuery } from "@/graphql/codegen/generated";
 import ProductTypeEditForm from "@/components/product-type/ProductTypeEditForm.vue";
 
 type ProductType = NonNullable<ProductTypeByNameQuery["productType"]>;

@@ -11,7 +11,7 @@ import { defineStore } from "pinia";
 import {
   useWebConfigQuery,
   useSaveWebConfigMutation,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 const localStorageKey = "config";
 

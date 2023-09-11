@@ -7,7 +7,7 @@ import { fromValue } from "wonka";
 
 import About from "@/views/framework/About.vue";
 
-import { useVersionQuery, VersionQuery } from "@/generated/graphql";
+import { useVersionQuery, VersionQuery } from "@/graphql/codegen/generated";
 // vi.mock("@/generated/graphql");
 
 Vue.use(Vuetify);

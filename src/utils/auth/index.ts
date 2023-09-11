@@ -1,7 +1,7 @@
 import { Client } from "@urql/vue";
 import _ from "lodash";
 
-import { SignInInfoDocument, IsSignedInDocument } from "@/generated/graphql";
+import { SignInInfoDocument, IsSignedInDocument } from "@/graphql/codegen/generated";
 
 import { exchangeCodeForToken } from "./oauth";
 

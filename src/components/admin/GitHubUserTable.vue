@@ -47,7 +47,7 @@ import { useStore } from "@/plugins/pinia/stores/main";
 import {
   useAllGitHubUsersQuery,
   useUpdateGitHubOrgMemberListsMutation,
-} from "@/generated/graphql";
+} from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 

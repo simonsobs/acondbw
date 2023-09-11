@@ -118,7 +118,7 @@ import { required, integer } from "@vuelidate/validators";
 
 import { mdIcons } from "@/utils/md-icons";
 
-import { CreateProductTypeInput } from "@/generated/graphql";
+import { CreateProductTypeInput } from "@/graphql/codegen/generated";
 
 const iconItems = mdIcons.map(({ name }) => `mdi-${name}`);
 

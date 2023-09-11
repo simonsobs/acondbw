@@ -39,7 +39,7 @@
 import { ref, computed, withDefaults, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { useProductByTypeIdAndNameQuery } from "@/generated/graphql";
+import { useProductByTypeIdAndNameQuery } from "@/graphql/codegen/generated";
 import { useQueryState } from "@/utils/query-state";
 
 import TopBar from "./TopBar.vue";
