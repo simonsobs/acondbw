@@ -1,9 +1,5 @@
-import {
-  RouteRecordRaw,
-  createRouter,
-  createWebHistory,
-  Router,
-} from "vue-router";
+import { createRouter as createVueRouter, createWebHistory } from "vue-router";
+import type { RouteRecordRaw, Router } from "vue-router";
 
 import { useAuthStore } from "@/stores/auth";
 import { useHistoryStack } from "@/stores/history-stack";
@@ -223,8 +219,8 @@ const routes: RouteRecordRaw[] = [
   },
 ];
 
-function createRouter_() {
-  const router = createRouter({
+function createRouter() {
+  const router = createVueRouter({
     history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
     routes,
   });
@@ -264,6 +260,8 @@ function createRouter_() {
   return router;
 }
 
+const router = createRouter();
+
 async function checkAuthForCurrentRoute(router: Router) {
   const authRequired = router.currentRoute.value.matched.some(
     (record) => record.meta.requiresAuth
@@ -275,4 +273,4 @@ async function checkAuthForCurrentRoute(router: Router) {
   }
 }
 
-export { createRouter_, checkAuthForCurrentRoute };
+export { router as default, createRouter, checkAuthForCurrentRoute };

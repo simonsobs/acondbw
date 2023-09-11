@@ -1,12 +1,10 @@
 import { createApp, h } from "vue";
 
 import pinia from "@/stores";
-import { createRouter_ } from "@/plugins/router";
+import router from "@/plugins/router";
 import vuetify from "@/plugins/vuetify";
 import App from "@/app/App.vue";
 import DevToolLoadingStateMenu from "@/components/utils/DevToolLoadingStateMenu.vue";
-
-const router = createRouter_();
 
 const app = createApp({
   render: () => h(App),
