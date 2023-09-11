@@ -6,7 +6,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import AppBar from "@/components/layout/AppBar.vue";
-import { createRouter } from "@/router";
+import { createRouter } from "@/plugins/router";
 
 import { useConfigStore } from "@/stores/config";
 

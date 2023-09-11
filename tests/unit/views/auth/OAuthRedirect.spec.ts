@@ -7,7 +7,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import OAuthRedirect from "@/views/auth/OAuthRedirect.vue";
-import { createRouter } from "@/router";
+import { createRouter } from "@/plugins/router";
 
 import { validateAndDecodeState, UnencodedState } from "@/utils/auth/oauth";
 vi.mock("@/utils/auth/oauth");

@@ -7,7 +7,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import SignInCard from "@/components/auth/SignInCard.vue";
-import { createRouter } from "@/router";
+import { createRouter } from "@/plugins/router";
 
 import {
   redirectToGitHubAuthURL,

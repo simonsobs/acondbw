@@ -2,7 +2,7 @@ import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import moxios from "moxios";
 
-import { createRouter } from "@/router";
+import { createRouter } from "@/plugins/router";
 import { useAuthStore } from "@/stores/auth";
 
 describe("router", () => {

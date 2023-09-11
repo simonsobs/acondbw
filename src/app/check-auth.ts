@@ -2,7 +2,7 @@ import { ref, watch, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useClientHandle } from "@urql/vue";
 import { useAuthStore } from "@/stores/auth";
-import { checkAuthForCurrentRoute } from "@/router";
+import { checkAuthForCurrentRoute } from "@/plugins/router";
 
 export function useCheckAuth() {
   const router = useRouter();

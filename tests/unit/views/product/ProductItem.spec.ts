@@ -7,7 +7,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import ProductItem from "@/views/product/ProductItem.vue";
-import { createRouter } from "@/router";
+import { createRouter } from "@/plugins/router";
 
 import { useAuthStore } from "@/stores/auth";
 
