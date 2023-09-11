@@ -8,7 +8,7 @@ import { createTestingPinia } from "@pinia/testing";
 
 import Navigation from "@/components/layout/Navigation.vue";
 import { createRouter } from "@/plugins/router";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 
 import { AllProductTypesQuery, ProductTypeEdge } from "@/generated/graphql";
 

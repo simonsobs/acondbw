@@ -9,7 +9,7 @@ import { createTestingPinia } from "@pinia/testing";
 import ProductItem from "@/views/product/ProductItem.vue";
 import { createRouter } from "@/plugins/router";
 
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 
 import { ProductByTypeIdAndNameQuery } from "@/generated/graphql";
 

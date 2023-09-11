@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useConfigStore } from "@/stores/config";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 
 import SearchWindow from "@/components/utils/SearchWindow.vue";
 import UserMenuButton from "@/components/auth/UserMenuButton.vue";

@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 
 import { useDeleteGitHubOrgMutation } from "@/generated/graphql";
 

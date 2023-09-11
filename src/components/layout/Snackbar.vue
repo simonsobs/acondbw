@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 const store = useStore();
 const { snackbar, snackbarMessage } = storeToRefs(store);
 const timeout = ref(5000);

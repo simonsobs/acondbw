@@ -86,8 +86,8 @@
 import { ref, watch, computed, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { v4 as uuidv4 } from "uuid";
-import { useStore } from "@/stores/main";
-import { useAuthStore } from "@/stores/auth";
+import { useStore } from "@/plugins/pinia/stores/main";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 import { useClientHandle } from "@urql/vue";
 
 import {

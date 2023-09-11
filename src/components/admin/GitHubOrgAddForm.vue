@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";

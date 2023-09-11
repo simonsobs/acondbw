@@ -2,7 +2,7 @@ import { watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useTheme } from "vuetify";
 
-import { useConfigStore } from "@/stores/config";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 import { generateLightAndDarkThemesFromSourceColor } from "@/utils/material-color";
 import { useDarkMode } from "@/utils/dark-mode";
 

@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { useTitle } from "@vueuse/core";
-import { useConfigStore } from "@/stores/config";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 
 function useSetTitle() {
   const configStore = useConfigStore();

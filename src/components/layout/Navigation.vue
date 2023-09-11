@@ -75,7 +75,7 @@
 // https://vuetifyjs.com/en/components/navigation-drawers/
 
 import { computed, ref } from "vue";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 
 import { useAllProductTypesQuery } from "@/generated/graphql";
 

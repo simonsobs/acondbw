@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useConfigStore } from "@/stores/config";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 
 import ProductEditForm, {
   Product,

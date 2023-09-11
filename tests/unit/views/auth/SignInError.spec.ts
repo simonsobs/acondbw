@@ -7,7 +7,7 @@ import { createTestingPinia } from "@pinia/testing";
 
 import SignInError from "@/views/auth/SignInError.vue";
 
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

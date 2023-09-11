@@ -1,7 +1,7 @@
 import { ref, watch, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useClientHandle } from "@urql/vue";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 import { checkAuthForCurrentRoute } from "@/plugins/router";
 
 export function useCheckAuth() {

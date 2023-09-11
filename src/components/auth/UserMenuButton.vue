@@ -56,7 +56,7 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 
 import SignOutConfirmation from "./SignOutConfirmation.vue";
 

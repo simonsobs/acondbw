@@ -64,8 +64,8 @@
 <script setup lang="ts">
 import { ref, reactive, watch, computed } from "vue";
 import { storeToRefs } from "pinia";
-import { useStore } from "@/stores/main";
-import { useConfigStore } from "@/stores/config";
+import { useStore } from "@/plugins/pinia/stores/main";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 
 import TopBar from "./TopBar.vue";
 import List from "./List.vue";

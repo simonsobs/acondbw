@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 
 import _ from "lodash";
 import { camelCase } from "camel-case";

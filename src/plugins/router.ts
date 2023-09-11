@@ -1,8 +1,8 @@
 import { createRouter as createVueRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw, Router } from "vue-router";
 
-import { useAuthStore } from "@/stores/auth";
-import { useHistoryStack } from "@/stores/history-stack";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
+import { useHistoryStack } from "@/plugins/pinia/stores/history-stack";
 
 const AppBar = () => import("@/components/layout/AppBar.vue");
 const Navigation = () => import("@/components/layout/Navigation.vue");

@@ -1,5 +1,5 @@
 import { ref, computed, watch } from "vue";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 import { useQuery, AnyVariables, CombinedError } from "@urql/vue";
 
 import State from "@/utils/LoadingState";

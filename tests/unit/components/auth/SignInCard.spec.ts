@@ -15,7 +15,7 @@ import {
 } from "@/utils/auth/oauth";
 vi.mock("@/utils/auth/oauth");
 
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

@@ -18,8 +18,8 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "@/stores/main";
-import { useAuthStore } from "@/stores/auth";
+import { useStore } from "@/plugins/pinia/stores/main";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 
 interface Emits {
   (event: "finished"): void;

@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { ProductQuery } from "@/generated/graphql";
-import { useHistoryStack } from "@/stores/history-stack";
+import { useHistoryStack } from "@/plugins/pinia/stores/history-stack";
 
 type Product = ProductQuery["product"];
 

@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { withDefaults, ref, computed, watch } from "vue";
-import { useConfigStore } from "@/stores/config";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 
 import State from "@/utils/LoadingState";
 

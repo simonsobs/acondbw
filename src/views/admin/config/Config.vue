@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
-import { useConfigStore } from "@/stores/config";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 
 import Bar from "./Bar.vue";
 import EditDialog from "./EditDialog.vue";

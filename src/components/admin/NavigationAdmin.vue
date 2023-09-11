@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 import ToggleDarkModeButton from "@/components/utils/ToggleDarkModeButton.vue";
 
 const store = useStore();

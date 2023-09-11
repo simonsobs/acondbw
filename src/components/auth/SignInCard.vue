@@ -23,7 +23,7 @@
 import { withDefaults, ref, computed } from "vue";
 import { useRouter, RouteLocationRaw } from "vue-router";
 import { useClientHandle } from "@urql/vue";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 
 import {
   redirectToGitHubAuthURL,

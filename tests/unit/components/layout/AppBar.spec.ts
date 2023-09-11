@@ -8,7 +8,7 @@ import { createTestingPinia } from "@pinia/testing";
 import AppBar from "@/components/layout/AppBar.vue";
 import { createRouter } from "@/plugins/router";
 
-import { useConfigStore } from "@/stores/config";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);

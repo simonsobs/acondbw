@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/plugins/pinia/stores/auth";
 
 const authStore = useAuthStore();
 

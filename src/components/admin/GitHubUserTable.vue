@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 
 import {
   useAllGitHubUsersQuery,

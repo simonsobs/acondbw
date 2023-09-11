@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useConfigStore } from "@/stores/config";
+import { useConfigStore } from "@/plugins/pinia/stores/config";
 import { QueryForProductListQuery } from "@/generated/graphql";
 import ProductTypeDeleteForm from "@/components/product-type/ProductTypeDeleteForm.vue";
 

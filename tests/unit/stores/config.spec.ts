@@ -3,7 +3,7 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import { describe, expect, beforeEach, it } from "vitest";
 import { PiniaVuePlugin, setActivePinia, createPinia } from "pinia";
 import { fromValue, toPromise } from "wonka";
-import { useConfigStore, VuetifyTheme, WebConfig } from "@/stores/config";
+import { useConfigStore, VuetifyTheme, WebConfig } from "@/plugins/pinia/stores/config";
 
 function callInSetup<T>(fn: () => T, urqlClient) {
   let ret: T | undefined;

@@ -13,7 +13,7 @@
 import { onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useClientHandle } from "@urql/vue";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 
 import { storeAdminAppToken } from "@/utils/admin-token";
 

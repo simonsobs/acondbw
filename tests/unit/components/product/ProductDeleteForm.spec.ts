@@ -8,7 +8,7 @@ import { createTestingPinia } from "@pinia/testing";
 
 import ProductDeleteForm from "@/components/product/ProductDeleteForm.vue";
 import { createRouter } from "@/plugins/router";
-import { useStore } from "@/stores/main";
+import { useStore } from "@/plugins/pinia/stores/main";
 
 import { useQuery, useMutation } from "@urql/vue";
 vi.mock("@urql/vue");
