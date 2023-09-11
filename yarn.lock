@@ -1592,13 +1592,6 @@
     "@0no-co/graphql.web" "^1.0.1"
     wonka "^6.3.2"
 
-"@urql/devtools@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@urql/devtools/-/devtools-2.0.3.tgz#780998c37386c72af9402a8f88c1b388e62f28cd"
-  integrity sha512-TktPLiBS9LcBPHD6qcnb8wqOVcg3Bx0iCtvQ80uPpfofwwBGJmqnQTjUdEFU6kwaLOFZULQ9+Uo4831G823mQw==
-  dependencies:
-    wonka ">= 4.0.9"
-
 "@urql/exchange-auth@^2.1.6":
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/@urql/exchange-auth/-/exchange-auth-2.1.6.tgz#8197dab76ac8109ad23c9cde57f834153055d024"
@@ -5470,7 +5463,7 @@ why-is-node-running@^2.2.2:
     siginfo "^2.0.0"
     stackback "0.0.2"
 
-"wonka@>= 4.0.9", wonka@^6.3.2:
+wonka@^6.3.2:
   version "6.3.3"
   resolved "https://registry.yarnpkg.com/wonka/-/wonka-6.3.3.tgz#aa99fa5f9303a32517497918fdd0208175e7edbe"
   integrity sha512-id4wYGsT6aEc8/3+by7NTHvTe0DwsOjv7vah0K0+AorV1MHKuS3OQ2g8DGsem1OEXrNShbVLPsg4kG2O6GZ2SQ==
