@@ -1,5 +1,5 @@
 import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
-import { clearState, storeState, validateState } from "@/utils/auth/oauth";
+import { clearState, storeState, validateState } from "../oauth";
 
 describe("validateState", () => {
   afterEach(() => {

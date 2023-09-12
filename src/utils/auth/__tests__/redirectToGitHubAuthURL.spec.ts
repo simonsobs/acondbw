@@ -1,5 +1,5 @@
 import { describe, expect, beforeEach, afterEach, it, vi } from "vitest";
-import { redirectToGitHubAuthURL } from "@/utils/auth/oauth";
+import { redirectToGitHubAuthURL } from "../oauth";
 import { Client } from "@urql/vue";
 
 describe("redirectToGitHubAuthURL", () => {
