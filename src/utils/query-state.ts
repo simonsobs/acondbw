@@ -1,16 +1,18 @@
 import { ref, computed, watch } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
-import { useQuery, AnyVariables, CombinedError } from "@urql/vue";
+import type { UseQueryResponse, AnyVariables } from "@urql/vue";
 import { refThrottled } from "@vueuse/core";
 
 import State from "@/utils/LoadingState";
 
-export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
-  query: ReturnType<typeof useQuery<T, V>>,
-  options: {
-    isNull?: (query: ReturnType<typeof useQuery<T, V>>) => boolean;
-    isEmpty?: (query: ReturnType<typeof useQuery<T, V>>) => boolean;
-  } = {}
+export interface UseQueryStateOptions<T, V extends AnyVariables> {
+  isNull?: (query: UseQueryResponse<T, V>) => boolean;
+  isEmpty?: (query: UseQueryResponse<T, V>) => boolean;
+}
+
+export function useQueryState<T, V extends AnyVariables>(
+  query: UseQueryResponse<T, V>,
+  options: UseQueryStateOptions<T, V> = {}
 ) {
   const { isNull, isEmpty } = options;
 
@@ -67,9 +69,7 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
   };
 }
 
-function useRefresh<T = any, V extends AnyVariables = AnyVariables>(
-  query: ReturnType<typeof useQuery<T, V>>
-) {
+function useRefresh<T, V extends AnyVariables>(query: UseQueryResponse<T, V>) {
   const _refreshing = ref(false);
 
   // Throttle so as to avoid flickering
