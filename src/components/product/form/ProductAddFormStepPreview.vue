@@ -52,9 +52,9 @@ import { ref, watch } from "vue";
 import { useClientHandle } from "@urql/vue";
 import { marked } from "marked";
 
-import QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW from "@/graphql/queries/QueryForProductAddFormRelationsPreview.gql";
 import {
   QueryForProductAddFormQuery,
+  QueryForProductAddFormRelationsPreviewDocument,
   QueryForProductAddFormRelationsPreviewQuery,
   CreateProductInput,
 } from "@/graphql/codegen/generated";
@@ -99,7 +99,7 @@ async function composeRelationPreview(
         relations.map(async (r) => {
           const { error, data } = await urqlClientHandle.client
             .query<QueryForProductAddFormRelationsPreviewQuery>(
-              QUERY_FOR_PRODUCT_ADD_FORM_PREVIEW,
+              QueryForProductAddFormRelationsPreviewDocument,
               {
                 productRelationTypeId: r.typeId,
                 productId: r.productId,
