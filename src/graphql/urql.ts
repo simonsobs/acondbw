@@ -10,6 +10,7 @@ import {
 import { authExchange } from "@urql/exchange-auth";
 
 import { readTokenFromLocalStorage } from "@/utils/auth";
+import { useConfig } from "@/utils/config";
 
 function useCreateClient(url: string) {
   const authExchange_ = authExchange(async (utils) => {
@@ -58,7 +59,9 @@ function useCreateClient(url: string) {
   });
 }
 
-function useProvideClient(url: string) {
+function useProvideClient() {
+const { config } = useConfig();
+const url = config.value.graphqlHttp;
   const client = ref(useCreateClient(url));
   provideClient(client);
 }
