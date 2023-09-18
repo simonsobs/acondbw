@@ -58,7 +58,6 @@ import { useQueryState } from "@/utils/query-state";
 
 import GitHubOrgAddForm from "./GitHubOrgAddForm.vue";
 import GitHubOrgRemoveForm from "./GitHubOrgRemoveForm.vue";
-import { i } from "vitest/dist/index-6e18a03a";
 
 interface GitHubUser {
   login: string;
