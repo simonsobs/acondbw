@@ -25,7 +25,6 @@
  * This component provides the layout of the app.
  * The layout consists of the navigation drawer, the app bar, and the main content.
  * The contents are provided by the router.
- * This component should be placed inside the <v-app> component.
  */
 
 // <keep-alive> is not used around <component> because it
