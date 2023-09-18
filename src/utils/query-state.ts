@@ -34,13 +34,7 @@ export function useQueryState<T, V extends AnyVariables>(
     error.value = val === State.Error ? "Error from Dev Tools" : null;
   });
 
-  const store = useStore();
-  watch(
-    () => store.nApolloMutations,
-    () => {
-      query.executeQuery({ requestPolicy: "network-only" });
-    }
-  );
+  useExecuteQueryOnMutation(query);
 
   const { refreshing, refreshError, refresh } = useRefresh(query);
 
@@ -64,6 +58,18 @@ export function useQueryState<T, V extends AnyVariables>(
     refresh,
     ...state,
   };
+}
+
+function useExecuteQueryOnMutation<T, V extends AnyVariables>(
+  query: UseQueryResponse<T, V>
+) {
+  const store = useStore();
+  watch(
+    () => store.nApolloMutations,
+    () => {
+      query.executeQuery({ requestPolicy: "network-only" });
+    }
+  );
 }
 
 function useState<T, V extends AnyVariables>(
