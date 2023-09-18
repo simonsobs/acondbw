@@ -64,7 +64,7 @@ const headers = ref([
   { title: "Product type", key: "plural" },
   {
     title: "Number of products",
-    align: "end",
+    align: "end" as const,
     key: "products.totalCount",
   },
 ]);
