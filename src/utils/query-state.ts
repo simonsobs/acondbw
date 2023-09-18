@@ -37,7 +37,7 @@ export function useQueryState<T, V extends AnyVariables>(
 
   useExecuteQueryOnMutation(query);
 
-  const { refreshing, refreshError, refresh } = useRefresh(query);
+  const { refreshing, refresh } = useRefresh(query);
 
   const { loading, loaded, empty, notFound } = useState(
     query,
@@ -47,10 +47,6 @@ export function useQueryState<T, V extends AnyVariables>(
     isEmpty,
     isNull
   );
-
-  watch(refreshError, (e) => {
-    error.value = e;
-  });
 
   return {
     init,
@@ -107,21 +103,11 @@ function useRefresh<T, V extends AnyVariables>(query: UseQueryResponse<T, V>) {
   // Throttle so as to avoid flickering
   const refreshing = refThrottled(_refreshing, 300);
 
-  const refreshError = ref<string | null>(null);
-
   async function refresh() {
     _refreshing.value = true;
-    try {
-      const { error } = await query.executeQuery({
-        requestPolicy: "network-only",
-      });
-      if (error.value) throw error.value;
-    } catch (e: any) {
-      refreshError.value = e?.toString() || null;
-    } finally {
-      _refreshing.value = false;
-    }
+    await query.executeQuery({ requestPolicy: "network-only" });
+    _refreshing.value = false;
   }
 
-  return { refreshing, refreshError, refresh };
+  return { refreshing, refresh };
 }
