@@ -1,4 +1,5 @@
 import { ref, computed, watch } from "vue";
+import type { Ref } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
 import type { UseQueryResponse, AnyVariables } from "@urql/vue";
 import { refThrottled } from "@vueuse/core";
@@ -33,16 +34,6 @@ export function useQueryState<T, V extends AnyVariables>(
     error.value = val === State.Error ? "Error from Dev Tools" : null;
   });
 
-  const state = computed(() => {
-    if (devtoolState.value !== State.Off) return devtoolState.value;
-    if (refreshing.value) return State.Loading;
-    if (query.fetching.value) return State.Loading;
-    if (error.value) return State.Error;
-    if (isEmpty?.(query)) return State.Empty;
-    if (isNull?.(query)) return State.None;
-    return State.Loaded;
-  });
-
   const store = useStore();
   watch(
     () => store.nApolloMutations,
@@ -53,6 +44,15 @@ export function useQueryState<T, V extends AnyVariables>(
 
   const { refreshing, refreshError, refresh } = useRefresh(query);
 
+  const state = useState(
+    query,
+    devtoolState,
+    refreshing,
+    error,
+    isEmpty,
+    isNull
+  );
+
   watch(refreshError, (e) => {
     error.value = e;
   });
@@ -61,11 +61,33 @@ export function useQueryState<T, V extends AnyVariables>(
     init,
     error,
     devtoolState,
+    refresh,
+    ...state,
+  };
+}
+
+function useState<T, V extends AnyVariables>(
+  query: UseQueryResponse<T, V>,
+  devtoolState: Ref<State>,
+  refreshing: Ref<boolean>,
+  error: Ref<string | null>,
+  isEmpty: ((query: UseQueryResponse<T, V>) => boolean) | undefined,
+  isNull: ((query: UseQueryResponse<T, V>) => boolean) | undefined
+) {
+  const state = computed(() => {
+    if (devtoolState.value !== State.Off) return devtoolState.value;
+    if (refreshing.value) return State.Loading;
+    if (query.fetching.value) return State.Loading;
+    if (error.value) return State.Error;
+    if (isEmpty?.(query)) return State.Empty;
+    if (isNull?.(query)) return State.None;
+    return State.Loaded;
+  });
+  return {
     loading: computed(() => state.value === State.Loading),
     loaded: computed(() => state.value === State.Loaded),
     empty: computed(() => state.value === State.Empty),
     notFound: computed(() => state.value === State.None),
-    refresh,
   };
 }
 
