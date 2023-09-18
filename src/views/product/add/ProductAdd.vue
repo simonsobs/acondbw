@@ -5,16 +5,15 @@
     </div>
     <v-progress-linear v-else-if="loading" indeterminate color="primary">
     </v-progress-linear>
-    <div v-else-if="error" class="pa-5">
-      <v-alert
-        type="error"
-        variant="tonal"
-        :text="error"
-        class="mx-auto"
-        max-width="960px"
-      >
-      </v-alert>
-    </div>
+    <v-alert
+      v-else-if="error"
+      type="error"
+      variant="tonal"
+      :text="error"
+      class="mx-auto"
+      max-width="960px"
+    >
+    </v-alert>
     <product-add-form
       v-else-if="on && loaded && productTypeId"
       :productTypeId="productTypeId"
