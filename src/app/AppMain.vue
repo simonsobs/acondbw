@@ -28,7 +28,8 @@
  */
 
 // <keep-alive> is not used around <component> because it
-// doesn't work well with <transition>
+// doesn't work well with <transition>.
+// <keep-alive> doesn't work well with ProductAdd.vue either.
 
 import { useCheckAuth } from "./check-auth";
 import { useColorTheme } from "@/utils/color-theme";
