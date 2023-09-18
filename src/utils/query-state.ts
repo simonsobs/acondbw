@@ -23,6 +23,7 @@ export function useQueryState<T, V extends AnyVariables>(
   watch(query.data, (data) => {
     if (data) init.value = false;
   });
+
   watch(query.error, (e) => {
     init.value = false;
     error.value = e?.message || null;
@@ -38,7 +39,7 @@ export function useQueryState<T, V extends AnyVariables>(
 
   const { refreshing, refreshError, refresh } = useRefresh(query);
 
-  const state = useState(
+  const { loading, loaded, empty, notFound } = useState(
     query,
     devtoolState,
     refreshing,
@@ -56,7 +57,10 @@ export function useQueryState<T, V extends AnyVariables>(
     error,
     devtoolState,
     refresh,
-    ...state,
+    loading,
+    loaded,
+    empty,
+    notFound,
   };
 }
 
