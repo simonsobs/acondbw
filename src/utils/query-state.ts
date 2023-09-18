@@ -49,24 +49,11 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     }
   );
 
-  const _refreshing = ref(false);
+  const { refreshing, refreshError, refresh } = useRefresh(query);
 
-  // Throttle so as to avoid flickering
-  const refreshing = refThrottled(_refreshing, 300);
-
-  async function refresh() {
-    _refreshing.value = true;
-    try {
-      const { error } = await query.executeQuery({
-        requestPolicy: "network-only",
-      });
-      if (error.value) throw error.value;
-    } catch (e: any) {
-      error.value = e?.toString() || null;
-    } finally {
-      _refreshing.value = false;
-    }
-  }
+  watch(refreshError, (e) => {
+    error.value = e;
+  });
 
   return {
     init,
@@ -78,4 +65,31 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     notFound: computed(() => state.value === State.None),
     refresh,
   };
+}
+
+function useRefresh<T = any, V extends AnyVariables = AnyVariables>(
+  query: ReturnType<typeof useQuery<T, V>>
+) {
+  const _refreshing = ref(false);
+
+  // Throttle so as to avoid flickering
+  const refreshing = refThrottled(_refreshing, 300);
+
+  const refreshError = ref<string | null>(null);
+
+  async function refresh() {
+    _refreshing.value = true;
+    try {
+      const { error } = await query.executeQuery({
+        requestPolicy: "network-only",
+      });
+      if (error.value) throw error.value;
+    } catch (e: any) {
+      refreshError.value = e?.toString() || null;
+    } finally {
+      _refreshing.value = false;
+    }
+  }
+
+  return { refreshing, refreshError, refresh };
 }
