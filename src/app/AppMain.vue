@@ -31,39 +31,16 @@
 // <keep-alive> is not used around <component> because it
 // doesn't work well with <transition>
 
-import { ref, computed, watchEffect } from "vue";
-import { useDisplay } from "vuetify";
-
 import { useCheckAuth } from "./check-auth";
 import { useColorTheme } from "@/utils/color-theme";
 import { useSetTitle } from "./set-title";
+import { useDrawer } from "./drawer";
 import Snackbar from "@/components/layout/Snackbar.vue";
 
 useCheckAuth();
 useColorTheme();
 useSetTitle();
-
-// https://vuetifyjs.com/en/features/display-and-platform/
-const { mobile } = useDisplay();
-
-/**
- * The navigation drawer is open if true and closed if false.
- */
-const drawer = ref<boolean>(false);
-
-watchEffect(() => {
-  drawer.value = !mobile.value;
-});
-
-function toggleDrawer() {
-  drawer.value = !drawer.value;
-}
-
-/**
- * The order of the navigation drawer and the app bar is reversed on mobile.
- * @see https://vuetifyjs.com/en/features/application-layout/#dynamic-layouts-and-order
- */
-const order = computed(() => (mobile.value ? 0 : -1));
+const { drawer, toggleDrawer, order, mobile } = useDrawer();
 </script>
 
 <style>
