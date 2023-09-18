@@ -1,6 +1,7 @@
 import { ref, computed, watch } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
 import { useQuery, AnyVariables, CombinedError } from "@urql/vue";
+import { refThrottled } from "@vueuse/core";
 
 import State from "@/utils/LoadingState";
 
@@ -48,10 +49,13 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     }
   );
 
-  const refreshing = ref(false);
+  const _refreshing = ref(false);
+
+  // Throttle so as to avoid flickering
+  const refreshing = refThrottled(_refreshing, 300);
+
   async function refresh() {
-    refreshing.value = true;
-    const wait = new Promise((resolve) => setTimeout(resolve, 500));
+    _refreshing.value = true;
     try {
       const { error } = await query.executeQuery({
         requestPolicy: "network-only",
@@ -60,10 +64,7 @@ export function useQueryState<T = any, V extends AnyVariables = AnyVariables>(
     } catch (e: any) {
       error.value = e?.toString() || null;
     } finally {
-      await wait; // wait until 0.5 sec passes since starting refetch
-      // because the progress circular is too flickering if
-      // the refetch finishes too quickly
-      refreshing.value = false;
+      _refreshing.value = false;
     }
   }
 
