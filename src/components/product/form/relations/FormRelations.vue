@@ -1,7 +1,5 @@
 <template>
   <div style="position: relative" class="">
-    <pre>{{ allProductRelationTypes }}</pre>
-    <pre>{{ form }}</pre>
     <!-- <v-card-actions class="py-0">
       <v-tooltip bottom open-delay="800">
         <template v-slot:activator="{ on }">
