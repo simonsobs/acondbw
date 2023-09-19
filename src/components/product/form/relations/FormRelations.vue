@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, PropType } from "vue";
+import { ref, computed, watch } from "vue";
 
 import { useQueryForFormRelationsQuery } from "@/graphql/codegen/generated";
 
@@ -141,9 +141,9 @@ interface Props {
   name: string;
 }
 
-interface Emits {
-  (event: "update:modelValue", input: Relation[]): boolean;
-}
+type Emits = {
+  "update:modelValue": [input: Relation[]];
+};
 
 const prop = defineProps<Props>();
 const emit = defineEmits<Emits>();
