@@ -10,17 +10,15 @@
         <span>Refresh</span>
       </v-tooltip>
     </v-card-actions> -->
-    <v-card-text>
-      <v-progress-circular
-        v-if="loading"
-        indeterminate
-        :size="26"
-        color="secondary"
-      ></v-progress-circular>
-      <v-alert v-else-if="error" variant="tonal" type="error">
-        {{ error }}
-      </v-alert>
-    </v-card-text>
+    <v-progress-circular
+      v-if="loading"
+      indeterminate
+      :size="26"
+      color="secondary"
+    ></v-progress-circular>
+    <v-alert v-else-if="error" variant="tonal" type="error">
+      {{ error }}
+    </v-alert>
     <div v-if="loaded" class="pb-5">
       <div
         v-for="(edge, i) in allProductRelationTypes.edges"
