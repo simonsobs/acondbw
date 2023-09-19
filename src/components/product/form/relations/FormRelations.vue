@@ -202,19 +202,7 @@ watch(
   },
   { deep: true, immediate: true }
 );
-const relationTypeItems = computed(
-  // [{ text: relation type name (singular), value: relation type id }]
-  // e.g., [{ text: "parent", value: "1" }, { text: "child", value: "2" }];
-  () =>
-    allProductRelationTypes.value.edges.flatMap((e) =>
-      e?.node
-        ? {
-            text: e.node.singular,
-            value: e.node.typeId,
-          }
-        : []
-    )
-);
+
 const productItems = computed(
   // [{ text: product name (product type name), value: product id }]
   // e.g., [{ text: "Map-01 (map)", value: "1" }, ...];
