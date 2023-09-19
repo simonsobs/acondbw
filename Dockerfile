@@ -7,16 +7,13 @@ COPY docker/env.local .env.local
 RUN yarn build
 
 
-#
-FROM nginx:1.21
+# https://github.com/nginxinc/docker-nginx/tree/1.22.1
+FROM nginx:1.22.1
 
 RUN apt-get update && apt-get install -y jq
 
-WORKDIR /app
-COPY --from=build /app/dist dist
-COPY docker/entrypoint.sh .
-COPY docker/setup.sh /docker-entrypoint.d/99-app-setup.sh
-COPY docker/nginx-default.conf.template /etc/nginx/templates/default.conf.template
-
-ENTRYPOINT ["./entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=build /app/dist /app/dist
+RUN mv docker-entrypoint.sh docker-entrypoint-base.sh
+COPY docker/docker-entrypoint.sh .
+COPY docker/docker-entrypoint.d/* /docker-entrypoint.d/
+COPY docker/default.conf.template /etc/nginx/templates/
