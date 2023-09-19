@@ -181,13 +181,21 @@ const query = useQueryForFormRelationsQuery();
 const allProductRelationTypes = computed(
   () => query.data.value?.allProductRelationTypes || { edges: [] }
 );
-watch(allProductRelationTypes, (val) => {
-  const reshapedValue = prop.modelValue ? reshapeValue(prop.modelValue) : {};
-  form.value = composeForm(val, reshapedValue);
-  if (!formReset.value) {
-    formReset.value = JSON.parse(JSON.stringify(form.value));
-  }
-});
+
+const { loading, error, loaded, devtoolState } = useQueryState(query);
+
+watch(
+  allProductRelationTypes,
+  (val) => {
+    if (loading.value) return;
+    const reshapedValue = reshapeValue(input.value);
+    form.value = composeForm(val, reshapedValue);
+    if (!formReset.value) {
+      formReset.value = JSON.parse(JSON.stringify(form.value));
+    }
+  },
+  { immediate: true }
+);
 
 function composeForm(
   relationTypes: typeof allProductRelationTypes.value,
@@ -227,6 +235,4 @@ const productItems = computed(
 function reset() {
   form.value = JSON.parse(JSON.stringify(formReset.value));
 }
-
-const { loading, error, loaded, devtoolState } = useQueryState(query);
 </script>
