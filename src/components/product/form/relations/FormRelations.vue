@@ -169,7 +169,6 @@ const input = computed((): Relation[] =>
 watch(
   input,
   (val) => {
-    console.log("input", val);
     emit("update:modelValue", val);
   },
   { deep: true, immediate: true }
