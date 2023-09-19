@@ -1,5 +1,7 @@
 <template>
   <div style="position: relative" class="">
+    <pre>{{ allProductRelationTypes }}</pre>
+    <pre>{{ form }}</pre>
     <!-- <v-card-actions class="py-0">
       <v-tooltip bottom open-delay="800">
         <template v-slot:activator="{ on }">
@@ -146,6 +148,35 @@ type Emits = {
 const prop = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
+const form = ref(reshapeValue(prop.modelValue || []));
+const formReset = ref<typeof form.value | null>(null);
+
+const unchanged = computed(() =>
+  formReset.value === null
+    ? false
+    : JSON.stringify(form.value) === JSON.stringify(formReset.value)
+);
+
+const input = computed((): Relation[] =>
+  Object.entries(form.value)
+    // @ts-ignore
+    .reduce((a, e: [string, (typeof form.value)[number]]) => {
+      const typeId = Number(e[0]);
+      const l = e[1].filter((x) => x.productId !== null);
+      return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
+    }, [] as Relation[])
+    .sort((a, b) => a.typeId - b.typeId || a.productId - b.productId)
+);
+
+watch(
+  input,
+  (val) => {
+    console.log("input", val);
+    emit("update:modelValue", val);
+  },
+  { deep: true, immediate: true }
+);
+
 const query = useQueryForFormRelationsQuery();
 const allProductRelationTypes = computed(
   () => query.data.value?.allProductRelationTypes || { edges: [] }
@@ -157,6 +188,7 @@ watch(allProductRelationTypes, (val) => {
     formReset.value = JSON.parse(JSON.stringify(form.value));
   }
 });
+
 function composeForm(
   relationTypes: typeof allProductRelationTypes.value,
   reshapedValue: Reshaped
@@ -177,30 +209,6 @@ function composeForm(
 }
 const allProducts = computed(
   () => query.data.value?.allProducts || { edges: [] }
-);
-const form = ref(reshapeValue(prop.modelValue || []));
-const formReset = ref<typeof form.value | null>(null);
-const unchanged = computed(() =>
-  formReset.value === null
-    ? false
-    : JSON.stringify(form.value) === JSON.stringify(formReset.value)
-);
-const input = computed((): Relation[] =>
-  Object.entries(form.value)
-    // @ts-ignore
-    .reduce((a, e: [string, (typeof form.value)[number]]) => {
-      const typeId = Number(e[0]);
-      const l = e[1].filter((x) => x.productId !== null);
-      return [...a, ...l.map((o) => ({ productId: o.productId, typeId }))];
-    }, [] as Relation[])
-    .sort((a, b) => a.typeId - b.typeId || a.productId - b.productId)
-);
-watch(
-  input,
-  (val) => {
-    emit("update:modelValue", val);
-  },
-  { deep: true, immediate: true }
 );
 
 const productItems = computed(
