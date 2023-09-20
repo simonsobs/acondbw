@@ -72,7 +72,7 @@ function useState<T, V extends AnyVariables>(
   };
 }
 
-function useError(query: UseQueryResponse<T, V>) {
+function useError<T, V extends AnyVariables>(query: UseQueryResponse<T, V>) {
   const error = ref<string | null>(null);
   watch(query.error, (e) => {
     error.value = e?.message || null;
