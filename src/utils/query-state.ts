@@ -40,30 +40,30 @@ function useState<T, V extends AnyVariables>(
   isEmpty: ((query: UseQueryResponse<T, V>) => boolean) | undefined,
   isNull: ((query: UseQueryResponse<T, V>) => boolean) | undefined
 ) {
-  const devtoolState = ref(State.Off);
+  const devtoolState = ref<State>("off");
   watch(devtoolState, (val) => {
-    error.value = val === State.Error ? "Error from Dev Tools" : null;
+    error.value = val === "error" ? "Error from Dev Tools" : null;
   });
 
   const error = useError(query);
 
   const { refreshing, refresh } = useRefresh(query);
 
-  const state = computed(() => {
-    if (devtoolState.value !== State.Off) return devtoolState.value;
-    if (refreshing.value) return State.Loading;
-    if (query.fetching.value) return State.Loading;
-    if (error.value) return State.Error;
-    if (isEmpty?.(query)) return State.Empty;
-    if (isNull?.(query)) return State.None;
-    return State.Loaded;
+  const state = computed<State>(() => {
+    if (devtoolState.value !== "off") return devtoolState.value;
+    if (refreshing.value) return "loading";
+    if (query.fetching.value) return "loading";
+    if (error.value) return "error";
+    if (isEmpty?.(query)) return "empty";
+    if (isNull?.(query)) return "none";
+    return "loaded";
   });
 
   return {
-    loading: computed(() => state.value === State.Loading),
-    loaded: computed(() => state.value === State.Loaded),
-    empty: computed(() => state.value === State.Empty),
-    notFound: computed(() => state.value === State.None),
+    loading: computed(() => state.value === "loading"),
+    loaded: computed(() => state.value === "loaded"),
+    empty: computed(() => state.value === "empty"),
+    notFound: computed(() => state.value === "none"),
     refreshing,
     refresh,
     error,

@@ -14,11 +14,7 @@
       </template>
       <v-list dense v-model:selected="selected">
         <v-list-subheader>Dev Tools</v-list-subheader>
-        <v-list-item
-          :value="item.value"
-          :title="item.text"
-          v-for="item in menuItems"
-        >
+        <v-list-item :value="item" :title="item" v-for="item in menuItems">
         </v-list-item>
       </v-list>
     </v-menu>
@@ -54,16 +50,16 @@ const buttonStyle = computed(() => ({
   right: props.right,
 }));
 
-const menuItems = ref([
-  { text: "Loading", value: State.Loading },
-  { text: "Error", value: State.Error },
-  { text: "Loaded", value: State.Loaded },
-  { text: "Empty", value: State.Empty },
-  { text: "None", value: State.None },
-  { text: "Off", value: State.Off },
+const menuItems = ref<State[]>([
+  "loading",
+  "error",
+  "loaded",
+  "empty",
+  "none",
+  "off",
 ]);
 
-const selected = ref([State.Off]);
+const selected = ref<State[]>([props.modelValue]);
 const state = computed(() => selected.value[0]);
 
 const configStore = useConfigStore();
@@ -71,10 +67,16 @@ const configStore = useConfigStore();
 const enabled = computed(() => configStore.config.devtoolLoadingstate);
 
 watch(enabled, (val) => {
-  if (!val) selected.value = [State.Off];
+  if (!val) selected.value = ["off"];
 });
 
 watch(state, (s) => {
   emit("update:modelValue", s);
 });
 </script>
+
+<style scoped>
+:deep(.v-list-item-title) {
+  text-transform: capitalize;
+}
+</style>

@@ -1,21 +1,13 @@
-enum State {
-  Off = "OFF",
-  Loading = "LOADING",
-  Error = "ERROR",
-  Loaded = "LOADED",
-  Empty = "EMPTY", // e.g., empty list
-  None = "NONE", // i.e., not found
-}
+type State = "off" | "loading" | "error" | "loaded" | "empty" | "none";
 
 export default State;
 
-
-//  LOADING -+-> ERROR  -+
+//  loading -+-> error  -+
 //     ^     |           |
-//     |     +-> LOADED -+
+//     |     +-> loaded -+
 //     |     |           |
-//     |     +-> EMPTY --+
+//     |     +-> empty --+
 //     |     |           |
-//     |     +-> NONE ---+
+//     |     +-> none ---+
 //     |                 |
 //     +-----------------+
