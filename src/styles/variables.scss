@@ -20,6 +20,9 @@ $body-font-family: "Barlow", sans-serif;
 // $body-font-family:  'Barlow', sans-serif;
 // The condensed font is used in App.vue
 
+// Fira Code: https://fonts.google.com/specimen/Fira+Code
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap");
+
 // Roboto condensed
 // Note: not many font weights available
 // https://fonts.google.com/specimen/Roboto+Condensed
@@ -83,7 +86,7 @@ body,
 }
 
 // github-markdown-css:  https://github.com/sindresorhus/github-markdown-css
-// Copied CSS files from 
+// Copied CSS files from
 // - node_modules/prism-theme-github/themes
 // - node_modules/github-markdown-css/
 // file extension is changed to .scss.
@@ -108,4 +111,5 @@ body,
 
 :is(.v-theme--light, .v-theme--dark) .markdown-body pre code {
   background-color: inherit;
+  font-family: "Fira Code", monospace;
 }
