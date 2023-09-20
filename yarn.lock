@@ -4385,6 +4385,11 @@ pretty-format@^29.5.0:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
+prism-theme-github@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/prism-theme-github/-/prism-theme-github-1.0.1.tgz#43cc26223c5bd8f2acb900c9c753319e870aa3ae"
+  integrity sha512-BsnpKbRgazNe6r1B8tfYAL65nQqRhVKXEtcaF9NurMIRBbNFhCxUljOxS/qKqZu5N1gTN86ukiFDgzECFXwpSg==
+
 prismjs@^1.29.0:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.29.0.tgz#f113555a8fa9b57c35e637bba27509dcf802dd12"
