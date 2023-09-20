@@ -15,7 +15,7 @@
     >
     </v-alert>
     <product-add-form
-      v-else-if="on && loaded && productTypeId"
+      v-else-if="loaded && productTypeId"
       :productTypeId="productTypeId"
       @finished="finished"
     ></product-add-form>
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, onActivated } from "vue";
+import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useProductTypeByNameQuery } from "@/graphql/codegen/generated";
@@ -53,30 +53,10 @@ function finished() {
   });
 }
 
-function onEntered() {
-  if (init.value) return;
-  query.executeQuery({ requestPolicy: "network-only" });
-  recreateForm();
-}
-
-function recreateForm() {
-  // A component will be re-instantiated
-  // when v-if becomes once false and then true.
-  on.value = false;
-  console.log("recreateForm");
-  nextTick(() => {
-    console.log("nextTick");
-    on.value = true;
-  });
-}
-const on = ref(true);
 const queryState = useQueryState(query, {
   isNull: () => node.value === null,
 });
-const { init, notFound, loading, error, loaded, devtoolState } = queryState;
-
-onEntered();
-onActivated(onEntered);
+const { notFound, loading, error, loaded, devtoolState } = queryState;
 </script>
 
 <style scoped>
