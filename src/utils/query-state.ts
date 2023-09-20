@@ -17,22 +17,11 @@ export function useQueryState<T, V extends AnyVariables>(
 ) {
   const { isNull, isEmpty } = options;
 
-  const error = useError(query);
-
-  const devtoolState = ref(State.Off);
-  watch(devtoolState, (val) => {
-    error.value = val === State.Error ? "Error from Dev Tools" : null;
-  });
-
   useExecuteQueryOnMutation(query);
 
-  const state = useState(query, devtoolState, error, isEmpty, isNull);
+  const state = useState(query, isEmpty, isNull);
 
-  return {
-    error,
-    devtoolState,
-    ...state,
-  };
+  return { ...state };
 }
 
 function useExecuteQueryOnMutation<T, V extends AnyVariables>(
@@ -49,11 +38,16 @@ function useExecuteQueryOnMutation<T, V extends AnyVariables>(
 
 function useState<T, V extends AnyVariables>(
   query: UseQueryResponse<T, V>,
-  devtoolState: Ref<State>,
-  error: Ref<string | null>,
   isEmpty: ((query: UseQueryResponse<T, V>) => boolean) | undefined,
   isNull: ((query: UseQueryResponse<T, V>) => boolean) | undefined
 ) {
+  const devtoolState = ref(State.Off);
+  watch(devtoolState, (val) => {
+    error.value = val === State.Error ? "Error from Dev Tools" : null;
+  });
+
+  const error = useError(query);
+
   const { refreshing, refresh } = useRefresh(query);
 
   const state = computed(() => {
@@ -65,6 +59,7 @@ function useState<T, V extends AnyVariables>(
     if (isNull?.(query)) return State.None;
     return State.Loaded;
   });
+
   return {
     loading: computed(() => state.value === State.Loading),
     loaded: computed(() => state.value === State.Loaded),
@@ -72,6 +67,8 @@ function useState<T, V extends AnyVariables>(
     notFound: computed(() => state.value === State.None),
     refreshing,
     refresh,
+    error,
+    devtoolState,
   };
 }
 
