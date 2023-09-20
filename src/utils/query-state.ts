@@ -30,25 +30,12 @@ export function useQueryState<T, V extends AnyVariables>(
 
   useExecuteQueryOnMutation(query);
 
-  const { refreshing, refresh } = useRefresh(query);
-
-  const { loading, loaded, empty, notFound } = useState(
-    query,
-    devtoolState,
-    refreshing,
-    error,
-    isEmpty,
-    isNull
-  );
+  const state = useState(query, devtoolState, error, isEmpty, isNull);
 
   return {
     error,
     devtoolState,
-    refresh,
-    loading,
-    loaded,
-    empty,
-    notFound,
+    ...state,
   };
 }
 
@@ -67,11 +54,12 @@ function useExecuteQueryOnMutation<T, V extends AnyVariables>(
 function useState<T, V extends AnyVariables>(
   query: UseQueryResponse<T, V>,
   devtoolState: Ref<State>,
-  refreshing: Ref<boolean>,
   error: Ref<string | null>,
   isEmpty: ((query: UseQueryResponse<T, V>) => boolean) | undefined,
   isNull: ((query: UseQueryResponse<T, V>) => boolean) | undefined
 ) {
+  const { refreshing, refresh } = useRefresh(query);
+
   const state = computed(() => {
     if (devtoolState.value !== State.Off) return devtoolState.value;
     if (refreshing.value) return State.Loading;
@@ -86,6 +74,8 @@ function useState<T, V extends AnyVariables>(
     loaded: computed(() => state.value === State.Loaded),
     empty: computed(() => state.value === State.Empty),
     notFound: computed(() => state.value === State.None),
+    refreshing,
+    refresh,
   };
 }
 
