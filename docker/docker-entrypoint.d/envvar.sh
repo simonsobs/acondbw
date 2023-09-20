@@ -1,9 +1,6 @@
 #!/bin/echo to be sourced
 # This file is source by other files in this directory. 
 
-GRAPHQL_HTTP="${GRAPHQL_HTTP:-http://localhost:8000}"
-echo + "GRAPHQL_HTTP=${GRAPHQL_HTTP}"
-
 DIST_DIR="/app/dist"
 SITE_DIR_ROOT="/app/site"
 
