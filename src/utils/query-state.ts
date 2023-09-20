@@ -17,11 +17,7 @@ export function useQueryState<T, V extends AnyVariables>(
 ) {
   const { isNull, isEmpty } = options;
 
-  const error = ref<string | null>(null);
-
-  watch(query.error, (e) => {
-    error.value = e?.message || null;
-  });
+  const error = useError(query);
 
   const devtoolState = ref(State.Off);
   watch(devtoolState, (val) => {
@@ -77,6 +73,14 @@ function useState<T, V extends AnyVariables>(
     refreshing,
     refresh,
   };
+}
+
+function useError(query: UseQueryResponse<T, V>) {
+  const error = ref<string | null>(null);
+  watch(query.error, (e) => {
+    error.value = e?.message || null;
+  });
+  return error;
 }
 
 function useRefresh<T, V extends AnyVariables>(query: UseQueryResponse<T, V>) {
