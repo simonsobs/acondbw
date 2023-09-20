@@ -83,13 +83,17 @@ body,
 }
 
 // github-markdown-css:  https://github.com/sindresorhus/github-markdown-css
-// The two CSS files are copied from node_modules/github-markdown-css/ and the
+// Copied CSS files from 
+// - node_modules/prism-theme-github/themes
+// - node_modules/github-markdown-css/
 // file extension is changed to .scss.
 .v-theme--light {
+  @import "./prism-theme-github-light.scss";
   @import "./github-markdown-light.scss";
 }
 
 .v-theme--dark {
+  @import "./prism-theme-github-dark.scss";
   @import "./github-markdown-dark.scss";
 }
 
