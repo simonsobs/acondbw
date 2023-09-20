@@ -1,5 +1,4 @@
 import { ref, computed, watch } from "vue";
-import type { Ref } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
 import type { UseQueryResponse, AnyVariables } from "@urql/vue";
 import { refThrottled } from "@vueuse/core";
