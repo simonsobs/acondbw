@@ -134,7 +134,7 @@ import ToggleCollapseButton from "./ToggleCollapseButton.vue";
 import DotMenu from "./DotMenu.vue";
 import Paths from "./Paths.vue";
 import Relations from "./Relations.vue";
-import Note from "./Note.vue";
+import Note from "./note/Note.vue";
 import BottomRow from "./BottomRow.vue";
 
 interface Attribute {
