@@ -1,6 +1,5 @@
 enum State {
   Off = "OFF",
-  Init = "INIT",
   Loading = "LOADING",
   Error = "ERROR",
   Loaded = "LOADED",
@@ -11,12 +10,12 @@ enum State {
 export default State;
 
 
-// INIT -+-> LOADING -+-> ERROR  -+
-//       |            |           |
-//       |            +-> LOADED -+
-//       |            |           |
-//       |            +-> EMPTY --+
-//       |            |           |
-//       |            +-> NONE ---+
-//       |                        |
-//       +------------------------+
+//  LOADING -+-> ERROR  -+
+//     ^     |           |
+//     |     +-> LOADED -+
+//     |     |           |
+//     |     +-> EMPTY --+
+//     |     |           |
+//     |     +-> NONE ---+
+//     |                 |
+//     +-----------------+

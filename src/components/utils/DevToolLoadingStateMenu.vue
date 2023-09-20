@@ -55,7 +55,6 @@ const buttonStyle = computed(() => ({
 }));
 
 const menuItems = ref([
-  { text: "Init", value: State.Init },
   { text: "Loading", value: State.Loading },
   { text: "Error", value: State.Error },
   { text: "Loaded", value: State.Loaded },

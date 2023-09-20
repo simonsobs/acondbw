@@ -17,21 +17,14 @@ export function useQueryState<T, V extends AnyVariables>(
 ) {
   const { isNull, isEmpty } = options;
 
-  const init = ref(true);
   const error = ref<string | null>(null);
 
-  watch(query.data, (data) => {
-    if (data) init.value = false;
-  });
-
   watch(query.error, (e) => {
-    init.value = false;
     error.value = e?.message || null;
   });
 
   const devtoolState = ref(State.Off);
   watch(devtoolState, (val) => {
-    if (val) init.value = val === State.Init;
     error.value = val === State.Error ? "Error from Dev Tools" : null;
   });
 
@@ -49,7 +42,6 @@ export function useQueryState<T, V extends AnyVariables>(
   );
 
   return {
-    init,
     error,
     devtoolState,
     refresh,
