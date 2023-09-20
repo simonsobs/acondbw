@@ -47,4 +47,7 @@ function toCamelCase() {
 
     # Prettify the json file
     jq . ${CONFIG_JSON} >${CONFIG_JSON}.tmp && mv ${CONFIG_JSON}.tmp ${CONFIG_JSON}
+
+    # Print on stdout
+    jq . ${CONFIG_JSON}
 )
