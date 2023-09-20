@@ -3,8 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { marked } from "marked";
+import { useParsed } from "./parse";
 
 interface Props {
   markdown: string;
@@ -12,5 +11,7 @@ interface Props {
 
 const prop = defineProps<Props>();
 
-const html = computed(() => marked(prop.markdown));
+const markdown = () => prop.markdown;
+
+const { parsed: html } = useParsed(markdown);
 </script>
