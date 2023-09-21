@@ -89,15 +89,18 @@ body,
 // Copied CSS files from
 // - node_modules/prism-theme-github/themes
 // - node_modules/github-markdown-css/
+// - node_modules/highlight.js/styles/
 // file extension is changed to .scss.
 .v-theme--light {
   @import "./prism-theme-github-light.scss";
   @import "./github-markdown-light.scss";
+  @import "./highlight/github.scss";
 }
 
 .v-theme--dark {
   @import "./prism-theme-github-dark.scss";
   @import "./github-markdown-dark.scss";
+  @import "./highlight/github-dark.scss";
 }
 
 /* https://github.com/sindresorhus/github-markdown-css */
@@ -112,4 +115,5 @@ body,
 :is(.v-theme--light, .v-theme--dark) .markdown-body pre code {
   background-color: inherit;
   font-family: "Fira Code", monospace;
+  padding: 0;
 }
