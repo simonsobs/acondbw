@@ -94,10 +94,10 @@ function formatDateTime(dateTime: string) {
 }
 
 const headers = ref([
-  { title: "Time", key: "time", align: "start" },
-  { title: "Level", key: "level", align: "start" },
+  { title: "Time", key: "time", align: "start" as const },
+  { title: "Level", key: "level", align: "start" as const },
   { title: "", key: "data-table-expand" },
-  { title: "", key: "actions", sortable: false, align: "end" },
+  { title: "", key: "actions", sortable: false, align: "end" as const },
 ]);
 
 const expanded = ref<string[]>([]);
