@@ -20,7 +20,6 @@ export function useParsed(markdown: MaybeRefOrGetter<string>) {
   const _parsed = computed(() =>
     marked.parse(toValue(markdown))
   ) as ComputedRef<string>;
-  console.log("_parsed: ", _parsed.value);
   const parsed = computed(() => edit(_parsed));
   return { parsed };
 }
