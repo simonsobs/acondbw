@@ -13,7 +13,7 @@
     >
       <v-textarea
         variant="outlined"
-        hint="Note will be parsed as Markdown"
+        hint="Note will be parsed as Markdown. Math expressions are rendered with MathJax ($ and $$ are delimiters for inline and display math, respectively)."
         persistent-hint
         rows="6"
         :model-value="note"
@@ -22,12 +22,11 @@
     </v-window-item>
     <v-window-item
       value="preview"
-      v-html="noteMarked"
       style="min-height: 180px; width: 98%; border: solid 1px"
       :transition="false"
       :reverse-transition="false"
-      class="markdown-body px-3 py-3"
     >
+      <note :markdown="note"></note>
     </v-window-item>
   </v-window>
 </template>
@@ -35,6 +34,8 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from "vue";
 import { marked } from "marked";
+
+import Note from "@/components/product/item-card/note/Note.vue";
 
 interface Props {
   modelValue: string;
