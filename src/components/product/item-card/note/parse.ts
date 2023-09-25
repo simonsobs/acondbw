@@ -6,8 +6,13 @@ import { useMarkdown } from "@/utils/markdown";
 
 export function useParsed(markdown: MaybeRef<string>) {
   const { html: _parsed } = useMarkdown(unref(markdown));
-  const parsed = computed(() => edit(_parsed));
+  const parsed = useEditHtml(_parsed);
   return { parsed };
+}
+
+function useEditHtml(html: MaybeRef<string>) {
+  const edited = computed(() => edit(html));
+  return edited;
 }
 
 function edit(parsed: MaybeRef<string>) {
