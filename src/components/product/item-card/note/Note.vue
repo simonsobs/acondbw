@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import { useParsed } from "./parse";
 import { useMathJax } from "./mathjax";
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 const prop = defineProps<Props>();
 const div = ref<HTMLDivElement>();
-const markdown = () => prop.markdown;
+const { markdown } = toRefs(prop);
 const { parsed: html } = useParsed(markdown);
 useMathJax(div);
 </script>

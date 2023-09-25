@@ -1,25 +1,11 @@
-import { computed, unref, toValue } from "vue";
-import type { ComputedRef, MaybeRef, MaybeRefOrGetter } from "vue";
-import { Marked } from "marked";
-import { markedHighlight } from "marked-highlight";
-import hljs from "highlight.js";
+import { computed, unref } from "vue";
+import type { MaybeRef } from "vue";
 import $ from "cash-dom";
 
-const marked = new Marked({
-  gfm: true,
-  ...markedHighlight({
-    langPrefix: "hljs language-",
-    highlight(code, lang) {
-      const language = hljs.getLanguage(lang) ? lang : "plaintext";
-      return hljs.highlight(code, { language }).value;
-    },
-  }),
-});
+import { useMarkdown } from "@/utils/markdown";
 
-export function useParsed(markdown: MaybeRefOrGetter<string>) {
-  const _parsed = computed(() =>
-    marked.parse(toValue(markdown))
-  ) as ComputedRef<string>;
+export function useParsed(markdown: MaybeRef<string>) {
+  const { html: _parsed } = useMarkdown(unref(markdown));
   const parsed = computed(() => edit(_parsed));
   return { parsed };
 }
