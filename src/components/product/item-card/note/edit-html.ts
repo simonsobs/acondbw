@@ -7,7 +7,7 @@ export function useEditHtml(html: MaybeRef<string>) {
   return edited;
 }
 
-const openInTabIcon =
+const newTabIcon =
   ' <i class="mdi mdi-open-in-new mdi v-icon notranslate v-icon--size-xsmall" aria-hidden="true"></i>';
 
 function edit(parsed: MaybeRef<string>) {
@@ -19,8 +19,13 @@ function edit(parsed: MaybeRef<string>) {
     .attr("target", "_blank")
     .attr("rel", "noopener noreferrer");
 
-  // Add mdi-open-in-new icon to links with target="_blank" on text (not img)
-  tree.find("a[target='_blank']").append(openInTabIcon);
+  // Add an icon to links with target="_blank" on text (not img)
+  // :not(:has(img)) is not supported by cash-dom
+  tree.find("a[target='_blank']").each(function () {
+    if ($(this).find("img").length === 0) {
+      $(this).append(newTabIcon);
+    }
+  });
 
   return tree.html();
 }
