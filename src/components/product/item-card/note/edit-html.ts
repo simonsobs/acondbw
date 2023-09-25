@@ -20,6 +20,8 @@ function edit(parsed: MaybeRef<string>) {
     .attr("rel", "noopener noreferrer");
 
   // Add an icon to links with target="_blank" on text (not img)
+  // tree.find("a[target='_blank']:not(:has(img))").append(newTabIcon);
+  // The above selector works in jQuery but not in cash-dom.
   // :not(:has(img)) is not supported by cash-dom
   tree.find("a[target='_blank']").each(function () {
     if ($(this).find("img").length === 0) {
