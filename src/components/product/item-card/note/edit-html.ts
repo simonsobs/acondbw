@@ -7,6 +7,9 @@ export function useEditHtml(html: MaybeRef<string>) {
   return edited;
 }
 
+const openInTabIcon =
+  ' <i class="mdi mdi-open-in-new mdi v-icon notranslate v-icon--size-xsmall" aria-hidden="true"></i>';
+
 function edit(parsed: MaybeRef<string>) {
   const tree = $(`<div>${unref(parsed)}</div>`);
 
@@ -17,11 +20,7 @@ function edit(parsed: MaybeRef<string>) {
     .attr("rel", "noopener noreferrer");
 
   // Add mdi-open-in-new icon to links with target="_blank" on text (not img)
-  tree
-    .find("a[target='_blank']")
-    .append(
-      ' <i class="mdi mdi-open-in-new mdi v-icon notranslate v-icon--size-xsmall" aria-hidden="true"></i>'
-    );
+  tree.find("a[target='_blank']").append(openInTabIcon);
 
   return tree.html();
 }
