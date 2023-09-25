@@ -1,4 +1,5 @@
 import { ref, computed, watch } from "vue";
+import type { Ref } from "vue";
 import { useStore } from "@/plugins/pinia/stores/main";
 import type { UseQueryResponse, AnyVariables } from "@urql/vue";
 import { refThrottled } from "@vueuse/core";
@@ -15,28 +16,29 @@ export function useQueryState<T, V extends AnyVariables>(
   options: UseQueryStateOptions<T, V> = {}
 ) {
   const { isNull, isEmpty } = options;
+  const executeQuery = async () =>
+    await query.executeQuery({ requestPolicy: "network-only" });
 
-  useExecuteQueryOnMutation(query);
+  useExecuteQueryOnMutation(executeQuery);
 
-  const state = useState(query, isEmpty, isNull);
+  const state = useState(query, executeQuery, isEmpty, isNull);
 
   return { ...state };
 }
 
-function useExecuteQueryOnMutation<T, V extends AnyVariables>(
-  query: UseQueryResponse<T, V>
-) {
+function useExecuteQueryOnMutation(executeQuery: () => Promise<any>) {
   const store = useStore();
   watch(
     () => store.nApolloMutations,
-    () => {
-      query.executeQuery({ requestPolicy: "network-only" });
+    async () => {
+      await executeQuery();
     }
   );
 }
 
 function useState<T, V extends AnyVariables>(
   query: UseQueryResponse<T, V>,
+  executeQuery: () => Promise<any>,
   isEmpty: ((query: UseQueryResponse<T, V>) => boolean) | undefined,
   isNull: ((query: UseQueryResponse<T, V>) => boolean) | undefined
 ) {
@@ -47,7 +49,7 @@ function useState<T, V extends AnyVariables>(
 
   const error = useError(query);
 
-  const { refreshing, refresh } = useRefresh(query);
+  const { refreshing, refresh } = useRefresh(executeQuery);
 
   const state = computed<State>(() => {
     if (devtoolState.value !== "off") return devtoolState.value;
@@ -71,7 +73,7 @@ function useState<T, V extends AnyVariables>(
   };
 }
 
-function useError<T, V extends AnyVariables>(query: UseQueryResponse<T, V>) {
+function useError(query: { error: Ref<Error | undefined> }) {
   const error = ref<string | null>(null);
   watch(query.error, (e) => {
     error.value = e?.message || null;
@@ -79,7 +81,7 @@ function useError<T, V extends AnyVariables>(query: UseQueryResponse<T, V>) {
   return error;
 }
 
-function useRefresh<T, V extends AnyVariables>(query: UseQueryResponse<T, V>) {
+function useRefresh(executeQuery: () => Promise<any>) {
   const _refreshing = ref(false);
 
   // Throttle so as to avoid flickering
@@ -87,7 +89,7 @@ function useRefresh<T, V extends AnyVariables>(query: UseQueryResponse<T, V>) {
 
   async function refresh() {
     _refreshing.value = true;
-    await query.executeQuery({ requestPolicy: "network-only" });
+    await executeQuery();
     _refreshing.value = false;
   }
 
