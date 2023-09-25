@@ -4,7 +4,8 @@
 
 <script setup lang="ts">
 import { ref, toRefs } from "vue";
-import { useParsed } from "./parse";
+import { useMarkdown } from "@/utils/markdown";
+import { useEditHtml } from "./edit-html";
 import { useMathJax } from "./mathjax";
 interface Props {
   markdown: string;
@@ -12,6 +13,7 @@ interface Props {
 const prop = defineProps<Props>();
 const div = ref<HTMLDivElement>();
 const { markdown } = toRefs(prop);
-const { parsed: html } = useParsed(markdown);
+const { html: _html } = useMarkdown(markdown);
+const html = useEditHtml(_html);
 useMathJax(div);
 </script>
