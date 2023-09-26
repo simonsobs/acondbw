@@ -39,25 +39,14 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
-import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
-
 import { useQueryState } from "./query-state";
 import RefreshButton from "./RefreshButton.vue";
 
+import { useQuery } from "./query";
+
 const router = useRouter();
 
-const query = useAllProductTypesQuery();
-
-const connection = computed(() => query.data?.value?.allProductTypes);
-
-const edges = computed(
-  () => connection.value?.edges.flatMap((e) => (e ? [e] : [])) || []
-);
-
-const nodes = computed(() => edges.value.flatMap((e) => e.node || []));
-
-const isNull = computed(() => connection.value === null);
-const isEmpty = computed(() => nodes.value.length === 0);
+const { query, nodes, isNull, isEmpty } = useQuery();
 
 const headers = ref([
   { title: "Product type", key: "plural" },
