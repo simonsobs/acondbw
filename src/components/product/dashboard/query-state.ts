@@ -1,6 +1,5 @@
 import { ref, computed, watch, unref } from "vue";
 import type { Ref, MaybeRef } from "vue";
-import { useStore } from "@/plugins/pinia/stores/main";
 import { refThrottled } from "@vueuse/core";
 
 import State from "@/utils/LoadingState";
@@ -21,21 +20,9 @@ export function useQueryState(query: Query, options?: UseQueryStateOptions) {
   const executeQuery = async () =>
     await query.executeQuery({ requestPolicy: "network-only" });
 
-  useExecuteQueryOnMutation(executeQuery);
-
   const state = useState(query, executeQuery, isEmpty, isNull);
 
   return { ...state };
-}
-
-function useExecuteQueryOnMutation(executeQuery: () => Promise<any>) {
-  const store = useStore();
-  watch(
-    () => store.nApolloMutations,
-    async () => {
-      await executeQuery();
-    }
-  );
 }
 
 function useState(
