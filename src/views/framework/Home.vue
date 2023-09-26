@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import Dashboard from "@/components/product/Dashboard.vue";
+import Dashboard from "@/components/product/dashboard/Dashboard.vue";
 </script>
 
 <style scoped>
