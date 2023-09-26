@@ -2,6 +2,7 @@
 
 query AllProductTypes {
   allProductTypes(sort: ORDER_ASC) {
+    totalCount
     edges {
       node {
         ...productTypeFragment

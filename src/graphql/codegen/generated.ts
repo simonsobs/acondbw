@@ -2192,7 +2192,7 @@ export type AllLogsQuery = { __typename?: 'QueryAdmin', allLogs?: { __typename?:
 export type AllProductTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllProductTypesQuery = { __typename?: 'QueryAdmin', allProductTypes?: { __typename?: 'ProductTypeConnection', edges: Array<{ __typename?: 'ProductTypeEdge', node?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, products?: { __typename?: 'ProductConnection', totalCount: number } | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null> } | null };
+export type AllProductTypesQuery = { __typename?: 'QueryAdmin', allProductTypes?: { __typename?: 'ProductTypeConnection', totalCount: number, edges: Array<{ __typename?: 'ProductTypeEdge', node?: { __typename?: 'ProductType', id: string, typeId: string, name: string, order?: number | null, indefArticle?: string | null, singular?: string | null, plural?: string | null, icon?: string | null, products?: { __typename?: 'ProductConnection', totalCount: number } | null, fields?: { __typename?: 'TypeFieldAssociationConnection', edges: Array<{ __typename?: 'TypeFieldAssociationEdge', node?: { __typename?: 'TypeFieldAssociation', id: string, typeId: number, fieldId: number, field?: { __typename?: 'Field', id: string, fieldId: string, name: string, type_?: FieldType | null } | null } | null } | null> } | null } | null } | null> } | null };
 
 export type AllProductsByTypeIdQueryVariables = Exact<{
   typeId?: InputMaybe<Scalars['Int']['input']>;
@@ -2828,6 +2828,7 @@ export function useAllLogsQuery(options: Omit<Urql.UseQueryArgs<never, AllLogsQu
 export const AllProductTypesDocument = gql`
     query AllProductTypes {
   allProductTypes(sort: ORDER_ASC) {
+    totalCount
     edges {
       node {
         ...productTypeFragment
