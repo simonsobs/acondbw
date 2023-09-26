@@ -41,42 +41,45 @@ import { useRouter } from "vue-router";
 
 import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
 
-import { useQueryState } from "@/utils/query-state";
-
+import { useQueryState } from "./query-state";
 import RefreshButton from "./RefreshButton.vue";
 
 const router = useRouter();
 
 const query = useAllProductTypesQuery();
-type Query = typeof query;
 
-function readEdges(query: Query) {
-  const edgesAndNulls = query.data?.value?.allProductTypes?.edges;
-  if (!edgesAndNulls) return [];
-  return edgesAndNulls.flatMap((e) => (e ? [e] : []));
-}
+const connection = computed(() => query.data?.value?.allProductTypes);
 
-function readNodes(query: Query) {
-  return readEdges(query).flatMap((e) => (e.node ? e.node : []));
-}
+const edges = computed(
+  () => connection.value?.edges.flatMap((e) => (e ? [e] : [])) || []
+);
 
-function isEmpty(query: Query) {
-  return readNodes(query).length === 0;
-}
+const nodes = computed(() => edges.value.flatMap((e) => e.node || []));
+
+const isNull = computed(() => connection.value === null);
+const isEmpty = computed(() => nodes.value.length === 0);
 
 const headers = ref([
   { title: "Product type", key: "plural" },
   {
     title: "Number of products",
     align: "end" as const,
-    key: "products.totalCount",
+    key: "nProducts",
   },
 ]);
 
-const queryState = useQueryState(query, { isEmpty });
+const queryState = useQueryState(query, { isNull, isEmpty });
 const { loading, loaded, empty, error, refresh, devtoolState } = queryState;
 
-const items = computed(() => (empty.value ? [] : readNodes(query)));
+const items = computed(() =>
+  empty.value
+    ? []
+    : nodes.value.map((node) => ({
+        name: node.name,
+        plural: node.plural,
+        nProducts: node.products?.totalCount || 0,
+      }))
+);
 
 function clickRow(event: Event, { item }) {
   router.push({
