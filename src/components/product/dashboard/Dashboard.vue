@@ -1,5 +1,7 @@
 <template>
   <div class="dashboard px-5">
+    <pre>{{ override }}</pre>
+    <!-- <pre>{{ edges }}</pre> -->
     <v-data-table
       :headers="headers"
       :items="items"
@@ -8,7 +10,8 @@
       @click:row="clickRow"
     >
       <template v-slot:top>
-        <v-alert v-if="error" variant="tonal" type="error" :text="error">
+        <v-alert v-if="error" variant="tonal" type="error">
+          {{ error }}
         </v-alert>
         <refresh-button :disabled="loading" @refresh="refresh">
         </refresh-button>
@@ -26,27 +29,56 @@
       </template>
       <template #bottom></template>
     </v-data-table>
-    <dev-tool-loading-state-menu
-      top="-30px"
-      right="10px"
-      v-model="devtoolState"
-    >
-    </dev-tool-loading-state-menu>
+    <dev-tool-checkboxes top="-30px" right="10px" v-model="override">
+    </dev-tool-checkboxes>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import type { Ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { useQueryState } from "./query-state";
 import RefreshButton from "./RefreshButton.vue";
 
 import { useQuery } from "./query";
+import { useRefreshOnMutation } from "./refresh";
+import DevToolCheckboxes from "./DevToolCheckboxes.vue";
 
-const router = useRouter();
+const query = useQuery();
 
-const { query, nodes, isNull, isEmpty } = useQuery();
+interface Query {
+  loading: Ref<boolean>;
+  error: Ref<Error | undefined>;
+  empty: Ref<boolean>;
+  notFound: Ref<boolean>;
+}
+
+function useOverride(query: Query) {
+  const override = ref({
+    loading: false,
+    error: false,
+    empty: false,
+    notFound: false,
+  });
+
+  const loading = computed(() => override.value.loading || query.loading.value);
+  const empty = computed(() => override.value.empty || query.empty.value);
+  const notFound = computed(
+    () => override.value.notFound || query.notFound.value
+  );
+
+  const error = computed(() =>
+    override.value.error ? new Error("test") : query.error.value
+  );
+
+  return { override, loading, empty, notFound, error };
+}
+
+const { override, loading, empty, error } = useOverride(query);
+
+const refresh = query.refresh;
+useRefreshOnMutation(refresh);
 
 const headers = ref([
   { title: "Product type", key: "plural" },
@@ -57,18 +89,17 @@ const headers = ref([
   },
 ]);
 
-const queryState = useQueryState(query, { isNull, isEmpty });
-const { loading, loaded, empty, error, refresh, devtoolState } = queryState;
-
 const items = computed(() =>
   empty.value
     ? []
-    : nodes.value.map((node) => ({
+    : query.nodes.value.map((node) => ({
         name: node.name,
         plural: node.plural,
         nProducts: node.products?.totalCount || 0,
       }))
 );
+
+const router = useRouter();
 
 function clickRow(event: Event, { item }) {
   router.push({
