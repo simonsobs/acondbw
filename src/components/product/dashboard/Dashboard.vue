@@ -10,6 +10,8 @@
       <template v-slot:top>
         <v-alert v-if="error" variant="tonal" type="error" :text="error">
         </v-alert>
+        <refresh-button :disabled="loading" @refresh="refresh">
+        </refresh-button>
       </template>
       <template v-slot:[`item.plural`]="{ item }">
         <router-link
@@ -41,6 +43,8 @@ import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
 
 import { useQueryState } from "@/utils/query-state";
 
+import RefreshButton from "./RefreshButton.vue";
+
 const router = useRouter();
 
 const query = useAllProductTypesQuery();
@@ -70,7 +74,7 @@ const headers = ref([
 ]);
 
 const queryState = useQueryState(query, { isEmpty });
-const { loading, loaded, empty, error, devtoolState } = queryState;
+const { loading, loaded, empty, error, refresh, devtoolState } = queryState;
 
 const items = computed(() => (empty.value ? [] : readNodes(query)));
 
