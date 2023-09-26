@@ -17,7 +17,7 @@
         <v-list-item v-for="(item, key) in data">
           <v-checkbox
             v-model="data[key]"
-            :label="key"
+            :label="(key as string)"
             density="comfortable"
             :hide-details="true"
           >
@@ -43,15 +43,12 @@ import { withDefaults, computed, watch } from "vue";
 import { useVModel } from "@vueuse/core";
 import { useConfigStore } from "@/plugins/pinia/stores/config";
 
-export interface DevToolQuery {
-  loading: boolean;
-  error: boolean;
-  empty: boolean;
-  notFound: boolean;
+export interface Model {
+  [key: string]: boolean;
 }
 
 interface Props {
-  modelValue: DevToolQuery;
+  modelValue: Model;
   top?: string;
   right?: string;
 }
@@ -62,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 type Emits = {
-  "update:modelValue": [value: DevToolQuery];
+  "update:modelValue": [value: Model];
 };
 
 const emit = defineEmits<Emits>();
