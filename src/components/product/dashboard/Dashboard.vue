@@ -19,7 +19,7 @@
             name: 'ProductList',
             params: { productTypeName: item.raw.name },
           }"
-          class="capitalize font-weight-bold text-primary text-decoration-none"
+          class="text-capitalize font-weight-bold text-primary text-decoration-none"
           v-text="item.raw.plural"
         >
         </router-link>
@@ -87,10 +87,6 @@ function clickRow(event: Event, { item }) {
 </script>
 
 <style scoped>
-.capitalize {
-  text-transform: capitalize;
-}
-
 .dashboard {
   position: relative;
 }
