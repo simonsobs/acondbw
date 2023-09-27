@@ -2,6 +2,8 @@ import { computed, ref } from "vue";
 import type { Ref } from "vue";
 import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
 
+import type { Connection } from "./type";
+
 export function useQuery() {
   const query = useAllProductTypesQuery();
   const connection = computed(() => query.data?.value?.allProductTypes);
@@ -24,15 +26,6 @@ export function useQuery() {
     error,
     refresh,
   };
-}
-
-interface Edge<Node> {
-  node?: Node | null | undefined;
-}
-
-interface Connection<Node> {
-  totalCount: number;
-  edges: (Edge<Node> | null)[];
 }
 
 function useConnection<Node>(
