@@ -39,7 +39,6 @@ import RefreshButton from "./RefreshButton.vue";
 import { useQueryResponse, useConnection } from "./query";
 import { useOverride } from "./override";
 import { useRefreshOnMutation } from "./refresh";
-import DevToolCheckboxes from "./DevToolCheckboxes.vue";
 
 const queryResponse = useAllProductTypesQuery();
 const connection = computed(() => queryResponse.data?.value?.allProductTypes);
