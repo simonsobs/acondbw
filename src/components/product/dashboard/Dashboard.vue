@@ -43,7 +43,10 @@ import { useRefreshOnMutation } from "./refresh";
 const queryResponse = useAllProductTypesQuery();
 const connection = computed(() => queryResponse.data?.value?.allProductTypes);
 
-const query = { ...useQueryResponse(queryResponse), ...useConnection(connection) };
+const query = {
+  ...useQueryResponse(queryResponse),
+  ...useConnection(connection),
+};
 
 const { override, loading, error, nodes } = useOverride(query);
 
