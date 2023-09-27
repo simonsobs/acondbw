@@ -37,11 +37,11 @@
         </template>
         <template v-slot:item.avatarUrl="{ item }">
           <v-avatar size="24">
-            <v-img :src="item.raw.avatarUrl"></v-img>
+            <v-img :src="item.avatarUrl"></v-img>
           </v-avatar>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon small @click="openRemoveForm(item.raw)" icon="mdi-delete">
+          <v-icon small @click="openRemoveForm(item)" icon="mdi-delete">
           </v-icon>
         </template>
       </v-data-table>

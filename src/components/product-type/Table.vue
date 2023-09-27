@@ -27,13 +27,13 @@
         </v-alert>
       </template>
       <template v-slot:item.icon="{ item }">
-        <v-icon :icon="item.raw.icon"></v-icon>
+        <v-icon :icon="item.icon"></v-icon>
       </template>
       <template v-slot:item.name="{ item }">
-        <span class="font-weight-bold text-primary"> {{ item.raw.name }} </span>
+        <span class="font-weight-bold text-primary"> {{ item.name }} </span>
       </template>
       <template v-slot:item.products="{ item }">
-        <v-chip rounded>{{ item.raw.products.totalCount }}</v-chip>
+        <v-chip rounded>{{ item.products.totalCount }}</v-chip>
       </template>
       <template v-slot:item.actions>
         <v-icon small class="mr-2"> mdi-pencil </v-icon>

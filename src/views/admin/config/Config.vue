@@ -11,12 +11,12 @@
     <pre>edited: {{ edited }}</pre>
     <v-data-table :headers="headers" :items="items" :items-per-page="-1">
       <template v-slot:item.value="{ item }">
-        {{ item.raw.value }}
+        {{ item.value }}
         <v-icon
           size="x-small"
           icon="mdi-pencil"
           class="mx-1"
-          @click="edit(item.raw)"
+          @click="edit(item)"
         ></v-icon>
       </template>
       <template #bottom></template>

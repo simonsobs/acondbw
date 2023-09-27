@@ -29,7 +29,7 @@
         <template v-slot:item.avatarUrl="{ item }">
           <span>
             <v-avatar size="24">
-            <v-img :src="item.raw.avatarUrl"></v-img>
+            <v-img :src="item.avatarUrl"></v-img>
             </v-avatar>
           </span>
         </template>

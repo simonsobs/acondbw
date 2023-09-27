@@ -22,14 +22,14 @@
               max-height: 450px;
               overflow: auto;
             "
-            >{{ item.raw.message }}</pre
+            >{{ item.message }}</pre
           >
         </td>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon
           small
-          @click="openRemoveForm(item.raw)"
+          @click="openRemoveForm(item)"
           icon="mdi-delete"
         ></v-icon>
       </template>

@@ -16,9 +16,9 @@
       </template>
       <template v-slot:[`item.plural`]="{ item }">
         <router-link
-          :to="item.raw.to"
+          :to="item.to"
           class="text-capitalize font-weight-bold text-primary text-decoration-none"
-          v-text="item.raw.plural"
+          v-text="item.plural"
         >
         </router-link>
       </template>
@@ -77,7 +77,7 @@ const items = computed(() =>
 const router = useRouter();
 
 function clickRow(event: Event, { item }) {
-  router.push(item.raw.to);
+  router.push(item.to);
 }
 </script>
 
