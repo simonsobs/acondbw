@@ -47,7 +47,7 @@ import DevToolCheckboxes from "./DevToolCheckboxes.vue";
 
 const query = useQuery();
 
-const { override, loading, empty, error } = useOverride(query);
+const { override, loading, error, nodes } = useOverride(query);
 
 const refresh = query.refresh;
 useRefreshOnMutation(refresh);
@@ -62,13 +62,11 @@ const headers = ref([
 ]);
 
 const items = computed(() =>
-  empty.value
-    ? []
-    : query.nodes.value.map((node) => ({
-        name: node.name,
-        plural: node.plural,
-        nProducts: node.products?.totalCount || 0,
-      }))
+  nodes.value.map((node) => ({
+    name: node.name,
+    plural: node.plural,
+    nProducts: node.products?.totalCount || 0,
+  }))
 );
 
 const router = useRouter();
