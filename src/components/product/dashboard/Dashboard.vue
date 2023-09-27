@@ -1,7 +1,5 @@
 <template>
   <div class="dashboard px-5">
-    <pre>{{ override }}</pre>
-    <!-- <pre>{{ edges }}</pre> -->
     <v-data-table
       :headers="headers"
       :items="items"
@@ -18,10 +16,7 @@
       </template>
       <template v-slot:[`item.plural`]="{ item }">
         <router-link
-          :to="{
-            name: 'ProductList',
-            params: { productTypeName: item.raw.name },
-          }"
+          :to="item.raw.to"
           class="text-capitalize font-weight-bold text-primary text-decoration-none"
           v-text="item.raw.plural"
         >
@@ -66,16 +61,17 @@ const items = computed(() =>
     name: node.name,
     plural: node.plural,
     nProducts: node.products?.totalCount || 0,
+    to: {
+      name: "ProductList",
+      params: { productTypeName: node.name },
+    },
   }))
 );
 
 const router = useRouter();
 
 function clickRow(event: Event, { item }) {
-  router.push({
-    name: "ProductList",
-    params: { productTypeName: item.selectable.name },
-  });
+  router.push(item.raw.to);
 }
 </script>
 
