@@ -1,14 +1,16 @@
 <template>
   <div class="pt-5 px-5 pb-16" style="max-width: 960px; margin: auto">
     <div class="text-h4 text-primary">Log</div>
+    <pre>{{ selected.length }} selected</pre>
     <v-data-table
+      v-model="selected"
       :headers="headers"
       :items="items"
-      :items-per-page="items.length"
-      :hide-default-footer="true"
-      item-key="node.id_"
+      :items-per-page="20"
+      :sort-by="sortBy"
       :expanded.sync="expanded"
       show-expand
+      show-select
       class="mt-5"
     >
       <template v-slot:expanded-row="{ columns, item }">
@@ -25,7 +27,11 @@
         </td>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small @click="openRemoveForm(item.raw)" icon="mdi-delete"></v-icon>
+        <v-icon
+          small
+          @click="openRemoveForm(item.raw)"
+          icon="mdi-delete"
+        ></v-icon>
       </template>
     </v-data-table>
     <v-dialog v-model="dialogRemove" max-width="500px">
@@ -99,6 +105,10 @@ const headers = ref([
   { title: "", key: "data-table-expand" },
   { title: "", key: "actions", sortable: false, align: "end" as const },
 ]);
+
+const sortBy = ref([{ key: "time", order: "asc" as const }]);
+
+const selected = ref<string[]>([]);
 
 const expanded = ref<string[]>([]);
 
