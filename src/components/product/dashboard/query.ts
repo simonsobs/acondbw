@@ -1,32 +1,22 @@
-import { computed, ref } from "vue";
+import { computed, ref, unref } from "vue";
 import type { Ref } from "vue";
-import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
 import { refThrottled } from "@vueuse/core";
 
 import type { Connection } from "./type";
 
-export function useQuery() {
-  const query = useAllProductTypesQuery();
-  const connection = computed(() => query.data?.value?.allProductTypes);
+interface QueryResponse {
+  fetching: Ref<boolean>;
+  error: Ref<Error | undefined>;
+  executeQuery: (opts?: { requestPolicy?: "network-only" }) => PromiseLike<any>;
+}
 
-  const { refresh, refreshing } = useRefresh(query);
-
-  const loading = computed(() => query.fetching.value || refreshing.value);
-  const error = ref(query.error);
-
-  const { notFound, edges, nodes, empty } = useConnection(connection);
-
-  return {
-    query,
-    connection,
-    edges,
-    nodes,
-    notFound,
-    empty,
-    loading,
-    error,
-    refresh,
-  };
+export function useQueryResponse(queryResponse: QueryResponse) {
+  const { refresh, refreshing } = useRefresh(queryResponse);
+  const loading = computed(
+    () => unref(queryResponse.fetching) || unref(refreshing)
+  );
+  const error = ref(queryResponse.error);
+  return { loading, error, refresh };
 }
 
 function useRefresh(query: {
@@ -45,7 +35,7 @@ function useRefresh(query: {
   return { refresh, refreshing };
 }
 
-function useConnection<Node>(
+export function useConnection<Node>(
   connection: Ref<Connection<Node> | null | undefined>
 ) {
   const notFound = computed(() => connection.value === null);

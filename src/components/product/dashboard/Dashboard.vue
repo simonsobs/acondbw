@@ -32,15 +32,19 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useAllProductTypesQuery } from "@/graphql/codegen/generated";
 
 import RefreshButton from "./RefreshButton.vue";
 
-import { useQuery } from "./query";
+import { useQueryResponse, useConnection } from "./query";
 import { useOverride } from "./override";
 import { useRefreshOnMutation } from "./refresh";
 import DevToolCheckboxes from "./DevToolCheckboxes.vue";
 
-const query = useQuery();
+const queryResponse = useAllProductTypesQuery();
+const connection = computed(() => queryResponse.data?.value?.allProductTypes);
+
+const query = { ...useQueryResponse(queryResponse), ...useConnection(connection) };
 
 const { override, loading, error, nodes } = useOverride(query);
 
