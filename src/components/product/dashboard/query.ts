@@ -26,20 +26,25 @@ export function useQuery() {
   };
 }
 
-interface Edge<T> {
-  node?: T | null | undefined;
+interface Edge<Node> {
+  node?: Node | null | undefined;
 }
 
-interface Connection<T> {
-  edges: (Edge<T> | null)[];
+interface Connection<Node> {
+  totalCount: number;
+  edges: (Edge<Node> | null)[];
 }
 
-function useConnection<T>(connection: Ref<Connection<T> | null | undefined>) {
+function useConnection<Node>(
+  connection: Ref<Connection<Node> | null | undefined>
+) {
   const notFound = computed(() => connection.value === null);
   const edges = computed(
     () => connection.value?.edges.flatMap((e) => (e ? [e] : [])) || []
   );
-  const nodes = computed(() => edges.value.flatMap((e) => e.node || []));
+  const nodes = computed<Node[]>(() =>
+    edges.value.flatMap((e) => e.node || [])
+  );
   const empty = computed(() => nodes.value.length === 0);
 
   return { notFound, edges, nodes, empty };
